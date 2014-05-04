@@ -1,1 +1,45 @@
-<p data-ng-bind="presentation"></p>
+<div class="row jumbotron">
+	<div class="col-md-12">
+		<div class="lead">
+			<h1 data-ng-bind="about"></h1>
+		</div>
+		<hr />
+	</div>
+	<div class="col-md-10">
+		<p data-ng-bind="presentation" class="lead"></p>
+	</div>
+	<div class="col-md-2 about-me pull-right">
+		<img src="images/profile.jpg" alt="Me" class="img-circle img-profile">
+		<br />
+		<a href="mailto:{{contact}}" data-ng-bind="me" target="_blank"></a>
+	</div>
+</div>
+<br />
+<div class="row">
+	<div class="col-md-12">
+		<div class="lead">
+			<h1 data-ng-bind="head"></h1>
+		</div>
+		<hr />
+		<h1>Study</h1>
+		<ul id="Study" class="list-unstyled">
+			<li data-ng-repeat="frame in study_frames">
+				<strong><em>{{ frame.title }}</em> - {{ frame.from }}-{{ frame.to }}</strong>
+				<br />
+				<blockquote>
+					{{ frame.description }}
+				</blockquote>
+			</li>
+		</ul>
+		<h1>Experience</h1>
+		<ul id="Work" class="list-unstyled">
+			<li data-ng-repeat="frame in work_frames">
+				<strong><em>{{ frame.title }}<em> - {{ frame.from }}-{{ frame.to }}</strong>
+				<br />
+				<blockquote>
+					{{ frame.description }}
+				</blockquote>
+			</li>
+		</ul>
+	</div>
+</div>

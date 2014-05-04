@@ -6,11 +6,5 @@ Resume.config(function ($routeProvider) {
       {
         controller: 'Content',
         templateUrl: 'partials/introduction.html'
-      })
-    .when('/frames',
-      {
-        controller: 'Content',
-        templateUrl: 'partials/frames.html'
-      }
-  ).otherwise({ redirectTo: '/introduction' });
+      }).otherwise({ redirectTo: '/introduction' });
 });

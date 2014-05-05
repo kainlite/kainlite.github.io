@@ -24,7 +24,7 @@
 		<h1>Study</h1>
 		<ul id="Study" class="list-unstyled">
 			<li data-ng-repeat="frame in study_frames">
-				<strong><em>{{ frame.title }}</em> - {{ frame.from }}-{{ frame.to }}</strong>
+				<div class="subtitle"><strong><em>{{ frame.title }}</em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}
@@ -34,7 +34,7 @@
 		<h1>Experience</h1>
 		<ul id="Work" class="list-unstyled">
 			<li data-ng-repeat="frame in work_frames">
-				<strong><em>{{ frame.title }}<em> - {{ frame.from }}-{{ frame.to }}</strong>
+				<div class="subtitle"><strong><em>{{ frame.title }}<em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}

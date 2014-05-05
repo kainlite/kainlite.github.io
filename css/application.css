@@ -7,6 +7,7 @@ body {
 
 .about-me a {
   text-align: center;
+  float: right;
 }
 
 .img-profile {
@@ -22,4 +23,12 @@ body {
 .container {
   -webkit-box-shadow: 0 3px 3px rgba(0,0,0,0.175);
   box-shadow: 0 3px 3px rgba(0,0,0,0.175);  
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #bbb;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }

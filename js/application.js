@@ -4,7 +4,7 @@ Resume.config(function ($routeProvider) {
   $routeProvider
     .when('/introduction',
       {
-        controller: 'Content',
+        controller: 'contentController',
         templateUrl: 'partials/introduction.html'
       }).otherwise({ redirectTo: '/introduction' });
 });

@@ -4,11 +4,11 @@ Resume.factory('contentFactory', ['$http', function($http) {
     var contentFactory = {};
 
     contentFactory.getWorks = function () {
-        return $http.get(urlBase + '?type=works' );
+        return $http.get(urlBase + '?kind=works' );
     };
 
     contentFactory.getStudies = function (id) {
-        return $http.get(urlBase + '?type=studies');
+        return $http.get(urlBase + '?kind=studies');
     };
 
     return contentFactory;

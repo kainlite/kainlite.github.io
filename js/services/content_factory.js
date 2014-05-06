@@ -1,14 +1,18 @@
 Resume.factory('contentFactory', ['$http', function($http) {
 
-    var urlBase = 'http://kainlite.herokuapp.com/api/frames.json';
+    var urlBase = 'http://kainlite.herokuapp.com/api/';
     var contentFactory = {};
 
     contentFactory.getWorks = function () {
-        return $http.get(urlBase + '?kind=works' );
+        return $http.get(urlBase + '/frames.json?kind=works' );
     };
 
-    contentFactory.getStudies = function (id) {
-        return $http.get(urlBase + '?kind=studies');
+    contentFactory.getStudies = function () {
+        return $http.get(urlBase + '/frames.json?kind=studies');
+    };
+
+    contentFactory.getBio = function() {
+        return $http.get(urlBase + '/bio.json');
     };
 
     return contentFactory;

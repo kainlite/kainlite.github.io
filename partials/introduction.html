@@ -23,8 +23,8 @@
 		<hr />
 		<h1>Study</h1>
 		<ul id="Study" class="list-unstyled">
-			<li data-ng-repeat="frame in study_frames">
-				<div class="subtitle"><strong><em>{{ frame.title }}</em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
+			<li data-ng-repeat="frame in studies">
+				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}</em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}
@@ -33,8 +33,8 @@
 		</ul>
 		<h1>Experience</h1>
 		<ul id="Work" class="list-unstyled">
-			<li data-ng-repeat="frame in work_frames">
-				<div class="subtitle"><strong><em>{{ frame.title }}<em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
+			<li data-ng-repeat="frame in works">
+				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}<em> - {{ frame.from }} -> {{ frame.to }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}

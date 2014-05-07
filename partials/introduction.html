@@ -21,20 +21,20 @@
 			<h1 data-ng-bind="head"></h1>
 		</div>
 		<hr />
-		<h1>Study</h1>
-		<ul id="Study" class="list-unstyled">
-			<li data-ng-repeat="frame in studies">
-				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}</em> - {{ frame.from | date:'MM/yyyy' }} -> {{ frame.to | date:'MM/yyyy'  }}</strong></div>
+		<h1>Experience</h1>
+		<ul id="Work" class="list-unstyled">
+			<li data-ng-repeat="frame in works">
+				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}<em> - {{ frame.from | date:'MM/yyyy'  }} -> {{ frame.to | date:'MM/yyyy'  }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}
 				</blockquote>
 			</li>
 		</ul>
-		<h1>Experience</h1>
-		<ul id="Work" class="list-unstyled">
-			<li data-ng-repeat="frame in works">
-				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}<em> - {{ frame.from | date:'MM/yyyy'  }} -> {{ frame.to | date:'MM/yyyy'  }}</strong></div>
+		<h1>Study</h1>
+		<ul id="Study" class="list-unstyled">
+			<li data-ng-repeat="frame in studies">
+				<div class="subtitle"><strong><em>{{ frame.title }}</em> in <em>{{ frame.institution }}</em> - {{ frame.from | date:'MM/yyyy' }} -> {{ frame.to | date:'MM/yyyy'  }}</strong></div>
 				<br />
 				<blockquote>
 					{{ frame.description }}

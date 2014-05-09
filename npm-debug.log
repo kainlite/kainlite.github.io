@@ -1,0 +1,17 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/sbin/npm', 'start' ]
+2 info using npm@1.4.9
+3 info using node@v0.10.28
+4 error Error: ENOENT, open '/usr/share/nginx/html/package.json'
+5 error If you need help, you may report this *entire* log,
+5 error including the npm and node versions, at:
+5 error     <http://github.com/npm/npm/issues>
+6 error System Linux 3.14.1-1-ARCH
+7 error command "/usr/bin/node" "/usr/sbin/npm" "start"
+8 error cwd /usr/share/nginx/html
+9 error node -v v0.10.28
+10 error npm -v 1.4.9
+11 error path /usr/share/nginx/html/package.json
+12 error code ENOENT
+13 error errno 34
+14 verbose exit [ 34, true ]

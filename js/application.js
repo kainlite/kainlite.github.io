@@ -1,4 +1,4 @@
-var Resume = angular.module('Resume', ['ui.bootstrap', 'ngRoute', 'ngAnimate']);
+var Resume = angular.module('Resume', ['ui.bootstrap', 'ngRoute', 'chieffancypants.loadingBar', 'ngAnimate']);
 
 Resume.config(function ($routeProvider) {
   $routeProvider

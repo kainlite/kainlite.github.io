@@ -307,16 +307,15 @@ my-nginx-hello-world  0s
 
 NAME                                   READY  STATUS   RESTARTS  AGE
 my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  0         0s
-</code></pre>
 
-<p>Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
-
-<pre><code>NOTES:
+NOTES:
 1. Get the application URL by running these commands:
   export POD_NAME=$(kubectl get pods --namespace default -l &quot;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&quot; -o jsonpath=&quot;{.items[0].metadata.name}&quot;)
   echo &quot;Visit http://127.0.0.1:8080 to use your application&quot;
   kubectl port-forward $POD_NAME 8080:80
 </code></pre>
+
+<p>Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
 
 <p>Let&rsquo;s check that our service is there:</p>
 

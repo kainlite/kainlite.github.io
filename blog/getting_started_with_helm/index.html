@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Tech ideas, tests, examples...">
+    <link rel="shortcut icon" type="image/x-icon" href="https://kainlite.github.io/img/favicon.ico">
+    <title>Getting started with Helm</title>
+    <meta name="generator" content="Hugo 0.52" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://kainlite.github.io/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://kainlite.github.io/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://kainlite.github.io/blog/getting_started_with_helm/">Getting started with Helm</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          December 23, 2018
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="introduction"><strong>Introduction</strong></h3>
+
+<p>This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a>, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, you can follow with the following example:</p>
+
+<p>Create the chart:</p>
+
+<pre><code>helm create hello-world
+</code></pre>
+
+<p>Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
+
+<p>Inspect the contents:</p>
+
+<pre><code>cd hello-world
+
+charts       &lt;--- Dependencies, charts that your chart depends on.
+Chart.yaml   &lt;--- Metadata mostly, defines the version of your chart, etc.
+templates    &lt;--- Here is where the magic happens.
+values.yaml  &lt;--- Default values file (this is used to replace in the templates at runtime)
+</code></pre>
+
+<p>The file <code>values.yaml</code> by default will look like the following snippet:</p>
+
+<pre><code>replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+nameOverride: &quot;&quot;
+fullnameOverride: &quot;&quot;
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: &quot;true&quot;
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+</code></pre>
+
+<p>The next step would be to check the <code>templates</code> folder:</p>
+
+<pre><code>deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
+_helpers.tpl     &lt;--- This file defines some common variables.
+ingress.yaml     &lt;--- Ingress route, etc.
+NOTES.txt        &lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
+service.yaml     &lt;--- The service that we will use internally and/or via ingress to reach our deployed service.
+</code></pre>
+
+<p>Go <a href="https://blog.gopheracademy.com/advent-2017/using-go-templates/">templates</a> basics, if you need a refresher or a crash course in go templates.</p>
+
+<p>Let&rsquo;s check the deployment file:</p>
+
+<pre><code>apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include &quot;hello-world.fullname&quot; . }}
+  labels:
+    app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+    helm.sh/chart: {{ include &quot;hello-world.chart&quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: &quot;{{ .Values.image.repository }}:{{ .Values.image.tag }}&quot;
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+</code></pre>
+
+<p>As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p>
+
+<p>Let&rsquo;s check the service file:</p>
+
+<pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include &quot;hello-world.fullname&quot; . }}
+  labels:
+    app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+    helm.sh/chart: {{ include &quot;hello-world.chart&quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+</code></pre>
+
+<p>Let&rsquo;s check the ingress file:</p>
+
+<pre><code>{{- if .Values.ingress.enabled -}}
+{{- $fullName := include &quot;hello-world.fullname&quot; . -}}
+{{- $ingressPath := .Values.ingress.path -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include &quot;hello-world.name&quot; . }}
+    helm.sh/chart: {{ include &quot;hello-world.chart&quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- range .Values.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http
+  {{- end }}
+{{- end }}
+</code></pre>
+
+<p>The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p>
+
+<p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):</p>
+
+<pre><code>$ helm init
+$HELM_HOME has been configured at /home/gabriel/.helm.
+
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+
+Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+Happy Helming!
+</code></pre>
+
+<p>Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some mitigations can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
+
+<p>Deploy our chart:</p>
+
+<pre><code>$ helm install --name my-nginx -f values.yaml .
+NAME:   my-nginx
+LAST DEPLOYED: Sun Dec 23 00:30:11 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/Service
+NAME                  AGE
+my-nginx-hello-world  0s
+
+==&gt; v1beta2/Deployment
+my-nginx-hello-world  0s
+
+==&gt; v1/Pod(related)
+
+NAME                                   READY  STATUS   RESTARTS  AGE
+my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  0         0s
+</code></pre>
+
+<p>Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
+
+<pre><code>NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l &quot;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&quot; -o jsonpath=&quot;{.items[0].metadata.name}&quot;)
+  echo &quot;Visit http://127.0.0.1:8080 to use your application&quot;
+  kubectl port-forward $POD_NAME 8080:80
+</code></pre>
+
+<p>Let&rsquo;s check that our service is there:</p>
+
+<pre><code>$ kubectl get services
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes             ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   1h
+my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP    5m
+</code></pre>
+
+<p>And now we can test that everything is okay by running another pod in interactive mode, for example:</p>
+
+<pre><code>$ kubectl run -i --tty alpine --image=alpine -- sh
+If you don't see a command prompt, try pressing enter.
+
+/ # apk add curl
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/5) Installing ca-certificates (20171114-r3)
+(2/5) Installing nghttp2-libs (1.32.0-r0)
+(3/5) Installing libssh2 (1.8.0-r3)
+(4/5) Installing libcurl (7.61.1-r1)
+(5/5) Installing curl (7.61.1-r1)
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
+OK: 6 MiB in 18 packages
+
+/ # curl -v my-nginx-hello-world
+* Rebuilt URL to: my-nginx-hello-world/
+*   Trying 10.111.222.70...
+* TCP_NODELAY set
+* Connected to my-nginx-hello-world (10.111.222.70) port 80 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: my-nginx-hello-world
+&gt; User-Agent: curl/7.61.1
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Server: nginx/1.14.2
+&lt; Date: Sun, 23 Dec 2018 03:45:31 GMT
+&lt; Content-Type: text/html
+&lt; Content-Length: 612
+&lt; Last-Modified: Tue, 04 Dec 2018 14:44:49 GMT
+&lt; Connection: keep-alive
+&lt; ETag: &quot;5c0692e1-264&quot;
+&lt; Accept-Ranges: bytes
+&lt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+* Connection #0 to host my-nginx-hello-world left intact
+</code></pre>
+
+<p>And voila we see our nginx deployed there and accesible via service name to our other pods (this is fantastic for microservices).</p>
+
+<p>Our current deployment can be checked like this:</p>
+
+<pre><code>$ helm ls
+NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
+my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
+</code></pre>
+
+<p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.</p>
+
+<pre><code> $ helm upgrade my-nginx . -f values.yaml
+Release &quot;my-nginx&quot; has been upgraded. Happy Helming!
+LAST DEPLOYED: Sun Dec 23 00:55:22 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/Pod(related)
+NAME                                   READY  STATUS             RESTARTS  AGE
+my-nginx-hello-world-6f948db8d5-s76zl  1/1    Running            0         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   0/1    ContainerCreating  0         0s
+
+==&gt; v1/Service
+
+NAME                  AGE
+my-nginx-hello-world  25m
+
+==&gt; v1beta2/Deployment
+my-nginx-hello-world  25m
+
+
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l &quot;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&quot; -o jsonpath=&quot;{.items[0].metadata.name}&quot;)
+  echo &quot;Visit http://127.0.0.1:8080 to use your application&quot;
+  kubectl port-forward $POD_NAME 8080:80
+</code></pre>
+
+<p>Note that I always specify the -f values.yaml just for explicitness.</p>
+
+<p>It seems that our upgrade went well, let&rsquo;s see what Helm sees</p>
+
+<pre><code>$ helm ls
+NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
+my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
+</code></pre>
+
+<p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:</p>
+
+<pre><code>$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+nginx version: nginx/1.15.7
+</code></pre>
+
+<p>At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:</p>
+
+<pre><code>$ helm rollback my-nginx 1
+Rollback was a success! Happy Helming!
+</code></pre>
+
+<p>Basically this command needs a deployment name <code>my-nginx</code> and the revision number to rollback to in this case <code>1</code>.</p>
+
+<p>Let&rsquo;s check the versions again:</p>
+
+<pre><code>$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+nginx version: nginx/1.14.2
+</code></pre>
+
+<p>Let&rsquo;s clean up:</p>
+
+<pre><code>$ helm del --purge my-nginx
+release &quot;my-nginx&quot; deleted
+</code></pre>
+
+<p>If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&rsquo;s really useful for debugging or to inject a sidecar using pipes):</p>
+
+<pre><code>$ helm template . -name my-nginx -f values.yaml
+# Source: hello-world/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ame-hello-world
+</code></pre>
+
+<p>And that folks is all I have for now, be sure to check own <a href="https://docs.helm.sh/">Helm Documentation</a> and <code>helm help</code> to know more about what helm can do to help you deploy your applications to any kubernetes cluster.</p>
+
+<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
+
+<p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Helm and go makes that easy and fast.</p>
+
+<h3 id="upcoming-topics">Upcoming topics</h3>
+
+<p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
+
+<ul>
+<li>Build on the first basic example and host a basic web app with storage and tls certificates.</li>
+<li>Getting started with Ksonnet and friends.</li>
+<li>Getting started with Skaffold.</li>
+<li>Getting started with Gitkube.</li>
+</ul>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+              <hr>
+              
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://kainlite.github.io/js/docs.min.js"></script>
+<script src="https://kainlite.github.io/js/main.js"></script>
+
+<script src="https://kainlite.github.io/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

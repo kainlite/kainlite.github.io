@@ -92,7 +92,7 @@ if (!doNotTrack) {
 
 <p>Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
 
-<p>Inspect the contents:</p>
+<p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:</p>
 
 <pre><code>cd hello-world
 
@@ -148,7 +148,7 @@ service.yaml     &lt;--- The service that we will use internally and/or via ingr
 
 <p>Go <a href="https://blog.gopheracademy.com/advent-2017/using-go-templates/">templates</a> basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm&rsquo;s own <a href="https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md">documentation</a> and also some <a href="https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md">tips and tricks</a>.</p>
 
-<p>Let&rsquo;s check the deployment file:</p>
+<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> file:</p>
 
 <pre><code>apiVersion: apps/v1beta2
 kind: Deployment
@@ -205,7 +205,7 @@ spec:
 
 <p>As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p>
 
-<p>Let&rsquo;s check the service file:</p>
+<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> file:</p>
 
 <pre><code>apiVersion: v1
 kind: Service
@@ -228,7 +228,7 @@ spec:
     app.kubernetes.io/instance: {{ .Release.Name }}
 </code></pre>
 
-<p>Let&rsquo;s check the ingress file:</p>
+<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> file:</p>
 
 <pre><code>{{- if .Values.ingress.enabled -}}
 {{- $fullName := include &quot;hello-world.fullname&quot; . -}}

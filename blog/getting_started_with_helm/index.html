@@ -106,6 +106,8 @@ templates    &lt;--- Here is where the magic happens.
 values.yaml  &lt;--- Default values file (this is used to replace in the templates at runtime)
 </code></pre>
 
+<p>Note: the following link explains the basics of <a href="https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory">dependencies</a>, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.</p>
+
 <p>The file <code>values.yaml</code> by default will look like the following snippet:</p>
 
 <pre><code>replicaCount: 1

@@ -17,9 +17,8 @@
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/blog/getting_started_with_helm/</guid>
-      <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart:
-helm create hello-world  Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</description>
+      <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart:</description>
     </item>
     
   </channel>

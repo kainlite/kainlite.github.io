@@ -74,6 +74,10 @@ if (!doNotTrack) {
           December 23, 2018
             &nbsp;&nbsp;
             
+            <span class="label label-success">helm</span>
+            
+            <span class="label label-success">deployments</span>
+            
           </h4>
         </div>
         <div class="panel panel-default">
@@ -87,14 +91,14 @@ if (!doNotTrack) {
 
 <p>Create the chart:</p>
 
-<pre><code>helm create hello-world
+<pre><code class="language-bash">helm create hello-world
 </code></pre>
 
 <p>Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
 
 <p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:</p>
 
-<pre><code>cd hello-world
+<pre><code class="language-bash">cd hello-world
 
 charts       &lt;--- Dependencies, charts that your chart depends on.
 Chart.yaml   &lt;--- Metadata mostly, defines the version of your chart, etc.
@@ -139,7 +143,7 @@ affinity: {}
 
 <p>The next step would be to check the <code>templates</code> folder:</p>
 
-<pre><code>deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
+<pre><code class="language-bash">deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     &lt;--- This file defines some common variables.
 ingress.yaml     &lt;--- Ingress route, etc.
 NOTES.txt        &lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
@@ -274,7 +278,7 @@ spec:
 
 <p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):</p>
 
-<pre><code>$ helm init
+<pre><code class="language-bash">$ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
 
 Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
@@ -285,11 +289,11 @@ For more information on securing your installation see: https://docs.helm.sh/usi
 Happy Helming!
 </code></pre>
 
-<p>Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some mitigations can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
+<p>Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
 
 <p>Deploy our chart:</p>
 
-<pre><code>$ helm install --name my-nginx -f values.yaml .
+<pre><code class="language-bash">$ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
 LAST DEPLOYED: Sun Dec 23 00:30:11 2018
 NAMESPACE: default
@@ -319,7 +323,7 @@ NOTES:
 
 <p>Let&rsquo;s check that our service is there:</p>
 
-<pre><code>$ kubectl get services
+<pre><code class="language-bash">$ kubectl get services
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
 kubernetes             ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   1h
 my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP    5m
@@ -327,7 +331,7 @@ my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP   
 
 <p>And now we can test that everything is okay by running another pod in interactive mode, for example:</p>
 
-<pre><code>$ kubectl run -i --tty alpine --image=alpine -- sh
+<pre><code class="language-bash">$ kubectl run -i --tty alpine --image=alpine -- sh
 If you don't see a command prompt, try pressing enter.
 
 / # apk add curl
@@ -390,18 +394,18 @@ Commercial support is available at
 * Connection #0 to host my-nginx-hello-world left intact
 </code></pre>
 
-<p>And voila we see our nginx deployed there and accesible via service name to our other pods (this is fantastic for microservices).</p>
+<p>And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).</p>
 
 <p>Our current deployment can be checked like this:</p>
 
-<pre><code>$ helm ls
+<pre><code class="language-bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
 </code></pre>
 
 <p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.</p>
 
-<pre><code> $ helm upgrade my-nginx . -f values.yaml
+<pre><code class="language-bash"> $ helm upgrade my-nginx . -f values.yaml
 Release &quot;my-nginx&quot; has been upgraded. Happy Helming!
 LAST DEPLOYED: Sun Dec 23 00:55:22 2018
 NAMESPACE: default
@@ -433,14 +437,14 @@ NOTES:
 
 <p>It seems that our upgrade went well, let&rsquo;s see what Helm sees</p>
 
-<pre><code>$ helm ls
+<pre><code class="language-bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
 my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
 </code></pre>
 
 <p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:</p>
 
-<pre><code>$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+<pre><code class="language-bash">$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
 nginx version: nginx/1.15.7
 </code></pre>
 
@@ -454,13 +458,13 @@ Rollback was a success! Happy Helming!
 
 <p>Let&rsquo;s check the versions again:</p>
 
-<pre><code>$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+<pre><code class="language-bash">$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
 nginx version: nginx/1.14.2
 </code></pre>
 
 <p>Let&rsquo;s clean up:</p>
 
-<pre><code>$ helm del --purge my-nginx
+<pre><code class="language-bash">$ helm del --purge my-nginx
 release &quot;my-nginx&quot; deleted
 </code></pre>
 
@@ -485,7 +489,7 @@ metadata:
 <p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
 
 <ul>
-<li>Expand on helm, search and install community charts.</li>
+<li><a href="https://kainlite.github.io/blog/deploying_my_apps_with_helm/">Expand on helm, search and install community charts</a>.</li>
 <li>Getting started with Ksonnet and friends.</li>
 <li>Getting started with Skaffold.</li>
 <li>Getting started with Gitkube.</li>
@@ -499,6 +503,26 @@ metadata:
 
               <hr>
               
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 24, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/deploying_my_apps_with_helm/">Deploying my apps with Helm</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
           <hr>
         <div class="disqus">
   <div id="disqus_thread"></div>

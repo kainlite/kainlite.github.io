@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Tech ideas, tests, examples...">
+    <link rel="shortcut icon" type="image/x-icon" href="https://kainlite.github.io/img/favicon.ico">
+    <title>Deploying my apps with Helm</title>
+    <meta name="generator" content="Hugo 0.52" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://kainlite.github.io/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://kainlite.github.io/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://kainlite.github.io/blog/deploying_my_apps_with_helm/">Deploying my apps with Helm</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          December 24, 2018
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">helm</span>
+            
+            <span class="label label-success">deployments</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="deploying-my-apps-with-helm"><strong>Deploying my apps with Helm</strong></h3>
+
+<p>If you are already familiar with <a href="https://helm.sh/">Helm</a>, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with <a href="https://github.com/helm/charts">Charts</a>, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the <a href="https://github.com/helm/charts/blob/master/CONTRIBUTING.md#technical-requirements">technical requirements</a> but probably usable and the folder stable is for <em>graduated</em> charts. This is not the only source of charts as you can imagine, You can use any source for your charts, even just the <a href="https://docs.helm.sh/using_helm/#helm-install-installing-a-package">tgz</a> files, as we will see in this post.</p>
+
+<p>How do I search for charts?:</p>
+
+<pre><code class="language-bash">$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+</code></pre>
+
+<p>Note that I&rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&rsquo;re using the official repo in the folder stable, but what if we don&rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&rsquo;s use the one from <a href="https://bitnami.com/stack/wordpress/helm">Bitnami</a>, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:</p>
+
+<pre><code class="language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
+</code></pre>
+
+<p>So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):</p>
+
+<pre><code class="language-bash">$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+bitnami/wordpress       5.0.2           5.0.2           Web publishing platform for building blogs and websites.
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+</code></pre>
+
+<p>Let&rsquo;s check the <a href="https://github.com/helm/charts/tree/master/stable/wordpress">documentation</a> of the chart to create our <code>values.yaml</code> file, note that in this example the stable wordpress chart it&rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&rsquo;t always be the case but it simplifies things for us.</p>
+
+<p>Our example <code>values.yaml</code> will look like:</p>
+
+<pre><code>wordpressBlogName: &quot;Testing Helm Charts&quot;
+persistence:
+  size: 1Gi
+ingress:
+  enabled: true
+</code></pre>
+
+<p>We will only change the blog name by default, the persistent volume size and also enable <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> (Our app should be available through <code>wordpress.local</code> inside the cluster), if you are using minikube be sure to enable the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> addon.</p>
+
+<pre><code class="language-bash">$ minikube addons enable ingress
+ingress was successfully enabled
+</code></pre>
+
+<p>We can then install <code>stable/wordpress</code> or <code>bitnami/wordpress</code>, we will follow up with the one from Bitnami repo.</p>
+
+<pre><code class="language-bash">$ helm install bitnami/wordpress \
+--set image.repository=bitnami/wordpress \
+--set image.tag=5.0.2 \
+-f values.yaml
+</code></pre>
+
+<p>As it&rsquo;s a common good practice to use specific versions we will do it here, it&rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, <a href="https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375">follow the example</a>.</p>
+
+<p>You should see something like:</p>
+
+<pre><code class="language-bash">NAME:   plucking-condor
+LAST DEPLOYED: Mon Dec 24 13:06:38 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&gt; v1/Pod(related)
+NAME                                        READY  STATUS             RESTARTS  AGE
+plucking-condor-wordpress-84845db8b5-hkqhc  0/1    ContainerCreating  0         0s
+plucking-condor-mariadb-0                   0/1    Pending            0         0s
+
+==&gt; v1/Secret
+
+NAME                       AGE
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&gt; v1/ConfigMap
+plucking-condor-mariadb        0s
+plucking-condor-mariadb-tests  0s
+
+==&gt; v1/PersistentVolumeClaim
+plucking-condor-wordpress  0s
+
+==&gt; v1/Service
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&gt; v1beta1/Deployment
+plucking-condor-wordpress  0s
+
+==&gt; v1beta1/StatefulSet
+plucking-condor-mariadb  0s
+
+==&gt; v1beta1/Ingress
+wordpress.local-plucking-condor  0s
+
+
+NOTES:
+1. Get the WordPress URL:
+
+  You should be able to access your new WordPress installation through
+  http://wordpress.local/admin
+
+2. Login with the following credentials to see your blog
+
+  echo Username: user
+  echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath=&quot;{.data.wordpress-password}&quot; | base64 --decode)
+</code></pre>
+
+<p>Depending on the cluster provider or installation itself, you might need to replace the <code>persistence.storageClass</code> to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your <code>values.yaml</code> you need to stick to YAML format and indent <code>storageClass</code> under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.</p>
+
+<p>At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data <em>ALWAYS</em> have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &ldquo;working backup&rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.</p>
+
+<p>Now let&rsquo;s check that all resources are indeed working and that we can use our recently installed app.</p>
+
+<pre><code class="language-bash">$ kubectl get all
+NAME                                             READY     STATUS        RESTARTS   AGE
+pod/plucking-condor-mariadb-0                    1/1       Running       0          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   1/1       Running       0          12m
+
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
+service/kubernetes                  ClusterIP      10.96.0.1        &lt;none&gt;           443/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      10.106.219.59    &lt;none&gt;           3306/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   10.100.239.163   10.100.239.163   80:31764/TCP,443:32308/TCP   12m
+
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/plucking-condor-wordpress   1         1         1            1           12m
+
+NAME                                                   DESIRED   CURRENT   READY     AGE
+replicaset.apps/plucking-condor-wordpress-84845db8b5   1         1         1         12m
+
+NAME                                       DESIRED   CURRENT   AGE
+statefulset.apps/plucking-condor-mariadb   1         1         12m
+</code></pre>
+
+<p>You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter <code>--namespace</code> in the <code>helm install</code> line.</p>
+
+<p>If you use minikube then ingress will expose a nodeport that we can find using <code>minikube service list</code> then using the browser or curl to navigate our freshly installed wordpress.</p>
+
+<pre><code class="language-bash"> $ minikube service list
+|-------------|---------------------------|--------------------------------|
+|  NAMESPACE  |           NAME            |              URL               |
+|-------------|---------------------------|--------------------------------|
+| default     | kubernetes                | No node port                   |
+| default     | plucking-condor-mariadb   | No node port                   |
+| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
+|             |                           | http://192.168.99.100:32308    |
+| kube-system | default-http-backend      | http://192.168.99.100:30001    |
+| kube-system | kube-dns                  | No node port                   |
+| kube-system | kubernetes-dashboard      | No node port                   |
+| kube-system | tiller-deploy             | No node port                   |
+|-------------|---------------------------|--------------------------------|
+</code></pre>
+
+<p>In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: <a href="http://192.168.99.100:31764">http://192.168.99.100:31764</a> and https at: <a href="http://192.168.99.100:32308">http://192.168.99.100:32308</a>, and <a href="http://192.168.99.100:30001">http://192.168.99.100:30001</a> is the default backend for the ingress controller), your ips can be different but the basics are the same.</p>
+
+<p>Sample screenshot:</p>
+
+<p><img src="/img/wordpress-example.png" alt="Wordpress example" /></p>
+
+<h3 id="notes">Notes</h3>
+
+<p>As long as we have the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">persistent volume</a> our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.</p>
+
+<p>Clean everything up:</p>
+
+<pre><code class="language-bash">helm del --purge plucking-condor
+</code></pre>
+
+<p>That&rsquo;s all I have for now, I will be adding more content next week.</p>
+
+<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
+
+<p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update or use an existing one. While helm and go helps with that, there is no perfect tool so we will explore other options in the following posts, explore what the community provides and what seems like a suitable tool for you. Happy Helming!.</p>
+
+<h3 id="upcoming-topics">Upcoming topics</h3>
+
+<p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
+
+<ul>
+<li>Getting started with Ksonnet and friends.</li>
+<li>Getting started with Skaffold.</li>
+<li>Getting started with Gitkube.</li>
+</ul>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 23, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/getting_started_with_helm/">Getting started with Helm</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://kainlite.github.io/js/docs.min.js"></script>
+<script src="https://kainlite.github.io/js/main.js"></script>
+
+<script src="https://kainlite.github.io/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

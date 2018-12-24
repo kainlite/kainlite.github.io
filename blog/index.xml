@@ -6,10 +6,19 @@
     <description>Recent content in Blogs on Tech experiments</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://kainlite.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Deploying my apps with Helm</title>
+      <link>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</guid>
+      <description>Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.</description>
+    </item>
     
     <item>
       <title>Getting started with Helm</title>

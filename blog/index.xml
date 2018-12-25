@@ -8,7 +8,7 @@
     <language>en-US</language>
     <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://kainlite.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kainlite.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,7 +17,193 @@
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</guid>
-      <description>Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.</description>
+      <description>
+
+&lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;If you are already familiar with &lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with &lt;a href=&#34;https://github.com/helm/charts&#34;&gt;Charts&lt;/a&gt;, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the &lt;a href=&#34;https://github.com/helm/charts/blob/master/CONTRIBUTING.md#technical-requirements&#34;&gt;technical requirements&lt;/a&gt; but probably usable and the folder stable is for &lt;em&gt;graduated&lt;/em&gt; charts. This is not the only source of charts as you can imagine, You can use any source for your charts, even just the &lt;a href=&#34;https://docs.helm.sh/using_helm/#helm-install-installing-a-package&#34;&gt;tgz&lt;/a&gt; files, as we will see in this post.&lt;/p&gt;
+
+&lt;p&gt;How do I search for charts?:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I&amp;rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&amp;rsquo;re using the official repo in the folder stable, but what if we don&amp;rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&amp;rsquo;s use the one from &lt;a href=&#34;https://bitnami.com/stack/wordpress/helm&#34;&gt;Bitnami&lt;/a&gt;, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;helm repo add bitnami https://charts.bitnami.com/bitnami
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+bitnami/wordpress       5.0.2           5.0.2           Web publishing platform for building blogs and websites.
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://github.com/helm/charts/tree/master/stable/wordpress&#34;&gt;documentation&lt;/a&gt; of the chart to create our &lt;code&gt;values.yaml&lt;/code&gt; file, note that in this example the stable wordpress chart it&amp;rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&amp;rsquo;t always be the case but it simplifies things for us.&lt;/p&gt;
+
+&lt;p&gt;Our example &lt;code&gt;values.yaml&lt;/code&gt; will look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wordpressBlogName: &amp;quot;Testing Helm Charts&amp;quot;
+persistence:
+  size: 1Gi
+ingress:
+  enabled: true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will only change the blog name by default, the persistent volume size and also enable &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; (Our app should be available through &lt;code&gt;wordpress.local&lt;/code&gt; inside the cluster), if you are using minikube be sure to enable the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; addon.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ minikube addons enable ingress
+ingress was successfully enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can then install &lt;code&gt;stable/wordpress&lt;/code&gt; or &lt;code&gt;bitnami/wordpress&lt;/code&gt;, we will follow up with the one from Bitnami repo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm install bitnami/wordpress \
+--set image.repository=bitnami/wordpress \
+--set image.tag=5.0.2 \
+-f values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As it&amp;rsquo;s a common good practice to use specific versions we will do it here, it&amp;rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, &lt;a href=&#34;https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375&#34;&gt;follow the example&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You should see something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;NAME:   plucking-condor
+LAST DEPLOYED: Mon Dec 24 13:06:38 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;gt; v1/Pod(related)
+NAME                                        READY  STATUS             RESTARTS  AGE
+plucking-condor-wordpress-84845db8b5-hkqhc  0/1    ContainerCreating  0         0s
+plucking-condor-mariadb-0                   0/1    Pending            0         0s
+
+==&amp;gt; v1/Secret
+
+NAME                       AGE
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1/ConfigMap
+plucking-condor-mariadb        0s
+plucking-condor-mariadb-tests  0s
+
+==&amp;gt; v1/PersistentVolumeClaim
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1/Service
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1beta1/Deployment
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1beta1/StatefulSet
+plucking-condor-mariadb  0s
+
+==&amp;gt; v1beta1/Ingress
+wordpress.local-plucking-condor  0s
+
+
+NOTES:
+1. Get the WordPress URL:
+
+  You should be able to access your new WordPress installation through
+  http://wordpress.local/admin
+
+2. Login with the following credentials to see your blog
+
+  echo Username: user
+  echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath=&amp;quot;{.data.wordpress-password}&amp;quot; | base64 --decode)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Depending on the cluster provider or installation itself, you might need to replace the &lt;code&gt;persistence.storageClass&lt;/code&gt; to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your &lt;code&gt;values.yaml&lt;/code&gt; you need to stick to YAML format and indent &lt;code&gt;storageClass&lt;/code&gt; under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.&lt;/p&gt;
+
+&lt;p&gt;At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data &lt;em&gt;ALWAYS&lt;/em&gt; have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &amp;ldquo;working backup&amp;rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s check that all resources are indeed working and that we can use our recently installed app.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get all
+NAME                                             READY     STATUS        RESTARTS   AGE
+pod/plucking-condor-mariadb-0                    1/1       Running       0          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   1/1       Running       0          12m
+
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
+service/kubernetes                  ClusterIP      10.96.0.1        &amp;lt;none&amp;gt;           443/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      10.106.219.59    &amp;lt;none&amp;gt;           3306/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   10.100.239.163   10.100.239.163   80:31764/TCP,443:32308/TCP   12m
+
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/plucking-condor-wordpress   1         1         1            1           12m
+
+NAME                                                   DESIRED   CURRENT   READY     AGE
+replicaset.apps/plucking-condor-wordpress-84845db8b5   1         1         1         12m
+
+NAME                                       DESIRED   CURRENT   AGE
+statefulset.apps/plucking-condor-mariadb   1         1         12m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter &lt;code&gt;--namespace&lt;/code&gt; in the &lt;code&gt;helm install&lt;/code&gt; line.&lt;/p&gt;
+
+&lt;p&gt;If you use minikube then ingress will expose a nodeport that we can find using &lt;code&gt;minikube service list&lt;/code&gt; then using the browser or curl to navigate our freshly installed wordpress.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; $ minikube service list
+|-------------|---------------------------|--------------------------------|
+|  NAMESPACE  |           NAME            |              URL               |
+|-------------|---------------------------|--------------------------------|
+| default     | kubernetes                | No node port                   |
+| default     | plucking-condor-mariadb   | No node port                   |
+| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
+|             |                           | http://192.168.99.100:32308    |
+| kube-system | default-http-backend      | http://192.168.99.100:30001    |
+| kube-system | kube-dns                  | No node port                   |
+| kube-system | kubernetes-dashboard      | No node port                   |
+| kube-system | tiller-deploy             | No node port                   |
+|-------------|---------------------------|--------------------------------|
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: &lt;a href=&#34;http://192.168.99.100:31764&#34;&gt;http://192.168.99.100:31764&lt;/a&gt; and https at: &lt;a href=&#34;http://192.168.99.100:32308&#34;&gt;http://192.168.99.100:32308&lt;/a&gt;, and &lt;a href=&#34;http://192.168.99.100:30001&#34;&gt;http://192.168.99.100:30001&lt;/a&gt; is the default backend for the ingress controller), your ips can be different but the basics are the same.&lt;/p&gt;
+
+&lt;p&gt;Sample screenshot:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;p&gt;As long as we have the &lt;a href=&#34;https://kubernetes.io/docs/concepts/storage/persistent-volumes/&#34;&gt;persistent volume&lt;/a&gt; our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.&lt;/p&gt;
+
+&lt;p&gt;Clean everything up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;helm del --purge plucking-condor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s all I have for now, I will be adding more content next week.&lt;/p&gt;
+
+&lt;h3 id=&#34;don-t-repeat-yourself&#34;&gt;Don&amp;rsquo;t Repeat Yourself&lt;/h3&gt;
+
+&lt;p&gt;DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update or use an existing one. While helm and go helps with that, there is no perfect tool so we will explore other options in the following posts, explore what the community provides and what seems like a suitable tool for you. Happy Helming!.&lt;/p&gt;
+
+&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
+
+&lt;p&gt;The following posts will be about package managers, development deployment tools, etc. It&amp;rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Getting started with Ksonnet and friends.&lt;/li&gt;
+&lt;li&gt;Getting started with Skaffold.&lt;/li&gt;
+&lt;li&gt;Getting started with Gitkube.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -26,8 +212,426 @@
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/blog/getting_started_with_helm/</guid>
-      <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart:</description>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using &lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;, in the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, you can follow with the following example:&lt;/p&gt;
+
+&lt;p&gt;Create the chart:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;helm create hello-world
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Always use valid DNS names if you are going to have services, otherwise you will have issues later on.&lt;/p&gt;
+
+&lt;p&gt;Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd hello-world
+
+charts       &amp;lt;--- Dependencies, charts that your chart depends on.
+Chart.yaml   &amp;lt;--- Metadata mostly, defines the version of your chart, etc.
+templates    &amp;lt;--- Here is where the magic happens.
+values.yaml  &amp;lt;--- Default values file (this is used to replace in the templates at runtime)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: the following link explains the basics of &lt;a href=&#34;https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory&#34;&gt;dependencies&lt;/a&gt;, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.&lt;/p&gt;
+
+&lt;p&gt;The file &lt;code&gt;values.yaml&lt;/code&gt; by default will look like the following snippet:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;replicaCount: 1
+
+image:
+  repository: nginx
+  tag: stable
+  pullPolicy: IfNotPresent
+
+nameOverride: &amp;quot;&amp;quot;
+fullnameOverride: &amp;quot;&amp;quot;
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: &amp;quot;true&amp;quot;
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The next step would be to check the &lt;code&gt;templates&lt;/code&gt; folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;deployment.yaml  &amp;lt;--- Standard kubernetes deployment with go templates variables.
+_helpers.tpl     &amp;lt;--- This file defines some common variables.
+ingress.yaml     &amp;lt;--- Ingress route, etc.
+NOTES.txt        &amp;lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
+service.yaml     &amp;lt;--- The service that we will use internally and/or via ingress to reach our deployed service.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go &lt;a href=&#34;https://blog.gopheracademy.com/advent-2017/using-go-templates/&#34;&gt;templates&lt;/a&gt; basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm&amp;rsquo;s own &lt;a href=&#34;https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md&#34;&gt;documentation&lt;/a&gt; and also some &lt;a href=&#34;https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md&#34;&gt;tips and tricks&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/controllers/deployment/&#34;&gt;deployment&lt;/a&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include &amp;quot;hello-world.fullname&amp;quot; . }}
+  labels:
+    app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+    helm.sh/chart: {{ include &amp;quot;hello-world.chart&amp;quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: &amp;quot;{{ .Values.image.repository }}:{{ .Values.image.tag }}&amp;quot;
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see everything will get replaced by what you define in the &lt;code&gt;values.yaml&lt;/code&gt; file and everything is under &lt;code&gt;.Values&lt;/code&gt; unless you define a local variable or some other variable using helpers for example.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;service&lt;/a&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include &amp;quot;hello-world.fullname&amp;quot; . }}
+  labels:
+    app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+    helm.sh/chart: {{ include &amp;quot;hello-world.chart&amp;quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{{- if .Values.ingress.enabled -}}
+{{- $fullName := include &amp;quot;hello-world.fullname&amp;quot; . -}}
+{{- $ingressPath := .Values.ingress.path -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    app.kubernetes.io/name: {{ include &amp;quot;hello-world.name&amp;quot; . }}
+    helm.sh/chart: {{ include &amp;quot;hello-world.chart&amp;quot; . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- range .Values.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http
+  {{- end }}
+{{- end }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (&lt;code&gt;$fullName&lt;/code&gt; for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&amp;rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).&lt;/p&gt;
+
+&lt;p&gt;After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&amp;rsquo;s install tiller):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm init
+$HELM_HOME has been configured at /home/gabriel/.helm.
+
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+
+Please note: by default, Tiller is deployed with an insecure &#39;allow unauthenticated users&#39; policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+Happy Helming!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the &lt;a href=&#34;https://engineering.bitnami.com/articles/helm-security.html&#34;&gt;Bitnami page&lt;/a&gt;, this mostly applies to multi-tenant clusters. And also be sure to check &lt;a href=&#34;https://docs.helm.sh/using_helm/#securing-your-helm-installation&#34;&gt;Securing Helm&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Deploy our chart:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm install --name my-nginx -f values.yaml .
+NAME:   my-nginx
+LAST DEPLOYED: Sun Dec 23 00:30:11 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;gt; v1/Service
+NAME                  AGE
+my-nginx-hello-world  0s
+
+==&amp;gt; v1beta2/Deployment
+my-nginx-hello-world  0s
+
+==&amp;gt; v1/Pod(related)
+
+NAME                                   READY  STATUS   RESTARTS  AGE
+my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  0         0s
+
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l &amp;quot;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;quot; -o jsonpath=&amp;quot;{.items[0].metadata.name}&amp;quot;)
+  echo &amp;quot;Visit http://127.0.0.1:8080 to use your application&amp;quot;
+  kubectl port-forward $POD_NAME 8080:80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our deployment was successful and we can see that our pod is waiting to be scheduled.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check that our service is there:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get services
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+kubernetes             ClusterIP   10.96.0.1       &amp;lt;none&amp;gt;        443/TCP   1h
+my-nginx-hello-world   ClusterIP   10.111.222.70   &amp;lt;none&amp;gt;        80/TCP    5m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now we can test that everything is okay by running another pod in interactive mode, for example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl run -i --tty alpine --image=alpine -- sh
+If you don&#39;t see a command prompt, try pressing enter.
+
+/ # apk add curl
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/5) Installing ca-certificates (20171114-r3)
+(2/5) Installing nghttp2-libs (1.32.0-r0)
+(3/5) Installing libssh2 (1.8.0-r3)
+(4/5) Installing libcurl (7.61.1-r1)
+(5/5) Installing curl (7.61.1-r1)
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
+OK: 6 MiB in 18 packages
+
+/ # curl -v my-nginx-hello-world
+* Rebuilt URL to: my-nginx-hello-world/
+*   Trying 10.111.222.70...
+* TCP_NODELAY set
+* Connected to my-nginx-hello-world (10.111.222.70) port 80 (#0)
+&amp;gt; GET / HTTP/1.1
+&amp;gt; Host: my-nginx-hello-world
+&amp;gt; User-Agent: curl/7.61.1
+&amp;gt; Accept: */*
+&amp;gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Server: nginx/1.14.2
+&amp;lt; Date: Sun, 23 Dec 2018 03:45:31 GMT
+&amp;lt; Content-Type: text/html
+&amp;lt; Content-Length: 612
+&amp;lt; Last-Modified: Tue, 04 Dec 2018 14:44:49 GMT
+&amp;lt; Connection: keep-alive
+&amp;lt; ETag: &amp;quot;5c0692e1-264&amp;quot;
+&amp;lt; Accept-Ranges: bytes
+&amp;lt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;Welcome to nginx!&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Welcome to nginx!&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;For online documentation and support please refer to
+&amp;lt;a href=&amp;quot;http://nginx.org/&amp;quot;&amp;gt;nginx.org&amp;lt;/a&amp;gt;.&amp;lt;br/&amp;gt;
+Commercial support is available at
+&amp;lt;a href=&amp;quot;http://nginx.com/&amp;quot;&amp;gt;nginx.com&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you for using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+* Connection #0 to host my-nginx-hello-world left intact
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).&lt;/p&gt;
+
+&lt;p&gt;Our current deployment can be checked like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm ls
+NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
+my-nginx        1               Sun Dec 23 00:30:11 2018        DEPLOYED        hello-world-0.1.0       1.0             default
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The last example would be to upgrade our deployment, lets change the &lt;code&gt;tag&lt;/code&gt; in the &lt;code&gt;values.yaml&lt;/code&gt; file from &lt;code&gt;stable&lt;/code&gt; to &lt;code&gt;mainline&lt;/code&gt; and update also the metadata file (&lt;code&gt;Chart.yaml&lt;/code&gt;) to let Helm know that this is a new version of our chart.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; $ helm upgrade my-nginx . -f values.yaml
+Release &amp;quot;my-nginx&amp;quot; has been upgraded. Happy Helming!
+LAST DEPLOYED: Sun Dec 23 00:55:22 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;gt; v1/Pod(related)
+NAME                                   READY  STATUS             RESTARTS  AGE
+my-nginx-hello-world-6f948db8d5-s76zl  1/1    Running            0         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   0/1    ContainerCreating  0         0s
+
+==&amp;gt; v1/Service
+
+NAME                  AGE
+my-nginx-hello-world  25m
+
+==&amp;gt; v1beta2/Deployment
+my-nginx-hello-world  25m
+
+
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l &amp;quot;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;quot; -o jsonpath=&amp;quot;{.items[0].metadata.name}&amp;quot;)
+  echo &amp;quot;Visit http://127.0.0.1:8080 to use your application&amp;quot;
+  kubectl port-forward $POD_NAME 8080:80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I always specify the -f values.yaml just for explicitness.&lt;/p&gt;
+
+&lt;p&gt;It seems that our upgrade went well, let&amp;rsquo;s see what Helm sees&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm ls
+NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
+my-nginx        2               Sun Dec 23 00:55:22 2018        DEPLOYED        hello-world-0.1.1       1.0             default
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But before we go let&amp;rsquo;s validate that it did deployed the nginx version that we wanted to have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+nginx version: nginx/1.15.7
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm rollback my-nginx 1
+Rollback was a success! Happy Helming!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Basically this command needs a deployment name &lt;code&gt;my-nginx&lt;/code&gt; and the revision number to rollback to in this case &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the versions again:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+nginx version: nginx/1.14.2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s clean up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm del --purge my-nginx
+release &amp;quot;my-nginx&amp;quot; deleted
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&amp;rsquo;s really useful for debugging or to inject a sidecar using pipes):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ helm template . -name my-nginx -f values.yaml
+# Source: hello-world/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ame-hello-world
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that folks is all I have for now, be sure to check own &lt;a href=&#34;https://docs.helm.sh/&#34;&gt;Helm Documentation&lt;/a&gt; and &lt;code&gt;helm help&lt;/code&gt; to know more about what helm can do to help you deploy your applications to any kubernetes cluster.&lt;/p&gt;
+
+&lt;h3 id=&#34;don-t-repeat-yourself&#34;&gt;Don&amp;rsquo;t Repeat Yourself&lt;/h3&gt;
+
+&lt;p&gt;DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&amp;rsquo;re figuring that out, accept that you&amp;rsquo;ll be doing some refactoring. Helm and go makes that easy and fast.&lt;/p&gt;
+
+&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
+
+&lt;p&gt;The following posts will be about package managers, development deployment tools, etc. It&amp;rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Getting started with Ksonnet and friends.&lt;/li&gt;
+&lt;li&gt;Getting started with Skaffold.&lt;/li&gt;
+&lt;li&gt;Getting started with Gitkube.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
   </channel>

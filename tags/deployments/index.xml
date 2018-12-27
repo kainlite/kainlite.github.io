@@ -57,7 +57,7 @@
 
 &lt;h4 id=&#34;registry&#34;&gt;Registry&lt;/h4&gt;
 
-&lt;p&gt;It&amp;rsquo;s essentially a repository for packages, it suuports the incubator registry, github, filesystem, and Helm.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s essentially a repository for packages, it supports the incubator registry, github, filesystem, and Helm.&lt;/p&gt;
 
 &lt;h4 id=&#34;manifest&#34;&gt;Manifest&lt;/h4&gt;
 
@@ -244,7 +244,7 @@ The resulting &lt;code&gt;components/params.json&lt;/code&gt; will be:&lt;/p&gt;
   global: {
     // User-defined global parameters; accessible to all component and environments, Ex:
     // replicas: 4,
-	mariadbEmptyPassword: &amp;quot;no&amp;quot;,
+    mariadbEmptyPassword: &amp;quot;no&amp;quot;,
     mariadbUser: &amp;quot;mywordpressuser&amp;quot;,
     mariadbPassword: &amp;quot;mywordpresspassword&amp;quot;,
     mariadbDatabase: &amp;quot;bitnami_wordpress&amp;quot;,

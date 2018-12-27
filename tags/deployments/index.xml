@@ -67,15 +67,9 @@
 
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
-&lt;p&gt;Create the application:&lt;/p&gt;
+&lt;p&gt;This command will generate the following folder structure &lt;code&gt;ks init wordpress&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks create my_awesome_app
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This command will generate the following folder structure:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks init wordpress
-INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
 INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.12.4&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
 INFO Generating ksonnet-lib data at path &#39;~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4&#39;
 

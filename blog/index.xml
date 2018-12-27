@@ -196,7 +196,7 @@ spec:
         - containerPort: 80
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;We will see what our package will generate the desired resources in &lt;em&gt;YAML&lt;/em&gt; with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is &lt;code&gt;components/params.libsonnet&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;We will see what our package will generate in &lt;em&gt;YAML&lt;/em&gt; with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is &lt;code&gt;components/params.libsonnet&lt;/code&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
   global: {

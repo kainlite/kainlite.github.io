@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Tech ideas, tests, examples...">
+    <link rel="shortcut icon" type="image/x-icon" href="https://kainlite.github.io/img/favicon.ico">
+    <title>Getting started with ksonnet</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://kainlite.github.io/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://kainlite.github.io/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://kainlite.github.io/blog/getting_started_with_ksonnet/">Getting started with ksonnet</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          December 27, 2018
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">ksonnet</span>
+            
+            <span class="label label-success">jsonnet</span>
+            
+            <span class="label label-success">deployments</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="introduction"><strong>Introduction</strong></h3>
+
+<p>This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using <a href="https://ksonnet.io/">ksonnet</a>, in the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&rsquo;s review some terminology from ksonnet (extracted from the <a href="https://ksonnet.io/docs/concepts/">official documentation</a>):</p>
+
+<h4 id="application">Application</h4>
+
+<p>A ksonnet application represents a well-structured directory of Kubernetes manifests (this is generated using the <code>ks init</code>).</p>
+
+<h4 id="environment">Environment</h4>
+
+<p>An environment consists of four elements, some of which can be pulled from your current kubeconfig context: Name, Server, Namespace, API version. The environment determines to which cluster you&rsquo;re going to deploy the application.</p>
+
+<h4 id="component">Component</h4>
+
+<p>A component can be as simple as a Kubernetes resource (a Pod, Deployment, etc), or a fully working stack for example EFK/ELK, you can generate components using <code>ks generate</code>.</p>
+
+<h4 id="prototype">Prototype</h4>
+
+<p>Prototype + Parameters = Component. Think of a prototype as a base template before you apply the parameters, to set a name, replicas, etc for the resource, you can explore some system prototypes with <code>ks prototype</code>.</p>
+
+<h4 id="parameter">Parameter</h4>
+
+<p>It gives live to a component with dynamic values, you can use <code>ks param</code> to view or modify params, there are App params (global), Component params, and Environment params (overrides app params).</p>
+
+<h4 id="module">Module</h4>
+
+<p>Modules provide a way for you to share components across environments. More concisely, a module refers to a subdirectory in components/ containing its own params.libsonnet. To create a module <code>ks module create &lt;module name&gt;</code>.</p>
+
+<h4 id="part">Part</h4>
+
+<p>It provides a way to organize and re-use code.</p>
+
+<h4 id="package">Package</h4>
+
+<p>A package is a set of related prototypes and associates helper libraries, it allows you to create and share packages between applications.</p>
+
+<h4 id="registry">Registry</h4>
+
+<p>It&rsquo;s essentially a repository for packages, it suuports the incubator registry, github, filesystem, and Helm.</p>
+
+<h4 id="manifest">Manifest</h4>
+
+<p>The same old YAML or JSON manifest but this time written in <a href="https://jsonnet.org/learning/tutorial.html">Jsonnet</a>, basically Jsonnet is a simple extension of JSON.</p>
+
+<p>Phew, that&rsquo;s a lot of names and terminology at once, let&rsquo;s get started with the terminal already.</p>
+
+<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
+
+<p>Create the application:</p>
+
+<pre><code class="language-bash">$ ks create my_awesome_app
+</code></pre>
+
+<p>This command will generate the following folder structure:</p>
+
+<pre><code class="language-bash">$ ks init wordpress
+INFO Using context &quot;minikube&quot; from kubeconfig file &quot;~/.kube/config&quot;
+INFO Creating environment &quot;default&quot; with namespace &quot;default&quot;, pointing to &quot;version:v1.12.4&quot; cluster at address &quot;https://192.168.99.100:8443&quot;
+INFO Generating ksonnet-lib data at path '~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4'
+
+$ ls -l |  awk '{ print $9 }'
+app.yaml        &lt;--- Defines versions, namespace, cluster address, app name, registry.
+components      &lt;--- Components by default it's empty and has a params file.
+environments    &lt;--- By default there is only one environment called default.
+lib             &lt;--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources (Pods, Deployments, etc).
+vendor          &lt;--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.
+</code></pre>
+
+<p>Let&rsquo;s generate a <em>deployed-service</em> and inspect it&rsquo;s context:</p>
+
+<pre><code class="language-bash">$ ks generate deployed-service wordpress \
+  --image bitnami/wordpress:5.0.2 \
+  --type ClusterIP
+
+INFO Writing component at '~/k8s-examples/wordpress/components/wordpress.jsonnet'
+</code></pre>
+
+<p>At the moment of this writing the latest version of Wordpress is 5.0.2, it&rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).</p>
+
+<p>Let&rsquo;s see how our component looks like:</p>
+
+<pre><code class="language-json">local env = std.extVar(&quot;__ksonnet/environments&quot;);
+local params = std.extVar(&quot;__ksonnet/params&quot;).components.wordpress;
+[
+  {
+    &quot;apiVersion&quot;: &quot;v1&quot;,
+    &quot;kind&quot;: &quot;Service&quot;,
+    &quot;metadata&quot;: {
+      &quot;name&quot;: params.name
+    },
+    &quot;spec&quot;: {
+      &quot;ports&quot;: [
+        {
+          &quot;port&quot;: params.servicePort,
+          &quot;targetPort&quot;: params.containerPort
+        }
+      ],
+      &quot;selector&quot;: {
+        &quot;app&quot;: params.name
+      },
+      &quot;type&quot;: params.type
+    }
+  },
+  {
+    &quot;apiVersion&quot;: &quot;apps/v1beta2&quot;,
+    &quot;kind&quot;: &quot;Deployment&quot;,
+    &quot;metadata&quot;: {
+      &quot;name&quot;: params.name
+    },
+    &quot;spec&quot;: {
+      &quot;replicas&quot;: params.replicas,
+      &quot;selector&quot;: {
+        &quot;matchLabels&quot;: {
+          &quot;app&quot;: params.name
+        },
+      },
+      &quot;template&quot;: {
+        &quot;metadata&quot;: {
+          &quot;labels&quot;: {
+            &quot;app&quot;: params.name
+          }
+        },
+        &quot;spec&quot;: {
+          &quot;containers&quot;: [
+            {
+              &quot;image&quot;: params.image,
+              &quot;name&quot;: params.name,
+              &quot;ports&quot;: [
+                {
+                  &quot;containerPort&quot;: params.containerPort
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]
+</code></pre>
+
+<p>It&rsquo;s just another template for some known resources, a <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> and a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> that&rsquo;s where the name came from: <em>deployed-service</em>, but where are those params coming from?</p>
+
+<p>If we run <code>ks show default</code>:</p>
+
+<pre><code class="language-yaml">---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    ksonnet.io/component: wordpress
+  name: wordpress
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: wordpress
+  type: ClusterIP
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    ksonnet.io/component: wordpress
+  name: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: bitnami/wordpress:5.0.2
+        name: wordpress
+        ports:
+        - containerPort: 80
+</code></pre>
+
+<p>We will see what our package will generate the desired resources in <em>YAML</em> with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is <code>components/params.libsonnet</code>:</p>
+
+<pre><code class="language-json">{
+  global: {
+    // User-defined global parameters; accessible to all component and environments, Ex:
+    // replicas: 4,
+  },
+  components: {
+    // Component-level parameters, defined initially from 'ks prototype use ...'
+    // Each object below should correspond to a component in the components/ directory
+    wordpress: {
+      containerPort: 80,
+      image: &quot;bitnami/wordpress:5.0.2&quot;,
+      name: &quot;wordpress&quot;,
+      replicas: 1,
+      servicePort: 80,
+      type: &quot;ClusterIP&quot;,
+    },
+  },
+}
+</code></pre>
+
+<p>But that&rsquo;s not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another <em>deployed-service</em>.</p>
+
+<p>The next step would be to create another component:</p>
+
+<pre><code class="language-bash">$ ks generate deployed-service mariadb \
+  --image bitnami/mariadb:10.1.37 \
+  --type ClusterIP
+
+INFO Writing component at '/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet'
+</code></pre>
+
+<p>The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.</p>
+
+<p>Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
+The resulting <code>components/params.json</code> will be:</p>
+
+<pre><code class="language-json">{
+  global: {
+    // User-defined global parameters; accessible to all component and environments, Ex:
+    // replicas: 4,
+	mariadbEmptyPassword: &quot;no&quot;,
+    mariadbUser: &quot;mywordpressuser&quot;,
+    mariadbPassword: &quot;mywordpresspassword&quot;,
+    mariadbDatabase: &quot;bitnami_wordpress&quot;,
+  },
+  components: {
+    // Component-level parameters, defined initially from 'ks prototype use ...'
+    // Each object below should correspond to a component in the components/ directory
+    wordpress: {
+      containerPort: 80,
+      image: &quot;bitnami/wordpress:5.0.2&quot;,
+      name: &quot;wordpress&quot;,
+      replicas: 1,
+      servicePort: 80,
+      type: &quot;ClusterIP&quot;,
+    },
+    mariadb: {
+      containerPort: 3306,
+      image: &quot;bitnami/mariadb:10.1.37&quot;,
+      name: &quot;mariadb&quot;,
+      replicas: 1,
+      servicePort: 3306,
+      type: &quot;ClusterIP&quot;,
+    },
+  },
+}
+</code></pre>
+
+<p>The resulting <code>components/wordpress.jsonnet</code> will be:</p>
+
+<pre><code class="language-json">local env = std.extVar(&quot;__ksonnet/environments&quot;);
+local params = std.extVar(&quot;__ksonnet/params&quot;).components.wordpress;
+[
+  {
+    &quot;apiVersion&quot;: &quot;v1&quot;,
+    &quot;kind&quot;: &quot;Service&quot;,
+    &quot;metadata&quot;: {
+      &quot;name&quot;: params.name
+    },
+    &quot;spec&quot;: {
+      &quot;ports&quot;: [
+        {
+          &quot;port&quot;: params.servicePort,
+          &quot;targetPort&quot;: params.containerPort
+        }
+      ],
+      &quot;selector&quot;: {
+        &quot;app&quot;: params.name
+      },
+      &quot;type&quot;: params.type
+    }
+  },
+  {
+    &quot;apiVersion&quot;: &quot;apps/v1beta2&quot;,
+    &quot;kind&quot;: &quot;Deployment&quot;,
+    &quot;metadata&quot;: {
+      &quot;name&quot;: params.name
+    },
+    &quot;spec&quot;: {
+      &quot;replicas&quot;: params.replicas,
+      &quot;selector&quot;: {
+        &quot;matchLabels&quot;: {
+          &quot;app&quot;: params.name
+        },
+      },
+      &quot;template&quot;: {
+        &quot;metadata&quot;: {
+          &quot;labels&quot;: {
+            &quot;app&quot;: params.name
+          }
+        },
+        &quot;spec&quot;: {
+          &quot;containers&quot;: [
+            {
+              &quot;image&quot;: params.image,
+              &quot;name&quot;: params.name,
+              &quot;ports&quot;: [
+                {
+                  &quot;containerPort&quot;: params.containerPort
+                }
+              ],
+              &quot;env&quot;: [
+                {
+                    &quot;name&quot;: &quot;WORDPRESS_DATABASE_USER&quot;,
+                    &quot;value&quot;: params.mariadbUser,
+                },
+                {
+                    &quot;name&quot;: &quot;WORDPRESS_DATABASE_PASSWORD&quot;,
+                    &quot;value&quot;: params.mariadbPassword,
+                },
+                {
+                    &quot;name&quot;: &quot;WORDPRESS_DATABASE_NAME&quot;,
+                    &quot;value&quot;: params.mariadbDatabase,
+                },
+                {
+                    &quot;name&quot;: &quot;WORDPRESS_HOST&quot;,
+                    &quot;value&quot;: &quot;mariadb&quot;,
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]
+</code></pre>
+
+<p>The only thing that changed here is <code>spec.containers.env</code> which wasn&rsquo;t present before.</p>
+
+<p>The resulting <code>components/mariadb.jsonnet</code> will be:</p>
+
+<pre><code class="language-json">local env = std.extVar(&quot;__ksonnet/environments&quot;);
+local params = std.extVar(&quot;__ksonnet/params&quot;).components.mariadb;
+[
+{
+    &quot;apiVersion&quot;: &quot;v1&quot;,
+        &quot;kind&quot;: &quot;Service&quot;,
+        &quot;metadata&quot;: {
+            &quot;name&quot;: params.name
+        },
+        &quot;spec&quot;: {
+            &quot;ports&quot;: [
+            {
+                &quot;port&quot;: params.servicePort,
+                &quot;targetPort&quot;: params.containerPort
+            }
+            ],
+            &quot;selector&quot;: {
+                &quot;app&quot;: params.name
+            },
+            &quot;type&quot;: params.type
+        }
+},
+{
+    &quot;apiVersion&quot;: &quot;apps/v1beta2&quot;,
+    &quot;kind&quot;: &quot;Deployment&quot;,
+    &quot;metadata&quot;: {
+        &quot;name&quot;: params.name
+    },
+    &quot;spec&quot;: {
+        &quot;replicas&quot;: params.replicas,
+        &quot;selector&quot;: {
+            &quot;matchLabels&quot;: {
+                &quot;app&quot;: params.name
+            },
+        },
+        &quot;template&quot;: {
+            &quot;metadata&quot;: {
+                &quot;labels&quot;: {
+                    &quot;app&quot;: params.name
+                }
+            },
+            &quot;spec&quot;: {
+                &quot;containers&quot;: [
+                {
+                    &quot;image&quot;: params.image,
+                    &quot;name&quot;: params.name,
+                    &quot;ports&quot;: [
+                    {
+                        &quot;containerPort&quot;: params.containerPort
+                    },
+                    ],
+                    &quot;env&quot;: [
+                    {
+                        &quot;name&quot;: &quot;ALLOW_EMPTY_PASSWORD&quot;,
+                        &quot;value&quot;: params.mariadbEmptyPassword,
+                    },
+                    {
+                        &quot;name&quot;: &quot;MARIADB_USER&quot;,
+                        &quot;value&quot;: params.mariadbUser,
+                    },
+                    {
+                        &quot;name&quot;: &quot;MARIADB_PASSWORD&quot;,
+                        &quot;value&quot;: params.mariadbPassword,
+                    },
+                    {
+                        &quot;name&quot;: &quot;MARIADB_ROOT_PASSWORD&quot;,
+                        &quot;value&quot;: params.mariadbPassword,
+                    },
+                    {
+                        &quot;name&quot;: &quot;MARIADB_DATABASE&quot;,
+                        &quot;value&quot;: params.mariadbDatabase,
+                    },
+                    ],
+                    &quot;volumeMounts&quot;: [
+                    {
+                        &quot;mountPath&quot;: &quot;/var/lib/mysql&quot;,
+                        &quot;name&quot;: &quot;mariadb&quot;
+                    }
+                    ]
+                }
+                ],
+                &quot;volumes&quot;: [
+                {
+                    &quot;name&quot;: &quot;mariadb&quot;,
+                    &quot;hostPath&quot;: {
+                        &quot;path&quot;: &quot;/home/docker/mariadb-data&quot;
+                    }
+                }
+                ]
+            }
+        }
+    }
+}
+]
+</code></pre>
+
+<p>I know, I know, that is a lot of JSON, I trust you have a decent scroll :).</p>
+
+<p>The only things that changed here are <code>spec.containers.env</code>, <code>spec.containers.volumeMount</code> and <code>spec.volumes</code> which weren&rsquo;t present before, that&rsquo;s all you need to make wordpress work with mariadb.</p>
+
+<p>This post only scratched the surface of what Ksonnet and Jsonnet can do, in another post I will describe more advances features with less <em>JSON</em> / <em>YAML</em>. There are a lot of things that can be improved and we will cover those things in the next post, if you want to see all the source code for this post go <a href="https://github.com/kainlite/ksonnet-wordpress-example">here</a>.</p>
+
+<p>Let&rsquo;s clean up <code>ks delete default</code>:</p>
+
+<pre><code class="language-bash">INFO Deleting services mariadb
+INFO Deleting deployments mariadb
+INFO Deleting services wordpress
+INFO Deleting deployments wordpress
+</code></pre>
+
+<h3 id="notes">Notes</h3>
+
+<p>If you want to check the wordpress installation via browser you can do <code>minikube proxy</code> and then look up the following URL: <a href="http://localhost:8001/api/v1/namespaces/default/services/wordpress/proxy/">Wordpress</a> (I&rsquo;m using the default namespace here and the service name is wordpress, if you use ingress you don&rsquo;t need to do this step)</p>
+
+<p>I&rsquo;m not aware if Ksonnet supports releases and rollbacks like Helm, but it seems it could be emulated using git tags and just some git hooks.</p>
+
+<p>If everything goes well, you should see something like this in the logs:</p>
+
+<pre><code class="language-bash">$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
+
+Welcome to the Bitnami wordpress container
+Subscribe to project updates by watching https://github.com/bitnami/bitnami-docker-wordpress
+Submit issues and feature requests at https://github.com/bitnami/bitnami-docker-wordpress/issues
+
+nami    INFO  Initializing apache
+apache  INFO  ==&gt; Patching httpoxy...
+apache  INFO  ==&gt; Configuring dummy certificates...
+nami    INFO  apache successfully initialized
+nami    INFO  Initializing php
+nami    INFO  php successfully initialized
+nami    INFO  Initializing mysql-client
+nami    INFO  mysql-client successfully initialized
+nami    INFO  Initializing libphp
+nami    INFO  libphp successfully initialized
+nami    INFO  Initializing wordpress
+mysql-c INFO  Trying to connect to MySQL server
+mysql-c INFO  Found MySQL server listening at mariadb:3306
+mysql-c INFO  MySQL server listening and working at mariadb:3306
+wordpre INFO
+wordpre INFO  ########################################################################
+wordpre INFO   Installation parameters for wordpress:
+wordpre INFO     First Name: FirstName
+wordpre INFO     Last Name: LastName
+wordpre INFO     Username: user
+wordpre INFO     Password: **********
+wordpre INFO     Email: user@example.com
+wordpre INFO     Blog Name: User's Blog!
+wordpre INFO     Table Prefix: wp_
+wordpre INFO   (Passwords are not shown for security reasons)
+wordpre INFO  ########################################################################
+wordpre INFO
+nami    INFO  wordpress successfully initialized
+INFO  ==&gt; Starting wordpress...
+[Thu Dec 27 04:30:59.684053 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.684690 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.738783 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.739701 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.765798 2018] [mpm_prefork:notice] [pid 116] AH00163: Apache/2.4.37 (Unix) OpenSSL/1.1.0j PHP/7.2.13 configured -- resuming normal operations
+[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: 'httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND'
+172.17.0.1 - - [27/Dec/2018:04:31:00 +0000] &quot;GET / HTTP/1.1&quot; 200 3718
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &quot;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&quot; 200 753
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &quot;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&quot; 200 452
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &quot;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&quot; 200 4281
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &quot;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&quot; 200 19371
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &quot;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&quot; 200 1230
+</code></pre>
+
+<p>And that folks is all I have for now, be sure to check out the <a href="https://ksonnet.io/docs/">Ksonnet official documentation</a> and <code>ks help</code> to know more about what ksonnet can do to help you deploy your applications to any kubernetes cluster.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 24, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/deploying_my_apps_with_helm/">Deploying my apps with Helm</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 23, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/getting_started_with_helm/">Getting started with Helm</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://kainlite.github.io/js/docs.min.js"></script>
+<script src="https://kainlite.github.io/js/main.js"></script>
+
+<script src="https://kainlite.github.io/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

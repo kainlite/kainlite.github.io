@@ -10,5 +10,14 @@
         <atom:link href="https://kainlite.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Deployment Tools</title>
+      <link>https://kainlite.github.io/categories/deployment-tools/</link>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/categories/deployment-tools/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blogs on Tech experiments</title>
-    <link>https://kainlite.github.io/blog/</link>
-    <description>Recent content in Blogs on Tech experiments</description>
+    <title>Deployment Tools on Tech experiments</title>
+    <link>https://kainlite.github.io/categories/deployment-tools/</link>
+    <description>Recent content in Deployment Tools on Tech experiments</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 27 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kainlite.github.io/categories/deployment-tools/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

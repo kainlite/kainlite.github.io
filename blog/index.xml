@@ -21,11 +21,13 @@
 
 &lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
 
+&lt;p&gt;This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.&lt;/p&gt;
+
 &lt;p&gt;To be honest, there is no other way to get the benefits of having &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt; if you&amp;rsquo;re not going to take advantage of the &lt;em&gt;deployments as code&lt;/em&gt; facilities that it brings thanks to Jsonnet.&lt;/p&gt;
 
-&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:&lt;/p&gt;
+&lt;p&gt;This time we will see how to use &lt;a href=&#34;https://github.com/cybermaggedon/ksonnet-cheat-sheet&#34;&gt;proper templates&lt;/a&gt;, it seems that the templates generated with &lt;code&gt;ks&lt;/code&gt; are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&amp;rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.&lt;/p&gt;
 
-&lt;p&gt;This time we will see how to use &lt;a href=&#34;https://github.com/cybermaggedon/ksonnet-cheat-sheet&#34;&gt;proper templates&lt;/a&gt;, it seems that the templates generated with &lt;code&gt;ks&lt;/code&gt; are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here but it&amp;rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.&lt;/p&gt;
+&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:&lt;/p&gt;
 
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 

@@ -194,9 +194,9 @@ CMD [&quot;/app/main&quot;]
 <p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:</p>
 
 <pre><code class="language-bash">$ ks init echobot
-INFO Using context &quot;minikube&quot; from kubeconfig file &quot;/home/kainlite/.kube/config&quot;
+INFO Using context &quot;minikube&quot; from kubeconfig file &quot;~/.kube/config&quot;
 INFO Creating environment &quot;default&quot; with namespace &quot;default&quot;, pointing to &quot;version:v1.8.0&quot; cluster at address &quot;https://192.168.99.100:8443&quot;
-INFO Generating ksonnet-lib data at path '/home/kainlite/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0'
+INFO Generating ksonnet-lib data at path '~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0'
 </code></pre>
 
 <p>And now based let&rsquo;s create the deployment for it <code>echobot.jsonnet</code>:</p>
@@ -261,7 +261,7 @@ Event Received: Current latency: 1.256788737s
 Event Received: Message: &amp;{{message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! 1546124966.002300  false [] [] &lt;nil&gt;  false 0  false  1546124966.002300   &lt;nil&gt;      [] 0 []  [] false &lt;nil&gt;  0 TEDJT5CTD []  false false} &lt;nil&gt;}
 </code></pre>
 
-<p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href="here">https://github.com/kainlite/echobot</a>. In a future post I might explore <a href="https://ksonnet.io/docs/examples/helm/">ksonnet and helm charts</a>.</p>
+<p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href="https://github.com/kainlite/echobot">here</a>. In a future post I might explore <a href="https://ksonnet.io/docs/examples/helm/">ksonnet and helm charts</a>.</p>
 
 <h3 id="upcoming-topics">Upcoming topics</h3>
 

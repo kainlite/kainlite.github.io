@@ -126,9 +126,9 @@ CMD [&amp;quot;/app/main&amp;quot;]
 &lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks init echobot
-INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;/home/kainlite/.kube/config&amp;quot;
+INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
 INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.8.0&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
-INFO Generating ksonnet-lib data at path &#39;/home/kainlite/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;
+INFO Generating ksonnet-lib data at path &#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;And now based let&amp;rsquo;s create the deployment for it &lt;code&gt;echobot.jsonnet&lt;/code&gt;:&lt;/p&gt;
@@ -193,7 +193,7 @@ Event Received: Current latency: 1.256788737s
 Event Received: Message: &amp;amp;{{message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;here&#34;&gt;https://github.com/kainlite/echobot&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
 

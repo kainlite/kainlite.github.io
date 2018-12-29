@@ -19,7 +19,7 @@
       <guid>https://kainlite.github.io/blog/go_echobot/</guid>
       <description>
 
-&lt;h3 id=&#34;advanced-usage&#34;&gt;&lt;strong&gt;Advanced usage&lt;/strong&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;To be honest, there is no other way to get the benefits of having &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt; if you&amp;rsquo;re not going to take advantage of the &lt;em&gt;deployments as code&lt;/em&gt; facilities that it brings thanks to Jsonnet.&lt;/p&gt;
 

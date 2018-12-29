@@ -6,10 +6,204 @@
     <description>Recent content in Blogs on Tech experiments</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 27 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 29 Dec 2018 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://kainlite.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go echo bot</title>
+      <link>https://kainlite.github.io/blog/go_echobot/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/go_echobot/</guid>
+      <description>
+
+&lt;h3 id=&#34;advanced-usage&#34;&gt;&lt;strong&gt;Advanced usage&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;To be honest, there is no other way to get the benefits of having &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt; if you&amp;rsquo;re not going to take advantage of the &lt;em&gt;deployments as code&lt;/em&gt; facilities that it brings thanks to Jsonnet.&lt;/p&gt;
+
+&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:&lt;/p&gt;
+
+&lt;p&gt;This time we will see how to use &lt;a href=&#34;https://github.com/cybermaggedon/ksonnet-cheat-sheet&#34;&gt;proper templates&lt;/a&gt;, it seems that the templates generated with &lt;code&gt;ks&lt;/code&gt; are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here but it&amp;rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;This time I&amp;rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+        &amp;quot;fmt&amp;quot;
+        &amp;quot;os&amp;quot;
+        &amp;quot;strings&amp;quot;
+
+        slack &amp;quot;github.com/nlopes/slack&amp;quot;
+)
+
+func main() {
+        api := slack.New(
+                os.Getenv(&amp;quot;SLACK_API_TOKEN&amp;quot;),
+        )
+
+        rtm := api.NewRTM()
+        go rtm.ManageConnection()
+
+        for msg := range rtm.IncomingEvents {
+                fmt.Print(&amp;quot;Event Received: &amp;quot;)
+                switch ev := msg.Data.(type) {
+                case *slack.HelloEvent:
+                        // Ignore hello
+
+                case *slack.ConnectedEvent:
+                        fmt.Println(&amp;quot;Infos:&amp;quot;, ev.Info)
+                        fmt.Println(&amp;quot;Connection counter:&amp;quot;, ev.ConnectionCount)
+
+                case *slack.MessageEvent:
+                        // Only echo what it said to me
+                        fmt.Printf(&amp;quot;Message: %v\n&amp;quot;, ev)
+                        info := rtm.GetInfo()
+                        prefix := fmt.Sprintf(&amp;quot;&amp;lt;@%s&amp;gt; &amp;quot;, info.User.ID)
+
+                        if ev.User != info.User.ID &amp;amp;&amp;amp; strings.HasPrefix(ev.Text, prefix) {
+                                rtm.SendMessage(rtm.NewOutgoingMessage(ev.Text, ev.Channel))
+                        }
+
+                case *slack.PresenceChangeEvent:
+                        fmt.Printf(&amp;quot;Presence Change: %v\n&amp;quot;, ev)
+
+                case *slack.LatencyReport:
+                        fmt.Printf(&amp;quot;Current latency: %v\n&amp;quot;, ev.Value)
+
+                case *slack.RTMError:
+                        fmt.Printf(&amp;quot;Error: %s\n&amp;quot;, ev.Error())
+
+                case *slack.InvalidAuthEvent:
+                        fmt.Printf(&amp;quot;Invalid credentials&amp;quot;)
+                        return
+
+                default:
+
+                        // Ignore other events..
+                        // fmt.Printf(&amp;quot;Unexpected: %v\n&amp;quot;, msg.Data)
+                }
+        }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see it&amp;rsquo;s the simplest example from the wiki of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; wiki page, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
+
+&lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;# Build
+FROM golang:1.11.2-alpine as builder
+
+WORKDIR /app
+RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
+    chown -R app:app /app &amp;amp;&amp;amp; \
+    apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+
+ADD . /app/
+RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+
+# Run
+FROM golang:1.11.2-alpine
+
+WORKDIR /app
+RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
+    chown -R app:app /app
+
+COPY --from=builder --chown=app /app/main /app/main
+
+USER app
+CMD [&amp;quot;/app/main&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check or know that our app is alive, otherwise it will murder the pod over and over again.&lt;/p&gt;
+
+&lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks init echobot
+INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;/home/kainlite/.kube/config&amp;quot;
+INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.8.0&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
+INFO Generating ksonnet-lib data at path &#39;/home/kainlite/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now based let&amp;rsquo;s create the deployment for it &lt;code&gt;echobot.jsonnet&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Import KSonnet library
+local params = std.extVar(&#39;__ksonnet/params&#39;).components.demo;
+local k = import &#39;k.libsonnet&#39;;
+
+// Specify the import objects that we need
+local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;
+local depl = k.extensions.v1beta1.deployment;
+
+// Environment variables, instead of hardcoding it here we could use a param or a secret
+// But I will leave that as an exercise for you :)
+local envs = [
+  {
+    name: &#39;SLACK_API_TOKEN&#39;,
+    value: &#39;really-long-token&#39;,
+  },
+];
+
+// Define containers
+local containers = [
+  container.new(&#39;echobot&#39;, &#39;kainlite/echobot:0.0.1&#39;) {
+    env: (envs),
+  },
+];
+
+// Define deployment with 3 replicas
+local deployment =
+  depl.new(&#39;echobot&#39;, 1, containers, { app: &#39;echobot&#39; });
+
+local resources = [deployment];
+
+// Return list of resources.
+k.core.v1.list.new(resources)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ ks apply default
+INFO Applying deployments echobot
+INFO Creating non-existent deployments echobot
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And in the logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt; $ kubectl get pods
+NAME                               READY     STATUS    RESTARTS   AGE
+echobot-7456f7d7dd-twg4r           1/1       Running   0          53s
+
+$ kubectl logs -f echobot-7456f7d7dd-twg4r
+Event Received: Event Received: Infos: &amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y= 0xc000468000 0xc0004482a0 [] [] [] [] []}
+Connection counter: 0
+Event Received: Event Received: Current latency: 1.256397423s
+Event Received: Current latency: 1.25679313s
+Event Received: Current latency: 1.256788737s
+Event Received: Message: &amp;amp;{{message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;here&#34;&gt;https://github.com/kainlite/echobot&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
+
+&lt;p&gt;As promised I will be doing one post about &lt;a href=&#34;https://github.com/hasura/gitkube&#34;&gt;Gitkube&lt;/a&gt; and &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;Skaffold&lt;/a&gt;, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about &lt;a href=&#34;https://www.docker.com/&#34;&gt;Docker&lt;/a&gt;, &lt;a href=&#34;https://containerd.io/&#34;&gt;ContainerD&lt;/a&gt;, &lt;a href=&#34;https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/&#34;&gt;KubeADM&lt;/a&gt;, and Kubernetes in general.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting started with ksonnet</title>

@@ -204,7 +204,7 @@ INFO Creating environment &quot;default&quot; with namespace &quot;default&quot;
 INFO Generating ksonnet-lib data at path '~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0'
 </code></pre>
 
-<p>And now based let&rsquo;s create the deployment for it <code>echobot.jsonnet</code>:</p>
+<p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:</p>
 
 <pre><code>// Import KSonnet library
 local params = std.extVar('__ksonnet/params').components.demo;

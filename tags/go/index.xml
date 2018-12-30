@@ -93,7 +93,7 @@ func main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;As you can see it&amp;rsquo;s the simplest example from the wiki of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; wiki page, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
+&lt;p&gt;As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
 
 &lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:&lt;/p&gt;
 

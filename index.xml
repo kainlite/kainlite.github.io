@@ -27,7 +27,7 @@
 
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
-&lt;p&gt;We&amp;rsquo;re going to deploy or re-deploy our &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;chat bot&lt;/a&gt; one more time but this time using gitkube.&lt;/p&gt;
+&lt;p&gt;We&amp;rsquo;re going to deploy or re-deploy our &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;chat bot article&lt;/a&gt;, &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;chat bot gitkube branch&lt;/a&gt; one more time but this time using gitkube.&lt;/p&gt;
 
 &lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:&lt;/p&gt;
 

@@ -21,7 +21,7 @@
 
 &lt;h3 id=&#34;gitkube&#34;&gt;&lt;strong&gt;Gitkube&lt;/strong&gt;&lt;/h3&gt;
 
-&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://gitkube.sh/&#34;&gt;Gitkube&lt;/a&gt;, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a &lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34;&gt;CRD&lt;/a&gt; and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, since gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more &lt;a href=&#34;https://github.com/hasura/gitkube-example&#34;&gt;examples here&lt;/a&gt;, also be sure to check their page and documentation if you like it or want to learn more.&lt;/p&gt;
+&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://gitkube.sh/&#34;&gt;Gitkube&lt;/a&gt;, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a &lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34;&gt;CRD&lt;/a&gt; and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more &lt;a href=&#34;https://github.com/hasura/gitkube-example&#34;&gt;examples here&lt;/a&gt;, also be sure to check their page and documentation if you like it or want to learn more.&lt;/p&gt;
 
 &lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, &lt;em&gt;but in this post be sure to use &lt;em&gt;minikube tunnel&lt;/em&gt;&lt;/em&gt; if you configure gitkube with a load balancer (or if you configure any service type as load balancer):&lt;/p&gt;
 
@@ -31,7 +31,7 @@
 
 &lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io &amp;quot;remotes.gitkube.sh&amp;quot; created
 serviceaccount &amp;quot;gitkube&amp;quot; created
 clusterrolebinding.rbac.authorization.k8s.io &amp;quot;gitkube&amp;quot; created
@@ -47,7 +47,7 @@ service &amp;quot;gitkubed&amp;quot; exposed
 
 &lt;p&gt;To install the gitkube binary, the easiest way is to do:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This will download and copy the binary into: &lt;code&gt;/usr/local/bin&lt;/code&gt;, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of &lt;em&gt;the internet&lt;/em&gt;.&lt;/p&gt;
@@ -73,7 +73,7 @@ Add another deployment? [y/N] Enter
 
 &lt;p&gt;The actual file &lt;code&gt;remote.yaml&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;apiVersion: gitkube.sh/v1alpha1
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;apiVersion: gitkube.sh/v1alpha1
 kind: Remote
 metadata:
   creationTimestamp: null
@@ -107,7 +107,7 @@ status:
 
 &lt;p&gt;The last step would be to finally create the resource:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ gitkube remote create -f remote.yaml
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ gitkube remote create -f remote.yaml
 INFO[0000] remote minikube created
 INFO[0000] waiting for remote url
 INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
@@ -119,7 +119,7 @@ INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-miniku
 
 &lt;p&gt;After adding the new remote called &lt;em&gt;minikube&lt;/em&gt;  we have everything ready to go, so let&amp;rsquo;s test it and see what happens:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ git push minikube master
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ git push minikube master
 Enumerating objects: 10, done.
 Counting objects: 100% (10/10), done.
 Delta compression using up to 8 threads
@@ -335,9 +335,9 @@ To ssh://10.98.213.202/~/git/default-minikube
 
 &lt;p&gt;Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to &lt;code&gt;/home/default-minikube/build/default-minikube&lt;/code&gt; and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to &lt;a href=&#34;https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot&#34;&gt;docker hub&lt;/a&gt; and then updated the deployment that we already had in there for the echo bot.&lt;/p&gt;
 
-&lt;p&gt;The last step would be to verify that the pod was actually updated, so we run a &lt;code&gt;kubectl describe pod echobot-654cdbfb99-g4bwv&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with &lt;code&gt;kubectl describe pod echobot-654cdbfb99-g4bwv&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default
 Priority:           0

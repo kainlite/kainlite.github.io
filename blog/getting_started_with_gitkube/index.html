@@ -87,7 +87,7 @@ if (!doNotTrack) {
 
 <h3 id="gitkube"><strong>Gitkube</strong></h3>
 
-<p>This time we will see how to get started with <a href="https://gitkube.sh/">Gitkube</a>, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRD</a> and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, since gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more <a href="https://github.com/hasura/gitkube-example">examples here</a>, also be sure to check their page and documentation if you like it or want to learn more.</p>
+<p>This time we will see how to get started with <a href="https://gitkube.sh/">Gitkube</a>, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRD</a> and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more <a href="https://github.com/hasura/gitkube-example">examples here</a>, also be sure to check their page and documentation if you like it or want to learn more.</p>
 
 <p>In the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, <em>but in this post be sure to use <em>minikube tunnel</em></em> if you configure gitkube with a load balancer (or if you configure any service type as load balancer):</p>
 
@@ -97,7 +97,7 @@ if (!doNotTrack) {
 
 <p>First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:</p>
 
-<pre><code>$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+<pre><code class="language-plain">$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io &quot;remotes.gitkube.sh&quot; created
 serviceaccount &quot;gitkube&quot; created
 clusterrolebinding.rbac.authorization.k8s.io &quot;gitkube&quot; created
@@ -113,7 +113,7 @@ service &quot;gitkubed&quot; exposed
 
 <p>To install the gitkube binary, the easiest way is to do:</p>
 
-<pre><code>curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
+<pre><code class="language-plain">curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
 </code></pre>
 
 <p>This will download and copy the binary into: <code>/usr/local/bin</code>, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of <em>the internet</em>.</p>
@@ -139,7 +139,7 @@ Add another deployment? [y/N] Enter
 
 <p>The actual file <code>remote.yaml</code>:</p>
 
-<pre><code>apiVersion: gitkube.sh/v1alpha1
+<pre><code class="language-plain">apiVersion: gitkube.sh/v1alpha1
 kind: Remote
 metadata:
   creationTimestamp: null
@@ -173,7 +173,7 @@ status:
 
 <p>The last step would be to finally create the resource:</p>
 
-<pre><code>$ gitkube remote create -f remote.yaml
+<pre><code class="language-plain">$ gitkube remote create -f remote.yaml
 INFO[0000] remote minikube created
 INFO[0000] waiting for remote url
 INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
@@ -185,7 +185,7 @@ INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-miniku
 
 <p>After adding the new remote called <em>minikube</em>  we have everything ready to go, so let&rsquo;s test it and see what happens:</p>
 
-<pre><code>$ git push minikube master
+<pre><code class="language-plain">$ git push minikube master
 Enumerating objects: 10, done.
 Counting objects: 100% (10/10), done.
 Delta compression using up to 8 threads
@@ -401,9 +401,9 @@ To ssh://10.98.213.202/~/git/default-minikube
 
 <p>Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to <code>/home/default-minikube/build/default-minikube</code> and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to <a href="https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot">docker hub</a> and then updated the deployment that we already had in there for the echo bot.</p>
 
-<p>The last step would be to verify that the pod was actually updated, so we run a <code>kubectl describe pod echobot-654cdbfb99-g4bwv</code>:</p>
+<p>The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with <code>kubectl describe pod echobot-654cdbfb99-g4bwv</code>:</p>
 
-<pre><code> $ kubectl describe pod echobot-654cdbfb99-g4bwv
+<pre><code class="language-plain"> $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default
 Priority:           0

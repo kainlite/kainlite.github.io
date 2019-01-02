@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git on Tech experiments</title>
+    <link>https://kainlite.github.io/tags/git/</link>
+    <description>Recent content in Git on Tech experiments</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://kainlite.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting started with gitkube</title>
+      <link>https://kainlite.github.io/blog/getting_started_with_gitkube/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/getting_started_with_gitkube/</guid>
+      <description>
+
+&lt;h3 id=&#34;gitkube&#34;&gt;&lt;strong&gt;Gitkube&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://gitkube.sh/&#34;&gt;Gitkube&lt;/a&gt;, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a &lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34;&gt;CRD&lt;/a&gt; and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, since gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more &lt;a href=&#34;https://github.com/hasura/gitkube-example&#34;&gt;examples here&lt;/a&gt;, also be sure to check their page and documentation if you like it or want to learn more.&lt;/p&gt;
+
+&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, &lt;em&gt;but in this post be sure to use &lt;em&gt;minikube tunnel&lt;/em&gt;&lt;/em&gt; if you configure gitkube with a load balancer (or if you configure any service type as load balancer):&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;We&amp;rsquo;re going to deploy or re-deploy our &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;chat bot&lt;/a&gt; one more time but this time using gitkube.&lt;/p&gt;
+
+&lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+customresourcedefinition.apiextensions.k8s.io &amp;quot;remotes.gitkube.sh&amp;quot; created
+serviceaccount &amp;quot;gitkube&amp;quot; created
+clusterrolebinding.rbac.authorization.k8s.io &amp;quot;gitkube&amp;quot; created
+configmap &amp;quot;gitkube-ci-conf&amp;quot; created
+deployment.extensions &amp;quot;gitkubed&amp;quot; created
+deployment.extensions &amp;quot;gitkube-controller&amp;quot; created
+
+$ kubectl --namespace kube-system expose deployment gitkubed --type=LoadBalancer --name=gitkubed
+service &amp;quot;gitkubed&amp;quot; exposed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing &lt;code&gt;gitkube install&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To install the gitkube binary, the easiest way is to do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will download and copy the binary into: &lt;code&gt;/usr/local/bin&lt;/code&gt;, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of &lt;em&gt;the internet&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then we need to generate (and then create it in the cluster) a file called &lt;code&gt;remote.yaml&lt;/code&gt; (or any name you like), it&amp;rsquo;s necessary in order to tell gitkube how to deploy our application once we &lt;code&gt;git push&lt;/code&gt; it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gitkube remote generate -f remote.yaml
+Remote name: minikube
+namespace: default
+SSH public key file: ~/.ssh/id_rsa.pub
+Initialisation: K8S YAML Manifests
+Manifests/Chart directory: Enter
+Choose docker registry: docker.io/kainlite
+Deployment name: echobot
+Container name: echobot
+Dockerfile path: Dockerfile
+Build context path: ./
+Add another container? [y/N] Enter
+Add another deployment? [y/N] Enter
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And this will yield the following &lt;code&gt;remote.yaml&lt;/code&gt; file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.&lt;/p&gt;
+
+&lt;p&gt;The actual file &lt;code&gt;remote.yaml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: gitkube.sh/v1alpha1
+kind: Remote
+metadata:
+  creationTimestamp: null
+  name: minikube
+  namespace: default
+spec:
+  authorizedKeys:
+  - |
+    ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite
+  deployments:
+  - containers:
+    - dockerfile: Dockerfile
+      name: echobot
+      path: ./
+    name: echobot
+  manifests:
+    helm: {}
+    path: &amp;quot;&amp;quot;
+  registry:
+    credentials:
+      secretKeyRef:
+        key: &amp;quot;&amp;quot;
+      secretRef: minikube-regsecret
+    url: docker.io/kainlite
+status:
+  remoteUrl: &amp;quot;&amp;quot;
+  remoteUrlDesc: &amp;quot;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are a few details to have in mind here, the &lt;em&gt;deployment&lt;/em&gt; name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&amp;rsquo;m using a public image, so we don&amp;rsquo;t need any of that. The &lt;em&gt;wizard&lt;/em&gt; will let you choose and customize a few options for your deployment.&lt;/p&gt;
+
+&lt;p&gt;The last step would be to finally create the resource:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gitkube remote create -f remote.yaml
+INFO[0000] remote minikube created
+INFO[0000] waiting for remote url
+INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
+
+  # add the remote to your git repo and push:
+  git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
+  git push minikube master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After adding the new remote called &lt;em&gt;minikube&lt;/em&gt;  we have everything ready to go, so let&amp;rsquo;s test it and see what happens:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git push minikube master
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 1.92 KiB | 1.92 MiB/s, done.
+Total 10 (delta 2), reused 0 (delta 0)
+remote: Gitkube build system : Tue Jan  1 23:47:55 UTC 2019: Initialising
+remote:
+remote: Creating the build directory
+remote: Checking out &#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39; to &#39;/home/default-minikube/build/default-minikube&#39;
+remote:
+remote: 1 deployment(s) found in this repo
+remote: Trying to build them...
+remote:
+remote: Building Docker image for : echobot
+remote:
+remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: Sending build context to Docker daemon   7.68kB
+remote: Step 1/12 : FROM golang:1.11.2-alpine as builder
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 2/12 : WORKDIR /app
+remote: Removing intermediate container d2f9ab49935a
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+remote:  ---&amp;gt; Running in f2aac9f74aad
+remote: fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+remote: fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+remote: (1/6) Installing nghttp2-libs (1.32.0-r0)
+remote: (2/6) Installing libssh2 (1.8.0-r3)
+remote: (3/6) Installing libcurl (7.61.1-r1)
+remote: (4/6) Installing expat (2.2.5-r0)
+remote: (5/6) Installing pcre2 (10.31-r0)
+remote: (6/6) Installing git (2.18.1-r0)
+remote: Executing busybox-1.28.4-r1.trigger
+remote: OK: 19 MiB in 20 packages
+remote: (1/12) Installing binutils (2.30-r5)
+remote: (2/12) Installing gmp (6.1.2-r1)
+remote: (3/12) Installing isl (0.18-r0)
+remote: (4/12) Installing libgomp (6.4.0-r9)
+remote: (5/12) Installing libatomic (6.4.0-r9)
+remote: (6/12) Installing pkgconf (1.5.3-r0)
+remote: (7/12) Installing libgcc (6.4.0-r9)
+remote: (8/12) Installing mpfr3 (3.1.5-r1)
+remote: (9/12) Installing mpc1 (1.0.3-r1)
+remote: (10/12) Installing libstdc++ (6.4.0-r9)
+remote: (11/12) Installing gcc (6.4.0-r9)
+remote: (12/12) Installing musl-dev (1.1.19-r10)
+remote: Executing busybox-1.28.4-r1.trigger
+remote: OK: 113 MiB in 32 packages
+remote: Removing intermediate container f2aac9f74aad
+remote:  ---&amp;gt; 7c6d8b9d1137
+remote: Step 4/12 : ADD . /app/
+remote:  ---&amp;gt; ca751c2678c4
+remote: Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+remote:  ---&amp;gt; Running in be54522345e4
+remote: go: finding github.com/gorilla/websocket v1.4.0
+remote: go: finding github.com/nlopes/slack v0.4.0
+remote: go: finding github.com/pkg/errors v0.8.0
+remote: go: downloading github.com/nlopes/slack v0.4.0
+remote: go: downloading github.com/gorilla/websocket v1.4.0
+remote: go: downloading github.com/pkg/errors v0.8.0
+remote: Removing intermediate container be54522345e4
+remote:  ---&amp;gt; 16e44978b140
+remote: Step 6/12 : FROM golang:1.11.2-alpine
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 7/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+remote:  ---&amp;gt; Running in e578037b1d2f
+remote: Removing intermediate container e578037b1d2f
+remote:  ---&amp;gt; 55f48da0f9ac
+remote: Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+remote:  ---&amp;gt; 139250fd6c77
+remote: Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+remote:  ---&amp;gt; 2f1eb9f16e9f
+remote: Step 11/12 : USER app
+remote:  ---&amp;gt; Running in 5b53baa5ea2c
+remote: Removing intermediate container 5b53baa5ea2c
+remote:  ---&amp;gt; a72f27dccff2
+remote: Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+remote:  ---&amp;gt; Running in b12d58002f16
+remote: Removing intermediate container b12d58002f16
+remote:  ---&amp;gt; 034275449e08
+remote: Successfully built 034275449e08
+remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
+remote: The push refers to repository [docker.io/kainlite/default-minikube-default.echobot-echobot]
+remote: bba61bf193fe: Preparing
+remote: 3f0355bbea40: Preparing
+remote: 2ebcdc9e5e8f: Preparing
+remote: 6f1324339fd4: Preparing
+remote: 93391cb9fd4b: Preparing
+remote: cb9d0f9550f6: Preparing
+remote: 93448d8c2605: Preparing
+remote: c54f8a17910a: Preparing
+remote: df64d3292fd6: Preparing
+remote: c54f8a17910a: Waiting
+remote: cb9d0f9550f6: Waiting
+remote: 93448d8c2605: Waiting
+remote: df64d3292fd6: Waiting
+remote: 93391cb9fd4b: Mounted from kainlite/echobot
+remote: 3f0355bbea40: Pushed
+remote: 2ebcdc9e5e8f: Pushed
+remote: cb9d0f9550f6: Mounted from kainlite/echobot
+remote: 93448d8c2605: Mounted from kainlite/echobot
+remote: 6f1324339fd4: Pushed
+remote: bba61bf193fe: Pushed
+remote: c54f8a17910a: Mounted from kainlite/echobot
+remote: df64d3292fd6: Mounted from kainlite/echobot
+remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: 2198
+remote:
+remote: Updating Kubernetes deployment: echobot
+remote: Error from server (NotFound): deployments.extensions &amp;quot;echobot&amp;quot; not found
+To ssh://10.98.213.202/~/git/default-minikube
+ ! [remote rejected] master -&amp;gt; master (pre-receive hook declined)
+error: failed to push some refs to &#39;ssh://default-minikube@10.98.213.202/~/git/default-minikube&#39;
+kainlite@skynet-pc ~/Webs/echobot/code  gitkube  $ git push minikube master
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 1.92 KiB | 1.92 MiB/s, done.
+Total 10 (delta 2), reused 0 (delta 0)
+remote: Gitkube build system : Tue Jan  1 23:50:58 UTC 2019: Initialising
+remote:
+remote: Creating the build directory
+remote: Checking out &#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39; to &#39;/home/default-minikube/build/default-minikube&#39;
+remote:
+remote: 1 deployment(s) found in this repo
+remote: Trying to build them...
+remote:
+remote: Building Docker image for : echobot
+remote:
+remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: Sending build context to Docker daemon   7.68kB
+remote: Step 1/12 : FROM golang:1.11.2-alpine as builder
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 2/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 7c6d8b9d1137
+remote: Step 4/12 : ADD . /app/
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; ca751c2678c4
+remote: Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 16e44978b140
+remote: Step 6/12 : FROM golang:1.11.2-alpine
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 7/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 55f48da0f9ac
+remote: Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 139250fd6c77
+remote: Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 2f1eb9f16e9f
+remote: Step 11/12 : USER app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; a72f27dccff2
+remote: Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 034275449e08
+remote: Successfully built 034275449e08
+remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
+remote: The push refers to repository [docker.io/kainlite/default-minikube-default.echobot-echobot]
+remote: bba61bf193fe: Preparing
+remote: 3f0355bbea40: Preparing
+remote: 2ebcdc9e5e8f: Preparing
+remote: 6f1324339fd4: Preparing
+remote: 93391cb9fd4b: Preparing
+remote: cb9d0f9550f6: Preparing
+remote: 93448d8c2605: Preparing
+remote: c54f8a17910a: Preparing
+remote: df64d3292fd6: Preparing
+remote: cb9d0f9550f6: Waiting
+remote: 93448d8c2605: Waiting
+remote: c54f8a17910a: Waiting
+remote: df64d3292fd6: Waiting
+remote: 2ebcdc9e5e8f: Layer already exists
+remote: 6f1324339fd4: Layer already exists
+remote: 3f0355bbea40: Layer already exists
+remote: bba61bf193fe: Layer already exists
+remote: 93391cb9fd4b: Layer already exists
+remote: 93448d8c2605: Layer already exists
+remote: cb9d0f9550f6: Layer already exists
+remote: df64d3292fd6: Layer already exists
+remote: c54f8a17910a: Layer already exists
+remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: 2198
+remote:
+remote: Updating Kubernetes deployment: echobot
+remote: deployment &amp;quot;echobot&amp;quot; image updated
+remote: deployment &amp;quot;echobot&amp;quot; successfully rolled out
+remote: NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+remote: echobot   1         1         1            1           31s
+remote:
+remote: Removing build directory
+remote:
+remote: Gitkube build system : Tue Jan  1 23:51:16 UTC 2019: Finished build
+remote:
+remote:
+To ssh://10.98.213.202/~/git/default-minikube
+ * [new branch]      master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to &lt;code&gt;/home/default-minikube/build/default-minikube&lt;/code&gt; and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to &lt;a href=&#34;https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot&#34;&gt;docker hub&lt;/a&gt; and then updated the deployment that we already had in there for the echo bot.&lt;/p&gt;
+
+&lt;p&gt;The last step would be to verify that the pod was actually updated, so we run a &lt;code&gt;kubectl describe pod echobot-654cdbfb99-g4bwv&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
+Name:               echobot-654cdbfb99-g4bwv
+Namespace:          default
+Priority:           0
+PriorityClassName:  &amp;lt;none&amp;gt;
+Node:               minikube/10.0.2.15
+Start Time:         Tue, 01 Jan 2019 20:51:10 -0300
+Labels:             app=echobot
+                    pod-template-hash=654cdbfb99
+Annotations:        &amp;lt;none&amp;gt;
+Status:             Running
+IP:                 172.17.0.9
+Controlled By:      ReplicaSet/echobot-654cdbfb99
+Containers:
+  echobot:
+    Container ID:   docker://fe26ba9be6e2840c0d43a4fcbb4d79af38a00aa3a16411dee5e4af3823d44664
+    Image:          docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+    Image ID:       docker-pullable://kainlite/default-minikube-default.echobot-echobot@sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9
+    Port:           &amp;lt;none&amp;gt;
+    Host Port:      &amp;lt;none&amp;gt;
+    State:          Running
+      Started:      Tue, 01 Jan 2019 20:51:11 -0300
+    Ready:          True
+    Restart Count:  0
+    Liveness:       exec [/bin/sh -c /app/health_check.sh] delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      SLACK_API_TOKEN:  really_long_token
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-ks4jx:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-ks4jx
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &amp;lt;none&amp;gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  39m   default-scheduler  Successfully assigned default/echobot-654cdbfb99-g4bwv to minikube
+  Normal  Pulled     39m   kubelet, minikube  Container image &amp;quot;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&amp;quot; already present on machine
+  Normal  Created    39m   kubelet, minikube  Created container
+  Normal  Started    39m   kubelet, minikube  Started container
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we can see the image is the one that got built from our &lt;code&gt;git push&lt;/code&gt; and everything is working as expected.&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s it for now, I think this tool has a lot of potential, it&amp;rsquo;s simple, nice and fast.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

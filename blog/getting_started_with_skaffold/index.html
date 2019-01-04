@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Tech ideas, tests, examples...">
+    <link rel="shortcut icon" type="image/x-icon" href="https://kainlite.github.io/img/favicon.ico">
+    <title>Getting started with skaffold</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://kainlite.github.io/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://kainlite.github.io/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://kainlite.github.io/blog/getting_started_with_skaffold/">Getting started with skaffold</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 3, 2019
+            &nbsp;&nbsp;
+            
+            <span class="label label-success">kubernetes</span>
+            
+            <span class="label label-success">deployments</span>
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="skaffold"><strong>Skaffold</strong></h3>
+
+<p>This time we will see how to get started with <a href="https://github.com/GoogleContainerTools/skaffold">Skaffold</a>, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: <em>Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application. It also provides building blocks and describe customizations for a CI/CD pipeline.</em> (Extracted from <a href="https://github.com/GoogleContainerTools/skaffold">github</a>)</p>
+
+<p>In this example I will be using <a href="https://m.do.co/c/01d040b789de">Digital Ocean</a> (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25, I got the idea from <a href="https://www.youtube.com/watch?v=fhYSKEy0s8w">Pelado Nerd Spanish Youtube Channel</a>.</p>
+
+<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
+
+<p>Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don&rsquo;t waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you&rsquo;re ready to go.</p>
+
+<p>We will be working with the chat bot again you can see the original <a href="https://kainlite.github.io/blog/go_echobot/">article here</a>, and the repo <a href="https://github.com/kainlite/echobot/tree/skaffold">here</a>.</p>
+
+<p>Let&rsquo;s tell our kubectl to use our recently downloaded config:</p>
+
+<pre><code class="language-plain">$ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
+$ kubectl get nodes -o wide
+
+NAME                 STATUS    ROLES     AGE       VERSION   EXTERNAL-IP       OS-IMAGE                       KERNEL-VERSION   CONTAINER-RUNTIME
+crazy-wozniak-8306   Ready     &lt;none&gt;    6h        v1.13.1   178.128.154.205   Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+crazy-wozniak-830t   Ready     &lt;none&gt;    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+</code></pre>
+
+<p>Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).</p>
+
+<p>But let&rsquo;s cut to the chase, we are here for <em>Skaffold</em>:</p>
+
+<pre><code class="language-plain">curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 &amp;&amp; chmod +x skaffold &amp;&amp; sudo mv skaffold /usr/local/bin
+</code></pre>
+
+<p>You can install the binary using the provided line (linux) or downloading it from the <a href="https://github.com/GoogleContainerTools/skaffold/releases">releases page</a>.</p>
+
+<p>Once installed we can see the <a href="https://github.com/GoogleContainerTools/skaffold/tree/master/examples">examples</a>, I will be using the getting-started example:</p>
+
+<pre><code>apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: kainlite/echobot
+deploy:
+  kubectl:
+    manifests:
+      - k8s-*
+</code></pre>
+
+<p>YAML lovers, there you go with some of it.</p>
+
+<p>We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&rsquo;s generate one with <code>kubectl run echobot --image=kainlite/echobot --dry-run -o yaml</code></p>
+
+<pre><code class="language-plain">apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: echobot
+  name: echobot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: echobot
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: echobot
+    spec:
+      containers:
+      - image: kainlite/echobot
+        name: echobot
+        env:
+        - name: SLACK_API_TOKEN
+          value: really_long_token
+        livenessProbe:
+          exec:
+            command:
+            - '/bin/sh'
+            - '-c'
+            - '/app/health_check.sh'
+</code></pre>
+
+<p>The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn&rsquo;t want in and added some that we need for it to work.</p>
+
+<p>Then the only thing left to do is testing that everything works properly:</p>
+
+<pre><code class="language-plain">$ skaffold build
+
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g 'app' app &amp;&amp;     chown -R app:app /app &amp;&amp;     apk add git &amp;&amp; apk add gcc musl-dev
+ ---&gt; Running in 1339601fff6f
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/6) Installing nghttp2-libs (1.32.0-r0)
+(2/6) Installing libssh2 (1.8.0-r3)
+(3/6) Installing libcurl (7.61.1-r1)
+(4/6) Installing expat (2.2.5-r0)
+(5/6) Installing pcre2 (10.31-r0)
+(6/6) Installing git (2.18.1-r0)
+Executing busybox-1.28.4-r1.trigger
+OK: 19 MiB in 20 packages
+(1/12) Installing binutils (2.30-r5)
+(2/12) Installing gmp (6.1.2-r1)
+(3/12) Installing isl (0.18-r0)
+(4/12) Installing libgomp (6.4.0-r9)
+(5/12) Installing libatomic (6.4.0-r9)
+(6/12) Installing pkgconf (1.5.3-r0)
+(7/12) Installing libgcc (6.4.0-r9)
+(8/12) Installing mpfr3 (3.1.5-r1)
+(9/12) Installing mpc1 (1.0.3-r1)
+(10/12) Installing libstdc++ (6.4.0-r9)
+(11/12) Installing gcc (6.4.0-r9)
+(12/12) Installing musl-dev (1.1.19-r10)
+Executing busybox-1.28.4-r1.trigger
+OK: 113 MiB in 32 packages
+ ---&gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;&amp; go build -o main . &amp;&amp; chown -R app:app /app /home/app
+ ---&gt; Running in 4482bfd3e8f7
+go: finding github.com/gorilla/websocket v1.4.0
+go: finding github.com/nlopes/slack v0.4.0
+go: finding github.com/pkg/errors v0.8.0
+go: downloading github.com/nlopes/slack v0.4.0
+go: downloading github.com/pkg/errors v0.8.0
+go: downloading github.com/gorilla/websocket v1.4.0
+ ---&gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g 'app' app &amp;&amp;     chown -R app:app /app
+ ---&gt; Using cache
+ ---&gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&gt; Using cache
+ ---&gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&gt; Using cache
+ ---&gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&gt; Using cache
+ ---&gt; 95c2bf90800c
+Step 12/12 : CMD [&quot;/app/main&quot;]
+ ---&gt; Using cache
+ ---&gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 1fca8a8c999a8cd9b943456b70d90807:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+c54f8a17910a: Waiting
+93448d8c2605: Waiting
+e94f3271cc73: Layer already exists
+93391cb9fd4b: Layer already exists
+12468476a0ef: Layer already exists
+ec122f36b39d: Layer already exists
+ee06a8f42495: Layer already exists
+93448d8c2605: Layer already exists
+cb9d0f9550f6: Layer already exists
+df64d3292fd6: Layer already exists
+c54f8a17910a: Layer already exists
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 48.642618413s
+Starting test...
+Test complete in 9.15µs
+kainlite/echobot -&gt; kainlite/echobot:fc03e3d-dirty-3541257
+</code></pre>
+
+<p>As we can see skaffold build not only did the docker build but also tagged and pushed the image to <a href="https://cloud.docker.com/repository/docker/kainlite/echobot/tags">docker hub</a>, which is really nice and really useful to build a CI/CD system with it.</p>
+
+<p>But wait, we need to deploy that to our cluster, right on:</p>
+
+<pre><code class="language-plain">$ skaffold deploy
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g 'app' app &amp;&amp;     chown -R app:app /app &amp;&amp;     apk add git &amp;&amp; apk add gcc musl-dev
+ ---&gt; Using cache
+ ---&gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&gt; Using cache
+ ---&gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;&amp; go build -o main . &amp;&amp; chown -R app:app /app /home/app
+ ---&gt; Using cache
+ ---&gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g 'app' app &amp;&amp;     chown -R app:app /app
+ ---&gt; Using cache
+ ---&gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&gt; Using cache
+ ---&gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&gt; Using cache
+ ---&gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&gt; Using cache
+ ---&gt; 95c2bf90800c
+Step 12/12 : CMD [&quot;/app/main&quot;]
+ ---&gt; Using cache
+ ---&gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 510226574761304cc9d64a343d5bdbff:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+93448d8c2605: Waiting
+c54f8a17910a: Waiting
+df64d3292fd6: Waiting
+12468476a0ef: Layer already exists
+e94f3271cc73: Layer already exists
+cb9d0f9550f6: Layer already exists
+ec122f36b39d: Layer already exists
+93391cb9fd4b: Layer already exists
+ee06a8f42495: Layer already exists
+c54f8a17910a: Layer already exists
+df64d3292fd6: Layer already exists
+93448d8c2605: Mounted from library/golang
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 15.136865292s
+Starting test...
+Test complete in 17.912µs
+Starting deploy...
+kubectl client version: 1.10
+kubectl version 1.12.0 or greater is recommended for use with skaffold
+deployment.extensions &quot;echobot&quot; configured
+Deploy complete in 5.676513226s
+</code></pre>
+
+<p>Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.</p>
+
+<p>After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.</p>
+
+<pre><code class="language-plain">$ kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
+echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
+</code></pre>
+
+<p>Skaffold also has another nice option that it&rsquo;s called <em>dev</em> it watches the folder for changes and re-deploys the app so you can focus on code.</p>
+
+<p>Let&rsquo;s clean up and call it a day:</p>
+
+<pre><code class="language-plain">skaffold delete
+Cleaning up...
+deployment.extensions &quot;echobot&quot; deleted
+Cleanup complete in 3.833219278s
+</code></pre>
+
+<h3 id="notes">Notes</h3>
+
+<p>I really liked the workflow that skaffold provides, I hope that I can use it some more in the near future. And remember to shutdown the kubernetes cluster if you are using Digital Ocean so you don&rsquo;t get charged by surprise later on.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 1, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/getting_started_with_gitkube/">Getting started with gitkube</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 29, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/go_echobot/">Go echo bot</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 27, 2018
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/getting_started_with_ksonnet/">Getting started with ksonnet</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://kainlite.github.io/js/docs.min.js"></script>
+<script src="https://kainlite.github.io/js/main.js"></script>
+
+<script src="https://kainlite.github.io/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

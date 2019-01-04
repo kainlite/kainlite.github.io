@@ -129,7 +129,7 @@ deploy:
       - k8s-*
 </code></pre>
 
-<p>YAML lovers, there you go with some of it.</p>
+<p>With very litle YAML we can accomplish a lot.</p>
 
 <p>We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&rsquo;s generate one with <code>kubectl run echobot --image=kainlite/echobot --dry-run -o yaml</code></p>
 

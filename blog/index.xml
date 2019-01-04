@@ -293,7 +293,7 @@ echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
 
 &lt;p&gt;Let&amp;rsquo;s clean up and call it a day:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;skaffold delete
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold delete
 Cleaning up...
 deployment.extensions &amp;quot;echobot&amp;quot; deleted
 Cleanup complete in 3.833219278s

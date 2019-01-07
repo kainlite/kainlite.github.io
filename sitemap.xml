@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kainlite.github.io/blog/why_do_i_need_a_service_mesh/</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kainlite.github.io/blog/getting_started_with_skaffold/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
   </url>
@@ -34,7 +39,7 @@
   
   <url>
     <loc>https://kainlite.github.io/blog/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -86,8 +91,26 @@
   </url>
   
   <url>
+    <loc>https://kainlite.github.io/categories/kubernetes/</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://kainlite.github.io/tags/kubernetes/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kainlite.github.io/categories/mesh/</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kainlite.github.io/tags/mesh/</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -105,7 +128,7 @@
   
   <url>
     <loc>https://kainlite.github.io/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

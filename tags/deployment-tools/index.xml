@@ -6,10 +6,1621 @@
     <description>Recent content in Deployment Tools on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://kainlite.github.io/tags/deployment-tools/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Getting started with skaffold</title>
+      <link>https://kainlite.github.io/blog/getting_started_with_skaffold/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/getting_started_with_skaffold/</guid>
+      <description>
+
+&lt;h3 id=&#34;skaffold&#34;&gt;&lt;strong&gt;Skaffold&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;Skaffold&lt;/a&gt;, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: &lt;em&gt;Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application. It also provides building blocks and describe customizations for a CI/CD pipeline.&lt;/em&gt; (Extracted from &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;github&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;In this example I will be using &lt;a href=&#34;https://m.do.co/c/01d040b789de&#34;&gt;Digital Ocean&lt;/a&gt; (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25, I got the idea from &lt;a href=&#34;https://www.youtube.com/watch?v=fhYSKEy0s8w&#34;&gt;Pelado Nerd Spanish Youtube Channel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don&amp;rsquo;t waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you&amp;rsquo;re ready to go.&lt;/p&gt;
+
+&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
+$ kubectl get nodes -o wide
+
+NAME                 STATUS    ROLES     AGE       VERSION   EXTERNAL-IP       OS-IMAGE                       KERNEL-VERSION   CONTAINER-RUNTIME
+crazy-wozniak-8306   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   178.128.154.205   Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+crazy-wozniak-830t   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).&lt;/p&gt;
+
+&lt;p&gt;But let&amp;rsquo;s cut to the chase, we are here for &lt;em&gt;Skaffold&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 &amp;amp;&amp;amp; chmod +x skaffold &amp;amp;&amp;amp; sudo mv skaffold /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can install the binary using the provided line (linux) or downloading it from the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/releases&#34;&gt;releases page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once installed we can see the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/tree/master/examples&#34;&gt;examples&lt;/a&gt;, I will be using the getting-started example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: kainlite/echobot
+deploy:
+  kubectl:
+    manifests:
+      - k8s-*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With very litle YAML we can accomplish a lot.&lt;/p&gt;
+
+&lt;p&gt;We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&amp;rsquo;s generate one with &lt;code&gt;kubectl run echobot --image=kainlite/echobot --dry-run -o yaml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: echobot
+  name: echobot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: echobot
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: echobot
+    spec:
+      containers:
+      - image: kainlite/echobot
+        name: echobot
+        env:
+        - name: SLACK_API_TOKEN
+          value: really_long_token
+        livenessProbe:
+          exec:
+            command:
+            - &#39;/bin/sh&#39;
+            - &#39;-c&#39;
+            - &#39;/app/health_check.sh&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn&amp;rsquo;t want in and added some that we need for it to work.&lt;/p&gt;
+
+&lt;p&gt;Then the only thing left to do is testing that everything works properly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold build
+
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&amp;gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+ ---&amp;gt; Running in 1339601fff6f
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/6) Installing nghttp2-libs (1.32.0-r0)
+(2/6) Installing libssh2 (1.8.0-r3)
+(3/6) Installing libcurl (7.61.1-r1)
+(4/6) Installing expat (2.2.5-r0)
+(5/6) Installing pcre2 (10.31-r0)
+(6/6) Installing git (2.18.1-r0)
+Executing busybox-1.28.4-r1.trigger
+OK: 19 MiB in 20 packages
+(1/12) Installing binutils (2.30-r5)
+(2/12) Installing gmp (6.1.2-r1)
+(3/12) Installing isl (0.18-r0)
+(4/12) Installing libgomp (6.4.0-r9)
+(5/12) Installing libatomic (6.4.0-r9)
+(6/12) Installing pkgconf (1.5.3-r0)
+(7/12) Installing libgcc (6.4.0-r9)
+(8/12) Installing mpfr3 (3.1.5-r1)
+(9/12) Installing mpc1 (1.0.3-r1)
+(10/12) Installing libstdc++ (6.4.0-r9)
+(11/12) Installing gcc (6.4.0-r9)
+(12/12) Installing musl-dev (1.1.19-r10)
+Executing busybox-1.28.4-r1.trigger
+OK: 113 MiB in 32 packages
+ ---&amp;gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&amp;gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+ ---&amp;gt; Running in 4482bfd3e8f7
+go: finding github.com/gorilla/websocket v1.4.0
+go: finding github.com/nlopes/slack v0.4.0
+go: finding github.com/pkg/errors v0.8.0
+go: downloading github.com/nlopes/slack v0.4.0
+go: downloading github.com/pkg/errors v0.8.0
+go: downloading github.com/gorilla/websocket v1.4.0
+ ---&amp;gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&amp;gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&amp;gt; Using cache
+ ---&amp;gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 95c2bf90800c
+Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+ ---&amp;gt; Using cache
+ ---&amp;gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 1fca8a8c999a8cd9b943456b70d90807:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+c54f8a17910a: Waiting
+93448d8c2605: Waiting
+e94f3271cc73: Layer already exists
+93391cb9fd4b: Layer already exists
+12468476a0ef: Layer already exists
+ec122f36b39d: Layer already exists
+ee06a8f42495: Layer already exists
+93448d8c2605: Layer already exists
+cb9d0f9550f6: Layer already exists
+df64d3292fd6: Layer already exists
+c54f8a17910a: Layer already exists
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 48.642618413s
+Starting test...
+Test complete in 9.15µs
+kainlite/echobot -&amp;gt; kainlite/echobot:fc03e3d-dirty-3541257
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we can see skaffold build not only did the docker build but also tagged and pushed the image to &lt;a href=&#34;https://cloud.docker.com/repository/docker/kainlite/echobot/tags&#34;&gt;docker hub&lt;/a&gt;, which is really nice and really useful to build a CI/CD system with it.&lt;/p&gt;
+
+&lt;p&gt;But wait, we need to deploy that to our cluster, right on:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold deploy
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&amp;gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&amp;gt; Using cache
+ ---&amp;gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&amp;gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&amp;gt; Using cache
+ ---&amp;gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 95c2bf90800c
+Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+ ---&amp;gt; Using cache
+ ---&amp;gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 510226574761304cc9d64a343d5bdbff:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+93448d8c2605: Waiting
+c54f8a17910a: Waiting
+df64d3292fd6: Waiting
+12468476a0ef: Layer already exists
+e94f3271cc73: Layer already exists
+cb9d0f9550f6: Layer already exists
+ec122f36b39d: Layer already exists
+93391cb9fd4b: Layer already exists
+ee06a8f42495: Layer already exists
+c54f8a17910a: Layer already exists
+df64d3292fd6: Layer already exists
+93448d8c2605: Mounted from library/golang
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 15.136865292s
+Starting test...
+Test complete in 17.912µs
+Starting deploy...
+kubectl client version: 1.10
+kubectl version 1.12.0 or greater is recommended for use with skaffold
+deployment.extensions &amp;quot;echobot&amp;quot; configured
+Deploy complete in 5.676513226s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.&lt;/p&gt;
+
+&lt;p&gt;After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
+echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Skaffold also has another nice option that it&amp;rsquo;s called &lt;em&gt;dev&lt;/em&gt; it watches the folder for changes and re-deploys the app so you can focus on code.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s clean up and call it a day:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold delete
+Cleaning up...
+deployment.extensions &amp;quot;echobot&amp;quot; deleted
+Cleanup complete in 3.833219278s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;p&gt;I really liked the workflow that skaffold provides, I hope that I can use it some more in the near future. And remember to shutdown the kubernetes cluster if you are using Digital Ocean so you don&amp;rsquo;t get charged by surprise later on.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting started with gitkube</title>
+      <link>https://kainlite.github.io/blog/getting_started_with_gitkube/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/getting_started_with_gitkube/</guid>
+      <description>
+
+&lt;h3 id=&#34;gitkube&#34;&gt;&lt;strong&gt;Gitkube&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://gitkube.sh/&#34;&gt;Gitkube&lt;/a&gt;, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a &lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34;&gt;CRD&lt;/a&gt; and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more &lt;a href=&#34;https://github.com/hasura/gitkube-example&#34;&gt;examples here&lt;/a&gt;, also be sure to check their page and documentation if you like it or want to learn more.&lt;/p&gt;
+
+&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, &lt;em&gt;but in this post be sure to use &lt;em&gt;minikube tunnel&lt;/em&gt;&lt;/em&gt; if you configure gitkube with a load balancer (or if you configure any service type as load balancer):&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;We&amp;rsquo;re going to deploy or re-deploy our echo bot one more time but this time using gitkube.
+You can find the chat bot: &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo: &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+customresourcedefinition.apiextensions.k8s.io &amp;quot;remotes.gitkube.sh&amp;quot; created
+serviceaccount &amp;quot;gitkube&amp;quot; created
+clusterrolebinding.rbac.authorization.k8s.io &amp;quot;gitkube&amp;quot; created
+configmap &amp;quot;gitkube-ci-conf&amp;quot; created
+deployment.extensions &amp;quot;gitkubed&amp;quot; created
+deployment.extensions &amp;quot;gitkube-controller&amp;quot; created
+
+$ kubectl --namespace kube-system expose deployment gitkubed --type=LoadBalancer --name=gitkubed
+service &amp;quot;gitkubed&amp;quot; exposed
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing &lt;code&gt;gitkube install&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To install the gitkube binary, the easiest way is to do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will download and copy the binary into: &lt;code&gt;/usr/local/bin&lt;/code&gt;, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of &lt;em&gt;the internet&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Then we need to generate (and then create it in the cluster) a file called &lt;code&gt;remote.yaml&lt;/code&gt; (or any name you like), it&amp;rsquo;s necessary in order to tell gitkube how to deploy our application once we &lt;code&gt;git push&lt;/code&gt; it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ gitkube remote generate -f remote.yaml
+Remote name: minikube
+namespace: default
+SSH public key file: ~/.ssh/id_rsa.pub
+Initialisation: K8S YAML Manifests
+Manifests/Chart directory: Enter
+Choose docker registry: docker.io/kainlite
+Deployment name: echobot
+Container name: echobot
+Dockerfile path: Dockerfile
+Build context path: ./
+Add another container? [y/N] Enter
+Add another deployment? [y/N] Enter
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And this will yield the following &lt;code&gt;remote.yaml&lt;/code&gt; file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.&lt;/p&gt;
+
+&lt;p&gt;The actual file &lt;code&gt;remote.yaml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;apiVersion: gitkube.sh/v1alpha1
+kind: Remote
+metadata:
+  creationTimestamp: null
+  name: minikube
+  namespace: default
+spec:
+  authorizedKeys:
+  - |
+    ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite
+  deployments:
+  - containers:
+    - dockerfile: Dockerfile
+      name: echobot
+      path: ./
+    name: echobot
+  manifests:
+    helm: {}
+    path: &amp;quot;&amp;quot;
+  registry:
+    credentials:
+      secretKeyRef:
+        key: &amp;quot;&amp;quot;
+      secretRef: minikube-regsecret
+    url: docker.io/kainlite
+status:
+  remoteUrl: &amp;quot;&amp;quot;
+  remoteUrlDesc: &amp;quot;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are a few details to have in mind here, the &lt;em&gt;deployment&lt;/em&gt; name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&amp;rsquo;m using a public image, so we don&amp;rsquo;t need any of that. The &lt;em&gt;wizard&lt;/em&gt; will let you choose and customize a few options for your deployment.&lt;/p&gt;
+
+&lt;p&gt;The last step would be to finally create the resource:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ gitkube remote create -f remote.yaml
+INFO[0000] remote minikube created
+INFO[0000] waiting for remote url
+INFO[0000] remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
+
+  # add the remote to your git repo and push:
+  git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
+  git push minikube master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After adding the new remote called &lt;em&gt;minikube&lt;/em&gt;  we have everything ready to go, so let&amp;rsquo;s test it and see what happens:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ git push minikube master
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 1.92 KiB | 1.92 MiB/s, done.
+Total 10 (delta 2), reused 0 (delta 0)
+remote: Gitkube build system : Tue Jan  1 23:47:55 UTC 2019: Initialising
+remote:
+remote: Creating the build directory
+remote: Checking out &#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39; to &#39;/home/default-minikube/build/default-minikube&#39;
+remote:
+remote: 1 deployment(s) found in this repo
+remote: Trying to build them...
+remote:
+remote: Building Docker image for : echobot
+remote:
+remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: Sending build context to Docker daemon   7.68kB
+remote: Step 1/12 : FROM golang:1.11.2-alpine as builder
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 2/12 : WORKDIR /app
+remote: Removing intermediate container d2f9ab49935a
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+remote:  ---&amp;gt; Running in f2aac9f74aad
+remote: fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+remote: fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+remote: (1/6) Installing nghttp2-libs (1.32.0-r0)
+remote: (2/6) Installing libssh2 (1.8.0-r3)
+remote: (3/6) Installing libcurl (7.61.1-r1)
+remote: (4/6) Installing expat (2.2.5-r0)
+remote: (5/6) Installing pcre2 (10.31-r0)
+remote: (6/6) Installing git (2.18.1-r0)
+remote: Executing busybox-1.28.4-r1.trigger
+remote: OK: 19 MiB in 20 packages
+remote: (1/12) Installing binutils (2.30-r5)
+remote: (2/12) Installing gmp (6.1.2-r1)
+remote: (3/12) Installing isl (0.18-r0)
+remote: (4/12) Installing libgomp (6.4.0-r9)
+remote: (5/12) Installing libatomic (6.4.0-r9)
+remote: (6/12) Installing pkgconf (1.5.3-r0)
+remote: (7/12) Installing libgcc (6.4.0-r9)
+remote: (8/12) Installing mpfr3 (3.1.5-r1)
+remote: (9/12) Installing mpc1 (1.0.3-r1)
+remote: (10/12) Installing libstdc++ (6.4.0-r9)
+remote: (11/12) Installing gcc (6.4.0-r9)
+remote: (12/12) Installing musl-dev (1.1.19-r10)
+remote: Executing busybox-1.28.4-r1.trigger
+remote: OK: 113 MiB in 32 packages
+remote: Removing intermediate container f2aac9f74aad
+remote:  ---&amp;gt; 7c6d8b9d1137
+remote: Step 4/12 : ADD . /app/
+remote:  ---&amp;gt; ca751c2678c4
+remote: Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+remote:  ---&amp;gt; Running in be54522345e4
+remote: go: finding github.com/gorilla/websocket v1.4.0
+remote: go: finding github.com/nlopes/slack v0.4.0
+remote: go: finding github.com/pkg/errors v0.8.0
+remote: go: downloading github.com/nlopes/slack v0.4.0
+remote: go: downloading github.com/gorilla/websocket v1.4.0
+remote: go: downloading github.com/pkg/errors v0.8.0
+remote: Removing intermediate container be54522345e4
+remote:  ---&amp;gt; 16e44978b140
+remote: Step 6/12 : FROM golang:1.11.2-alpine
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 7/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+remote:  ---&amp;gt; Running in e578037b1d2f
+remote: Removing intermediate container e578037b1d2f
+remote:  ---&amp;gt; 55f48da0f9ac
+remote: Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+remote:  ---&amp;gt; 139250fd6c77
+remote: Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+remote:  ---&amp;gt; 2f1eb9f16e9f
+remote: Step 11/12 : USER app
+remote:  ---&amp;gt; Running in 5b53baa5ea2c
+remote: Removing intermediate container 5b53baa5ea2c
+remote:  ---&amp;gt; a72f27dccff2
+remote: Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+remote:  ---&amp;gt; Running in b12d58002f16
+remote: Removing intermediate container b12d58002f16
+remote:  ---&amp;gt; 034275449e08
+remote: Successfully built 034275449e08
+remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
+remote: The push refers to repository [docker.io/kainlite/default-minikube-default.echobot-echobot]
+remote: bba61bf193fe: Preparing
+remote: 3f0355bbea40: Preparing
+remote: 2ebcdc9e5e8f: Preparing
+remote: 6f1324339fd4: Preparing
+remote: 93391cb9fd4b: Preparing
+remote: cb9d0f9550f6: Preparing
+remote: 93448d8c2605: Preparing
+remote: c54f8a17910a: Preparing
+remote: df64d3292fd6: Preparing
+remote: c54f8a17910a: Waiting
+remote: cb9d0f9550f6: Waiting
+remote: 93448d8c2605: Waiting
+remote: df64d3292fd6: Waiting
+remote: 93391cb9fd4b: Mounted from kainlite/echobot
+remote: 3f0355bbea40: Pushed
+remote: 2ebcdc9e5e8f: Pushed
+remote: cb9d0f9550f6: Mounted from kainlite/echobot
+remote: 93448d8c2605: Mounted from kainlite/echobot
+remote: 6f1324339fd4: Pushed
+remote: bba61bf193fe: Pushed
+remote: c54f8a17910a: Mounted from kainlite/echobot
+remote: df64d3292fd6: Mounted from kainlite/echobot
+remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: 2198
+remote:
+remote: Updating Kubernetes deployment: echobot
+remote: Error from server (NotFound): deployments.extensions &amp;quot;echobot&amp;quot; not found
+To ssh://10.98.213.202/~/git/default-minikube
+ ! [remote rejected] master -&amp;gt; master (pre-receive hook declined)
+error: failed to push some refs to &#39;ssh://default-minikube@10.98.213.202/~/git/default-minikube&#39;
+kainlite@skynet-pc ~/Webs/echobot/code  gitkube  $ git push minikube master
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 1.92 KiB | 1.92 MiB/s, done.
+Total 10 (delta 2), reused 0 (delta 0)
+remote: Gitkube build system : Tue Jan  1 23:50:58 UTC 2019: Initialising
+remote:
+remote: Creating the build directory
+remote: Checking out &#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39; to &#39;/home/default-minikube/build/default-minikube&#39;
+remote:
+remote: 1 deployment(s) found in this repo
+remote: Trying to build them...
+remote:
+remote: Building Docker image for : echobot
+remote:
+remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: Sending build context to Docker daemon   7.68kB
+remote: Step 1/12 : FROM golang:1.11.2-alpine as builder
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 2/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 7c6d8b9d1137
+remote: Step 4/12 : ADD . /app/
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; ca751c2678c4
+remote: Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 16e44978b140
+remote: Step 6/12 : FROM golang:1.11.2-alpine
+remote:  ---&amp;gt; 57915f96905a
+remote: Step 7/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 55f48da0f9ac
+remote: Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 139250fd6c77
+remote: Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 2f1eb9f16e9f
+remote: Step 11/12 : USER app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; a72f27dccff2
+remote: Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 034275449e08
+remote: Successfully built 034275449e08
+remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
+remote: The push refers to repository [docker.io/kainlite/default-minikube-default.echobot-echobot]
+remote: bba61bf193fe: Preparing
+remote: 3f0355bbea40: Preparing
+remote: 2ebcdc9e5e8f: Preparing
+remote: 6f1324339fd4: Preparing
+remote: 93391cb9fd4b: Preparing
+remote: cb9d0f9550f6: Preparing
+remote: 93448d8c2605: Preparing
+remote: c54f8a17910a: Preparing
+remote: df64d3292fd6: Preparing
+remote: cb9d0f9550f6: Waiting
+remote: 93448d8c2605: Waiting
+remote: c54f8a17910a: Waiting
+remote: df64d3292fd6: Waiting
+remote: 2ebcdc9e5e8f: Layer already exists
+remote: 6f1324339fd4: Layer already exists
+remote: 3f0355bbea40: Layer already exists
+remote: bba61bf193fe: Layer already exists
+remote: 93391cb9fd4b: Layer already exists
+remote: 93448d8c2605: Layer already exists
+remote: cb9d0f9550f6: Layer already exists
+remote: df64d3292fd6: Layer already exists
+remote: c54f8a17910a: Layer already exists
+remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: 2198
+remote:
+remote: Updating Kubernetes deployment: echobot
+remote: deployment &amp;quot;echobot&amp;quot; image updated
+remote: deployment &amp;quot;echobot&amp;quot; successfully rolled out
+remote: NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+remote: echobot   1         1         1            1           31s
+remote:
+remote: Removing build directory
+remote:
+remote: Gitkube build system : Tue Jan  1 23:51:16 UTC 2019: Finished build
+remote:
+remote:
+To ssh://10.98.213.202/~/git/default-minikube
+ * [new branch]      master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to &lt;code&gt;/home/default-minikube/build/default-minikube&lt;/code&gt; and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to &lt;a href=&#34;https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot&#34;&gt;docker hub&lt;/a&gt; and then updated the deployment that we already had in there for the echo bot.&lt;/p&gt;
+
+&lt;p&gt;The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with &lt;code&gt;kubectl describe pod echobot-654cdbfb99-g4bwv&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
+Name:               echobot-654cdbfb99-g4bwv
+Namespace:          default
+Priority:           0
+PriorityClassName:  &amp;lt;none&amp;gt;
+Node:               minikube/10.0.2.15
+Start Time:         Tue, 01 Jan 2019 20:51:10 -0300
+Labels:             app=echobot
+                    pod-template-hash=654cdbfb99
+Annotations:        &amp;lt;none&amp;gt;
+Status:             Running
+IP:                 172.17.0.9
+Controlled By:      ReplicaSet/echobot-654cdbfb99
+Containers:
+  echobot:
+    Container ID:   docker://fe26ba9be6e2840c0d43a4fcbb4d79af38a00aa3a16411dee5e4af3823d44664
+    Image:          docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+    Image ID:       docker-pullable://kainlite/default-minikube-default.echobot-echobot@sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9
+    Port:           &amp;lt;none&amp;gt;
+    Host Port:      &amp;lt;none&amp;gt;
+    State:          Running
+      Started:      Tue, 01 Jan 2019 20:51:11 -0300
+    Ready:          True
+    Restart Count:  0
+    Liveness:       exec [/bin/sh -c /app/health_check.sh] delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      SLACK_API_TOKEN:  really_long_token
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-ks4jx:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-ks4jx
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &amp;lt;none&amp;gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  39m   default-scheduler  Successfully assigned default/echobot-654cdbfb99-g4bwv to minikube
+  Normal  Pulled     39m   kubelet, minikube  Container image &amp;quot;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&amp;quot; already present on machine
+  Normal  Created    39m   kubelet, minikube  Created container
+  Normal  Started    39m   kubelet, minikube  Started container
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we can see the image is the one that got built from our &lt;code&gt;git push&lt;/code&gt; and everything is working as expected.&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s it for now, I think this tool has a lot of potential, it&amp;rsquo;s simple, nice and fast.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Go echo bot</title>
+      <link>https://kainlite.github.io/blog/go_echobot/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/go_echobot/</guid>
+      <description>
+
+&lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.&lt;/p&gt;
+
+&lt;p&gt;To be honest, there is no other way to get the benefits of having &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt; if you&amp;rsquo;re not going to take advantage of the &lt;em&gt;deployments as code&lt;/em&gt; facilities that it brings thanks to Jsonnet.&lt;/p&gt;
+
+&lt;p&gt;This time we will see how to use &lt;a href=&#34;https://github.com/cybermaggedon/ksonnet-cheat-sheet&#34;&gt;proper templates&lt;/a&gt;, it seems that the templates generated with &lt;code&gt;ks&lt;/code&gt; are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&amp;rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.&lt;/p&gt;
+
+&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;This time I&amp;rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+        &amp;quot;fmt&amp;quot;
+        &amp;quot;os&amp;quot;
+        &amp;quot;strings&amp;quot;
+
+        slack &amp;quot;github.com/nlopes/slack&amp;quot;
+)
+
+func main() {
+        api := slack.New(
+                os.Getenv(&amp;quot;SLACK_API_TOKEN&amp;quot;),
+        )
+
+        rtm := api.NewRTM()
+        go rtm.ManageConnection()
+
+        for msg := range rtm.IncomingEvents {
+                fmt.Print(&amp;quot;Event Received: &amp;quot;)
+                switch ev := msg.Data.(type) {
+                case *slack.HelloEvent:
+                        // Ignore hello
+
+                case *slack.ConnectedEvent:
+                        fmt.Println(&amp;quot;Infos:&amp;quot;, ev.Info)
+                        fmt.Println(&amp;quot;Connection counter:&amp;quot;, ev.ConnectionCount)
+
+                case *slack.MessageEvent:
+                        // Only echo what it said to me
+                        fmt.Printf(&amp;quot;Message: %v\n&amp;quot;, ev)
+                        info := rtm.GetInfo()
+                        prefix := fmt.Sprintf(&amp;quot;&amp;lt;@%s&amp;gt; &amp;quot;, info.User.ID)
+
+                        if ev.User != info.User.ID &amp;amp;&amp;amp; strings.HasPrefix(ev.Text, prefix) {
+                                rtm.SendMessage(rtm.NewOutgoingMessage(ev.Text, ev.Channel))
+                        }
+
+                case *slack.PresenceChangeEvent:
+                        fmt.Printf(&amp;quot;Presence Change: %v\n&amp;quot;, ev)
+
+                case *slack.LatencyReport:
+                        fmt.Printf(&amp;quot;Current latency: %v\n&amp;quot;, ev.Value)
+
+                case *slack.RTMError:
+                        fmt.Printf(&amp;quot;Error: %s\n&amp;quot;, ev.Error())
+
+                case *slack.InvalidAuthEvent:
+                        fmt.Printf(&amp;quot;Invalid credentials&amp;quot;)
+                        return
+
+                default:
+
+                        // Ignore other events..
+                        // fmt.Printf(&amp;quot;Unexpected: %v\n&amp;quot;, msg.Data)
+                }
+        }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
+
+&lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;# Build
+FROM golang:1.11.2-alpine as builder
+
+WORKDIR /app
+RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
+    chown -R app:app /app &amp;amp;&amp;amp; \
+    apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+
+ADD . /app/
+RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+
+# Run
+FROM golang:1.11.2-alpine
+
+WORKDIR /app
+RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
+    chown -R app:app /app
+
+COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+COPY --from=builder --chown=app /app/main /app/main
+
+USER app
+CMD [&amp;quot;/app/main&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
+
+&lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks init echobot
+INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
+INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.8.0&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
+INFO Generating ksonnet-lib data at path &#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now let&amp;rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot &lt;code&gt;components/echobot.jsonnet&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Import KSonnet library
+local params = std.extVar(&#39;__ksonnet/params&#39;).components.demo;
+local k = import &#39;k.libsonnet&#39;;
+
+// Specify the import objects that we need
+local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;
+local depl = k.extensions.v1beta1.deployment;
+
+// Environment variables, instead of hardcoding it here we could use a param or a secret
+// But I will leave that as an exercise for you :)
+local envs = [
+  {
+    name: &#39;SLACK_API_TOKEN&#39;,
+    value: &#39;really-long-token&#39;,
+  },
+];
+
+local livenessProbe = {
+  exec: {
+    command: [
+      &#39;/bin/sh&#39;,
+      &#39;-c&#39;,
+      &#39;/app/health_check.sh&#39;,
+    ],
+  },
+};
+
+// Define containers
+local containers = [
+  container.new(&#39;echobot&#39;, &#39;kainlite/echobot:0.0.2&#39;) {
+    env: (envs),
+    livenessProbe: livenessProbe,
+  },
+];
+
+// Define deployment with 3 replicas
+local deployment =
+  depl.new(&#39;echobot&#39;, 1, containers, { app: &#39;echobot&#39; });
+
+local resources = [deployment];
+
+// Return list of resources.
+k.core.v1.list.new(resources)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ ks apply default
+INFO Applying deployments echobot
+INFO Creating non-existent deployments echobot
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And in the logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt; $ kubectl get pods
+NAME                               READY     STATUS    RESTARTS   AGE
+echobot-7456f7d7dd-twg4r           1/1       Running   0          53s
+
+$ kubectl logs -f echobot-7456f7d7dd-twg4r
+Event Received: Event Received: Infos: &amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y= 0xc000468000 0xc0004482a0 [] [] [] [] []}
+Connection counter: 0
+Event Received: Event Received: Current latency: 1.256397423s
+Event Received: Current latency: 1.25679313s
+Event Received: Current latency: 1.256788737s
+Event Received: Message: &amp;amp;{{message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
+
+&lt;p&gt;As promised I will be doing one post about &lt;a href=&#34;https://github.com/hasura/gitkube&#34;&gt;Gitkube&lt;/a&gt; and &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;Skaffold&lt;/a&gt;, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about &lt;a href=&#34;https://www.docker.com/&#34;&gt;Docker&lt;/a&gt;, &lt;a href=&#34;https://containerd.io/&#34;&gt;ContainerD&lt;/a&gt;, &lt;a href=&#34;https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/&#34;&gt;KubeADM&lt;/a&gt;, and Kubernetes in general.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting started with ksonnet</title>
+      <link>https://kainlite.github.io/blog/getting_started_with_ksonnet/</link>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/getting_started_with_ksonnet/</guid>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt;, in the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&amp;rsquo;s review some terminology from ksonnet (extracted from the &lt;a href=&#34;https://ksonnet.io/docs/concepts/&#34;&gt;official documentation&lt;/a&gt;):&lt;/p&gt;
+
+&lt;h4 id=&#34;application&#34;&gt;Application&lt;/h4&gt;
+
+&lt;p&gt;A ksonnet application represents a well-structured directory of Kubernetes manifests (this is generated using the &lt;code&gt;ks init&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h4 id=&#34;environment&#34;&gt;Environment&lt;/h4&gt;
+
+&lt;p&gt;An environment consists of four elements, some of which can be pulled from your current kubeconfig context: Name, Server, Namespace, API version. The environment determines to which cluster you&amp;rsquo;re going to deploy the application.&lt;/p&gt;
+
+&lt;h4 id=&#34;component&#34;&gt;Component&lt;/h4&gt;
+
+&lt;p&gt;A component can be as simple as a Kubernetes resource (a Pod, Deployment, etc), or a fully working stack for example EFK/ELK, you can generate components using &lt;code&gt;ks generate&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;prototype&#34;&gt;Prototype&lt;/h4&gt;
+
+&lt;p&gt;Prototype + Parameters = Component. Think of a prototype as a base template before you apply the parameters, to set a name, replicas, etc for the resource, you can explore some system prototypes with &lt;code&gt;ks prototype&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;parameter&#34;&gt;Parameter&lt;/h4&gt;
+
+&lt;p&gt;It gives live to a component with dynamic values, you can use &lt;code&gt;ks param&lt;/code&gt; to view or modify params, there are App params (global), Component params, and Environment params (overrides app params).&lt;/p&gt;
+
+&lt;h4 id=&#34;module&#34;&gt;Module&lt;/h4&gt;
+
+&lt;p&gt;Modules provide a way for you to share components across environments. More concisely, a module refers to a subdirectory in components/ containing its own params.libsonnet. To create a module &lt;code&gt;ks module create &amp;lt;module name&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;part&#34;&gt;Part&lt;/h4&gt;
+
+&lt;p&gt;It provides a way to organize and re-use code.&lt;/p&gt;
+
+&lt;h4 id=&#34;package&#34;&gt;Package&lt;/h4&gt;
+
+&lt;p&gt;A package is a set of related prototypes and associates helper libraries, it allows you to create and share packages between applications.&lt;/p&gt;
+
+&lt;h4 id=&#34;registry&#34;&gt;Registry&lt;/h4&gt;
+
+&lt;p&gt;It&amp;rsquo;s essentially a repository for packages, it supports the incubator registry, github, filesystem, and Helm.&lt;/p&gt;
+
+&lt;h4 id=&#34;manifest&#34;&gt;Manifest&lt;/h4&gt;
+
+&lt;p&gt;The same old YAML or JSON manifest but this time written in &lt;a href=&#34;https://jsonnet.org/learning/tutorial.html&#34;&gt;Jsonnet&lt;/a&gt;, basically Jsonnet is a simple extension of JSON.&lt;/p&gt;
+
+&lt;p&gt;Phew, that&amp;rsquo;s a lot of names and terminology at once, let&amp;rsquo;s get started with the terminal already.&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;This command will generate the following folder structure &lt;code&gt;ks init wordpress&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
+INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.12.4&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
+INFO Generating ksonnet-lib data at path &#39;~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4&#39;
+
+$ ls -l |  awk &#39;{ print $9 }&#39;
+app.yaml        &amp;lt;--- Defines versions, namespace, cluster address, app name, registry.
+components      &amp;lt;--- Components by default it&#39;s empty and has a params file.
+environments    &amp;lt;--- By default there is only one environment called default.
+lib             &amp;lt;--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources (Pods, Deployments, etc).
+vendor          &amp;lt;--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s generate a &lt;em&gt;deployed-service&lt;/em&gt; and inspect it&amp;rsquo;s context:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks generate deployed-service wordpress \
+  --image bitnami/wordpress:5.0.2 \
+  --type ClusterIP
+
+INFO Writing component at &#39;~/k8s-examples/wordpress/components/wordpress.jsonnet&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At the moment of this writing the latest version of Wordpress is 5.0.2, it&amp;rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s see how our component looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
+local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordpress;
+[
+  {
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
+    &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
+    &amp;quot;metadata&amp;quot;: {
+      &amp;quot;name&amp;quot;: params.name
+    },
+    &amp;quot;spec&amp;quot;: {
+      &amp;quot;ports&amp;quot;: [
+        {
+          &amp;quot;port&amp;quot;: params.servicePort,
+          &amp;quot;targetPort&amp;quot;: params.containerPort
+        }
+      ],
+      &amp;quot;selector&amp;quot;: {
+        &amp;quot;app&amp;quot;: params.name
+      },
+      &amp;quot;type&amp;quot;: params.type
+    }
+  },
+  {
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
+    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
+    &amp;quot;metadata&amp;quot;: {
+      &amp;quot;name&amp;quot;: params.name
+    },
+    &amp;quot;spec&amp;quot;: {
+      &amp;quot;replicas&amp;quot;: params.replicas,
+      &amp;quot;selector&amp;quot;: {
+        &amp;quot;matchLabels&amp;quot;: {
+          &amp;quot;app&amp;quot;: params.name
+        },
+      },
+      &amp;quot;template&amp;quot;: {
+        &amp;quot;metadata&amp;quot;: {
+          &amp;quot;labels&amp;quot;: {
+            &amp;quot;app&amp;quot;: params.name
+          }
+        },
+        &amp;quot;spec&amp;quot;: {
+          &amp;quot;containers&amp;quot;: [
+            {
+              &amp;quot;image&amp;quot;: params.image,
+              &amp;quot;name&amp;quot;: params.name,
+              &amp;quot;ports&amp;quot;: [
+                {
+                  &amp;quot;containerPort&amp;quot;: params.containerPort
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It&amp;rsquo;s just another template for some known resources, a &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;service&lt;/a&gt; and a &lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/controllers/deployment/&#34;&gt;deployment&lt;/a&gt; that&amp;rsquo;s where the name came from: &lt;em&gt;deployed-service&lt;/em&gt;, but where are those params coming from?&lt;/p&gt;
+
+&lt;p&gt;If we run &lt;code&gt;ks show default&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    ksonnet.io/component: wordpress
+  name: wordpress
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: wordpress
+  type: ClusterIP
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    ksonnet.io/component: wordpress
+  name: wordpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: bitnami/wordpress:5.0.2
+        name: wordpress
+        ports:
+        - containerPort: 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will see what our package will generate in &lt;em&gt;YAML&lt;/em&gt; with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is &lt;code&gt;components/params.libsonnet&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  global: {
+    // User-defined global parameters; accessible to all component and environments, Ex:
+    // replicas: 4,
+  },
+  components: {
+    // Component-level parameters, defined initially from &#39;ks prototype use ...&#39;
+    // Each object below should correspond to a component in the components/ directory
+    wordpress: {
+      containerPort: 80,
+      image: &amp;quot;bitnami/wordpress:5.0.2&amp;quot;,
+      name: &amp;quot;wordpress&amp;quot;,
+      replicas: 1,
+      servicePort: 80,
+      type: &amp;quot;ClusterIP&amp;quot;,
+    },
+  },
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But that&amp;rsquo;s not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another &lt;em&gt;deployed-service&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next step would be to create another component:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks generate deployed-service mariadb \
+  --image bitnami/mariadb:10.1.37 \
+  --type ClusterIP
+
+INFO Writing component at &#39;/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.&lt;/p&gt;
+
+&lt;p&gt;Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
+The resulting &lt;code&gt;components/params.json&lt;/code&gt; will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  global: {
+    // User-defined global parameters; accessible to all component and environments, Ex:
+    // replicas: 4,
+    mariadbEmptyPassword: &amp;quot;no&amp;quot;,
+    mariadbUser: &amp;quot;mywordpressuser&amp;quot;,
+    mariadbPassword: &amp;quot;mywordpresspassword&amp;quot;,
+    mariadbDatabase: &amp;quot;bitnami_wordpress&amp;quot;,
+  },
+  components: {
+    // Component-level parameters, defined initially from &#39;ks prototype use ...&#39;
+    // Each object below should correspond to a component in the components/ directory
+    wordpress: {
+      containerPort: 80,
+      image: &amp;quot;bitnami/wordpress:5.0.2&amp;quot;,
+      name: &amp;quot;wordpress&amp;quot;,
+      replicas: 1,
+      servicePort: 80,
+      type: &amp;quot;ClusterIP&amp;quot;,
+    },
+    mariadb: {
+      containerPort: 3306,
+      image: &amp;quot;bitnami/mariadb:10.1.37&amp;quot;,
+      name: &amp;quot;mariadb&amp;quot;,
+      replicas: 1,
+      servicePort: 3306,
+      type: &amp;quot;ClusterIP&amp;quot;,
+    },
+  },
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The resulting &lt;code&gt;components/wordpress.jsonnet&lt;/code&gt; will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
+local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordpress;
+[
+  {
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
+    &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
+    &amp;quot;metadata&amp;quot;: {
+      &amp;quot;name&amp;quot;: params.name
+    },
+    &amp;quot;spec&amp;quot;: {
+      &amp;quot;ports&amp;quot;: [
+        {
+          &amp;quot;port&amp;quot;: params.servicePort,
+          &amp;quot;targetPort&amp;quot;: params.containerPort
+        }
+      ],
+      &amp;quot;selector&amp;quot;: {
+        &amp;quot;app&amp;quot;: params.name
+      },
+      &amp;quot;type&amp;quot;: params.type
+    }
+  },
+  {
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
+    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
+    &amp;quot;metadata&amp;quot;: {
+      &amp;quot;name&amp;quot;: params.name
+    },
+    &amp;quot;spec&amp;quot;: {
+      &amp;quot;replicas&amp;quot;: params.replicas,
+      &amp;quot;selector&amp;quot;: {
+        &amp;quot;matchLabels&amp;quot;: {
+          &amp;quot;app&amp;quot;: params.name
+        },
+      },
+      &amp;quot;template&amp;quot;: {
+        &amp;quot;metadata&amp;quot;: {
+          &amp;quot;labels&amp;quot;: {
+            &amp;quot;app&amp;quot;: params.name
+          }
+        },
+        &amp;quot;spec&amp;quot;: {
+          &amp;quot;containers&amp;quot;: [
+            {
+              &amp;quot;image&amp;quot;: params.image,
+              &amp;quot;name&amp;quot;: params.name,
+              &amp;quot;ports&amp;quot;: [
+                {
+                  &amp;quot;containerPort&amp;quot;: params.containerPort
+                }
+              ],
+              &amp;quot;env&amp;quot;: [
+                {
+                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_USER&amp;quot;,
+                    &amp;quot;value&amp;quot;: params.mariadbUser,
+                },
+                {
+                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_PASSWORD&amp;quot;,
+                    &amp;quot;value&amp;quot;: params.mariadbPassword,
+                },
+                {
+                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_NAME&amp;quot;,
+                    &amp;quot;value&amp;quot;: params.mariadbDatabase,
+                },
+                {
+                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_HOST&amp;quot;,
+                    &amp;quot;value&amp;quot;: &amp;quot;mariadb&amp;quot;,
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only thing that changed here is &lt;code&gt;spec.containers.env&lt;/code&gt; which wasn&amp;rsquo;t present before.&lt;/p&gt;
+
+&lt;p&gt;The resulting &lt;code&gt;components/mariadb.jsonnet&lt;/code&gt; will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
+local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.mariadb;
+[
+{
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
+        &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
+        &amp;quot;metadata&amp;quot;: {
+            &amp;quot;name&amp;quot;: params.name
+        },
+        &amp;quot;spec&amp;quot;: {
+            &amp;quot;ports&amp;quot;: [
+            {
+                &amp;quot;port&amp;quot;: params.servicePort,
+                &amp;quot;targetPort&amp;quot;: params.containerPort
+            }
+            ],
+            &amp;quot;selector&amp;quot;: {
+                &amp;quot;app&amp;quot;: params.name
+            },
+            &amp;quot;type&amp;quot;: params.type
+        }
+},
+{
+    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
+    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
+    &amp;quot;metadata&amp;quot;: {
+        &amp;quot;name&amp;quot;: params.name
+    },
+    &amp;quot;spec&amp;quot;: {
+        &amp;quot;replicas&amp;quot;: params.replicas,
+        &amp;quot;selector&amp;quot;: {
+            &amp;quot;matchLabels&amp;quot;: {
+                &amp;quot;app&amp;quot;: params.name
+            },
+        },
+        &amp;quot;template&amp;quot;: {
+            &amp;quot;metadata&amp;quot;: {
+                &amp;quot;labels&amp;quot;: {
+                    &amp;quot;app&amp;quot;: params.name
+                }
+            },
+            &amp;quot;spec&amp;quot;: {
+                &amp;quot;containers&amp;quot;: [
+                {
+                    &amp;quot;image&amp;quot;: params.image,
+                    &amp;quot;name&amp;quot;: params.name,
+                    &amp;quot;ports&amp;quot;: [
+                    {
+                        &amp;quot;containerPort&amp;quot;: params.containerPort
+                    },
+                    ],
+                    &amp;quot;env&amp;quot;: [
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;ALLOW_EMPTY_PASSWORD&amp;quot;,
+                        &amp;quot;value&amp;quot;: params.mariadbEmptyPassword,
+                    },
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_USER&amp;quot;,
+                        &amp;quot;value&amp;quot;: params.mariadbUser,
+                    },
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_PASSWORD&amp;quot;,
+                        &amp;quot;value&amp;quot;: params.mariadbPassword,
+                    },
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_ROOT_PASSWORD&amp;quot;,
+                        &amp;quot;value&amp;quot;: params.mariadbPassword,
+                    },
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_DATABASE&amp;quot;,
+                        &amp;quot;value&amp;quot;: params.mariadbDatabase,
+                    },
+                    ],
+                    &amp;quot;volumeMounts&amp;quot;: [
+                    {
+                        &amp;quot;mountPath&amp;quot;: &amp;quot;/var/lib/mysql&amp;quot;,
+                        &amp;quot;name&amp;quot;: &amp;quot;mariadb&amp;quot;
+                    }
+                    ]
+                }
+                ],
+                &amp;quot;volumes&amp;quot;: [
+                {
+                    &amp;quot;name&amp;quot;: &amp;quot;mariadb&amp;quot;,
+                    &amp;quot;hostPath&amp;quot;: {
+                        &amp;quot;path&amp;quot;: &amp;quot;/home/docker/mariadb-data&amp;quot;
+                    }
+                }
+                ]
+            }
+        }
+    }
+}
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I know, I know, that is a lot of JSON, I trust you have a decent scroll :).&lt;/p&gt;
+
+&lt;p&gt;The only things that changed here are &lt;code&gt;spec.containers.env&lt;/code&gt;, &lt;code&gt;spec.containers.volumeMount&lt;/code&gt; and &lt;code&gt;spec.volumes&lt;/code&gt; which weren&amp;rsquo;t present before, that&amp;rsquo;s all you need to make wordpress work with mariadb.&lt;/p&gt;
+
+&lt;p&gt;This post only scratched the surface of what Ksonnet and Jsonnet can do, in another post I will describe more advances features with less &lt;em&gt;JSON&lt;/em&gt; / &lt;em&gt;YAML&lt;/em&gt;. There are a lot of things that can be improved and we will cover those things in the next post, if you want to see all the source code for this post go &lt;a href=&#34;https://github.com/kainlite/ksonnet-wordpress-example&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s clean up &lt;code&gt;ks delete default&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;INFO Deleting services mariadb
+INFO Deleting deployments mariadb
+INFO Deleting services wordpress
+INFO Deleting deployments wordpress
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;p&gt;If you want to check the wordpress installation via browser you can do &lt;code&gt;minikube proxy&lt;/code&gt; and then look up the following URL: &lt;a href=&#34;http://localhost:8001/api/v1/namespaces/default/services/wordpress/proxy/&#34;&gt;Wordpress&lt;/a&gt; (I&amp;rsquo;m using the default namespace here and the service name is wordpress, if you use ingress you don&amp;rsquo;t need to do this step)&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m not aware if Ksonnet supports releases and rollbacks like Helm, but it seems it could be emulated using git tags and just some git hooks.&lt;/p&gt;
+
+&lt;p&gt;If everything goes well, you should see something like this in the logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
+
+Welcome to the Bitnami wordpress container
+Subscribe to project updates by watching https://github.com/bitnami/bitnami-docker-wordpress
+Submit issues and feature requests at https://github.com/bitnami/bitnami-docker-wordpress/issues
+
+nami    INFO  Initializing apache
+apache  INFO  ==&amp;gt; Patching httpoxy...
+apache  INFO  ==&amp;gt; Configuring dummy certificates...
+nami    INFO  apache successfully initialized
+nami    INFO  Initializing php
+nami    INFO  php successfully initialized
+nami    INFO  Initializing mysql-client
+nami    INFO  mysql-client successfully initialized
+nami    INFO  Initializing libphp
+nami    INFO  libphp successfully initialized
+nami    INFO  Initializing wordpress
+mysql-c INFO  Trying to connect to MySQL server
+mysql-c INFO  Found MySQL server listening at mariadb:3306
+mysql-c INFO  MySQL server listening and working at mariadb:3306
+wordpre INFO
+wordpre INFO  ########################################################################
+wordpre INFO   Installation parameters for wordpress:
+wordpre INFO     First Name: FirstName
+wordpre INFO     Last Name: LastName
+wordpre INFO     Username: user
+wordpre INFO     Password: **********
+wordpre INFO     Email: user@example.com
+wordpre INFO     Blog Name: User&#39;s Blog!
+wordpre INFO     Table Prefix: wp_
+wordpre INFO   (Passwords are not shown for security reasons)
+wordpre INFO  ########################################################################
+wordpre INFO
+nami    INFO  wordpress successfully initialized
+INFO  ==&amp;gt; Starting wordpress...
+[Thu Dec 27 04:30:59.684053 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.684690 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.738783 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.739701 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Dec 27 04:30:59.765798 2018] [mpm_prefork:notice] [pid 116] AH00163: Apache/2.4.37 (Unix) OpenSSL/1.1.0j PHP/7.2.13 configured -- resuming normal operations
+[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: &#39;httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND&#39;
+172.17.0.1 - - [27/Dec/2018:04:31:00 +0000] &amp;quot;GET / HTTP/1.1&amp;quot; 200 3718
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&amp;quot; 200 753
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&amp;quot; 200 452
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&amp;quot; 200 4281
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&amp;quot; 200 19371
+172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&amp;quot; 200 1230
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And that folks is all I have for now, be sure to check out the &lt;a href=&#34;https://ksonnet.io/docs/&#34;&gt;Ksonnet official documentation&lt;/a&gt; and &lt;code&gt;ks help&lt;/code&gt; to know more about what ksonnet can do to help you deploy your applications to any kubernetes cluster.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Deploying my apps with Helm</title>
+      <link>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</guid>
+      <description>
+
+&lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;If you are already familiar with &lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with &lt;a href=&#34;https://github.com/helm/charts&#34;&gt;Charts&lt;/a&gt;, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the &lt;a href=&#34;https://github.com/helm/charts/blob/master/CONTRIBUTING.md#technical-requirements&#34;&gt;technical requirements&lt;/a&gt; but probably usable and the folder stable is for &lt;em&gt;graduated&lt;/em&gt; charts. This is not the only source of charts as you can imagine, You can use any source for your charts, even just the &lt;a href=&#34;https://docs.helm.sh/using_helm/#helm-install-installing-a-package&#34;&gt;tgz&lt;/a&gt; files, as we will see in this post.&lt;/p&gt;
+
+&lt;p&gt;How do I search for charts?:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I&amp;rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&amp;rsquo;re using the official repo in the folder stable, but what if we don&amp;rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&amp;rsquo;s use the one from &lt;a href=&#34;https://bitnami.com/stack/wordpress/helm&#34;&gt;Bitnami&lt;/a&gt;, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;helm repo add bitnami https://charts.bitnami.com/bitnami
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm search wordpress
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+bitnami/wordpress       5.0.2           5.0.2           Web publishing platform for building blogs and websites.
+stable/wordpress        3.3.0           4.9.8           Web publishing platform for building blogs and websites.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://github.com/helm/charts/tree/master/stable/wordpress&#34;&gt;documentation&lt;/a&gt; of the chart to create our &lt;code&gt;values.yaml&lt;/code&gt; file, note that in this example the stable wordpress chart it&amp;rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&amp;rsquo;t always be the case but it simplifies things for us.&lt;/p&gt;
+
+&lt;p&gt;Our example &lt;code&gt;values.yaml&lt;/code&gt; will look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wordpressBlogName: &amp;quot;Testing Helm Charts&amp;quot;
+persistence:
+  size: 1Gi
+ingress:
+  enabled: true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will only change the blog name by default, the persistent volume size and also enable &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; (Our app should be available through &lt;code&gt;wordpress.local&lt;/code&gt; inside the cluster), if you are using minikube be sure to enable the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; addon.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ minikube addons enable ingress
+ingress was successfully enabled
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can then install &lt;code&gt;stable/wordpress&lt;/code&gt; or &lt;code&gt;bitnami/wordpress&lt;/code&gt;, we will follow up with the one from Bitnami repo.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm install bitnami/wordpress \
+--set image.repository=bitnami/wordpress \
+--set image.tag=5.0.2 \
+-f values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As it&amp;rsquo;s a common good practice to use specific versions we will do it here, it&amp;rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, &lt;a href=&#34;https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375&#34;&gt;follow the example&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You should see something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;NAME:   plucking-condor
+LAST DEPLOYED: Mon Dec 24 13:06:38 2018
+NAMESPACE: default
+STATUS: DEPLOYED
+
+RESOURCES:
+==&amp;gt; v1/Pod(related)
+NAME                                        READY  STATUS             RESTARTS  AGE
+plucking-condor-wordpress-84845db8b5-hkqhc  0/1    ContainerCreating  0         0s
+plucking-condor-mariadb-0                   0/1    Pending            0         0s
+
+==&amp;gt; v1/Secret
+
+NAME                       AGE
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1/ConfigMap
+plucking-condor-mariadb        0s
+plucking-condor-mariadb-tests  0s
+
+==&amp;gt; v1/PersistentVolumeClaim
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1/Service
+plucking-condor-mariadb    0s
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1beta1/Deployment
+plucking-condor-wordpress  0s
+
+==&amp;gt; v1beta1/StatefulSet
+plucking-condor-mariadb  0s
+
+==&amp;gt; v1beta1/Ingress
+wordpress.local-plucking-condor  0s
+
+
+NOTES:
+1. Get the WordPress URL:
+
+  You should be able to access your new WordPress installation through
+  http://wordpress.local/admin
+
+2. Login with the following credentials to see your blog
+
+  echo Username: user
+  echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath=&amp;quot;{.data.wordpress-password}&amp;quot; | base64 --decode)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Depending on the cluster provider or installation itself, you might need to replace the &lt;code&gt;persistence.storageClass&lt;/code&gt; to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your &lt;code&gt;values.yaml&lt;/code&gt; you need to stick to YAML format and indent &lt;code&gt;storageClass&lt;/code&gt; under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.&lt;/p&gt;
+
+&lt;p&gt;At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data &lt;em&gt;ALWAYS&lt;/em&gt; have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &amp;ldquo;working backup&amp;rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s check that all resources are indeed working and that we can use our recently installed app.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get all
+NAME                                             READY     STATUS        RESTARTS   AGE
+pod/plucking-condor-mariadb-0                    1/1       Running       0          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   1/1       Running       0          12m
+
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
+service/kubernetes                  ClusterIP      10.96.0.1        &amp;lt;none&amp;gt;           443/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      10.106.219.59    &amp;lt;none&amp;gt;           3306/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   10.100.239.163   10.100.239.163   80:31764/TCP,443:32308/TCP   12m
+
+NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/plucking-condor-wordpress   1         1         1            1           12m
+
+NAME                                                   DESIRED   CURRENT   READY     AGE
+replicaset.apps/plucking-condor-wordpress-84845db8b5   1         1         1         12m
+
+NAME                                       DESIRED   CURRENT   AGE
+statefulset.apps/plucking-condor-mariadb   1         1         12m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter &lt;code&gt;--namespace&lt;/code&gt; in the &lt;code&gt;helm install&lt;/code&gt; line.&lt;/p&gt;
+
+&lt;p&gt;If you use minikube then ingress will expose a nodeport that we can find using &lt;code&gt;minikube service list&lt;/code&gt; then using the browser or curl to navigate our freshly installed wordpress.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; $ minikube service list
+|-------------|---------------------------|--------------------------------|
+|  NAMESPACE  |           NAME            |              URL               |
+|-------------|---------------------------|--------------------------------|
+| default     | kubernetes                | No node port                   |
+| default     | plucking-condor-mariadb   | No node port                   |
+| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
+|             |                           | http://192.168.99.100:32308    |
+| kube-system | default-http-backend      | http://192.168.99.100:30001    |
+| kube-system | kube-dns                  | No node port                   |
+| kube-system | kubernetes-dashboard      | No node port                   |
+| kube-system | tiller-deploy             | No node port                   |
+|-------------|---------------------------|--------------------------------|
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: &lt;a href=&#34;http://192.168.99.100:31764&#34;&gt;http://192.168.99.100:31764&lt;/a&gt; and https at: &lt;a href=&#34;http://192.168.99.100:32308&#34;&gt;http://192.168.99.100:32308&lt;/a&gt;, and &lt;a href=&#34;http://192.168.99.100:30001&#34;&gt;http://192.168.99.100:30001&lt;/a&gt; is the default backend for the ingress controller), your ips can be different but the basics are the same.&lt;/p&gt;
+
+&lt;p&gt;Sample screenshot:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;p&gt;As long as we have the &lt;a href=&#34;https://kubernetes.io/docs/concepts/storage/persistent-volumes/&#34;&gt;persistent volume&lt;/a&gt; our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.&lt;/p&gt;
+
+&lt;p&gt;Clean everything up:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;helm del --purge plucking-condor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s all I have for now, I will be adding more content next week.&lt;/p&gt;
+
+&lt;h3 id=&#34;don-t-repeat-yourself&#34;&gt;Don&amp;rsquo;t Repeat Yourself&lt;/h3&gt;
+
+&lt;p&gt;DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update or use an existing one. While helm and go helps with that, there is no perfect tool so we will explore other options in the following posts, explore what the community provides and what seems like a suitable tool for you. Happy Helming!.&lt;/p&gt;
+
+&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
+
+&lt;p&gt;The following posts will be about package managers, development deployment tools, etc. It&amp;rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Getting started with Ksonnet and friends.&lt;/li&gt;
+&lt;li&gt;Getting started with Skaffold.&lt;/li&gt;
+&lt;li&gt;Getting started with Gitkube.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting started with Helm</title>

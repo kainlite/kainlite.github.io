@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://kainlite.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,18 +14,9 @@
     <item>
       <title>Deployment Tools</title>
       <link>https://kainlite.github.io/tags/deployment-tools/</link>
-      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://kainlite.github.io/tags/deployment-tools/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Deployment_tools</title>
-      <link>https://kainlite.github.io/tags/deployment_tools/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/deployment_tools/</guid>
+      <guid>https://kainlite.github.io/tags/deployment-tools/</guid>
       <description></description>
     </item>
     
@@ -35,6 +26,15 @@
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gitkube</title>
+      <link>https://kainlite.github.io/tags/gitkube/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/tags/gitkube/</guid>
       <description></description>
     </item>
     
@@ -53,6 +53,15 @@
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/helm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Istio</title>
+      <link>https://kainlite.github.io/tags/istio/</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/tags/istio/</guid>
       <description></description>
     </item>
     
@@ -89,6 +98,15 @@
       <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/service-mesh/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Skaffold</title>
+      <link>https://kainlite.github.io/tags/skaffold/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/tags/skaffold/</guid>
       <description></description>
     </item>
     

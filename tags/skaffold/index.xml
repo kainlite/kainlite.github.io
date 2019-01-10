@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Skaffold on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://kainlite.github.io/tags/skaffold/</link>
+    <description>Recent content in Skaffold on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://kainlite.github.io/tags/skaffold/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting started with skaffold</title>
+      <link>https://kainlite.github.io/blog/getting_started_with_skaffold/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/blog/getting_started_with_skaffold/</guid>
+      <description>
+
+&lt;h3 id=&#34;skaffold&#34;&gt;&lt;strong&gt;Skaffold&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This time we will see how to get started with &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;Skaffold&lt;/a&gt;, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: &lt;em&gt;Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application. It also provides building blocks and describe customizations for a CI/CD pipeline.&lt;/em&gt; (Extracted from &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;github&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;In this example I will be using &lt;a href=&#34;https://m.do.co/c/01d040b789de&#34;&gt;Digital Ocean&lt;/a&gt; (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25, I got the idea from &lt;a href=&#34;https://www.youtube.com/watch?v=fhYSKEy0s8w&#34;&gt;Pelado Nerd Spanish Youtube Channel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
+
+&lt;p&gt;Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don&amp;rsquo;t waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you&amp;rsquo;re ready to go.&lt;/p&gt;
+
+&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
+$ kubectl get nodes -o wide
+
+NAME                 STATUS    ROLES     AGE       VERSION   EXTERNAL-IP       OS-IMAGE                       KERNEL-VERSION   CONTAINER-RUNTIME
+crazy-wozniak-8306   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   178.128.154.205   Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+crazy-wozniak-830t   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).&lt;/p&gt;
+
+&lt;p&gt;But let&amp;rsquo;s cut to the chase, we are here for &lt;em&gt;Skaffold&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 &amp;amp;&amp;amp; chmod +x skaffold &amp;amp;&amp;amp; sudo mv skaffold /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can install the binary using the provided line (linux) or downloading it from the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/releases&#34;&gt;releases page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once installed we can see the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/tree/master/examples&#34;&gt;examples&lt;/a&gt;, I will be using the getting-started example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: kainlite/echobot
+deploy:
+  kubectl:
+    manifests:
+      - k8s-*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With very litle YAML we can accomplish a lot.&lt;/p&gt;
+
+&lt;p&gt;We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&amp;rsquo;s generate one with &lt;code&gt;kubectl run echobot --image=kainlite/echobot --dry-run -o yaml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: echobot
+  name: echobot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: echobot
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: echobot
+    spec:
+      containers:
+      - image: kainlite/echobot
+        name: echobot
+        env:
+        - name: SLACK_API_TOKEN
+          value: really_long_token
+        livenessProbe:
+          exec:
+            command:
+            - &#39;/bin/sh&#39;
+            - &#39;-c&#39;
+            - &#39;/app/health_check.sh&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn&amp;rsquo;t want in and added some that we need for it to work.&lt;/p&gt;
+
+&lt;p&gt;Then the only thing left to do is testing that everything works properly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold build
+
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&amp;gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+ ---&amp;gt; Running in 1339601fff6f
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+(1/6) Installing nghttp2-libs (1.32.0-r0)
+(2/6) Installing libssh2 (1.8.0-r3)
+(3/6) Installing libcurl (7.61.1-r1)
+(4/6) Installing expat (2.2.5-r0)
+(5/6) Installing pcre2 (10.31-r0)
+(6/6) Installing git (2.18.1-r0)
+Executing busybox-1.28.4-r1.trigger
+OK: 19 MiB in 20 packages
+(1/12) Installing binutils (2.30-r5)
+(2/12) Installing gmp (6.1.2-r1)
+(3/12) Installing isl (0.18-r0)
+(4/12) Installing libgomp (6.4.0-r9)
+(5/12) Installing libatomic (6.4.0-r9)
+(6/12) Installing pkgconf (1.5.3-r0)
+(7/12) Installing libgcc (6.4.0-r9)
+(8/12) Installing mpfr3 (3.1.5-r1)
+(9/12) Installing mpc1 (1.0.3-r1)
+(10/12) Installing libstdc++ (6.4.0-r9)
+(11/12) Installing gcc (6.4.0-r9)
+(12/12) Installing musl-dev (1.1.19-r10)
+Executing busybox-1.28.4-r1.trigger
+OK: 113 MiB in 32 packages
+ ---&amp;gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&amp;gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+ ---&amp;gt; Running in 4482bfd3e8f7
+go: finding github.com/gorilla/websocket v1.4.0
+go: finding github.com/nlopes/slack v0.4.0
+go: finding github.com/pkg/errors v0.8.0
+go: downloading github.com/nlopes/slack v0.4.0
+go: downloading github.com/pkg/errors v0.8.0
+go: downloading github.com/gorilla/websocket v1.4.0
+ ---&amp;gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&amp;gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&amp;gt; Using cache
+ ---&amp;gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 95c2bf90800c
+Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+ ---&amp;gt; Using cache
+ ---&amp;gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 1fca8a8c999a8cd9b943456b70d90807:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+c54f8a17910a: Waiting
+93448d8c2605: Waiting
+e94f3271cc73: Layer already exists
+93391cb9fd4b: Layer already exists
+12468476a0ef: Layer already exists
+ec122f36b39d: Layer already exists
+ee06a8f42495: Layer already exists
+93448d8c2605: Layer already exists
+cb9d0f9550f6: Layer already exists
+df64d3292fd6: Layer already exists
+c54f8a17910a: Layer already exists
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 48.642618413s
+Starting test...
+Test complete in 9.15µs
+kainlite/echobot -&amp;gt; kainlite/echobot:fc03e3d-dirty-3541257
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As we can see skaffold build not only did the docker build but also tagged and pushed the image to &lt;a href=&#34;https://cloud.docker.com/repository/docker/kainlite/echobot/tags&#34;&gt;docker hub&lt;/a&gt;, which is really nice and really useful to build a CI/CD system with it.&lt;/p&gt;
+
+&lt;p&gt;But wait, we need to deploy that to our cluster, right on:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold deploy
+Starting build...
+Building [kainlite/echobot]...
+Sending build context to Docker daemon  66.56kB
+Step 1/12 : FROM golang:1.11.2-alpine as builder
+ ---&amp;gt; 57915f96905a
+Step 2/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0e7a97e577dc
+Step 4/12 : ADD . /app/
+ ---&amp;gt; Using cache
+ ---&amp;gt; 72cfd4dea99b
+Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 8ea604c7fb37
+Step 6/12 : FROM golang:1.11.2-alpine
+ ---&amp;gt; 57915f96905a
+Step 7/12 : WORKDIR /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; e04488a7f16b
+Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 33b206dba7e4
+Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&amp;gt; Using cache
+ ---&amp;gt; 34d3cd1a5bb0
+Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
+ ---&amp;gt; Using cache
+ ---&amp;gt; 0c3d838b25dc
+Step 11/12 : USER app
+ ---&amp;gt; Using cache
+ ---&amp;gt; 95c2bf90800c
+Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
+ ---&amp;gt; Using cache
+ ---&amp;gt; 3541257ff16c
+Successfully built 3541257ff16c
+Successfully tagged 510226574761304cc9d64a343d5bdbff:latest
+The push refers to repository [docker.io/kainlite/echobot]
+ee06a8f42495: Preparing
+12468476a0ef: Preparing
+ec122f36b39d: Preparing
+e94f3271cc73: Preparing
+93391cb9fd4b: Preparing
+cb9d0f9550f6: Preparing
+93448d8c2605: Preparing
+c54f8a17910a: Preparing
+df64d3292fd6: Preparing
+cb9d0f9550f6: Waiting
+93448d8c2605: Waiting
+c54f8a17910a: Waiting
+df64d3292fd6: Waiting
+12468476a0ef: Layer already exists
+e94f3271cc73: Layer already exists
+cb9d0f9550f6: Layer already exists
+ec122f36b39d: Layer already exists
+93391cb9fd4b: Layer already exists
+ee06a8f42495: Layer already exists
+c54f8a17910a: Layer already exists
+df64d3292fd6: Layer already exists
+93448d8c2605: Mounted from library/golang
+fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
+Build complete in 15.136865292s
+Starting test...
+Test complete in 17.912µs
+Starting deploy...
+kubectl client version: 1.10
+kubectl version 1.12.0 or greater is recommended for use with skaffold
+deployment.extensions &amp;quot;echobot&amp;quot; configured
+Deploy complete in 5.676513226s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.&lt;/p&gt;
+
+&lt;p&gt;After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ kubectl get pods
+NAME                       READY     STATUS              RESTARTS   AGE
+echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
+echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Skaffold also has another nice option that it&amp;rsquo;s called &lt;em&gt;dev&lt;/em&gt; it watches the folder for changes and re-deploys the app so you can focus on code.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s clean up and call it a day:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold delete
+Cleaning up...
+deployment.extensions &amp;quot;echobot&amp;quot; deleted
+Cleanup complete in 3.833219278s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;p&gt;I really liked the workflow that skaffold provides, I hope that I can use it some more in the near future. And remember to shutdown the kubernetes cluster if you are using Digital Ocean so you don&amp;rsquo;t get charged by surprise later on.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

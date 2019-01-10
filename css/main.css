@@ -93,6 +93,9 @@ html, body {
 .container a {
   color: #27A822;
 }
+.label {
+  color: #fff !important;
+}
 .container a:hover {
   color: #267723;
 }

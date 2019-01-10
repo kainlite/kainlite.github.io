@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "Tech experiments",
+  "title": "Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more",
   "home_page_url": "https://kainlite.github.io/",
   "feed_url": "https://kainlite.github.io/index.json",
   "items": [

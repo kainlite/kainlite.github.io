@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Tech experiments</title>
+    <title>Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://kainlite.github.io/tags/</link>
-    <description>Recent content in Tags on Tech experiments</description>
+    <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Dec 2018 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://kainlite.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Deployments</title>
-      <link>https://kainlite.github.io/tags/deployments/</link>
+      <title>Deployment Tools</title>
+      <link>https://kainlite.github.io/tags/deployment-tools/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/tags/deployment-tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Deployment_tools</title>
+      <link>https://kainlite.github.io/tags/deployment_tools/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/deployments/</guid>
+      <guid>https://kainlite.github.io/tags/deployment_tools/</guid>
       <description></description>
     </item>
     
@@ -75,11 +84,11 @@
     </item>
     
     <item>
-      <title>Mesh</title>
-      <link>https://kainlite.github.io/tags/mesh/</link>
+      <title>Service Mesh</title>
+      <link>https://kainlite.github.io/tags/service-mesh/</link>
       <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/mesh/</guid>
+      <guid>https://kainlite.github.io/tags/service-mesh/</guid>
       <description></description>
     </item>
     

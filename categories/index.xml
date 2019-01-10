@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Tech experiments</title>
+    <title>Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://kainlite.github.io/categories/</link>
-    <description>Recent content in Categories on Tech experiments</description>
+    <description>Recent content in Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     
@@ -11,11 +11,11 @@
     
     
     <item>
-      <title>Deployment Tools</title>
-      <link>https://kainlite.github.io/categories/deployment-tools/</link>
+      <title>Deployment_tools</title>
+      <link>https://kainlite.github.io/categories/deployment_tools/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/deployment-tools/</guid>
+      <guid>https://kainlite.github.io/categories/deployment_tools/</guid>
       <description></description>
     </item>
     
@@ -29,11 +29,11 @@
     </item>
     
     <item>
-      <title>Mesh</title>
-      <link>https://kainlite.github.io/categories/mesh/</link>
+      <title>Service Mesh</title>
+      <link>https://kainlite.github.io/categories/service-mesh/</link>
       <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/mesh/</guid>
+      <guid>https://kainlite.github.io/categories/service-mesh/</guid>
       <description></description>
     </item>
     

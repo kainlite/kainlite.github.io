@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kubernetes on Tech experiments</title>
+    <title>Kubernetes on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://kainlite.github.io/tags/kubernetes/</link>
-    <description>Recent content in Kubernetes on Tech experiments</description>
+    <description>Recent content in Kubernetes on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 06 Jan 2019 00:00:00 +0000</lastBuildDate>

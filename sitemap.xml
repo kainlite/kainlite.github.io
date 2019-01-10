@@ -55,13 +55,13 @@
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/deployment_tools/</loc>
+    <loc>https://kainlite.github.io/categories/deployment_tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/deployment_tools/</loc>
+    <loc>https://kainlite.github.io/tags/deployment_tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -97,13 +97,13 @@
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/kubernetes/</loc>
+    <loc>https://kainlite.github.io/categories/kubernetes/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/kubernetes/</loc>
+    <loc>https://kainlite.github.io/tags/kubernetes/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -115,13 +115,13 @@
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/service-mesh/</loc>
+    <loc>https://kainlite.github.io/categories/service-mesh/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/service-mesh/</loc>
+    <loc>https://kainlite.github.io/tags/service-mesh/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

@@ -59,7 +59,7 @@
     <item>
       <title>Istio</title>
       <link>https://kainlite.github.io/tags/istio/</link>
-      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/istio/</guid>
       <description></description>
@@ -86,16 +86,25 @@
     <item>
       <title>Kubernetes</title>
       <link>https://kainlite.github.io/tags/kubernetes/</link>
-      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Routing</title>
+      <link>https://kainlite.github.io/tags/routing/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://kainlite.github.io/tags/routing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Service Mesh</title>
       <link>https://kainlite.github.io/tags/service-mesh/</link>
-      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://kainlite.github.io/tags/service-mesh/</guid>
       <description></description>

@@ -341,7 +341,7 @@ virtualservice.networking.istio.io &quot;bookinfo&quot; created
 
 <p>In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
 
-<p>After that we need to set some environmnet variables to fetch the LB ip, port, etc.</p>
+<p>After that we need to set some environment variables to fetch the LB ip, port, etc.</p>
 
 <pre><code class="language-plain">$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 $ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name==&quot;http2&quot;)].port}')
@@ -351,7 +351,7 @@ $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://${GATEWAY_URL}/productpage
 </code></pre>
 
-<p>If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://$\{GATEWAY_URL\}/productpage</code> and you will see something like the following image:
+<p>If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:
 <figure>
     <img src="/img/productpage-example.png" width="100%"/> <figcaption>
             <h4>Product page example</h4>
@@ -395,6 +395,19 @@ curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://${GATEWAY_URL}/product
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
+                        January 10, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/exploring_some_istio_features/">Exploring some Istio features</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
                         January 3, 2019
                       </h6>
                     </div>
@@ -414,19 +427,6 @@ curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://${GATEWAY_URL}/product
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_gitkube/">Getting started with gitkube</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        December 29, 2018
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/go_echobot/">Go echo bot</a></strong>
                       </h6>
                     </div>
                   </div>

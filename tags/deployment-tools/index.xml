@@ -2038,8 +2038,8 @@ metadata:
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_ksonnet/&#34;&gt;Getting started with Ksonnet and friends&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Getting started with Skaffold.&lt;/li&gt;
-&lt;li&gt;Getting started with Gitkube.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_skaffold/&#34;&gt;Getting started with Skaffold&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_gitkube/&#34;&gt;Getting started with Gitkube&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

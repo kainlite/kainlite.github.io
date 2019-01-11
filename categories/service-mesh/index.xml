@@ -232,7 +232,7 @@ spec:
 
 &lt;p&gt;So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for &lt;em&gt;jason&lt;/em&gt; everyone else will see the version without stars or the error message.
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://kainlite.github.io/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 

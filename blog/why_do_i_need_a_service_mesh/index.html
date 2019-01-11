@@ -109,174 +109,165 @@ if (!doNotTrack) {
 
 <h3 id="let-s-get-started">Let&rsquo;s get started</h3>
 
-<p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href="https://istio.io/docs/setup/kubernetes/helm-install/">more info</a>):</p>
+<p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href="https://istio.io/docs/setup/kubernetes/helm-install/">more info</a>):
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ curl -L https://git.io/getLatestIstio <span style="color:#e6db74">| sh -</span></code></pre></div>
+This will download and extract the latest release, in this case 1.0.5 at this moment.</p>
 
-<pre><code class="language-plain">$ curl -L https://git.io/getLatestIstio | sh -
-</code></pre>
+<p>So let&rsquo;s install Istio&hellip; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled=<span style="color:#66d9ef">true</span> <span style="color:#e6db74">&gt; $HOME/istio.yaml</span>
+istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ kubectl create namespace istio-system
+namespace <span style="color:#e6db74">&#34;istio-system&#34;</span> created
 
-<p>This will download and extract the latest release, in this case 1.0.5 at this moment.</p>
+istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ kubectl apply -f $HOME/istio.yaml
+configmap <span style="color:#e6db74">&#34;istio-galley-configuration&#34;</span> created
+configmap <span style="color:#e6db74">&#34;istio-statsd-prom-bridge&#34;</span> created
+configmap <span style="color:#e6db74">&#34;prometheus&#34;</span> created
+configmap <span style="color:#e6db74">&#34;istio-security-custom-resources&#34;</span> created
+configmap <span style="color:#e6db74">&#34;istio&#34;</span> created
+configmap <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-galley-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-egressgateway-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-ingressgateway-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-mixer-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-pilot-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;prometheus&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-cleanup-secrets-service-account&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-cleanup-secrets-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-cleanup-secrets-istio-system&#34;</span> created
+job.batch <span style="color:#e6db74">&#34;istio-cleanup-secrets&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-security-post-install-account&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-security-post-install-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-security-post-install-role-binding-istio-system&#34;</span> created
+job.batch <span style="color:#e6db74">&#34;istio-security-post-install&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-citadel-service-account&#34;</span> created
+serviceaccount <span style="color:#e6db74">&#34;istio-sidecar-injector-service-account&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;virtualservices.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;destinationrules.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;serviceentries.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;gateways.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;envoyfilters.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;httpapispecbindings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;httpapispecs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotaspecbindings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotaspecs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rules.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;attributemanifests.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;bypasses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;circonuses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;deniers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;fluentds.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;kubernetesenvs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;listcheckers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;memquotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;noops.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;opas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;prometheuses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rbacs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;redisquotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicecontrols.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;signalfxs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;solarwindses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;stackdrivers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;statsds.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;stdios.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;apikeys.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;authorizations.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;checknothings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;kuberneteses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;listentries.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;logentries.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;edges.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;metrics.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;reportnothings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicecontrolreports.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;tracespans.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rbacconfigs.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;serviceroles.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicerolebindings.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;adapters.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;instances.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;templates.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;handlers.config.istio.io&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-galley-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-egressgateway-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-ingressgateway-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-mixer-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-pilot-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;prometheus-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-citadel-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-galley-admin-role-binding-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-egressgateway-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-ingressgateway-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-mixer-admin-role-binding-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-pilot-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;prometheus-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-citadel-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector-admin-role-binding-istio-system&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-galley&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
+service <span style="color:#e6db74">&#34;prometheus&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-citadel&#34;</span> created
+service <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-galley&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;prometheus&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-citadel&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
+gateway.networking.istio.io <span style="color:#e6db74">&#34;istio-autogenerated-k8s-ingress&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
+mutatingwebhookconfiguration.admissionregistration.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
+attributemanifest.config.istio.io <span style="color:#e6db74">&#34;istioproxy&#34;</span> created
+attributemanifest.config.istio.io <span style="color:#e6db74">&#34;kubernetes&#34;</span> created
+stdio.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
+logentry.config.istio.io <span style="color:#e6db74">&#34;accesslog&#34;</span> created
+logentry.config.istio.io <span style="color:#e6db74">&#34;tcpaccesslog&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;stdio&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;stdiotcp&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;requestcount&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;requestduration&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;requestsize&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;responsesize&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;tcpbytesent&#34;</span> created
+metric.config.istio.io <span style="color:#e6db74">&#34;tcpbytereceived&#34;</span> created
+prometheus.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;promhttp&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;promtcp&#34;</span> created
+kubernetesenv.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;kubeattrgenrulerule&#34;</span> created
+rule.config.istio.io <span style="color:#e6db74">&#34;tcpkubeattrgenrulerule&#34;</span> created
+kubernetes.config.istio.io <span style="color:#e6db74">&#34;attributes&#34;</span> created
+destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
+destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created</code></pre></div>
+WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p>
 
-<p>So let&rsquo;s install Istio&hellip; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)</p>
-
-<pre><code class="language-plain">istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled=true &gt; $HOME/istio.yaml
-istio-1.0.5 $ kubectl create namespace istio-system
-namespace &quot;istio-system&quot; created
-
-istio-1.0.5 $ kubectl apply -f $HOME/istio.yaml
-configmap &quot;istio-galley-configuration&quot; created
-configmap &quot;istio-statsd-prom-bridge&quot; created
-configmap &quot;prometheus&quot; created
-configmap &quot;istio-security-custom-resources&quot; created
-configmap &quot;istio&quot; created
-configmap &quot;istio-sidecar-injector&quot; created
-serviceaccount &quot;istio-galley-service-account&quot; created
-serviceaccount &quot;istio-egressgateway-service-account&quot; created
-serviceaccount &quot;istio-ingressgateway-service-account&quot; created
-serviceaccount &quot;istio-mixer-service-account&quot; created
-serviceaccount &quot;istio-pilot-service-account&quot; created
-serviceaccount &quot;prometheus&quot; created
-serviceaccount &quot;istio-cleanup-secrets-service-account&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-cleanup-secrets-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-cleanup-secrets-istio-system&quot; created
-job.batch &quot;istio-cleanup-secrets&quot; created
-serviceaccount &quot;istio-security-post-install-account&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-security-post-install-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-security-post-install-role-binding-istio-system&quot; created
-job.batch &quot;istio-security-post-install&quot; created
-serviceaccount &quot;istio-citadel-service-account&quot; created
-serviceaccount &quot;istio-sidecar-injector-service-account&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;virtualservices.networking.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;destinationrules.networking.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;serviceentries.networking.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;gateways.networking.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;envoyfilters.networking.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;httpapispecbindings.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;httpapispecs.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;quotaspecbindings.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;quotaspecs.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;rules.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;attributemanifests.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;bypasses.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;circonuses.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;deniers.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;fluentds.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;kubernetesenvs.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;listcheckers.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;memquotas.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;noops.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;opas.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;prometheuses.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;rbacs.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;redisquotas.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;servicecontrols.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;signalfxs.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;solarwindses.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;stackdrivers.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;statsds.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;stdios.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;apikeys.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;authorizations.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;checknothings.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;kuberneteses.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;listentries.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;logentries.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;edges.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;metrics.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;quotas.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;reportnothings.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;servicecontrolreports.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;tracespans.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;rbacconfigs.rbac.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;serviceroles.rbac.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;servicerolebindings.rbac.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;adapters.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;instances.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;templates.config.istio.io&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;handlers.config.istio.io&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-galley-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-egressgateway-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-ingressgateway-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-mixer-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-pilot-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;prometheus-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-citadel-istio-system&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;istio-sidecar-injector-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-galley-admin-role-binding-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-egressgateway-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-ingressgateway-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-mixer-admin-role-binding-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-pilot-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;prometheus-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-citadel-istio-system&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;istio-sidecar-injector-admin-role-binding-istio-system&quot; created
-service &quot;istio-galley&quot; created
-service &quot;istio-egressgateway&quot; created
-service &quot;istio-ingressgateway&quot; created
-service &quot;istio-policy&quot; created
-service &quot;istio-telemetry&quot; created
-service &quot;istio-pilot&quot; created
-service &quot;prometheus&quot; created
-service &quot;istio-citadel&quot; created
-service &quot;istio-sidecar-injector&quot; created
-deployment.extensions &quot;istio-galley&quot; created
-deployment.extensions &quot;istio-egressgateway&quot; created
-deployment.extensions &quot;istio-ingressgateway&quot; created
-deployment.extensions &quot;istio-policy&quot; created
-deployment.extensions &quot;istio-telemetry&quot; created
-deployment.extensions &quot;istio-pilot&quot; created
-deployment.extensions &quot;prometheus&quot; created
-deployment.extensions &quot;istio-citadel&quot; created
-deployment.extensions &quot;istio-sidecar-injector&quot; created
-gateway.networking.istio.io &quot;istio-autogenerated-k8s-ingress&quot; created
-horizontalpodautoscaler.autoscaling &quot;istio-egressgateway&quot; created
-horizontalpodautoscaler.autoscaling &quot;istio-ingressgateway&quot; created
-horizontalpodautoscaler.autoscaling &quot;istio-policy&quot; created
-horizontalpodautoscaler.autoscaling &quot;istio-telemetry&quot; created
-horizontalpodautoscaler.autoscaling &quot;istio-pilot&quot; created
-mutatingwebhookconfiguration.admissionregistration.k8s.io &quot;istio-sidecar-injector&quot; created
-attributemanifest.config.istio.io &quot;istioproxy&quot; created
-attributemanifest.config.istio.io &quot;kubernetes&quot; created
-stdio.config.istio.io &quot;handler&quot; created
-logentry.config.istio.io &quot;accesslog&quot; created
-logentry.config.istio.io &quot;tcpaccesslog&quot; created
-rule.config.istio.io &quot;stdio&quot; created
-rule.config.istio.io &quot;stdiotcp&quot; created
-metric.config.istio.io &quot;requestcount&quot; created
-metric.config.istio.io &quot;requestduration&quot; created
-metric.config.istio.io &quot;requestsize&quot; created
-metric.config.istio.io &quot;responsesize&quot; created
-metric.config.istio.io &quot;tcpbytesent&quot; created
-metric.config.istio.io &quot;tcpbytereceived&quot; created
-prometheus.config.istio.io &quot;handler&quot; created
-rule.config.istio.io &quot;promhttp&quot; created
-rule.config.istio.io &quot;promtcp&quot; created
-kubernetesenv.config.istio.io &quot;handler&quot; created
-rule.config.istio.io &quot;kubeattrgenrulerule&quot; created
-rule.config.istio.io &quot;tcpkubeattrgenrulerule&quot; created
-kubernetes.config.istio.io &quot;attributes&quot; created
-destinationrule.networking.istio.io &quot;istio-policy&quot; created
-destinationrule.networking.istio.io &quot;istio-telemetry&quot; created
-</code></pre>
-
-<p>WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p>
-
-<p>So lets see what&rsquo;s running and what that means:</p>
-
-<pre><code class="language-plain">$ kubectl get pods -n istio-system
+<p>So lets see what&rsquo;s running and what that means:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
-istio-citadel-856f994c58-l96p8            1/1       Running     0          3m
-istio-cleanup-secrets-xqqj4               0/1       Completed   0          3m
-istio-egressgateway-5649fcf57-7zwkh       1/1       Running     0          3m
-istio-galley-7665f65c9c-tzn7d             1/1       Running     0          3m
-istio-ingressgateway-6755b9bbf6-bh84r     1/1       Running     0          3m
-istio-pilot-56855d999b-c4cp5              2/2       Running     0          3m
-istio-policy-6fcb6d655f-9544z             2/2       Running     0          3m
-istio-sidecar-injector-768c79f7bf-th8zh   1/1       Running     0          3m
-istio-telemetry-664d896cf5-jdcwv          2/2       Running     0          3m
-prometheus-76b7745b64-f8jxn               1/1       Running     0          3m
-</code></pre>
-
-<p>A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href="https://github.com/istio/istio">github</a>.</p>
+istio-citadel-856f994c58-l96p8            <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-cleanup-secrets-xqqj4               <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>       Completed   <span style="color:#ae81ff">0</span>          3m
+istio-egressgateway-5649fcf57-7zwkh       <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-galley-7665f65c9c-tzn7d             <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-ingressgateway-6755b9bbf6-bh84r     <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-pilot-56855d999b-c4cp5              <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-policy-6fcb6d655f-9544z             <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-sidecar-injector-768c79f7bf-th8zh   <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
+istio-telemetry-664d896cf5-jdcwv          <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
+prometheus-76b7745b64-f8jxn               <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
+A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href="https://github.com/istio/istio">github</a>.</p>
 
 <p><strong>Envoy</strong>: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
 Note: The service mesh is not an overlay network. It simplifies and enhances how microservices in an application talk to each other over the network provided by the underlying platform.</p>
@@ -291,67 +282,53 @@ Note: The service mesh is not an overlay network. It simplifies and enhances how
 
 <p><strong>Galley</strong>: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.</p>
 
-<p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href="https://istio.io/docs/examples/bookinfo/">test application</a> and check it:</p>
-
-<pre><code class="language-plain">$ export PATH=&quot;$PATH:~/istio-1.0.5/bin&quot;
-istio-1.0.5/samples/bookinfo $ kubectl apply -f &lt;(istioctl kube-inject -f platform/kube/bookinfo.yaml)
-service &quot;details&quot; created
-deployment.extensions &quot;details-v1&quot; created
-service &quot;ratings&quot; created
-deployment.extensions &quot;ratings-v1&quot; created
-service &quot;reviews&quot; created
-deployment.extensions &quot;reviews-v1&quot; created
-deployment.extensions &quot;reviews-v2&quot; created
-deployment.extensions &quot;reviews-v3&quot; created
-service &quot;productpage&quot; created
-deployment.extensions &quot;productpage-v1&quot; created
-</code></pre>
-
-<p>That command not only deployed the application but injected the Istio sidecar to each pod:</p>
-
-<pre><code class="language-plain">$ kubectl get pods
+<p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href="https://istio.io/docs/examples/bookinfo/">test application</a> and check it:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ export PATH=<span style="color:#e6db74">&#34;$PATH:~/istio-1.0.5/bin&#34;</span>
+istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span>/samples/bookinfo $ kubectl apply -f &lt;(istioctl kube-inject -f platform/kube/bookinfo.yaml)
+service <span style="color:#e6db74">&#34;details&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;details-v1&#34;</span> created
+service <span style="color:#e6db74">&#34;ratings&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;ratings-v1&#34;</span> created
+service <span style="color:#e6db74">&#34;reviews&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;reviews-v1&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;reviews-v2&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;reviews-v3&#34;</span> created
+service <span style="color:#e6db74">&#34;productpage&#34;</span> created
+deployment.extensions <span style="color:#e6db74">&#34;productpage-v1&#34;</span> created</code></pre></div>
+That command not only deployed the application but injected the Istio sidecar to each pod:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
-details-v1-8bd954dbb-zhrqq        2/2       Running   0          2m
-productpage-v1-849c786f96-kpfx9   2/2       Running   0          2m
-ratings-v1-68d648d6fd-w68qb       2/2       Running   0          2m
-reviews-v1-b4c984bdc-9s6j5        2/2       Running   0          2m
-reviews-v2-575446d5db-r6kwc       2/2       Running   0          2m
-reviews-v3-74458c4889-kr4wb       2/2       Running   0          2m
-</code></pre>
+details-v1-8bd954dbb-zhrqq        <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
+productpage-v1-849c786f96-kpfx9   <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
+ratings-v1-68d648d6fd-w68qb       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v1-b4c984bdc-9s6j5        <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v2-575446d5db-r6kwc       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v3-74458c4889-kr4wb       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
+As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection">automatic sidecar injection</a>.</p>
 
-<p>As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection">automatic sidecar injection</a>.</p>
-
-<p>Also all services are running:</p>
-
-<pre><code class="language-plain">$ kubectl get services
+<p>Also all services are running:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get services
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-details       ClusterIP   10.245.134.179   &lt;none&gt;        9080/TCP   3m
-kubernetes    ClusterIP   10.245.0.1       &lt;none&gt;        443/TCP    3d
-productpage   ClusterIP   10.245.32.221    &lt;none&gt;        9080/TCP   3m
-ratings       ClusterIP   10.245.159.112   &lt;none&gt;        9080/TCP   3m
-reviews       ClusterIP   10.245.77.125    &lt;none&gt;        9080/TCP   3m
-</code></pre>
+details       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">134.179</span>   &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
+kubernetes    ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">0.1</span>       &lt;none<span style="color:#e6db74">&gt;        443/TCP    3d</span>
+productpage   ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">32.221</span>    &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
+ratings       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">159.112</span>   &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
+reviews       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">77.125</span>    &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span></code></pre></div></p>
 
-<p>But how do I access the app?</p>
+<p>But how do I access the app?
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span>/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
+gateway.networking.istio.io <span style="color:#e6db74">&#34;bookinfo-gateway&#34;</span> created
+virtualservice.networking.istio.io <span style="color:#e6db74">&#34;bookinfo&#34;</span> created</code></pre></div>
+In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
 
-<pre><code class="language-plain">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
-gateway.networking.istio.io &quot;bookinfo-gateway&quot; created
-virtualservice.networking.istio.io &quot;bookinfo&quot; created
-</code></pre>
-
-<p>In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
-
-<p>After that we need to set some environment variables to fetch the LB ip, port, etc.</p>
-
-<pre><code class="language-plain">$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-$ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name==&quot;http2&quot;)].port}')
-$ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name==&quot;https&quot;)].port}')
+<p>After that we need to set some environment variables to fetch the LB ip, port, etc.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span>)
+$ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span>)
+$ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;https&#34;)].port}&#39;</span>)
 $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 
-curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://${GATEWAY_URL}/productpage
-</code></pre>
-
-<p>If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:
+curl -o /dev/<span style="color:#66d9ef">null</span> -s -w <span style="color:#e6db74">&#34;%{http_code}\n&#34;</span> http://${GATEWAY_URL}/productpage</code></pre></div>
+If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:
 <figure>
     <img src="/img/productpage-example.png" width="100%"/> <figcaption>
             <h4>Product page example</h4>

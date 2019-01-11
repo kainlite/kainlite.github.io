@@ -31,28 +31,21 @@
 
 &lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-1-13-1-do-2-nyc1-1546545313076-kubeconfig.yaml
+&lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-do-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-nyc1-&lt;span style=&#34;color:#ae81ff&#34;&gt;1546545313076&lt;/span&gt;-kubeconfig.yaml
 $ kubectl get nodes -o wide
 
 NAME                 STATUS    ROLES     AGE       VERSION   EXTERNAL-IP       OS-IMAGE                       KERNEL-VERSION   CONTAINER-RUNTIME
-crazy-wozniak-8306   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   178.128.154.205   Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
-crazy-wozniak-830t   Ready     &amp;lt;none&amp;gt;    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0
-&lt;/code&gt;&lt;/pre&gt;
+crazy-wozniak-&lt;span style=&#34;color:#ae81ff&#34;&gt;8306&lt;/span&gt;   Ready     &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;    6h        v1.13.1   178.128.154.205   Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0&lt;/span&gt;
+crazy-wozniak-830t   Ready     &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;    6h        v1.13.1   167.99.224.115    Debian GNU/Linux 9 (stretch)   4.9.0-8-amd64    docker://18.9.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).&lt;/p&gt;
 
-&lt;p&gt;Your config might have a slightly different name, but it should be similar. We can see in the output a lot of information about our nodes (workers).&lt;/p&gt;
+&lt;p&gt;But let&amp;rsquo;s cut to the chase, we are here for &lt;em&gt;Skaffold&lt;/em&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.&lt;span style=&#34;color:#ae81ff&#34;&gt;20.0&lt;/span&gt;/skaffold-linux-amd64 &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod +x skaffold &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo mv skaffold /usr/local/bin&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+You can install the binary using the provided line (linux) or downloading it from the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/releases&#34;&gt;releases page&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;But let&amp;rsquo;s cut to the chase, we are here for &lt;em&gt;Skaffold&lt;/em&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v0.20.0/skaffold-linux-amd64 &amp;amp;&amp;amp; chmod +x skaffold &amp;amp;&amp;amp; sudo mv skaffold /usr/local/bin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You can install the binary using the provided line (linux) or downloading it from the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/releases&#34;&gt;releases page&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once installed we can see the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/tree/master/examples&#34;&gt;examples&lt;/a&gt;, I will be using the getting-started example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;apiVersion: skaffold/v1beta2
+&lt;p&gt;Once installed we can see the &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold/tree/master/examples&#34;&gt;examples&lt;/a&gt;, I will be using the getting-started example:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;apiVersion: skaffold/v1beta2
 kind: Config
 build:
   artifacts:
@@ -60,21 +53,18 @@ build:
 deploy:
   kubectl:
     manifests:
-      - k8s-*
-&lt;/code&gt;&lt;/pre&gt;
+      - k8s-*&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+With very litle YAML we can accomplish a lot.&lt;/p&gt;
 
-&lt;p&gt;With very litle YAML we can accomplish a lot.&lt;/p&gt;
-
-&lt;p&gt;We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&amp;rsquo;s generate one with &lt;code&gt;kubectl run echobot --image=kainlite/echobot --dry-run -o yaml&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;apiVersion: extensions/v1beta1
+&lt;p&gt;We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&amp;rsquo;s generate one with &lt;code&gt;kubectl run echobot --image=kainlite/echobot --dry-run -o yaml&lt;/code&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     run: echobot
   name: echobot
 spec:
-  replicas: 1
+  replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
   selector:
     matchLabels:
       run: echobot
@@ -93,83 +83,80 @@ spec:
         livenessProbe:
           exec:
             command:
-            - &#39;/bin/sh&#39;
-            - &#39;-c&#39;
-            - &#39;/app/health_check.sh&#39;
-&lt;/code&gt;&lt;/pre&gt;
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/bin/sh&amp;#39;&lt;/span&gt;
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-c&amp;#39;&lt;/span&gt;
+            - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/app/health_check.sh&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn&amp;rsquo;t want in and added some that we need for it to work.&lt;/p&gt;
 
-&lt;p&gt;The above command can be used to generate any kind of k8s resource :), I stripped it a bit, because there were fields that I didn&amp;rsquo;t want in and added some that we need for it to work.&lt;/p&gt;
-
-&lt;p&gt;Then the only thing left to do is testing that everything works properly:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold build
+&lt;p&gt;Then the only thing left to do is testing that everything works properly:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ skaffold build
 
 Starting build...
 Building [kainlite/echobot]...
-Sending build context to Docker daemon  66.56kB
-Step 1/12 : FROM golang:1.11.2-alpine as builder
- ---&amp;gt; 57915f96905a
-Step 2/12 : WORKDIR /app
- ---&amp;gt; Using cache
- ---&amp;gt; e04488a7f16b
-Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
- ---&amp;gt; Running in 1339601fff6f
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
-(1/6) Installing nghttp2-libs (1.32.0-r0)
-(2/6) Installing libssh2 (1.8.0-r3)
-(3/6) Installing libcurl (7.61.1-r1)
-(4/6) Installing expat (2.2.5-r0)
-(5/6) Installing pcre2 (10.31-r0)
-(6/6) Installing git (2.18.1-r0)
-Executing busybox-1.28.4-r1.trigger
-OK: 19 MiB in 20 packages
-(1/12) Installing binutils (2.30-r5)
-(2/12) Installing gmp (6.1.2-r1)
-(3/12) Installing isl (0.18-r0)
-(4/12) Installing libgomp (6.4.0-r9)
-(5/12) Installing libatomic (6.4.0-r9)
-(6/12) Installing pkgconf (1.5.3-r0)
-(7/12) Installing libgcc (6.4.0-r9)
-(8/12) Installing mpfr3 (3.1.5-r1)
-(9/12) Installing mpc1 (1.0.3-r1)
-(10/12) Installing libstdc++ (6.4.0-r9)
-(11/12) Installing gcc (6.4.0-r9)
-(12/12) Installing musl-dev (1.1.19-r10)
-Executing busybox-1.28.4-r1.trigger
-OK: 113 MiB in 32 packages
- ---&amp;gt; 0e7a97e577dc
-Step 4/12 : ADD . /app/
- ---&amp;gt; 72cfd4dea99b
-Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
- ---&amp;gt; Running in 4482bfd3e8f7
-go: finding github.com/gorilla/websocket v1.4.0
-go: finding github.com/nlopes/slack v0.4.0
-go: finding github.com/pkg/errors v0.8.0
-go: downloading github.com/nlopes/slack v0.4.0
-go: downloading github.com/pkg/errors v0.8.0
-go: downloading github.com/gorilla/websocket v1.4.0
- ---&amp;gt; 8ea604c7fb37
-Step 6/12 : FROM golang:1.11.2-alpine
- ---&amp;gt; 57915f96905a
-Step 7/12 : WORKDIR /app
- ---&amp;gt; Using cache
- ---&amp;gt; e04488a7f16b
-Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
- ---&amp;gt; Using cache
- ---&amp;gt; 33b206dba7e4
-Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
- ---&amp;gt; Using cache
- ---&amp;gt; 34d3cd1a5bb0
-Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
- ---&amp;gt; Using cache
- ---&amp;gt; 0c3d838b25dc
-Step 11/12 : USER app
- ---&amp;gt; Using cache
- ---&amp;gt; 95c2bf90800c
-Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
- ---&amp;gt; Using cache
- ---&amp;gt; 3541257ff16c
+Sending build context to Docker daemon  &lt;span style=&#34;color:#ae81ff&#34;&gt;66.&lt;/span&gt;56kB
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; e04488a7f16b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Running in 1339601fff6f&lt;/span&gt;
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/community/x86_64/APKINDEX.tar.gz
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing nghttp2-libs (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.32&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r0)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing libssh2 (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.8&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r3)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing libcurl (&lt;span style=&#34;color:#ae81ff&#34;&gt;7.61&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-r1)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing expat (&lt;span style=&#34;color:#ae81ff&#34;&gt;2.2&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;-r0)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing pcre2 (&lt;span style=&#34;color:#ae81ff&#34;&gt;10.31&lt;/span&gt;-r0)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;) Installing git (&lt;span style=&#34;color:#ae81ff&#34;&gt;2.18&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-r0)
+Executing busybox-&lt;span style=&#34;color:#ae81ff&#34;&gt;1.28&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;-r1.trigger
+OK: &lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt; MiB in &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt; packages
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing binutils (&lt;span style=&#34;color:#ae81ff&#34;&gt;2.30&lt;/span&gt;-r5)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing gmp (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-r1)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing isl (&lt;span style=&#34;color:#ae81ff&#34;&gt;0.18&lt;/span&gt;-r0)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing libgomp (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.4&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r9)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing libatomic (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.4&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r9)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing pkgconf (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.5&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;-r0)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing libgcc (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.4&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r9)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing mpfr3 (&lt;span style=&#34;color:#ae81ff&#34;&gt;3.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;-r1)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing mpc1 (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;-r1)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing libstdc++ (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.4&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r9)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing gcc (&lt;span style=&#34;color:#ae81ff&#34;&gt;6.4&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r9)
+(&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;) Installing musl-dev (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;19&lt;/span&gt;-r10)
+Executing busybox-&lt;span style=&#34;color:#ae81ff&#34;&gt;1.28&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;-r1.trigger
+OK: &lt;span style=&#34;color:#ae81ff&#34;&gt;113&lt;/span&gt; MiB in &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt; packages
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 0e7a97e577dc&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : ADD . /app/
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 72cfd4dea99b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Running in 4482bfd3e8f7&lt;/span&gt;
+go: finding github.com/gorilla/websocket v1.&lt;span style=&#34;color:#ae81ff&#34;&gt;4.0&lt;/span&gt;
+go: finding github.com/nlopes/slack v0.&lt;span style=&#34;color:#ae81ff&#34;&gt;4.0&lt;/span&gt;
+go: finding github.com/pkg/errors v0.&lt;span style=&#34;color:#ae81ff&#34;&gt;8.0&lt;/span&gt;
+go: downloading github.com/nlopes/slack v0.&lt;span style=&#34;color:#ae81ff&#34;&gt;4.0&lt;/span&gt;
+go: downloading github.com/pkg/errors v0.&lt;span style=&#34;color:#ae81ff&#34;&gt;8.0&lt;/span&gt;
+go: downloading github.com/gorilla/websocket v1.&lt;span style=&#34;color:#ae81ff&#34;&gt;4.0&lt;/span&gt;
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 8ea604c7fb37&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; e04488a7f16b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 33b206dba7e4&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 34d3cd1a5bb0&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/main /app/main
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 0c3d838b25dc&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : USER app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 95c2bf90800c&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 3541257ff16c&lt;/span&gt;
 Successfully built 3541257ff16c
 Successfully tagged 1fca8a8c999a8cd9b943456b70d90807:latest
 The push refers to repository [docker.io/kainlite/echobot]
@@ -194,55 +181,52 @@ ee06a8f42495: Layer already exists
 cb9d0f9550f6: Layer already exists
 df64d3292fd6: Layer already exists
 c54f8a17910a: Layer already exists
-fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
-Build complete in 48.642618413s
+fc03e3d-dirty-&lt;span style=&#34;color:#ae81ff&#34;&gt;3541257&lt;/span&gt;: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: &lt;span style=&#34;color:#ae81ff&#34;&gt;2197&lt;/span&gt;
+Build complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;48.&lt;/span&gt;642618413s
 Starting test...
-Test complete in 9.15µs
-kainlite/echobot -&amp;gt; kainlite/echobot:fc03e3d-dirty-3541257
-&lt;/code&gt;&lt;/pre&gt;
+Test complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;9.&lt;/span&gt;15µs
+kainlite/echobot -&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; kainlite/echobot:fc03e3d-dirty-3541257&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As we can see skaffold build not only did the docker build but also tagged and pushed the image to &lt;a href=&#34;https://cloud.docker.com/repository/docker/kainlite/echobot/tags&#34;&gt;docker hub&lt;/a&gt;, which is really nice and really useful to build a CI/CD system with it.&lt;/p&gt;
 
-&lt;p&gt;As we can see skaffold build not only did the docker build but also tagged and pushed the image to &lt;a href=&#34;https://cloud.docker.com/repository/docker/kainlite/echobot/tags&#34;&gt;docker hub&lt;/a&gt;, which is really nice and really useful to build a CI/CD system with it.&lt;/p&gt;
-
-&lt;p&gt;But wait, we need to deploy that to our cluster, right on:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold deploy
+&lt;p&gt;But wait, we need to deploy that to our cluster, right on:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ skaffold deploy
 Starting build...
 Building [kainlite/echobot]...
-Sending build context to Docker daemon  66.56kB
-Step 1/12 : FROM golang:1.11.2-alpine as builder
- ---&amp;gt; 57915f96905a
-Step 2/12 : WORKDIR /app
- ---&amp;gt; Using cache
- ---&amp;gt; e04488a7f16b
-Step 3/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app &amp;amp;&amp;amp;     apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
- ---&amp;gt; Using cache
- ---&amp;gt; 0e7a97e577dc
-Step 4/12 : ADD . /app/
- ---&amp;gt; Using cache
- ---&amp;gt; 72cfd4dea99b
-Step 5/12 : RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
- ---&amp;gt; Using cache
- ---&amp;gt; 8ea604c7fb37
-Step 6/12 : FROM golang:1.11.2-alpine
- ---&amp;gt; 57915f96905a
-Step 7/12 : WORKDIR /app
- ---&amp;gt; Using cache
- ---&amp;gt; e04488a7f16b
-Step 8/12 : RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp;     chown -R app:app /app
- ---&amp;gt; Using cache
- ---&amp;gt; 33b206dba7e4
-Step 9/12 : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
- ---&amp;gt; Using cache
- ---&amp;gt; 34d3cd1a5bb0
-Step 10/12 : COPY --from=builder --chown=app /app/main /app/main
- ---&amp;gt; Using cache
- ---&amp;gt; 0c3d838b25dc
-Step 11/12 : USER app
- ---&amp;gt; Using cache
- ---&amp;gt; 95c2bf90800c
-Step 12/12 : CMD [&amp;quot;/app/main&amp;quot;]
- ---&amp;gt; Using cache
- ---&amp;gt; 3541257ff16c
+Sending build context to Docker daemon  &lt;span style=&#34;color:#ae81ff&#34;&gt;66.&lt;/span&gt;56kB
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; e04488a7f16b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 0e7a97e577dc&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : ADD . /app/
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 72cfd4dea99b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 8ea604c7fb37&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; e04488a7f16b&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 33b206dba7e4&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 34d3cd1a5bb0&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/main /app/main
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 0c3d838b25dc&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : USER app
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 95c2bf90800c&lt;/span&gt;
+Step &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]
+ ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; ---&amp;gt; 3541257ff16c&lt;/span&gt;
 Successfully built 3541257ff16c
 Successfully tagged 510226574761304cc9d64a343d5bdbff:latest
 The push refers to repository [docker.io/kainlite/echobot]
@@ -268,36 +252,29 @@ ee06a8f42495: Layer already exists
 c54f8a17910a: Layer already exists
 df64d3292fd6: Layer already exists
 93448d8c2605: Mounted from library/golang
-fc03e3d-dirty-3541257: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: 2197
-Build complete in 15.136865292s
+fc03e3d-dirty-&lt;span style=&#34;color:#ae81ff&#34;&gt;3541257&lt;/span&gt;: digest: sha256:99c6d3d5b226a1947e8f96c0a5f963c8e499848d271f121ad50551046a0dc7ca size: &lt;span style=&#34;color:#ae81ff&#34;&gt;2197&lt;/span&gt;
+Build complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;15.&lt;/span&gt;136865292s
 Starting test...
-Test complete in 17.912µs
+Test complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;17.&lt;/span&gt;912µs
 Starting deploy...
-kubectl client version: 1.10
-kubectl version 1.12.0 or greater is recommended for use with skaffold
-deployment.extensions &amp;quot;echobot&amp;quot; configured
-Deploy complete in 5.676513226s
-&lt;/code&gt;&lt;/pre&gt;
+kubectl client version: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.10&lt;/span&gt;
+kubectl version &lt;span style=&#34;color:#ae81ff&#34;&gt;1.12&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; or greater is recommended for use with skaffold
+deployment.extensions &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;echobot&amp;#34;&lt;/span&gt; configured
+Deploy complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;5.&lt;/span&gt;676513226s&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.&lt;/p&gt;
 
-&lt;p&gt;Deploy does a lot like with gitkube, it build the image, pushes it to the registry and then makes the deployment to the cluster, as you can see in there skaffold relies on kubectl and I have an old version of it.&lt;/p&gt;
-
-&lt;p&gt;After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ kubectl get pods
+&lt;p&gt;After a few seconds we can see that our deployment has been triggered and we have a new pod being created for it.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl get pods
 NAME                       READY     STATUS              RESTARTS   AGE
-echobot-57fdcccf76-4qwvq   0/1       ContainerCreating   0          5s
-echobot-6fcd78658c-njvpx   0/1       Terminating         0          9m
-&lt;/code&gt;&lt;/pre&gt;
+echobot-57fdcccf76-4qwvq   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       ContainerCreating   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          5s
+echobot-6fcd78658c-njvpx   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Terminating         &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          9m&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Skaffold also has another nice option that it&amp;rsquo;s called &lt;em&gt;dev&lt;/em&gt; it watches the folder for changes and re-deploys the app so you can focus on code.&lt;/p&gt;
 
-&lt;p&gt;Skaffold also has another nice option that it&amp;rsquo;s called &lt;em&gt;dev&lt;/em&gt; it watches the folder for changes and re-deploys the app so you can focus on code.&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s clean up and call it a day:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ skaffold delete
+&lt;p&gt;Let&amp;rsquo;s clean up and call it a day:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ skaffold delete
 Cleaning up...
-deployment.extensions &amp;quot;echobot&amp;quot; deleted
-Cleanup complete in 3.833219278s
-&lt;/code&gt;&lt;/pre&gt;
+deployment.extensions &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;echobot&amp;#34;&lt;/span&gt; deleted
+Cleanup complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;3.&lt;/span&gt;833219278s&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 

@@ -31,112 +31,103 @@
 
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
-&lt;p&gt;This time I&amp;rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:&lt;/p&gt;
+&lt;p&gt;This time I&amp;rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
 
-&lt;pre&gt;&lt;code&gt;package main
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;strings&amp;#34;&lt;/span&gt;
 
-import (
-        &amp;quot;fmt&amp;quot;
-        &amp;quot;os&amp;quot;
-        &amp;quot;strings&amp;quot;
-
-        slack &amp;quot;github.com/nlopes/slack&amp;quot;
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/nlopes/slack&amp;#34;&lt;/span&gt;
 )
 
-func main() {
-        api := slack.New(
-                os.Getenv(&amp;quot;SLACK_API_TOKEN&amp;quot;),
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;api&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;New&lt;/span&gt;(
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SLACK_API_TOKEN&amp;#34;&lt;/span&gt;),
         )
 
-        rtm := api.NewRTM()
-        go rtm.ManageConnection()
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;api&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewRTM&lt;/span&gt;()
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ManageConnection&lt;/span&gt;()
 
-        for msg := range rtm.IncomingEvents {
-                fmt.Print(&amp;quot;Event Received: &amp;quot;)
-                switch ev := msg.Data.(type) {
-                case *slack.HelloEvent:
-                        // Ignore hello
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IncomingEvents&lt;/span&gt; {
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Event Received: &amp;#34;&lt;/span&gt;)
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;.(&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;) {
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HelloEvent&lt;/span&gt;:
+                        &lt;span style=&#34;color:#75715e&#34;&gt;// Ignore hello
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ConnectedEvent&lt;/span&gt;:
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Infos:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Info&lt;/span&gt;)
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Connection counter:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ConnectionCount&lt;/span&gt;)
 
-                case *slack.ConnectedEvent:
-                        fmt.Println(&amp;quot;Infos:&amp;quot;, ev.Info)
-                        fmt.Println(&amp;quot;Connection counter:&amp;quot;, ev.ConnectionCount)
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MessageEvent&lt;/span&gt;:
+                        &lt;span style=&#34;color:#75715e&#34;&gt;// Only echo what it said to me
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Message: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;)
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetInfo&lt;/span&gt;()
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;prefix&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;@%s&amp;gt; &amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;)
 
-                case *slack.MessageEvent:
-                        // Only echo what it said to me
-                        fmt.Printf(&amp;quot;Message: %v\n&amp;quot;, ev)
-                        info := rtm.GetInfo()
-                        prefix := fmt.Sprintf(&amp;quot;&amp;lt;@%s&amp;gt; &amp;quot;, info.User.ID)
-
-                        if ev.User != info.User.ID &amp;amp;&amp;amp; strings.HasPrefix(ev.Text, prefix) {
-                                rtm.SendMessage(rtm.NewOutgoingMessage(ev.Text, ev.Channel))
+                        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HasPrefix&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;prefix&lt;/span&gt;) {
+                                &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SendMessage&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewOutgoingMessage&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Channel&lt;/span&gt;))
                         }
 
-                case *slack.PresenceChangeEvent:
-                        fmt.Printf(&amp;quot;Presence Change: %v\n&amp;quot;, ev)
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;PresenceChangeEvent&lt;/span&gt;:
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Presence Change: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;)
 
-                case *slack.LatencyReport:
-                        fmt.Printf(&amp;quot;Current latency: %v\n&amp;quot;, ev.Value)
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;LatencyReport&lt;/span&gt;:
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Current latency: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;)
 
-                case *slack.RTMError:
-                        fmt.Printf(&amp;quot;Error: %s\n&amp;quot;, ev.Error())
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RTMError&lt;/span&gt;:
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error: %s\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
 
-                case *slack.InvalidAuthEvent:
-                        fmt.Printf(&amp;quot;Invalid credentials&amp;quot;)
-                        return
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;InvalidAuthEvent&lt;/span&gt;:
+                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Invalid credentials&amp;#34;&lt;/span&gt;)
+                        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
 
-                default:
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
 
-                        // Ignore other events..
-                        // fmt.Printf(&amp;quot;Unexpected: %v\n&amp;quot;, msg.Data)
-                }
+                        &lt;span style=&#34;color:#75715e&#34;&gt;// Ignore other events..
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                        &lt;span style=&#34;color:#75715e&#34;&gt;// fmt.Printf(&amp;#34;Unexpected: %v\n&amp;#34;, msg.Data)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                }
         }
-}
-&lt;/code&gt;&lt;/pre&gt;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
 
-&lt;p&gt;As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
-
-&lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;# Build
-FROM golang:1.11.2-alpine as builder
+&lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;
+FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
 
 WORKDIR /app
-RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
-    chown -R app:app /app &amp;amp;&amp;amp; \
-    apk add git &amp;amp;&amp;amp; apk add gcc musl-dev
+RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
+    chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
+    apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
 
 ADD . /app/
-RUN go get -d -v ./... &amp;amp;&amp;amp; go build -o main . &amp;amp;&amp;amp; chown -R app:app /app /home/app
+RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
 
-# Run
-FROM golang:1.11.2-alpine
+&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;
+FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
 
 WORKDIR /app
-RUN adduser -D -g &#39;app&#39; app &amp;amp;&amp;amp; \
+RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
     chown -R app:app /app
 
 COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
 COPY --from=builder --chown=app /app/main /app/main
 
 USER app
-CMD [&amp;quot;/app/main&amp;quot;]
-&lt;/code&gt;&lt;/pre&gt;
+CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
 
-&lt;p&gt;There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
+&lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks init echobot
+INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
+INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.8.0&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
+INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks init echobot
-INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
-INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.8.0&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
-INFO Generating ksonnet-lib data at path &#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And now let&amp;rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot &lt;code&gt;components/echobot.jsonnet&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Import KSonnet library
-local params = std.extVar(&#39;__ksonnet/params&#39;).components.demo;
-local k = import &#39;k.libsonnet&#39;;
+&lt;p&gt;And now let&amp;rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot &lt;code&gt;components/echobot.jsonnet&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;// Import KSonnet library
+local params = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;__ksonnet/params&amp;#39;&lt;/span&gt;).components.demo;
+local k = import &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;k.libsonnet&amp;#39;&lt;/span&gt;;
 
 // Specify the import objects that we need
 local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;
@@ -146,64 +137,58 @@ local depl = k.extensions.v1beta1.deployment;
 // But I will leave that as an exercise for you :)
 local envs = [
   {
-    name: &#39;SLACK_API_TOKEN&#39;,
-    value: &#39;really-long-token&#39;,
+    name: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SLACK_API_TOKEN&amp;#39;&lt;/span&gt;,
+    value: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;really-long-token&amp;#39;&lt;/span&gt;,
   },
 ];
 
 local livenessProbe = {
   exec: {
     command: [
-      &#39;/bin/sh&#39;,
-      &#39;-c&#39;,
-      &#39;/app/health_check.sh&#39;,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/bin/sh&amp;#39;&lt;/span&gt;,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-c&amp;#39;&lt;/span&gt;,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/app/health_check.sh&amp;#39;&lt;/span&gt;,
     ],
   },
 };
 
 // Define containers
 local containers = [
-  container.new(&#39;echobot&#39;, &#39;kainlite/echobot:0.0.2&#39;) {
+  container.new(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;kainlite/echobot:0.0.2&amp;#39;&lt;/span&gt;) {
     env: (envs),
     livenessProbe: livenessProbe,
   },
 ];
 
-// Define deployment with 3 replicas
+// Define deployment with &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; replicas
 local deployment =
-  depl.new(&#39;echobot&#39;, 1, containers, { app: &#39;echobot&#39; });
+  depl.new(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, containers, { app: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt; });
 
 local resources = [deployment];
 
 // Return list of resources.
-k.core.v1.list.new(resources)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt;$ ks apply default
+k.core.v1.list.new(resources)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks apply default
 INFO Applying deployments echobot
-INFO Creating non-existent deployments echobot
-&lt;/code&gt;&lt;/pre&gt;
+INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And in the logs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-plain&#34;&gt; $ kubectl get pods
+&lt;p&gt;And in the logs:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           1/1       Running   0          53s
+echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y= 0xc000468000 0xc0004482a0 [] [] [] [] []}
-Connection counter: 0
-Event Received: Event Received: Current latency: 1.256397423s
-Event Received: Current latency: 1.25679313s
-Event Received: Current latency: 1.256788737s
-Event Received: Message: &amp;amp;{{message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}
-&lt;/code&gt;&lt;/pre&gt;
+Event Received: Event Received: Infos: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc000468000&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc0004482a0&lt;/span&gt; [] [] [] [] []}
+Connection counter: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256397423s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;25679313s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256788737s
+Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{message&lt;/span&gt; CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
 
@@ -275,82 +260,76 @@ Event Received: Message: &amp;amp;{{message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD
 
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
-&lt;p&gt;This command will generate the following folder structure &lt;code&gt;ks init wordpress&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;This command will generate the following folder structure &lt;code&gt;ks init wordpress&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
+INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.12.4&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
+INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4&amp;#39;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;INFO Using context &amp;quot;minikube&amp;quot; from kubeconfig file &amp;quot;~/.kube/config&amp;quot;
-INFO Creating environment &amp;quot;default&amp;quot; with namespace &amp;quot;default&amp;quot;, pointing to &amp;quot;version:v1.12.4&amp;quot; cluster at address &amp;quot;https://192.168.99.100:8443&amp;quot;
-INFO Generating ksonnet-lib data at path &#39;~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4&#39;
-
-$ ls -l |  awk &#39;{ print $9 }&#39;
+$ ls -l &lt;span style=&#34;color:#e6db74&#34;&gt;|  awk &amp;#39;{ print $9 }&amp;#39;&lt;/span&gt;
 app.yaml        &amp;lt;--- Defines versions, namespace, cluster address, app name, registry.
-components      &amp;lt;--- Components by default it&#39;s empty and has a params file.
+components      &amp;lt;--- Components by default it&amp;#39;s empty and has a params file.
 environments    &amp;lt;--- By default there is only one environment called default.
 lib             &amp;lt;--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources (Pods, Deployments, etc).
-vendor          &amp;lt;--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.
-&lt;/code&gt;&lt;/pre&gt;
+vendor          &amp;lt;--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s generate a &lt;em&gt;deployed-service&lt;/em&gt; and inspect it&amp;rsquo;s context:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks generate deployed-service wordpress \
-  --image bitnami/wordpress:5.0.2 \
+&lt;p&gt;Let&amp;rsquo;s generate a &lt;em&gt;deployed-service&lt;/em&gt; and inspect it&amp;rsquo;s context:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks generate deployed-service wordpress \
+  --image bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; \
   --type ClusterIP
 
-INFO Writing component at &#39;~/k8s-examples/wordpress/components/wordpress.jsonnet&#39;
-&lt;/code&gt;&lt;/pre&gt;
+INFO Writing component at &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/k8s-examples/wordpress/components/wordpress.jsonnet&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+At the moment of this writing the latest version of Wordpress is 5.0.2, it&amp;rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).&lt;/p&gt;
 
-&lt;p&gt;At the moment of this writing the latest version of Wordpress is 5.0.2, it&amp;rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).&lt;/p&gt;
-
-&lt;p&gt;Let&amp;rsquo;s see how our component looks like:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
-local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordpress;
+&lt;p&gt;Let&amp;rsquo;s see how our component looks like:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;local env = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/environments&amp;#34;&lt;/span&gt;);
+local params = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/params&amp;#34;&lt;/span&gt;).components.wordpress;
 [
   {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
-    &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
-    &amp;quot;metadata&amp;quot;: {
-      &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;v1&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Service&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
     },
-    &amp;quot;spec&amp;quot;: {
-      &amp;quot;ports&amp;quot;: [
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
         {
-          &amp;quot;port&amp;quot;: params.servicePort,
-          &amp;quot;targetPort&amp;quot;: params.containerPort
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;port&amp;#34;&lt;/span&gt;: params.servicePort,
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;targetPort&amp;#34;&lt;/span&gt;: params.containerPort
         }
       ],
-      &amp;quot;selector&amp;quot;: {
-        &amp;quot;app&amp;quot;: params.name
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
       },
-      &amp;quot;type&amp;quot;: params.type
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: params.type
     }
   },
   {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
-    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
-    &amp;quot;metadata&amp;quot;: {
-      &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apps/v1beta2&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Deployment&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
     },
-    &amp;quot;spec&amp;quot;: {
-      &amp;quot;replicas&amp;quot;: params.replicas,
-      &amp;quot;selector&amp;quot;: {
-        &amp;quot;matchLabels&amp;quot;: {
-          &amp;quot;app&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;replicas&amp;#34;&lt;/span&gt;: params.replicas,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;matchLabels&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
         },
       },
-      &amp;quot;template&amp;quot;: {
-        &amp;quot;metadata&amp;quot;: {
-          &amp;quot;labels&amp;quot;: {
-            &amp;quot;app&amp;quot;: params.name
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;template&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;labels&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
           }
         },
-        &amp;quot;spec&amp;quot;: {
-          &amp;quot;containers&amp;quot;: [
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containers&amp;#34;&lt;/span&gt;: [
             {
-              &amp;quot;image&amp;quot;: params.image,
-              &amp;quot;name&amp;quot;: params.name,
-              &amp;quot;ports&amp;quot;: [
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;image&amp;#34;&lt;/span&gt;: params.image,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
                 {
-                  &amp;quot;containerPort&amp;quot;: params.containerPort
+                  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containerPort&amp;#34;&lt;/span&gt;: params.containerPort
                 }
               ]
             }
@@ -359,14 +338,11 @@ local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordp
       }
     }
   }
-]
-&lt;/code&gt;&lt;/pre&gt;
+]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+It&amp;rsquo;s just another template for some known resources, a &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;service&lt;/a&gt; and a &lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/controllers/deployment/&#34;&gt;deployment&lt;/a&gt; that&amp;rsquo;s where the name came from: &lt;em&gt;deployed-service&lt;/em&gt;, but where are those params coming from?&lt;/p&gt;
 
-&lt;p&gt;It&amp;rsquo;s just another template for some known resources, a &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;service&lt;/a&gt; and a &lt;a href=&#34;https://kubernetes.io/docs/concepts/workloads/controllers/deployment/&#34;&gt;deployment&lt;/a&gt; that&amp;rsquo;s where the name came from: &lt;em&gt;deployed-service&lt;/em&gt;, but where are those params coming from?&lt;/p&gt;
-
-&lt;p&gt;If we run &lt;code&gt;ks show default&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;---
+&lt;p&gt;If we run &lt;code&gt;ks show default&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
 apiVersion: v1
 kind: Service
 metadata:
@@ -375,8 +351,8 @@ metadata:
   name: wordpress
 spec:
   ports:
-  - port: 80
-    targetPort: 80
+  - port: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;
+    targetPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;
   selector:
     app: wordpress
   type: ClusterIP
@@ -388,7 +364,7 @@ metadata:
     ksonnet.io/component: wordpress
   name: wordpress
 spec:
-  replicas: 1
+  replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
   selector:
     matchLabels:
       app: wordpress
@@ -398,151 +374,140 @@ spec:
         app: wordpress
     spec:
       containers:
-      - image: bitnami/wordpress:5.0.2
+      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
         name: wordpress
         ports:
-        - containerPort: 80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;We will see what our package will generate in &lt;em&gt;YAML&lt;/em&gt; with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is &lt;code&gt;components/params.libsonnet&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+        - containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+We will see what our package will generate in &lt;em&gt;YAML&lt;/em&gt; with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is &lt;code&gt;components/params.libsonnet&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;{
   global: {
     // User-defined global parameters; accessible to all component and environments, Ex:
-    // replicas: 4,
+    // replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,
   },
   components: {
-    // Component-level parameters, defined initially from &#39;ks prototype use ...&#39;
+    // Component-level parameters, defined initially from &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ks prototype use ...&amp;#39;&lt;/span&gt;
     // Each object below should correspond to a component in the components/ directory
     wordpress: {
-      containerPort: 80,
-      image: &amp;quot;bitnami/wordpress:5.0.2&amp;quot;,
-      name: &amp;quot;wordpress&amp;quot;,
-      replicas: 1,
-      servicePort: 80,
-      type: &amp;quot;ClusterIP&amp;quot;,
+      containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;,
+      image: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bitnami/wordpress:5.0.2&amp;#34;&lt;/span&gt;,
+      name: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wordpress&amp;#34;&lt;/span&gt;,
+      replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+      servicePort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;,
+      type: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ClusterIP&amp;#34;&lt;/span&gt;,
     },
   },
-}
-&lt;/code&gt;&lt;/pre&gt;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+But that&amp;rsquo;s not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another &lt;em&gt;deployed-service&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;But that&amp;rsquo;s not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another &lt;em&gt;deployed-service&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The next step would be to create another component:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ks generate deployed-service mariadb \
-  --image bitnami/mariadb:10.1.37 \
+&lt;p&gt;The next step would be to create another component:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks generate deployed-service mariadb \
+  --image bitnami/mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;10.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;37&lt;/span&gt; \
   --type ClusterIP
 
-INFO Writing component at &#39;/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.&lt;/p&gt;
+INFO Writing component at &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.&lt;/p&gt;
 
 &lt;p&gt;Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
-The resulting &lt;code&gt;components/params.json&lt;/code&gt; will be:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+The resulting &lt;code&gt;components/params.json&lt;/code&gt; will be:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;{
   global: {
     // User-defined global parameters; accessible to all component and environments, Ex:
-    // replicas: 4,
-    mariadbEmptyPassword: &amp;quot;no&amp;quot;,
-    mariadbUser: &amp;quot;mywordpressuser&amp;quot;,
-    mariadbPassword: &amp;quot;mywordpresspassword&amp;quot;,
-    mariadbDatabase: &amp;quot;bitnami_wordpress&amp;quot;,
+    // replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;,
+    mariadbEmptyPassword: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;no&amp;#34;&lt;/span&gt;,
+    mariadbUser: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mywordpressuser&amp;#34;&lt;/span&gt;,
+    mariadbPassword: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mywordpresspassword&amp;#34;&lt;/span&gt;,
+    mariadbDatabase: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bitnami_wordpress&amp;#34;&lt;/span&gt;,
   },
   components: {
-    // Component-level parameters, defined initially from &#39;ks prototype use ...&#39;
+    // Component-level parameters, defined initially from &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ks prototype use ...&amp;#39;&lt;/span&gt;
     // Each object below should correspond to a component in the components/ directory
     wordpress: {
-      containerPort: 80,
-      image: &amp;quot;bitnami/wordpress:5.0.2&amp;quot;,
-      name: &amp;quot;wordpress&amp;quot;,
-      replicas: 1,
-      servicePort: 80,
-      type: &amp;quot;ClusterIP&amp;quot;,
+      containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;,
+      image: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bitnami/wordpress:5.0.2&amp;#34;&lt;/span&gt;,
+      name: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;wordpress&amp;#34;&lt;/span&gt;,
+      replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+      servicePort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;,
+      type: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ClusterIP&amp;#34;&lt;/span&gt;,
     },
     mariadb: {
-      containerPort: 3306,
-      image: &amp;quot;bitnami/mariadb:10.1.37&amp;quot;,
-      name: &amp;quot;mariadb&amp;quot;,
-      replicas: 1,
-      servicePort: 3306,
-      type: &amp;quot;ClusterIP&amp;quot;,
+      containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;,
+      image: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bitnami/mariadb:10.1.37&amp;#34;&lt;/span&gt;,
+      name: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mariadb&amp;#34;&lt;/span&gt;,
+      replicas: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+      servicePort: &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;,
+      type: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ClusterIP&amp;#34;&lt;/span&gt;,
     },
   },
-}
-&lt;/code&gt;&lt;/pre&gt;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;The resulting &lt;code&gt;components/wordpress.jsonnet&lt;/code&gt; will be:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
-local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordpress;
+&lt;p&gt;The resulting &lt;code&gt;components/wordpress.jsonnet&lt;/code&gt; will be:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;local env = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/environments&amp;#34;&lt;/span&gt;);
+local params = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/params&amp;#34;&lt;/span&gt;).components.wordpress;
 [
   {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
-    &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
-    &amp;quot;metadata&amp;quot;: {
-      &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;v1&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Service&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
     },
-    &amp;quot;spec&amp;quot;: {
-      &amp;quot;ports&amp;quot;: [
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
         {
-          &amp;quot;port&amp;quot;: params.servicePort,
-          &amp;quot;targetPort&amp;quot;: params.containerPort
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;port&amp;#34;&lt;/span&gt;: params.servicePort,
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;targetPort&amp;#34;&lt;/span&gt;: params.containerPort
         }
       ],
-      &amp;quot;selector&amp;quot;: {
-        &amp;quot;app&amp;quot;: params.name
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
       },
-      &amp;quot;type&amp;quot;: params.type
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: params.type
     }
   },
   {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
-    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
-    &amp;quot;metadata&amp;quot;: {
-      &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apps/v1beta2&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Deployment&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
     },
-    &amp;quot;spec&amp;quot;: {
-      &amp;quot;replicas&amp;quot;: params.replicas,
-      &amp;quot;selector&amp;quot;: {
-        &amp;quot;matchLabels&amp;quot;: {
-          &amp;quot;app&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;replicas&amp;#34;&lt;/span&gt;: params.replicas,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;matchLabels&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
         },
       },
-      &amp;quot;template&amp;quot;: {
-        &amp;quot;metadata&amp;quot;: {
-          &amp;quot;labels&amp;quot;: {
-            &amp;quot;app&amp;quot;: params.name
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;template&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;labels&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
           }
         },
-        &amp;quot;spec&amp;quot;: {
-          &amp;quot;containers&amp;quot;: [
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containers&amp;#34;&lt;/span&gt;: [
             {
-              &amp;quot;image&amp;quot;: params.image,
-              &amp;quot;name&amp;quot;: params.name,
-              &amp;quot;ports&amp;quot;: [
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;image&amp;#34;&lt;/span&gt;: params.image,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name,
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
                 {
-                  &amp;quot;containerPort&amp;quot;: params.containerPort
+                  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containerPort&amp;#34;&lt;/span&gt;: params.containerPort
                 }
               ],
-              &amp;quot;env&amp;quot;: [
+              &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;env&amp;#34;&lt;/span&gt;: [
                 {
-                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_USER&amp;quot;,
-                    &amp;quot;value&amp;quot;: params.mariadbUser,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WORDPRESS_DATABASE_USER&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbUser,
                 },
                 {
-                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_PASSWORD&amp;quot;,
-                    &amp;quot;value&amp;quot;: params.mariadbPassword,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WORDPRESS_DATABASE_PASSWORD&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbPassword,
                 },
                 {
-                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_DATABASE_NAME&amp;quot;,
-                    &amp;quot;value&amp;quot;: params.mariadbDatabase,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WORDPRESS_DATABASE_NAME&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbDatabase,
                 },
                 {
-                    &amp;quot;name&amp;quot;: &amp;quot;WORDPRESS_HOST&amp;quot;,
-                    &amp;quot;value&amp;quot;: &amp;quot;mariadb&amp;quot;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WORDPRESS_HOST&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mariadb&amp;#34;&lt;/span&gt;,
                 }
               ]
             }
@@ -551,99 +516,96 @@ local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.wordp
       }
     }
   }
-]
-&lt;/code&gt;&lt;/pre&gt;
+]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The only thing that changed here is &lt;code&gt;spec.containers.env&lt;/code&gt; which wasn&amp;rsquo;t present before.&lt;/p&gt;
 
-&lt;p&gt;The only thing that changed here is &lt;code&gt;spec.containers.env&lt;/code&gt; which wasn&amp;rsquo;t present before.&lt;/p&gt;
-
-&lt;p&gt;The resulting &lt;code&gt;components/mariadb.jsonnet&lt;/code&gt; will be:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;local env = std.extVar(&amp;quot;__ksonnet/environments&amp;quot;);
-local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.mariadb;
+&lt;p&gt;The resulting &lt;code&gt;components/mariadb.jsonnet&lt;/code&gt; will be:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;local env = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/environments&amp;#34;&lt;/span&gt;);
+local params = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__ksonnet/params&amp;#34;&lt;/span&gt;).components.mariadb;
 [
 {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;v1&amp;quot;,
-        &amp;quot;kind&amp;quot;: &amp;quot;Service&amp;quot;,
-        &amp;quot;metadata&amp;quot;: {
-            &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;v1&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Service&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
         },
-        &amp;quot;spec&amp;quot;: {
-            &amp;quot;ports&amp;quot;: [
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
             {
-                &amp;quot;port&amp;quot;: params.servicePort,
-                &amp;quot;targetPort&amp;quot;: params.containerPort
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;port&amp;#34;&lt;/span&gt;: params.servicePort,
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;targetPort&amp;#34;&lt;/span&gt;: params.containerPort
             }
             ],
-            &amp;quot;selector&amp;quot;: {
-                &amp;quot;app&amp;quot;: params.name
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
             },
-            &amp;quot;type&amp;quot;: params.type
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: params.type
         }
 },
 {
-    &amp;quot;apiVersion&amp;quot;: &amp;quot;apps/v1beta2&amp;quot;,
-    &amp;quot;kind&amp;quot;: &amp;quot;Deployment&amp;quot;,
-    &amp;quot;metadata&amp;quot;: {
-        &amp;quot;name&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apiVersion&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;apps/v1beta2&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kind&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Deployment&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name
     },
-    &amp;quot;spec&amp;quot;: {
-        &amp;quot;replicas&amp;quot;: params.replicas,
-        &amp;quot;selector&amp;quot;: {
-            &amp;quot;matchLabels&amp;quot;: {
-                &amp;quot;app&amp;quot;: params.name
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;replicas&amp;#34;&lt;/span&gt;: params.replicas,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selector&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;matchLabels&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
             },
         },
-        &amp;quot;template&amp;quot;: {
-            &amp;quot;metadata&amp;quot;: {
-                &amp;quot;labels&amp;quot;: {
-                    &amp;quot;app&amp;quot;: params.name
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;template&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;metadata&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;labels&amp;#34;&lt;/span&gt;: {
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt;: params.name
                 }
             },
-            &amp;quot;spec&amp;quot;: {
-                &amp;quot;containers&amp;quot;: [
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;spec&amp;#34;&lt;/span&gt;: {
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containers&amp;#34;&lt;/span&gt;: [
                 {
-                    &amp;quot;image&amp;quot;: params.image,
-                    &amp;quot;name&amp;quot;: params.name,
-                    &amp;quot;ports&amp;quot;: [
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;image&amp;#34;&lt;/span&gt;: params.image,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: params.name,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ports&amp;#34;&lt;/span&gt;: [
                     {
-                        &amp;quot;containerPort&amp;quot;: params.containerPort
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containerPort&amp;#34;&lt;/span&gt;: params.containerPort
                     },
                     ],
-                    &amp;quot;env&amp;quot;: [
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;env&amp;#34;&lt;/span&gt;: [
                     {
-                        &amp;quot;name&amp;quot;: &amp;quot;ALLOW_EMPTY_PASSWORD&amp;quot;,
-                        &amp;quot;value&amp;quot;: params.mariadbEmptyPassword,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ALLOW_EMPTY_PASSWORD&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbEmptyPassword,
                     },
                     {
-                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_USER&amp;quot;,
-                        &amp;quot;value&amp;quot;: params.mariadbUser,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MARIADB_USER&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbUser,
                     },
                     {
-                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_PASSWORD&amp;quot;,
-                        &amp;quot;value&amp;quot;: params.mariadbPassword,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MARIADB_PASSWORD&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbPassword,
                     },
                     {
-                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_ROOT_PASSWORD&amp;quot;,
-                        &amp;quot;value&amp;quot;: params.mariadbPassword,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MARIADB_ROOT_PASSWORD&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbPassword,
                     },
                     {
-                        &amp;quot;name&amp;quot;: &amp;quot;MARIADB_DATABASE&amp;quot;,
-                        &amp;quot;value&amp;quot;: params.mariadbDatabase,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MARIADB_DATABASE&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;: params.mariadbDatabase,
                     },
                     ],
-                    &amp;quot;volumeMounts&amp;quot;: [
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;volumeMounts&amp;#34;&lt;/span&gt;: [
                     {
-                        &amp;quot;mountPath&amp;quot;: &amp;quot;/var/lib/mysql&amp;quot;,
-                        &amp;quot;name&amp;quot;: &amp;quot;mariadb&amp;quot;
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mountPath&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/var/lib/mysql&amp;#34;&lt;/span&gt;,
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mariadb&amp;#34;&lt;/span&gt;
                     }
                     ]
                 }
                 ],
-                &amp;quot;volumes&amp;quot;: [
+                &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;volumes&amp;#34;&lt;/span&gt;: [
                 {
-                    &amp;quot;name&amp;quot;: &amp;quot;mariadb&amp;quot;,
-                    &amp;quot;hostPath&amp;quot;: {
-                        &amp;quot;path&amp;quot;: &amp;quot;/home/docker/mariadb-data&amp;quot;
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mariadb&amp;#34;&lt;/span&gt;,
+                    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hostPath&amp;#34;&lt;/span&gt;: {
+                        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;path&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/home/docker/mariadb-data&amp;#34;&lt;/span&gt;
                     }
                 }
                 ]
@@ -651,22 +613,18 @@ local params = std.extVar(&amp;quot;__ksonnet/params&amp;quot;).components.maria
         }
     }
 }
-]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I know, I know, that is a lot of JSON, I trust you have a decent scroll :).&lt;/p&gt;
+]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+I know, I know, that is a lot of JSON, I trust you have a decent scroll :).&lt;/p&gt;
 
 &lt;p&gt;The only things that changed here are &lt;code&gt;spec.containers.env&lt;/code&gt;, &lt;code&gt;spec.containers.volumeMount&lt;/code&gt; and &lt;code&gt;spec.volumes&lt;/code&gt; which weren&amp;rsquo;t present before, that&amp;rsquo;s all you need to make wordpress work with mariadb.&lt;/p&gt;
 
 &lt;p&gt;This post only scratched the surface of what Ksonnet and Jsonnet can do, in another post I will describe more advances features with less &lt;em&gt;JSON&lt;/em&gt; / &lt;em&gt;YAML&lt;/em&gt;. There are a lot of things that can be improved and we will cover those things in the next post, if you want to see all the source code for this post go &lt;a href=&#34;https://github.com/kainlite/ksonnet-wordpress-example&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Let&amp;rsquo;s clean up &lt;code&gt;ks delete default&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;INFO Deleting services mariadb
+&lt;p&gt;Let&amp;rsquo;s clean up &lt;code&gt;ks delete default&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;INFO Deleting services mariadb
 INFO Deleting deployments mariadb
 INFO Deleting services wordpress
-INFO Deleting deployments wordpress
-&lt;/code&gt;&lt;/pre&gt;
+INFO Deleting deployments wordpress&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 
@@ -674,17 +632,16 @@ INFO Deleting deployments wordpress
 
 &lt;p&gt;I&amp;rsquo;m not aware if Ksonnet supports releases and rollbacks like Helm, but it seems it could be emulated using git tags and just some git hooks.&lt;/p&gt;
 
-&lt;p&gt;If everything goes well, you should see something like this in the logs:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
+&lt;p&gt;If everything goes well, you should see something like this in the logs:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
 
 Welcome to the Bitnami wordpress container
 Subscribe to project updates by watching https://github.com/bitnami/bitnami-docker-wordpress
 Submit issues and feature requests at https://github.com/bitnami/bitnami-docker-wordpress/issues
 
 nami    INFO  Initializing apache
-apache  INFO  ==&amp;gt; Patching httpoxy...
-apache  INFO  ==&amp;gt; Configuring dummy certificates...
+apache  INFO  ==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Patching httpoxy...&lt;/span&gt;
+apache  INFO  ==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Configuring dummy certificates...&lt;/span&gt;
 nami    INFO  apache successfully initialized
 nami    INFO  Initializing php
 nami    INFO  php successfully initialized
@@ -694,36 +651,35 @@ nami    INFO  Initializing libphp
 nami    INFO  libphp successfully initialized
 nami    INFO  Initializing wordpress
 mysql-c INFO  Trying to connect to MySQL server
-mysql-c INFO  Found MySQL server listening at mariadb:3306
-mysql-c INFO  MySQL server listening and working at mariadb:3306
+mysql-c INFO  Found MySQL server listening at mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;
+mysql-c INFO  MySQL server listening and working at mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;
 wordpre INFO
-wordpre INFO  ########################################################################
+wordpre INFO  &lt;span style=&#34;color:#75715e&#34;&gt;########################################################################&lt;/span&gt;
 wordpre INFO   Installation parameters for wordpress:
 wordpre INFO     First Name: FirstName
 wordpre INFO     Last Name: LastName
 wordpre INFO     Username: user
-wordpre INFO     Password: **********
+wordpre INFO     Password: &lt;span style=&#34;color:#75715e&#34;&gt;**********&lt;/span&gt;
 wordpre INFO     Email: user@example.com
-wordpre INFO     Blog Name: User&#39;s Blog!
-wordpre INFO     Table Prefix: wp_
-wordpre INFO   (Passwords are not shown for security reasons)
-wordpre INFO  ########################################################################
-wordpre INFO
-nami    INFO  wordpress successfully initialized
-INFO  ==&amp;gt; Starting wordpress...
-[Thu Dec 27 04:30:59.684053 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
-[Thu Dec 27 04:30:59.684690 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
-[Thu Dec 27 04:30:59.738783 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
-[Thu Dec 27 04:30:59.739701 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
-[Thu Dec 27 04:30:59.765798 2018] [mpm_prefork:notice] [pid 116] AH00163: Apache/2.4.37 (Unix) OpenSSL/1.1.0j PHP/7.2.13 configured -- resuming normal operations
-[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: &#39;httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND&#39;
-172.17.0.1 - - [27/Dec/2018:04:31:00 +0000] &amp;quot;GET / HTTP/1.1&amp;quot; 200 3718
-172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&amp;quot; 200 753
-172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&amp;quot; 200 452
-172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&amp;quot; 200 4281
-172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&amp;quot; 200 19371
-172.17.0.1 - - [27/Dec/2018:04:31:01 +0000] &amp;quot;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&amp;quot; 200 1230
-&lt;/code&gt;&lt;/pre&gt;
+wordpre INFO     Blog Name: User&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s Blog!
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;wordpre INFO     Table Prefix: wp_
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;wordpre INFO   (Passwords are not shown for security reasons)
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;wordpre INFO  ########################################################################
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;wordpre INFO
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;nami    INFO  wordpress successfully initialized
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;INFO  ==&amp;gt; Starting wordpress...
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.684053 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.684690 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.738783 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.739701 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.765798 2018] [mpm_prefork:notice] [pid 116] AH00163: Apache/2.4.37 (Unix) OpenSSL/1.1.0j PHP/7.2.13 configured -- resuming normal operations
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: &amp;#39;&lt;/span&gt;httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND&amp;#39;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET / HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3718&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;753&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;452&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4281&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;19371&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1230&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And that folks is all I have for now, be sure to check out the &lt;a href=&#34;https://ksonnet.io/docs/&#34;&gt;Ksonnet official documentation&lt;/a&gt; and &lt;code&gt;ks help&lt;/code&gt; to know more about what ksonnet can do to help you deploy your applications to any kubernetes cluster.&lt;/p&gt;
 

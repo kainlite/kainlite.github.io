@@ -107,112 +107,103 @@ if (!doNotTrack) {
 
 <h3 id="let-s-get-started">Let&rsquo;s get started</h3>
 
-<p>This time I&rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:</p>
+<p>This time I&rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code>package main
+<span style="color:#f92672">import</span> (
+        <span style="color:#e6db74">&#34;fmt&#34;</span>
+        <span style="color:#e6db74">&#34;os&#34;</span>
+        <span style="color:#e6db74">&#34;strings&#34;</span>
 
-import (
-        &quot;fmt&quot;
-        &quot;os&quot;
-        &quot;strings&quot;
-
-        slack &quot;github.com/nlopes/slack&quot;
+        <span style="color:#a6e22e">slack</span> <span style="color:#e6db74">&#34;github.com/nlopes/slack&#34;</span>
 )
 
-func main() {
-        api := slack.New(
-                os.Getenv(&quot;SLACK_API_TOKEN&quot;),
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+        <span style="color:#a6e22e">api</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">New</span>(
+                <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;SLACK_API_TOKEN&#34;</span>),
         )
 
-        rtm := api.NewRTM()
-        go rtm.ManageConnection()
+        <span style="color:#a6e22e">rtm</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">NewRTM</span>()
+        <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">ManageConnection</span>()
 
-        for msg := range rtm.IncomingEvents {
-                fmt.Print(&quot;Event Received: &quot;)
-                switch ev := msg.Data.(type) {
-                case *slack.HelloEvent:
-                        // Ignore hello
+        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">IncomingEvents</span> {
+                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#e6db74">&#34;Event Received: &#34;</span>)
+                <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">ev</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">Data</span>.(<span style="color:#66d9ef">type</span>) {
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">HelloEvent</span>:
+                        <span style="color:#75715e">// Ignore hello
+</span><span style="color:#75715e"></span>
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">ConnectedEvent</span>:
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Infos:&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Info</span>)
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Connection counter:&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">ConnectionCount</span>)
 
-                case *slack.ConnectedEvent:
-                        fmt.Println(&quot;Infos:&quot;, ev.Info)
-                        fmt.Println(&quot;Connection counter:&quot;, ev.ConnectionCount)
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">MessageEvent</span>:
+                        <span style="color:#75715e">// Only echo what it said to me
+</span><span style="color:#75715e"></span>                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Message: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>)
+                        <span style="color:#a6e22e">info</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">GetInfo</span>()
+                        <span style="color:#a6e22e">prefix</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;&lt;@%s&gt; &#34;</span>, <span style="color:#a6e22e">info</span>.<span style="color:#a6e22e">User</span>.<span style="color:#a6e22e">ID</span>)
 
-                case *slack.MessageEvent:
-                        // Only echo what it said to me
-                        fmt.Printf(&quot;Message: %v\n&quot;, ev)
-                        info := rtm.GetInfo()
-                        prefix := fmt.Sprintf(&quot;&lt;@%s&gt; &quot;, info.User.ID)
-
-                        if ev.User != info.User.ID &amp;&amp; strings.HasPrefix(ev.Text, prefix) {
-                                rtm.SendMessage(rtm.NewOutgoingMessage(ev.Text, ev.Channel))
+                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">User</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">info</span>.<span style="color:#a6e22e">User</span>.<span style="color:#a6e22e">ID</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Text</span>, <span style="color:#a6e22e">prefix</span>) {
+                                <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">SendMessage</span>(<span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">NewOutgoingMessage</span>(<span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Text</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Channel</span>))
                         }
 
-                case *slack.PresenceChangeEvent:
-                        fmt.Printf(&quot;Presence Change: %v\n&quot;, ev)
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">PresenceChangeEvent</span>:
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Presence Change: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>)
 
-                case *slack.LatencyReport:
-                        fmt.Printf(&quot;Current latency: %v\n&quot;, ev.Value)
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">LatencyReport</span>:
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Current latency: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Value</span>)
 
-                case *slack.RTMError:
-                        fmt.Printf(&quot;Error: %s\n&quot;, ev.Error())
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">RTMError</span>:
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Error: %s\n&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Error</span>())
 
-                case *slack.InvalidAuthEvent:
-                        fmt.Printf(&quot;Invalid credentials&quot;)
-                        return
+                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">InvalidAuthEvent</span>:
+                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Invalid credentials&#34;</span>)
+                        <span style="color:#66d9ef">return</span>
 
-                default:
+                <span style="color:#66d9ef">default</span>:
 
-                        // Ignore other events..
-                        // fmt.Printf(&quot;Unexpected: %v\n&quot;, msg.Data)
-                }
+                        <span style="color:#75715e">// Ignore other events..
+</span><span style="color:#75715e"></span>                        <span style="color:#75715e">// fmt.Printf(&#34;Unexpected: %v\n&#34;, msg.Data)
+</span><span style="color:#75715e"></span>                }
         }
-}
-</code></pre>
+}</code></pre></div>
+As you can see it&rsquo;s the simplest example from the readme of the <a href="https://github.com/nlopes/slack">Go Slack API</a> project, it only connects to Slack and when it reads a message if it&rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.</p>
 
-<p>As you can see it&rsquo;s the simplest example from the readme of the <a href="https://github.com/nlopes/slack">Go Slack API</a> project, it only connects to Slack and when it reads a message if it&rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.</p>
-
-<p>Here you can see the <code>Dockerfile</code>, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:</p>
-
-<pre><code class="language-plain"># Build
-FROM golang:1.11.2-alpine as builder
+<p>Here you can see the <code>Dockerfile</code>, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#75715e"># Build</span>
+FROM golang:<span style="color:#ae81ff">1.11</span>.<span style="color:#ae81ff">2</span>-alpine as builder
 
 WORKDIR /app
-RUN adduser -D -g 'app' app &amp;&amp; \
-    chown -R app:app /app &amp;&amp; \
-    apk add git &amp;&amp; apk add gcc musl-dev
+RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#75715e">&amp;&amp;</span> \
+    chown -R app:app /app <span style="color:#75715e">&amp;&amp;</span> \
+    apk add git <span style="color:#75715e">&amp;&amp;</span> apk add gcc musl-dev
 
 ADD . /app/
-RUN go get -d -v ./... &amp;&amp; go build -o main . &amp;&amp; chown -R app:app /app /home/app
+RUN go get -d -v ./... <span style="color:#75715e">&amp;&amp;</span> go build -o main . <span style="color:#75715e">&amp;&amp;</span> chown -R app:app /app /home/app
 
-# Run
-FROM golang:1.11.2-alpine
+<span style="color:#75715e"># Run</span>
+FROM golang:<span style="color:#ae81ff">1.11</span>.<span style="color:#ae81ff">2</span>-alpine
 
 WORKDIR /app
-RUN adduser -D -g 'app' app &amp;&amp; \
+RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#75715e">&amp;&amp;</span> \
     chown -R app:app /app
 
 COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
 COPY --from=builder --chown=app /app/main /app/main
 
 USER app
-CMD [&quot;/app/main&quot;]
-</code></pre>
+CMD [<span style="color:#e6db74">&#34;/app/main&#34;</span>]</code></pre></div>
+There are a few more files in there, you can see the full sources <a href="https://github.com/kainlite/echobot">here</a>, for example <code>health_check.sh</code>, as our app doesn&rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.</p>
 
-<p>There are a few more files in there, you can see the full sources <a href="https://github.com/kainlite/echobot">here</a>, for example <code>health_check.sh</code>, as our app doesn&rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.</p>
+<p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ ks init echobot
+INFO Using context <span style="color:#e6db74">&#34;minikube&#34;</span> from kubeconfig file <span style="color:#e6db74">&#34;~/.kube/config&#34;</span>
+INFO Creating environment <span style="color:#e6db74">&#34;default&#34;</span> with namespace <span style="color:#e6db74">&#34;default&#34;</span>, pointing to <span style="color:#e6db74">&#34;version:v1.8.0&#34;</span> cluster at address <span style="color:#e6db74">&#34;https://192.168.99.100:8443&#34;</span>
+INFO Generating ksonnet-lib data at path <span style="color:#e6db74">&#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;</span></code></pre></div></p>
 
-<p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:</p>
-
-<pre><code class="language-bash">$ ks init echobot
-INFO Using context &quot;minikube&quot; from kubeconfig file &quot;~/.kube/config&quot;
-INFO Creating environment &quot;default&quot; with namespace &quot;default&quot;, pointing to &quot;version:v1.8.0&quot; cluster at address &quot;https://192.168.99.100:8443&quot;
-INFO Generating ksonnet-lib data at path '~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0'
-</code></pre>
-
-<p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:</p>
-
-<pre><code>// Import KSonnet library
-local params = std.extVar('__ksonnet/params').components.demo;
-local k = import 'k.libsonnet';
+<p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">// Import KSonnet library
+local params = std.extVar(<span style="color:#e6db74">&#39;__ksonnet/params&#39;</span>).components.demo;
+local k = import <span style="color:#e6db74">&#39;k.libsonnet&#39;</span>;
 
 // Specify the import objects that we need
 local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;
@@ -222,64 +213,58 @@ local depl = k.extensions.v1beta1.deployment;
 // But I will leave that as an exercise for you :)
 local envs = [
   {
-    name: 'SLACK_API_TOKEN',
-    value: 'really-long-token',
+    name: <span style="color:#e6db74">&#39;SLACK_API_TOKEN&#39;</span>,
+    value: <span style="color:#e6db74">&#39;really-long-token&#39;</span>,
   },
 ];
 
 local livenessProbe = {
   exec: {
     command: [
-      '/bin/sh',
-      '-c',
-      '/app/health_check.sh',
+      <span style="color:#e6db74">&#39;/bin/sh&#39;</span>,
+      <span style="color:#e6db74">&#39;-c&#39;</span>,
+      <span style="color:#e6db74">&#39;/app/health_check.sh&#39;</span>,
     ],
   },
 };
 
 // Define containers
 local containers = [
-  container.new('echobot', 'kainlite/echobot:0.0.2') {
+  container.new(<span style="color:#e6db74">&#39;echobot&#39;</span>, <span style="color:#e6db74">&#39;kainlite/echobot:0.0.2&#39;</span>) {
     env: (envs),
     livenessProbe: livenessProbe,
   },
 ];
 
-// Define deployment with 3 replicas
+// Define deployment with <span style="color:#ae81ff">3</span> replicas
 local deployment =
-  depl.new('echobot', 1, containers, { app: 'echobot' });
+  depl.new(<span style="color:#e6db74">&#39;echobot&#39;</span>, <span style="color:#ae81ff">1</span>, containers, { app: <span style="color:#e6db74">&#39;echobot&#39;</span> });
 
 local resources = [deployment];
 
 // Return list of resources.
-k.core.v1.list.new(resources)
-</code></pre>
-
-<p>Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace <code>really-long-token</code> with your token, and then do:</p>
-
-<pre><code class="language-plain">$ ks apply default
+k.core.v1.list.new(resources)</code></pre></div>
+Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace <code>really-long-token</code> with your token, and then do:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ ks apply default
 INFO Applying deployments echobot
-INFO Creating non-existent deployments echobot
-</code></pre>
+INFO Creating non-existent deployments echobot</code></pre></div></p>
 
 <p>And now if we check our deployment and pod, we should see something like this:</p>
 
 <p><img src="/img/echobot.png" alt="Echo bot" /></p>
 
-<p>And in the logs:</p>
-
-<pre><code class="language-plain"> $ kubectl get pods
+<p>And in the logs:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"> $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           1/1       Running   0          53s
+echobot-7456f7d7dd-twg4r           <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running   <span style="color:#ae81ff">0</span>          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y= 0xc000468000 0xc0004482a0 [] [] [] [] []}
-Connection counter: 0
-Event Received: Event Received: Current latency: 1.256397423s
-Event Received: Current latency: 1.25679313s
-Event Received: Current latency: 1.256788737s
-Event Received: Message: &amp;{{message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! 1546124966.002300  false [] [] &lt;nil&gt;  false 0  false  1546124966.002300   &lt;nil&gt;      [] 0 []  [] false &lt;nil&gt;  0 TEDJT5CTD []  false false} &lt;nil&gt;}
-</code></pre>
+Event Received: Event Received: Infos: <span style="color:#75715e">&amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y=</span> <span style="color:#ae81ff">0xc000468000</span> <span style="color:#ae81ff">0xc0004482a0</span> [] [] [] [] []}
+Connection counter: <span style="color:#ae81ff">0</span>
+Event Received: Event Received: Current latency: <span style="color:#ae81ff">1.</span>256397423s
+Event Received: Current latency: <span style="color:#ae81ff">1.</span>25679313s
+Event Received: Current latency: <span style="color:#ae81ff">1.</span>256788737s
+Event Received: Message: <span style="color:#75715e">&amp;{{message</span> CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33<span style="color:#e6db74">&gt; echo! 1546124966.002300  false [] [] &lt;nil&gt;  false 0  false  1546124966.002300   &lt;nil&gt;      [] 0 []  [] false &lt;nil&gt;  0 TEDJT5CTD []  false false} &lt;nil&gt;}</span></code></pre></div></p>
 
 <p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href="https://github.com/kainlite/echobot">here</a>. In a future post I might explore <a href="https://ksonnet.io/docs/examples/helm/">ksonnet and helm charts</a>.</p>
 

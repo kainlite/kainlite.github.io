@@ -2,47 +2,47 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/categories/</link>
+    <link>https://techsquad.rocks/categories/</link>
     <description>Recent content in Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     
-        <atom:link href="https://kainlite.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Deployment Tools</title>
-      <link>https://kainlite.github.io/categories/deployment-tools/</link>
+      <link>https://techsquad.rocks/categories/deployment-tools/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/deployment-tools/</guid>
+      <guid>https://techsquad.rocks/categories/deployment-tools/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>https://kainlite.github.io/categories/kubernetes/</link>
+      <link>https://techsquad.rocks/categories/kubernetes/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/kubernetes/</guid>
+      <guid>https://techsquad.rocks/categories/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://kainlite.github.io/categories/linux/</link>
+      <link>https://techsquad.rocks/categories/linux/</link>
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/linux/</guid>
+      <guid>https://techsquad.rocks/categories/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Service Mesh</title>
-      <link>https://kainlite.github.io/categories/service-mesh/</link>
+      <link>https://techsquad.rocks/categories/service-mesh/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/categories/service-mesh/</guid>
+      <guid>https://techsquad.rocks/categories/service-mesh/</guid>
       <description></description>
     </item>
     

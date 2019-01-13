@@ -2,156 +2,156 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/</link>
+    <link>https://techsquad.rocks/tags/</link>
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Deployment Tools</title>
-      <link>https://kainlite.github.io/tags/deployment-tools/</link>
+      <link>https://techsquad.rocks/tags/deployment-tools/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/deployment-tools/</guid>
+      <guid>https://techsquad.rocks/tags/deployment-tools/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Git</title>
-      <link>https://kainlite.github.io/tags/git/</link>
+      <link>https://techsquad.rocks/tags/git/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/git/</guid>
+      <guid>https://techsquad.rocks/tags/git/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Gitkube</title>
-      <link>https://kainlite.github.io/tags/gitkube/</link>
+      <link>https://techsquad.rocks/tags/gitkube/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/gitkube/</guid>
+      <guid>https://techsquad.rocks/tags/gitkube/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://kainlite.github.io/tags/go/</link>
+      <link>https://techsquad.rocks/tags/go/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/go/</guid>
+      <guid>https://techsquad.rocks/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Helm</title>
-      <link>https://kainlite.github.io/tags/helm/</link>
+      <link>https://techsquad.rocks/tags/helm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/helm/</guid>
+      <guid>https://techsquad.rocks/tags/helm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Istio</title>
-      <link>https://kainlite.github.io/tags/istio/</link>
+      <link>https://techsquad.rocks/tags/istio/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/istio/</guid>
+      <guid>https://techsquad.rocks/tags/istio/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Jsonnet</title>
-      <link>https://kainlite.github.io/tags/jsonnet/</link>
+      <link>https://techsquad.rocks/tags/jsonnet/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/jsonnet/</guid>
+      <guid>https://techsquad.rocks/tags/jsonnet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ksonnet</title>
-      <link>https://kainlite.github.io/tags/ksonnet/</link>
+      <link>https://techsquad.rocks/tags/ksonnet/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/ksonnet/</guid>
+      <guid>https://techsquad.rocks/tags/ksonnet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Kubernetes</title>
-      <link>https://kainlite.github.io/tags/kubernetes/</link>
+      <link>https://techsquad.rocks/tags/kubernetes/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/kubernetes/</guid>
+      <guid>https://techsquad.rocks/tags/kubernetes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://kainlite.github.io/tags/linux/</link>
+      <link>https://techsquad.rocks/tags/linux/</link>
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/linux/</guid>
+      <guid>https://techsquad.rocks/tags/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Routing</title>
-      <link>https://kainlite.github.io/tags/routing/</link>
+      <link>https://techsquad.rocks/tags/routing/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/routing/</guid>
+      <guid>https://techsquad.rocks/tags/routing/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Service Mesh</title>
-      <link>https://kainlite.github.io/tags/service-mesh/</link>
+      <link>https://techsquad.rocks/tags/service-mesh/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/service-mesh/</guid>
+      <guid>https://techsquad.rocks/tags/service-mesh/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Skaffold</title>
-      <link>https://kainlite.github.io/tags/skaffold/</link>
+      <link>https://techsquad.rocks/tags/skaffold/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/skaffold/</guid>
+      <guid>https://techsquad.rocks/tags/skaffold/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Slack</title>
-      <link>https://kainlite.github.io/tags/slack/</link>
+      <link>https://techsquad.rocks/tags/slack/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/slack/</guid>
+      <guid>https://techsquad.rocks/tags/slack/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Urxvt</title>
-      <link>https://kainlite.github.io/tags/urxvt/</link>
+      <link>https://techsquad.rocks/tags/urxvt/</link>
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/urxvt/</guid>
+      <guid>https://techsquad.rocks/tags/urxvt/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Vim</title>
-      <link>https://kainlite.github.io/tags/vim/</link>
+      <link>https://techsquad.rocks/tags/vim/</link>
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/tags/vim/</guid>
+      <guid>https://techsquad.rocks/tags/vim/</guid>
       <description></description>
     </item>
     

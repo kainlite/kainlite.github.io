@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Routing on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/routing/</link>
+    <link>https://techsquad.rocks/tags/routing/</link>
     <description>Recent content in Routing on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 10 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/routing/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/routing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Exploring some Istio features</title>
-      <link>https://kainlite.github.io/blog/exploring_some_istio_features/</link>
+      <link>https://techsquad.rocks/blog/exploring_some_istio_features/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/exploring_some_istio_features/</guid>
+      <guid>https://techsquad.rocks/blog/exploring_some_istio_features/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
 
-&lt;p&gt;This article builds up on what we did in the &lt;a href=&#34;https://kainlite.github.io/blog/why_do_i_need_a_service_mesh/&#34;&gt;last article&lt;/a&gt;, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.&lt;/p&gt;
+&lt;p&gt;This article builds up on what we did in the &lt;a href=&#34;https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/&#34;&gt;last article&lt;/a&gt;, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.&lt;/p&gt;
 
 &lt;p&gt;In this example I will be using &lt;a href=&#34;https://m.do.co/c/01d040b789de&#34;&gt;Digital Ocean&lt;/a&gt; (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.&lt;/p&gt;
 
@@ -178,13 +178,13 @@ What&amp;rsquo;s going on here, how Istio knows what user is logged in?, well, t
 
 &lt;p&gt;Not jason:
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;jason:
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/istio-servicev2.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev2.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
 As you can see the difference in the v1 and v2 of the app are the stars below the reviews, but that is more than enough to indicate that it works, this is really nice for beta testers you don&amp;rsquo;t need or have to complicate your code but just add a header.&lt;/p&gt;
@@ -232,7 +232,7 @@ spec:
 
 &lt;p&gt;So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for &lt;em&gt;jason&lt;/em&gt; everyone else will see the version without stars or the error message.
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 

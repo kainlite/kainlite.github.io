@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Skaffold on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/skaffold/</link>
+    <link>https://techsquad.rocks/tags/skaffold/</link>
     <description>Recent content in Skaffold on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/skaffold/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/skaffold/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Getting started with skaffold</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_skaffold/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_skaffold/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_skaffold/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_skaffold/</guid>
       <description>
 
 &lt;h3 id=&#34;skaffold&#34;&gt;&lt;strong&gt;Skaffold&lt;/strong&gt;&lt;/h3&gt;
@@ -29,7 +29,7 @@
 
 &lt;p&gt;Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don&amp;rsquo;t waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you&amp;rsquo;re ready to go.&lt;/p&gt;
 
-&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://techsquad.rocks/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-do-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-nyc1-&lt;span style=&#34;color:#ae81ff&#34;&gt;1546545313076&lt;/span&gt;-kubeconfig.yaml

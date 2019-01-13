@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/linux/</link>
+    <link>https://techsquad.rocks/tags/linux/</link>
     <description>Recent content in Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 12 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>My local environment</title>
-      <link>https://kainlite.github.io/blog/my_local_environment/</link>
+      <link>https://techsquad.rocks/blog/my_local_environment/</link>
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/my_local_environment/</guid>
+      <guid>https://techsquad.rocks/blog/my_local_environment/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
@@ -27,7 +27,7 @@
 
 &lt;p&gt;My current terminal is &lt;strong&gt;rxvt-unicode&lt;/strong&gt; and I&amp;rsquo;m pretty happy with it, it&amp;rsquo;s relatively easy to configure and use, it looks like this:
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/urxvt.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://techsquad.rocks/img/urxvt.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
 And the configuration file can be &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.Xresources&#34;&gt;found here&lt;/a&gt;, note that even if you don&amp;rsquo;t like Ponys by any reason, it&amp;rsquo;s useful to test colors in the terminal.&lt;/p&gt;
@@ -58,7 +58,7 @@ $ xrdb -remove&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo &lt;em&gt;compiling&lt;/em&gt; the site after every save and live reloading it in my browser:
 &lt;figure&gt;
-    &lt;img src=&#34;https://kainlite.github.io/img/vim.png&#34; width=&#34;100%&#34;/&gt; 
+    &lt;img src=&#34;https://techsquad.rocks/img/vim.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/ksonnet/</link>
+    <link>https://techsquad.rocks/tags/ksonnet/</link>
     <description>Recent content in Ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 29 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/ksonnet/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/ksonnet/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go echo bot</title>
-      <link>https://kainlite.github.io/blog/go_echobot/</link>
+      <link>https://techsquad.rocks/blog/go_echobot/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/go_echobot/</guid>
+      <guid>https://techsquad.rocks/blog/go_echobot/</guid>
       <description>
 
 &lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
@@ -175,7 +175,7 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And in the logs:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl get pods
@@ -206,10 +206,10 @@ Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{me
     
     <item>
       <title>Getting started with ksonnet</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_ksonnet/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_ksonnet/</link>
       <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_ksonnet/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_ksonnet/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;

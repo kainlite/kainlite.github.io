@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Helm on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/tags/helm/</link>
+    <link>https://techsquad.rocks/tags/helm/</link>
     <description>Recent content in Helm on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 24 Dec 2018 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/tags/helm/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/helm/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Deploying my apps with Helm</title>
-      <link>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</link>
+      <link>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</guid>
+      <guid>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
       <description>
 
 &lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
@@ -146,7 +146,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 
@@ -181,10 +181,10 @@ In the cloud or on premises this will indeed be different and you should have a 
     
     <item>
       <title>Getting started with Helm</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_helm/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_helm/</link>
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_helm/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -544,10 +544,10 @@ metadata:
 &lt;p&gt;The following posts will be about package managers, development deployment tools, etc. It&amp;rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_ksonnet/&#34;&gt;Getting started with Ksonnet and friends&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_skaffold/&#34;&gt;Getting started with Skaffold&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_gitkube/&#34;&gt;Getting started with Gitkube&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_ksonnet/&#34;&gt;Getting started with Ksonnet and friends&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_skaffold/&#34;&gt;Getting started with Skaffold&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_gitkube/&#34;&gt;Getting started with Gitkube&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

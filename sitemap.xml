@@ -3,189 +3,189 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://kainlite.github.io/blog/my_local_environment/</loc>
+    <loc>https://techsquad.rocks/blog/my_local_environment/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/exploring_some_istio_features/</loc>
+    <loc>https://techsquad.rocks/blog/exploring_some_istio_features/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/why_do_i_need_a_service_mesh/</loc>
+    <loc>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/getting_started_with_skaffold/</loc>
+    <loc>https://techsquad.rocks/blog/getting_started_with_skaffold/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/getting_started_with_gitkube/</loc>
+    <loc>https://techsquad.rocks/blog/getting_started_with_gitkube/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/go_echobot/</loc>
+    <loc>https://techsquad.rocks/blog/go_echobot/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/getting_started_with_ksonnet/</loc>
+    <loc>https://techsquad.rocks/blog/getting_started_with_ksonnet/</loc>
     <lastmod>2018-12-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</loc>
+    <loc>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/getting_started_with_helm/</loc>
+    <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
     <lastmod>2018-12-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/blog/</loc>
+    <loc>https://techsquad.rocks/blog/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/</loc>
+    <loc>https://techsquad.rocks/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/deployment-tools/</loc>
+    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/deployment-tools/</loc>
+    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/git/</loc>
+    <loc>https://techsquad.rocks/tags/git/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/gitkube/</loc>
+    <loc>https://techsquad.rocks/tags/gitkube/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/go/</loc>
+    <loc>https://techsquad.rocks/tags/go/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/helm/</loc>
+    <loc>https://techsquad.rocks/tags/helm/</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/istio/</loc>
+    <loc>https://techsquad.rocks/tags/istio/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/jsonnet/</loc>
+    <loc>https://techsquad.rocks/tags/jsonnet/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/ksonnet/</loc>
+    <loc>https://techsquad.rocks/tags/ksonnet/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/kubernetes/</loc>
+    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/kubernetes/</loc>
+    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/</loc>
+    <loc>https://techsquad.rocks/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/linux/</loc>
+    <loc>https://techsquad.rocks/tags/linux/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/linux/</loc>
+    <loc>https://techsquad.rocks/categories/linux/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/routing/</loc>
+    <loc>https://techsquad.rocks/tags/routing/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/service-mesh/</loc>
+    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/categories/service-mesh/</loc>
+    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/skaffold/</loc>
+    <loc>https://techsquad.rocks/tags/skaffold/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/slack/</loc>
+    <loc>https://techsquad.rocks/tags/slack/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/</loc>
+    <loc>https://techsquad.rocks/tags/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/urxvt/</loc>
+    <loc>https://techsquad.rocks/tags/urxvt/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://kainlite.github.io/tags/vim/</loc>
+    <loc>https://techsquad.rocks/tags/vim/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

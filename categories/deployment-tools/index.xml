@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Deployment Tools on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://kainlite.github.io/categories/deployment-tools/</link>
+    <link>https://techsquad.rocks/categories/deployment-tools/</link>
     <description>Recent content in Deployment Tools on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://kainlite.github.io/categories/deployment-tools/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/categories/deployment-tools/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Getting started with skaffold</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_skaffold/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_skaffold/</link>
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_skaffold/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_skaffold/</guid>
       <description>
 
 &lt;h3 id=&#34;skaffold&#34;&gt;&lt;strong&gt;Skaffold&lt;/strong&gt;&lt;/h3&gt;
@@ -29,7 +29,7 @@
 
 &lt;p&gt;Once you have created your account and added your credit card you will get the $100 of free credit, then you will have to go to Manage on the left side panel and click on Kubernetes, then create your cluster with the amount of nodes that you consider necessary but remember to power them off or delete these resources so you don&amp;rsquo;t waste the free credit or your credit card itself. Once you have created your cluster and downloaded the kubectl config you&amp;rsquo;re ready to go.&lt;/p&gt;
 
-&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We will be working with the chat bot again you can see the original &lt;a href=&#34;https://techsquad.rocks/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo &lt;a href=&#34;https://github.com/kainlite/echobot/tree/skaffold&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s tell our kubectl to use our recently downloaded config:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ export KUBECONFIG=/home/kainlite/Downloads/k8s-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-do-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-nyc1-&lt;span style=&#34;color:#ae81ff&#34;&gt;1546545313076&lt;/span&gt;-kubeconfig.yaml
@@ -290,10 +290,10 @@ Cleanup complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;3.&lt;/span&gt;833
     
     <item>
       <title>Getting started with gitkube</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_gitkube/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_gitkube/</link>
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_gitkube/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_gitkube/</guid>
       <description>
 
 &lt;h3 id=&#34;gitkube&#34;&gt;&lt;strong&gt;Gitkube&lt;/strong&gt;&lt;/h3&gt;
@@ -305,7 +305,7 @@ Cleanup complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;3.&lt;/span&gt;833
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
 &lt;p&gt;We&amp;rsquo;re going to deploy or re-deploy our echo bot one more time but this time using gitkube.
-You can find the chat bot: &lt;a href=&#34;https://kainlite.github.io/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo: &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+You can find the chat bot: &lt;a href=&#34;https://techsquad.rocks/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo: &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
@@ -544,10 +544,10 @@ As we can see the image is the one that got built from our &lt;code&gt;git push&
     
     <item>
       <title>Go echo bot</title>
-      <link>https://kainlite.github.io/blog/go_echobot/</link>
+      <link>https://techsquad.rocks/blog/go_echobot/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/go_echobot/</guid>
+      <guid>https://techsquad.rocks/blog/go_echobot/</guid>
       <description>
 
 &lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
@@ -706,7 +706,7 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And in the logs:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl get pods
@@ -737,10 +737,10 @@ Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{me
     
     <item>
       <title>Getting started with ksonnet</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_ksonnet/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_ksonnet/</link>
       <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_ksonnet/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_ksonnet/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -1224,10 +1224,10 @@ wordpre INFO     Blog Name: User&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#
     
     <item>
       <title>Deploying my apps with Helm</title>
-      <link>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</link>
+      <link>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</link>
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/deploying_my_apps_with_helm/</guid>
+      <guid>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
       <description>
 
 &lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
@@ -1357,7 +1357,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://kainlite.github.io/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 
@@ -1392,10 +1392,10 @@ In the cloud or on premises this will indeed be different and you should have a 
     
     <item>
       <title>Getting started with Helm</title>
-      <link>https://kainlite.github.io/blog/getting_started_with_helm/</link>
+      <link>https://techsquad.rocks/blog/getting_started_with_helm/</link>
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://kainlite.github.io/blog/getting_started_with_helm/</guid>
+      <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -1755,10 +1755,10 @@ metadata:
 &lt;p&gt;The following posts will be about package managers, development deployment tools, etc. It&amp;rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_ksonnet/&#34;&gt;Getting started with Ksonnet and friends&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_skaffold/&#34;&gt;Getting started with Skaffold&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kainlite.github.io/blog/getting_started_with_gitkube/&#34;&gt;Getting started with Gitkube&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/deploying_my_apps_with_helm/&#34;&gt;Expand on helm, search and install community charts&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_ksonnet/&#34;&gt;Getting started with Ksonnet and friends&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_skaffold/&#34;&gt;Getting started with Skaffold&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_gitkube/&#34;&gt;Getting started with Gitkube&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

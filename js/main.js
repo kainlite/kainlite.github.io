@@ -8,7 +8,12 @@ jQuery(document).ready(function(e) {
         e("html,body").animate({
             scrollTop: e(this.hash).offset().top
         }, 1e3)
-    })
+    });
+
+    $(function() {
+    	$('img').on('click', function() {
+			$('.enlargeImageModalSource').attr('src', $(this).attr('src'));
+			$('#enlargeImageModal').modal('show');
+		});
+	});
 });
-
-

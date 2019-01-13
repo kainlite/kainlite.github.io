@@ -200,3 +200,21 @@ div.footer{
   padding-bottom: 15px;
 
 }*/
+
+
+img {
+  cursor: zoom-in;
+}
+
+#enlargeImageModal
+{
+  width: 100%;
+}
+
+#enlargeImageModal .modal-body {
+  width: 100%;
+}
+
+.modal-dialog {
+  width: 90%;
+}

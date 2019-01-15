@@ -23,6 +23,8 @@
 
 &lt;p&gt;This article is about my current configuration, but I&amp;rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&amp;rsquo;m currently using &lt;strong&gt;Arch Linux&lt;/strong&gt; and &lt;strong&gt;AwesomeWM&lt;/strong&gt; (I used Gnome Shell previously, and Gnome 2 before that), you can find my &lt;a href=&#34;https://github.com/kainlite/dotfiles&#34;&gt;dotfiles here&lt;/a&gt; with all my configurations.&lt;/p&gt;
 
+&lt;p&gt;While my terminal doesn&amp;rsquo;t look exactly like the one from the picture you can get something like that with &lt;a href=&#34;https://github.com/jtyr/gbt&#34;&gt;GBT&lt;/a&gt;.&lt;/p&gt;
+
 &lt;h3 id=&#34;terminal&#34;&gt;Terminal&lt;/h3&gt;
 
 &lt;p&gt;My current terminal is &lt;strong&gt;rxvt-unicode&lt;/strong&gt; and I&amp;rsquo;m pretty happy with it, it&amp;rsquo;s relatively easy to configure and use, it looks like this:
@@ -68,6 +70,7 @@ $ xrdb -remove&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 &lt;li&gt;I&amp;rsquo;m also using zsh and &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; with the theme agnoster. I really like zsh it&amp;rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.&lt;/li&gt;
 &lt;li&gt;I like to take advantage of all the space in the screen, that&amp;rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&amp;rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.&lt;/li&gt;
 &lt;li&gt;I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.&lt;/li&gt;
+&lt;li&gt;If you are going to use unicode I recommend you to install the fonts from nerd-fonts.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

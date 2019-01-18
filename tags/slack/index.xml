@@ -93,33 +93,33 @@
 As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
 
 &lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;
-FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
-
-WORKDIR /app
-RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
-
-ADD . /app/
-RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
-
-&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;
-FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
-
-WORKDIR /app
-RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    chown -R app:app /app
-
-COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
-COPY --from=builder --chown=app /app/main /app/main
-
-USER app
-CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-docker&#34; data-lang=&#34;docker&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine as builder&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    apk add git &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;ADD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; . /app/&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; go get -d -v ./... &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/health_check.sh /app/health_check.sh&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/main /app/main&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;USER app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CMD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; [&amp;#34;/app/main&amp;#34;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
 
 &lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks init echobot
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks init echobot
 INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
 INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.8.0&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
 INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
@@ -169,7 +169,7 @@ local resources = [deployment];
 // Return list of resources.
 k.core.v1.list.new(resources)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks apply default
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks apply default
 INFO Applying deployments echobot
 INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
@@ -178,17 +178,17 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 &lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And in the logs:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl get pods
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
+echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc000468000&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc0004482a0&lt;/span&gt; [] [] [] [] []}
+Event Received: Event Received: Infos: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 0xc000468000 0xc0004482a0 &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]}&lt;/span&gt;
 Connection counter: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256397423s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;25679313s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256788737s
-Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{message&lt;/span&gt; CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256397423s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.25679313s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256788737s
+Event Received: Message: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{{&lt;/span&gt;message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300  false &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &amp;lt;nil&amp;gt;  false &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  false  &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300   &amp;lt;nil&amp;gt;      &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; false &amp;lt;nil&amp;gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; TEDJT5CTD &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  false false&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &amp;lt;nil&amp;gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
 

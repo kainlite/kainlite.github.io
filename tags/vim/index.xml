@@ -35,7 +35,7 @@
 And the configuration file can be &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.Xresources&#34;&gt;found here&lt;/a&gt;, note that even if you don&amp;rsquo;t like Ponys by any reason, it&amp;rsquo;s useful to test colors in the terminal.&lt;/p&gt;
 
 &lt;p&gt;It&amp;rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called &lt;code&gt;xrdb&lt;/code&gt; (X server resource database utility) to manage the configuration provided in the configuration file &lt;code&gt;.Xresources&lt;/code&gt;.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Loads the configuration from Xresources in xrdb&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Loads the configuration from Xresources in xrdb&lt;/span&gt;
 $ xrdb -merge .Xresources
 
 &lt;span style=&#34;color:#75715e&#34;&gt;# List the current configuration&lt;/span&gt;

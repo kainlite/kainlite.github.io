@@ -31,7 +31,7 @@
 You can find the chat bot: &lt;a href=&#34;https://techsquad.rocks/blog/go_echobot/&#34;&gt;article here&lt;/a&gt;, and the repo: &lt;a href=&#34;https://github.com/kainlite/echobot/tree/gitkube&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;remotes.gitkube.sh&amp;#34;&lt;/span&gt; created
 serviceaccount &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkube&amp;#34;&lt;/span&gt; created
 clusterrolebinding.rbac.authorization.k8s.io &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkube&amp;#34;&lt;/span&gt; created
@@ -39,16 +39,16 @@ configmap &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkube-ci-conf&amp
 deployment.extensions &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkubed&amp;#34;&lt;/span&gt; created
 deployment.extensions &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkube-controller&amp;#34;&lt;/span&gt; created
 
-$ kubectl --namespace kube-system expose deployment gitkubed --type=LoadBalancer --name=gitkubed
+$ kubectl --namespace kube-system expose deployment gitkubed --type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;LoadBalancer --name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;gitkubed
 service &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;gitkubed&amp;#34;&lt;/span&gt; exposed&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing &lt;code&gt;gitkube install&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;To install the gitkube binary, the easiest way is to do:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh &lt;span style=&#34;color:#e6db74&#34;&gt;| sudo bash&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 This will download and copy the binary into: &lt;code&gt;/usr/local/bin&lt;/code&gt;, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of &lt;em&gt;the internet&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;Then we need to generate (and then create it in the cluster) a file called &lt;code&gt;remote.yaml&lt;/code&gt; (or any name you like), it&amp;rsquo;s necessary in order to tell gitkube how to deploy our application once we &lt;code&gt;git push&lt;/code&gt; it:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ gitkube remote generate -f remote.yaml
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ gitkube remote generate -f remote.yaml
 Remote name: minikube
 namespace: default
 SSH public key file: ~/.ssh/id_rsa.pub
@@ -59,8 +59,8 @@ Deployment name: echobot
 Container name: echobot
 Dockerfile path: Dockerfile
 Build context path: ./
-Add another container? [y/N] Enter
-Add another deployment? [y/N] Enter&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Add another container? &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;y/N&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Enter
+Add another deployment? &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;y/N&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; Enter&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 And this will yield the following &lt;code&gt;remote.yaml&lt;/code&gt; file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.&lt;/p&gt;
 
 &lt;p&gt;The actual file &lt;code&gt;remote.yaml&lt;/code&gt;:
@@ -95,73 +95,73 @@ status:
 There are a few details to have in mind here, the &lt;em&gt;deployment&lt;/em&gt; name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&amp;rsquo;m using a public image, so we don&amp;rsquo;t need any of that. The &lt;em&gt;wizard&lt;/em&gt; will let you choose and customize a few options for your deployment.&lt;/p&gt;
 
 &lt;p&gt;The last step would be to finally create the resource:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ gitkube remote create -f remote.yaml
-INFO[&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] remote minikube created
-INFO[&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] waiting for remote url
-INFO[&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] remote url: ssh://default-minikube@&lt;span style=&#34;color:#ae81ff&#34;&gt;10.98&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;213.202&lt;/span&gt;/~/git/default-minikube
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ gitkube remote create -f remote.yaml
+INFO&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; remote minikube created
+INFO&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; waiting &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; remote url
+INFO&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
 
   &lt;span style=&#34;color:#75715e&#34;&gt;# add the remote to your git repo and push:&lt;/span&gt;
-  git remote add minikube ssh://default-minikube@&lt;span style=&#34;color:#ae81ff&#34;&gt;10.98&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;213.202&lt;/span&gt;/~/git/default-minikube
+  git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
   git push minikube master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;After adding the new remote called &lt;em&gt;minikube&lt;/em&gt;  we have everything ready to go, so let&amp;rsquo;s test it and see what happens:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ git push minikube master
-Enumerating objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, done.
-Counting objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% (&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), done.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ git push minikube master
+Enumerating objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;.
+Counting objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/10&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;.
 Delta compression using up to &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; threads
-Compressing objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% (&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), done.
-Writing objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% (&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;1.92&lt;/span&gt; KiB &lt;span style=&#34;color:#e6db74&#34;&gt;| 1.92 MiB/s, done.&lt;/span&gt;
-Total &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; (delta &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;), reused &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; (delta &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
-remote: Gitkube build system : Tue Jan  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;58&lt;/span&gt; UTC &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt;: Initialising
+Compressing objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/10&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;.
+Writing objects: &lt;span style=&#34;color:#ae81ff&#34;&gt;100&lt;/span&gt;% &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/10&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.92 KiB | &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.92 MiB/s, &lt;span style=&#34;color:#66d9ef&#34;&gt;done&lt;/span&gt;.
+Total &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;delta &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;, reused &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;delta &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+remote: Gitkube build system : Tue Jan  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt;:50:58 UTC &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt;: Initialising
 remote:
 remote: Creating the build directory
 remote: Checking out &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&amp;#39;&lt;/span&gt; to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/home/default-minikube/build/default-minikube&amp;#39;&lt;/span&gt;
 remote:
-remote: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; deployment(s) found in this repo
+remote: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; deployment&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;s&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; found in this repo
 remote: Trying to build them...
 remote:
-remote: Building Docker image for : echobot
+remote: Building Docker image &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; : echobot
 remote:
 remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
-remote: Sending build context to Docker daemon   &lt;span style=&#34;color:#ae81ff&#34;&gt;7.&lt;/span&gt;68kB
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 997342e65c61&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 7c6d8b9d1137&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : ADD . /app/
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; ca751c2678c4&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 16e44978b140&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 57915f96905a&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : WORKDIR /app
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 997342e65c61&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 55f48da0f9ac&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 139250fd6c77&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : COPY --from=builder --chown=app /app/main /app/main
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 2f1eb9f16e9f&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : USER app
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; a72f27dccff2&lt;/span&gt;
-remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; : CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Using cache&lt;/span&gt;
-remote:  ---&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; 034275449e08&lt;/span&gt;
-remote: Successfully built &lt;span style=&#34;color:#ae81ff&#34;&gt;034275449e08&lt;/span&gt;
+remote: Sending build context to Docker daemon   &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;.68kB
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/12 : FROM golang:1.11.2-alpine as builder
+remote:  ---&amp;gt; 57915f96905a
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/12 : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     apk add git &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 7c6d8b9d1137
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/12 : ADD . /app/
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; ca751c2678c4
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/12 : RUN go get -d -v ./... &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 16e44978b140
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt;/12 : FROM golang:1.11.2-alpine
+remote:  ---&amp;gt; 57915f96905a
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;/12 : WORKDIR /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 997342e65c61
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/12 : RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;     chown -R app:app /app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 55f48da0f9ac
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;9&lt;/span&gt;/12 : COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/health_check.sh /app/health_check.sh
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 139250fd6c77
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;/12 : COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/main /app/main
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 2f1eb9f16e9f
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt;/12 : USER app
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; a72f27dccff2
+remote: Step &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt;/12 : CMD &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+remote:  ---&amp;gt; Using cache
+remote:  ---&amp;gt; 034275449e08
+remote: Successfully built 034275449e08
 remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
 remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
-remote: The push refers to repository [docker.io/kainlite/default-minikube-default.echobot-echobot]
+remote: The push refers to repository &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;docker.io/kainlite/default-minikube-default.echobot-echobot&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
 remote: bba61bf193fe: Preparing
 remote: 3f0355bbea40: Preparing
 remote: 2ebcdc9e5e8f: Preparing
@@ -194,65 +194,65 @@ remote: echobot   &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;      
 remote:
 remote: Removing build directory
 remote:
-remote: Gitkube build system : Tue Jan  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;51&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt; UTC &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt;: Finished build
+remote: Gitkube build system : Tue Jan  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt;:51:16 UTC &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt;: Finished build
 remote:
 remote:
-To ssh://&lt;span style=&#34;color:#ae81ff&#34;&gt;10.98&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;213.202&lt;/span&gt;/~/git/default-minikube
- * [new branch]      master -&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+To ssh://10.98.213.202/~/git/default-minikube
+ * &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;new branch&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;      master -&amp;gt; master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to &lt;code&gt;/home/default-minikube/build/default-minikube&lt;/code&gt; and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to &lt;a href=&#34;https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot&#34;&gt;docker hub&lt;/a&gt; and then updated the deployment that we already had in there for the echo bot.&lt;/p&gt;
 
 &lt;p&gt;The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with &lt;code&gt;kubectl describe pod echobot-654cdbfb99-g4bwv&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default
 Priority:           &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-PriorityClassName:  &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Node:               minikube/10.0.2.15
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Start Time:         Tue, 01 Jan 2019 20:51:10 -0300
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Labels:             app=echobot
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;                    pod-template-hash=654cdbfb99
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Annotations:        &amp;lt;none&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Status:             Running
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;IP:                 172.17.0.9
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Controlled By:      ReplicaSet/echobot-654cdbfb99
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Containers:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  echobot:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Container ID:   docker://fe26ba9be6e2840c0d43a4fcbb4d79af38a00aa3a16411dee5e4af3823d44664
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Image:          docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Image ID:       docker-pullable://kainlite/default-minikube-default.echobot-echobot@sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Port:           &amp;lt;none&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Host Port:      &amp;lt;none&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    State:          Running
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      Started:      Tue, 01 Jan 2019 20:51:11 -0300
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Ready:          True
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Restart Count:  0
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Liveness:       exec [/bin/sh -c /app/health_check.sh] delay=0s timeout=1s period=10s #success=1 #failure=3
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Environment:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      SLACK_API_TOKEN:  really_long_token
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Mounts:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx (ro)
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Conditions:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Type              Status
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Initialized       True
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Ready             True
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  ContainersReady   True
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  PodScheduled      True
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Volumes:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  default-token-ks4jx:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Type:        Secret (a volume populated by a Secret)
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    SecretName:  default-token-ks4jx
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    Optional:    false
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;QoS Class:       BestEffort
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Node-Selectors:  &amp;lt;none&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;                 node.kubernetes.io/unreachable:NoExecute for 300s
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Events:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Type    Reason     Age   From               Message
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  ----    ------     ----  ----               -------
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Normal  Scheduled  39m   default-scheduler  Successfully assigned default/echobot-654cdbfb99-g4bwv to minikube
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Normal  Pulled     39m   kubelet, minikube  Container image &amp;#34;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&amp;#34; already present on machine
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Normal  Created    39m   kubelet, minikube  Created container
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  Normal  Started    39m   kubelet, minikube  Started container&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+PriorityClassName:  &amp;lt;none&amp;gt;
+Node:               minikube/10.0.2.15
+Start Time:         Tue, &lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;:51:10 -0300
+Labels:             app&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;echobot
+                    pod-template-hash&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;654cdbfb99
+Annotations:        &amp;lt;none&amp;gt;
+Status:             Running
+IP:                 &lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.9
+Controlled By:      ReplicaSet/echobot-654cdbfb99
+Containers:
+  echobot:
+    Container ID:   docker://fe26ba9be6e2840c0d43a4fcbb4d79af38a00aa3a16411dee5e4af3823d44664
+    Image:          docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
+    Image ID:       docker-pullable://kainlite/default-minikube-default.echobot-echobot@sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9
+    Port:           &amp;lt;none&amp;gt;
+    Host Port:      &amp;lt;none&amp;gt;
+    State:          Running
+      Started:      Tue, &lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; Jan &lt;span style=&#34;color:#ae81ff&#34;&gt;2019&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;:51:11 -0300
+    Ready:          True
+    Restart Count:  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    Liveness:       exec &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;/bin/sh -c /app/health_check.sh&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; delay&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;0s timeout&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1s period&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;10s &lt;span style=&#34;color:#75715e&#34;&gt;#success=1 #failure=3&lt;/span&gt;
+    Environment:
+      SLACK_API_TOKEN:  really_long_token
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ro&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  default-token-ks4jx:
+    Type:        Secret &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;a volume populated by a Secret&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    SecretName:  default-token-ks4jx
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  &amp;lt;none&amp;gt;
+Tolerations:     node.kubernetes.io/not-ready:NoExecute &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; 300s
+                 node.kubernetes.io/unreachable:NoExecute &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  39m   default-scheduler  Successfully assigned default/echobot-654cdbfb99-g4bwv to minikube
+  Normal  Pulled     39m   kubelet, minikube  Container image &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&amp;#34;&lt;/span&gt; already present on machine
+  Normal  Created    39m   kubelet, minikube  Created container
+  Normal  Started    39m   kubelet, minikube  Started container&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 As we can see the image is the one that got built from our &lt;code&gt;git push&lt;/code&gt; and everything is working as expected.&lt;/p&gt;
 
 &lt;p&gt;And that&amp;rsquo;s it for now, I think this tool has a lot of potential, it&amp;rsquo;s simple, nice and fast.&lt;/p&gt;

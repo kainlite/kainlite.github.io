@@ -25,16 +25,16 @@
 
 &lt;p&gt;How do I search for charts?:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm search wordpress
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-stable/wordpress        &lt;span style=&#34;color:#ae81ff&#34;&gt;3.3&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;           &lt;span style=&#34;color:#ae81ff&#34;&gt;4.9&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;           Web publishing platform for building blogs and websites.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+stable/wordpress        &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;.3.0           &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;.9.8           Web publishing platform &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; building blogs and websites.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that I&amp;rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&amp;rsquo;re using the official repo in the folder stable, but what if we don&amp;rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&amp;rsquo;s use the one from &lt;a href=&#34;https://bitnami.com/stack/wordpress/helm&#34;&gt;Bitnami&lt;/a&gt;, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;helm repo add bitnami https://charts.bitnami.com/bitnami&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm repo add bitnami https://charts.bitnami.com/bitnami&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm search wordpress
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-bitnami/wordpress       &lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;           &lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;           Web publishing platform for building blogs and websites.
-stable/wordpress        &lt;span style=&#34;color:#ae81ff&#34;&gt;3.3&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;           &lt;span style=&#34;color:#ae81ff&#34;&gt;4.9&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;           Web publishing platform for building blogs and websites.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+bitnami/wordpress       &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;.0.2           &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;.0.2           Web publishing platform &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; building blogs and websites.
+stable/wordpress        &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;.3.0           &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;.9.8           Web publishing platform &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; building blogs and websites.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Let&amp;rsquo;s check the &lt;a href=&#34;https://github.com/helm/charts/tree/master/stable/wordpress&#34;&gt;documentation&lt;/a&gt; of the chart to create our &lt;code&gt;values.yaml&lt;/code&gt; file, note that in this example the stable wordpress chart it&amp;rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&amp;rsquo;t always be the case but it simplifies things for us.&lt;/p&gt;
 
 &lt;p&gt;Our example &lt;code&gt;values.yaml&lt;/code&gt; will look like:
@@ -44,52 +44,52 @@ persistence:
 ingress:
   enabled: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 We will only change the blog name by default, the persistent volume size and also enable &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; (Our app should be available through &lt;code&gt;wordpress.local&lt;/code&gt; inside the cluster), if you are using minikube be sure to enable the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34;&gt;ingress&lt;/a&gt; addon.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ minikube addons enable ingress
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ minikube addons enable ingress
 ingress was successfully enabled&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;We can then install &lt;code&gt;stable/wordpress&lt;/code&gt; or &lt;code&gt;bitnami/wordpress&lt;/code&gt;, we will follow up with the one from Bitnami repo.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm install bitnami/wordpress \
---set image.repository=bitnami/wordpress \
---set image.tag=&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; \
--f values.yaml&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm install bitnami/wordpress &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--set image.repository&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;bitnami/wordpress &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;--set image.tag&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;.0.2 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;-f values.yaml&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 As it&amp;rsquo;s a common good practice to use specific versions we will do it here, it&amp;rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, &lt;a href=&#34;https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375&#34;&gt;follow the example&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;You should see something like:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;NAME:   plucking-condor
-LAST DEPLOYED: Mon Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;24&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;06&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;38&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;NAME:   plucking-condor
+LAST DEPLOYED: Mon Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;24&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;13&lt;/span&gt;:06:38 &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Pod(related)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Pod&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;related&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
 NAME                                        READY  STATUS             RESTARTS  AGE
-plucking-condor-wordpress-84845db8b5-hkqhc  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    ContainerCreating  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
-plucking-condor-mariadb-&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;                   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    Pending            &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
+plucking-condor-wordpress-84845db8b5-hkqhc  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/1    ContainerCreating  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
+plucking-condor-mariadb-0                   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/1    Pending            &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Secret&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Secret
 
 NAME                       AGE
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/ConfigMap&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/ConfigMap
 plucking-condor-mariadb        0s
 plucking-condor-mariadb-tests  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/PersistentVolumeClaim&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/PersistentVolumeClaim
 plucking-condor-wordpress  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Service&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Service
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1beta1/Deployment&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1beta1/Deployment
 plucking-condor-wordpress  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1beta1/StatefulSet&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1beta1/StatefulSet
 plucking-condor-mariadb  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1beta1/Ingress&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1beta1/Ingress
 wordpress.local-plucking-condor  0s
 
 
@@ -102,21 +102,21 @@ NOTES:
 &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;. Login with the following credentials to see your blog
 
   echo Username: user
-  echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath=&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.data.wordpress-password}&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;| base64 --decode)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+  echo Password: &lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.data.wordpress-password}&amp;#34;&lt;/span&gt; | base64 --decode&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Depending on the cluster provider or installation itself, you might need to replace the &lt;code&gt;persistence.storageClass&lt;/code&gt; to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your &lt;code&gt;values.yaml&lt;/code&gt; you need to stick to YAML format and indent &lt;code&gt;storageClass&lt;/code&gt; under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.&lt;/p&gt;
 
 &lt;p&gt;At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data &lt;em&gt;ALWAYS&lt;/em&gt; have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &amp;ldquo;working backup&amp;rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.&lt;/p&gt;
 
 &lt;p&gt;Now let&amp;rsquo;s check that all resources are indeed working and that we can use our recently installed app.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl get all
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl get all
 NAME                                             READY     STATUS        RESTARTS   AGE
-pod/plucking-condor-mariadb-&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;                    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Running       &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          12m
-pod/plucking-condor-wordpress-84845db8b5-hkqhc   &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Running       &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          12m
+pod/plucking-condor-mariadb-0                    &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1       Running       &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1       Running       &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          12m
 
-NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
-service/kubernetes                  ClusterIP      &lt;span style=&#34;color:#ae81ff&#34;&gt;10.96&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt;        &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;           443/TCP                      37h&lt;/span&gt;
-service/plucking-condor-mariadb     ClusterIP      &lt;span style=&#34;color:#ae81ff&#34;&gt;10.106&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;219.59&lt;/span&gt;    &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;           3306/TCP                     12m&lt;/span&gt;
-service/plucking-condor-wordpress   LoadBalancer   &lt;span style=&#34;color:#ae81ff&#34;&gt;10.100&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;239.163&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;10.100&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;239.163&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31764&lt;/span&gt;/TCP,&lt;span style=&#34;color:#ae81ff&#34;&gt;443&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;32308&lt;/span&gt;/TCP   12m
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;S&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;                      AGE
+service/kubernetes                  ClusterIP      &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.96.0.1        &amp;lt;none&amp;gt;           &lt;span style=&#34;color:#ae81ff&#34;&gt;443&lt;/span&gt;/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.106.219.59    &amp;lt;none&amp;gt;           &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.100.239.163   &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.100.239.163   &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;:31764/TCP,443:32308/TCP   12m
 
 NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/plucking-condor-wordpress   &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;         &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;         &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;            &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;           12m
@@ -129,19 +129,19 @@ statefulset.apps/plucking-condor-mariadb   &lt;span style=&#34;color:#ae81ff&#34
 You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter &lt;code&gt;--namespace&lt;/code&gt; in the &lt;code&gt;helm install&lt;/code&gt; line.&lt;/p&gt;
 
 &lt;p&gt;If you use minikube then ingress will expose a nodeport that we can find using &lt;code&gt;minikube service list&lt;/code&gt; then using the browser or curl to navigate our freshly installed wordpress.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ minikube service list
-|-------------|---------------------------|--------------------------------&lt;span style=&#34;color:#e6db74&#34;&gt;|
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;|  NAMESPACE  |           NAME            |              URL               |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;|-------------|---------------------------|--------------------------------|
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| default     | kubernetes                | No node port                   |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| default     | plucking-condor-mariadb   | No node port                   |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;|             |                           | http://192.168.99.100:32308    |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| kube-system | default-http-backend      | http://192.168.99.100:30001    |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| kube-system | kube-dns                  | No node port                   |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| kube-system | kubernetes-dashboard      | No node port                   |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;| kube-system | tiller-deploy             | No node port                   |
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;|-------------|---------------------------|--------------------------------|&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ minikube service list
+|-------------|---------------------------|--------------------------------|
+|  NAMESPACE  |           NAME            |              URL               |
+|-------------|---------------------------|--------------------------------|
+| default     | kubernetes                | No node port                   |
+| default     | plucking-condor-mariadb   | No node port                   |
+| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
+|             |                           | http://192.168.99.100:32308    |
+| kube-system | default-http-backend      | http://192.168.99.100:30001    |
+| kube-system | kube-dns                  | No node port                   |
+| kube-system | kubernetes-dashboard      | No node port                   |
+| kube-system | tiller-deploy             | No node port                   |
+|-------------|---------------------------|--------------------------------|&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: &lt;a href=&#34;http://192.168.99.100:31764&#34;&gt;http://192.168.99.100:31764&lt;/a&gt; and https at: &lt;a href=&#34;http://192.168.99.100:32308&#34;&gt;http://192.168.99.100:32308&lt;/a&gt;, and &lt;a href=&#34;http://192.168.99.100:30001&#34;&gt;http://192.168.99.100:30001&lt;/a&gt; is the default backend for the ingress controller), your ips can be different but the basics are the same.&lt;/p&gt;
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
@@ -153,7 +153,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 &lt;p&gt;As long as we have the &lt;a href=&#34;https://kubernetes.io/docs/concepts/storage/persistent-volumes/&#34;&gt;persistent volume&lt;/a&gt; our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.&lt;/p&gt;
 
 &lt;p&gt;Clean everything up:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;helm del --purge plucking-condor&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm del --purge plucking-condor&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;That&amp;rsquo;s all I have for now, I will be adding more content next week.&lt;/p&gt;
 
@@ -192,16 +192,16 @@ In the cloud or on premises this will indeed be different and you should have a 
 &lt;p&gt;This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using &lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;, in the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, you can follow with the following example:&lt;/p&gt;
 
 &lt;p&gt;Create the chart:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;helm create hello-world&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;helm create hello-world&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Always use valid DNS names if you are going to have services, otherwise you will have issues later on.&lt;/p&gt;
 
 &lt;p&gt;Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;cd hello-world
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ cd hello-world
 
 charts       &amp;lt;--- Dependencies, charts that your chart depends on.
 Chart.yaml   &amp;lt;--- Metadata mostly, defines the version of your chart, etc.
 templates    &amp;lt;--- Here is where the magic happens.
-values.yaml  &amp;lt;--- Default values file (this is used to replace in the templates at runtime)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+values.yaml  &amp;lt;--- Default values file &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;this is used to replace in the templates at runtime&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note: the following link explains the basics of &lt;a href=&#34;https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory&#34;&gt;dependencies&lt;/a&gt;, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.&lt;/p&gt;
 
 &lt;p&gt;The file &lt;code&gt;values.yaml&lt;/code&gt; by default will look like the following snippet:
@@ -238,7 +238,7 @@ tolerations: []
 affinity: {}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;The next step would be to check the &lt;code&gt;templates&lt;/code&gt; folder:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;deployment.yaml  &amp;lt;--- Standard kubernetes deployment with go templates variables.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;deployment.yaml  &amp;lt;--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     &amp;lt;--- This file defines some common variables.
 ingress.yaml     &amp;lt;--- Ingress route, etc.
 NOTES.txt        &amp;lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
@@ -362,171 +362,171 @@ spec:
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (&lt;code&gt;$fullName&lt;/code&gt; for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&amp;rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).&lt;/p&gt;
 
 &lt;p&gt;After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&amp;rsquo;s install tiller):
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm init
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
 
-Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+Tiller &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;the Helm server-side component&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; has been installed into your Kubernetes Cluster.
 
 Please note: by default, Tiller is deployed with an insecure &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;allow unauthenticated users&amp;#39;&lt;/span&gt; policy.
-To prevent this, run `helm init` with the --tiller-tls-verify flag.
-For more information on securing your installation see: https://docs.helm.sh/using_helm/&lt;span style=&#34;color:#75715e&#34;&gt;#securing-your-helm-installation&lt;/span&gt;
+To prevent this, run &lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;helm init&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt; with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
 Happy Helming!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the &lt;a href=&#34;https://engineering.bitnami.com/articles/helm-security.html&#34;&gt;Bitnami page&lt;/a&gt;, this mostly applies to multi-tenant clusters. And also be sure to check &lt;a href=&#34;https://docs.helm.sh/using_helm/#securing-your-helm-installation&#34;&gt;Securing Helm&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Deploy our chart:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm install --name my-nginx -f values.yaml .
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
-LAST DEPLOYED: Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
+LAST DEPLOYED: Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:30:11 &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Service&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Service
 NAME                  AGE
 my-nginx-hello-world  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1beta2/Deployment&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1beta2/Deployment
 my-nginx-hello-world  0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Pod(related)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Pod&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;related&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
 
 NAME                                   READY  STATUS   RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    Pending  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
+my-nginx-hello-world-6f948db8d5-s76zl  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/1    Pending  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
 
 NOTES:
 &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace default -l &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;#34;&lt;/span&gt; -o jsonpath=&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.items[0].metadata.name}&amp;#34;&lt;/span&gt;)
+  export POD_NAME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;kubectl get pods --namespace default -l &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;#34;&lt;/span&gt; -o jsonpath&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.items[0].metadata.name}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
   echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Visit http://127.0.0.1:8080 to use your application&amp;#34;&lt;/span&gt;
-  kubectl port-forward $POD_NAME &lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+  kubectl port-forward $POD_NAME &lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;:80&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Our deployment was successful and we can see that our pod is waiting to be scheduled.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s check that our service is there:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl get services
-NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
-kubernetes             ClusterIP   &lt;span style=&#34;color:#ae81ff&#34;&gt;10.96&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt;       &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;        443/TCP   1h&lt;/span&gt;
-my-nginx-hello-world   ClusterIP   &lt;span style=&#34;color:#ae81ff&#34;&gt;10.111&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;222.70&lt;/span&gt;   &amp;lt;none&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;        80/TCP    5m&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl get services
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;S&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;   AGE
+kubernetes             ClusterIP   &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.96.0.1       &amp;lt;none&amp;gt;        &lt;span style=&#34;color:#ae81ff&#34;&gt;443&lt;/span&gt;/TCP   1h
+my-nginx-hello-world   ClusterIP   &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.111.222.70   &amp;lt;none&amp;gt;        &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;/TCP    5m&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And now we can test that everything is okay by running another pod in interactive mode, for example:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl run -i --tty alpine --image=alpine -- sh
-If you don&amp;#39;t see a command prompt, try pressing enter.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl run -i --tty alpine --image&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;alpine -- sh
+If you don&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;t see a command prompt, try pressing enter.
 
 / &lt;span style=&#34;color:#75715e&#34;&gt;# apk add curl&lt;/span&gt;
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/main/x86_64/APKINDEX.tar.gz
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.&lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;/community/x86_64/APKINDEX.tar.gz
-(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) Installing ca-certificates (&lt;span style=&#34;color:#ae81ff&#34;&gt;20171114&lt;/span&gt;-r3)
-(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) Installing nghttp2-libs (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.32&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r0)
-(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) Installing libssh2 (&lt;span style=&#34;color:#ae81ff&#34;&gt;1.8&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;-r3)
-(&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) Installing libcurl (&lt;span style=&#34;color:#ae81ff&#34;&gt;7.61&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-r1)
-(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;) Installing curl (&lt;span style=&#34;color:#ae81ff&#34;&gt;7.61&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;-r1)
-Executing busybox-&lt;span style=&#34;color:#ae81ff&#34;&gt;1.28&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;-r2.trigger
-Executing ca-certificates-&lt;span style=&#34;color:#ae81ff&#34;&gt;20171114&lt;/span&gt;-r3.trigger
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/5&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Installing ca-certificates &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;20171114&lt;/span&gt;-r3&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;/5&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Installing nghttp2-libs &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.32.0-r0&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;/5&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Installing libssh2 &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.8.0-r3&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;/5&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Installing libcurl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;.61.1-r1&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;/5&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; Installing curl &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;.61.1-r1&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
 OK: &lt;span style=&#34;color:#ae81ff&#34;&gt;6&lt;/span&gt; MiB in &lt;span style=&#34;color:#ae81ff&#34;&gt;18&lt;/span&gt; packages
 
 / &lt;span style=&#34;color:#75715e&#34;&gt;# curl -v my-nginx-hello-world&lt;/span&gt;
 * Rebuilt URL to: my-nginx-hello-world/
-*   Trying &lt;span style=&#34;color:#ae81ff&#34;&gt;10.111&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;222.70&lt;/span&gt;...
+*   Trying &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.111.222.70...
 * TCP_NODELAY set
-* Connected to my-nginx-hello-world (&lt;span style=&#34;color:#ae81ff&#34;&gt;10.111&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;222.70&lt;/span&gt;) port &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt; (&lt;span style=&#34;color:#75715e&#34;&gt;#0)&lt;/span&gt;
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; GET / HTTP/1.1&lt;/span&gt;
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Host: my-nginx-hello-world&lt;/span&gt;
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; User-Agent: curl/7.61.1&lt;/span&gt;
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Accept: */*&lt;/span&gt;
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; HTTP/1.1 200 OK
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Server: nginx/1.14.2
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Date: Sun, 23 Dec 2018 03:45:31 GMT
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Content-Type: text/html
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Content-Length: 612
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Last-Modified: Tue, 04 Dec 2018 14:44:49 GMT
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Connection: keep-alive
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; ETag: &amp;#34;5c0692e1-264&amp;#34;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt; Accept-Ranges: bytes
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;html&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;head&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;title&amp;gt;Welcome to nginx!&amp;lt;/title&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;style&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    body {
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        width: 35em;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        margin: 0 auto;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        font-family: Tahoma, Verdana, Arial, sans-serif;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    }
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;/style&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;/head&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;body&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;h1&amp;gt;Welcome to nginx!&amp;lt;/h1&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;p&amp;gt;If you see this page, the nginx web server is successfully installed and
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;working. Further configuration is required.&amp;lt;/p&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;p&amp;gt;For online documentation and support please refer to
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;a href=&amp;#34;http://nginx.org/&amp;#34;&amp;gt;nginx.org&amp;lt;/a&amp;gt;.&amp;lt;br/&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Commercial support is available at
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;a href=&amp;#34;http://nginx.com/&amp;#34;&amp;gt;nginx.com&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you for using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;/body&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;/html&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;* Connection #0 to host my-nginx-hello-world left intact&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+* Connected to my-nginx-hello-world &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;.111.222.70&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; port &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#0)&lt;/span&gt;
+&amp;gt; GET / HTTP/1.1
+&amp;gt; Host: my-nginx-hello-world
+&amp;gt; User-Agent: curl/7.61.1
+&amp;gt; Accept: */*
+&amp;gt;
+&amp;lt; HTTP/1.1 &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; OK
+&amp;lt; Server: nginx/1.14.2
+&amp;lt; Date: Sun, &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;03&lt;/span&gt;:45:31 GMT
+&amp;lt; Content-Type: text/html
+&amp;lt; Content-Length: &lt;span style=&#34;color:#ae81ff&#34;&gt;612&lt;/span&gt;
+&amp;lt; Last-Modified: Tue, &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;14&lt;/span&gt;:44:49 GMT
+&amp;lt; Connection: keep-alive
+&amp;lt; ETag: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;5c0692e1-264&amp;#34;&lt;/span&gt;
+&amp;lt; Accept-Ranges: bytes
+&amp;lt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;Welcome to nginx!&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+    body &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        width: 35em;
+        margin: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Welcome to nginx!&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;For online documentation and support please refer to
+&amp;lt;a href&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://nginx.org/&amp;#34;&lt;/span&gt;&amp;gt;nginx.org&amp;lt;/a&amp;gt;.&amp;lt;br/&amp;gt;
+Commercial support is available at
+&amp;lt;a href&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://nginx.com/&amp;#34;&lt;/span&gt;&amp;gt;nginx.com&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+* Connection &lt;span style=&#34;color:#75715e&#34;&gt;#0 to host my-nginx-hello-world left intact&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).&lt;/p&gt;
 
 &lt;p&gt;Our current deployment can be checked like this:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm ls
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;               Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;11&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;        DEPLOYED        hello-world-&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;       &lt;span style=&#34;color:#ae81ff&#34;&gt;1.0&lt;/span&gt;             default&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+my-nginx        &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;               Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:30:11 &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;        DEPLOYED        hello-world-0.1.0       &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.0             default&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;The last example would be to upgrade our deployment, lets change the &lt;code&gt;tag&lt;/code&gt; in the &lt;code&gt;values.yaml&lt;/code&gt; file from &lt;code&gt;stable&lt;/code&gt; to &lt;code&gt;mainline&lt;/code&gt; and update also the metadata file (&lt;code&gt;Chart.yaml&lt;/code&gt;) to let Helm know that this is a new version of our chart.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ helm upgrade my-nginx . -f values.yaml
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ helm upgrade my-nginx . -f values.yaml
 Release &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my-nginx&amp;#34;&lt;/span&gt; has been upgraded. Happy Helming!
-LAST DEPLOYED: Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;55&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;22&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
+LAST DEPLOYED: Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:55:22 &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Pod(related)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Pod&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;related&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
 NAME                                   READY  STATUS             RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    Running            &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         25m
-my-nginx-hello-world-c5cdcc95c-shgc6   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;    ContainerCreating  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
+my-nginx-hello-world-6f948db8d5-s76zl  &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1    Running            &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;/1    ContainerCreating  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;         0s
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1/Service&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1/Service
 
 NAME                  AGE
 my-nginx-hello-world  25m
 
-==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; v1beta2/Deployment&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; v1beta2/Deployment
 my-nginx-hello-world  25m
 
 
 NOTES:
 &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace default -l &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;#34;&lt;/span&gt; -o jsonpath=&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.items[0].metadata.name}&amp;#34;&lt;/span&gt;)
+  export POD_NAME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;kubectl get pods --namespace default -l &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&amp;#34;&lt;/span&gt; -o jsonpath&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{.items[0].metadata.name}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt;
   echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Visit http://127.0.0.1:8080 to use your application&amp;#34;&lt;/span&gt;
-  kubectl port-forward $POD_NAME &lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+  kubectl port-forward $POD_NAME &lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;:80&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that I always specify the -f values.yaml just for explicitness.&lt;/p&gt;
 
 &lt;p&gt;It seems that our upgrade went well, let&amp;rsquo;s see what Helm sees
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm ls
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;               Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;55&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;22&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;        DEPLOYED        hello-world-&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       &lt;span style=&#34;color:#ae81ff&#34;&gt;1.0&lt;/span&gt;             default&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+my-nginx        &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;               Sun Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;23&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt;:55:22 &lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;        DEPLOYED        hello-world-0.1.1       &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.0             default&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;But before we go let&amp;rsquo;s validate that it did deployed the nginx version that we wanted to have:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
-nginx version: nginx/&lt;span style=&#34;color:#ae81ff&#34;&gt;1.15&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+nginx version: nginx/1.15.7&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm rollback my-nginx &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm rollback my-nginx &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
 Rollback was a success! Happy Helming!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Basically this command needs a deployment name &lt;code&gt;my-nginx&lt;/code&gt; and the revision number to rollback to in this case &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s check the versions again:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
-nginx version: nginx/&lt;span style=&#34;color:#ae81ff&#34;&gt;1.14&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+nginx version: nginx/1.14.2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s clean up:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm del --purge my-nginx
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm del --purge my-nginx
 release &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;my-nginx&amp;#34;&lt;/span&gt; deleted&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&amp;rsquo;s really useful for debugging or to inject a sidecar using pipes):
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ helm template . -name my-nginx -f values.yaml
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ helm template . -name my-nginx -f values.yaml
 &lt;span style=&#34;color:#75715e&#34;&gt;# Source: hello-world/templates/service.yaml&lt;/span&gt;
 apiVersion: v1
 kind: Service

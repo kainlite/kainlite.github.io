@@ -10,7 +10,9 @@
     <title>Deploying my apps with Helm</title>
     <meta name="generator" content="Hugo 0.53" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
     
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
@@ -125,16 +127,16 @@ if (!doNotTrack) {
 
 <p>How do I search for charts?:</p>
 
-<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm search wordpress
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-stable/wordpress        <span style="color:#ae81ff">3.3</span>.<span style="color:#ae81ff">0</span>           <span style="color:#ae81ff">4.9</span>.<span style="color:#ae81ff">8</span>           Web publishing platform for building blogs and websites.</code></pre></div>
+stable/wordpress        <span style="color:#ae81ff">3</span>.3.0           <span style="color:#ae81ff">4</span>.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
 Note that I&rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&rsquo;re using the official repo in the folder stable, but what if we don&rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&rsquo;s use the one from <a href="https://bitnami.com/stack/wordpress/helm">Bitnami</a>, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">helm repo add bitnami https://charts.bitnami.com/bitnami</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm repo add bitnami https://charts.bitnami.com/bitnami</code></pre></div>
 So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm search wordpress
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-bitnami/wordpress       <span style="color:#ae81ff">5.0</span>.<span style="color:#ae81ff">2</span>           <span style="color:#ae81ff">5.0</span>.<span style="color:#ae81ff">2</span>           Web publishing platform for building blogs and websites.
-stable/wordpress        <span style="color:#ae81ff">3.3</span>.<span style="color:#ae81ff">0</span>           <span style="color:#ae81ff">4.9</span>.<span style="color:#ae81ff">8</span>           Web publishing platform for building blogs and websites.</code></pre></div>
+bitnami/wordpress       <span style="color:#ae81ff">5</span>.0.2           <span style="color:#ae81ff">5</span>.0.2           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.
+stable/wordpress        <span style="color:#ae81ff">3</span>.3.0           <span style="color:#ae81ff">4</span>.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
 Let&rsquo;s check the <a href="https://github.com/helm/charts/tree/master/stable/wordpress">documentation</a> of the chart to create our <code>values.yaml</code> file, note that in this example the stable wordpress chart it&rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&rsquo;t always be the case but it simplifies things for us.</p>
 
 <p>Our example <code>values.yaml</code> will look like:
@@ -144,52 +146,52 @@ persistence:
 ingress:
   enabled: <span style="color:#66d9ef">true</span></code></pre></div>
 We will only change the blog name by default, the persistent volume size and also enable <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> (Our app should be available through <code>wordpress.local</code> inside the cluster), if you are using minikube be sure to enable the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> addon.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ minikube addons enable ingress
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ minikube addons enable ingress
 ingress was successfully enabled</code></pre></div></p>
 
 <p>We can then install <code>stable/wordpress</code> or <code>bitnami/wordpress</code>, we will follow up with the one from Bitnami repo.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm install bitnami/wordpress \
---set image.repository=bitnami/wordpress \
---set image.tag=<span style="color:#ae81ff">5.0</span>.<span style="color:#ae81ff">2</span> \
--f values.yaml</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm install bitnami/wordpress <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--set image.repository<span style="color:#f92672">=</span>bitnami/wordpress <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--set image.tag<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>.0.2 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>-f values.yaml</code></pre></div>
 As it&rsquo;s a common good practice to use specific versions we will do it here, it&rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, <a href="https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375">follow the example</a>.</p>
 
 <p>You should see something like:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">NAME:   plucking-condor
-LAST DEPLOYED: Mon Dec <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">13</span>:<span style="color:#ae81ff">06</span>:<span style="color:#ae81ff">38</span> <span style="color:#ae81ff">2018</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">NAME:   plucking-condor
+LAST DEPLOYED: Mon Dec <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">13</span>:06:38 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==<span style="color:#e6db74">&gt; v1/Pod(related)</span>
+<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 NAME                                        READY  STATUS             RESTARTS  AGE
-plucking-condor-wordpress-84845db8b5-hkqhc  <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
-plucking-condor-mariadb-<span style="color:#ae81ff">0</span>                   <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>    Pending            <span style="color:#ae81ff">0</span>         0s
+plucking-condor-wordpress-84845db8b5-hkqhc  <span style="color:#ae81ff">0</span>/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
+plucking-condor-mariadb-0                   <span style="color:#ae81ff">0</span>/1    Pending            <span style="color:#ae81ff">0</span>         0s
 
-==<span style="color:#e6db74">&gt; v1/Secret</span>
+<span style="color:#f92672">==</span>&gt; v1/Secret
 
 NAME                       AGE
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-==<span style="color:#e6db74">&gt; v1/ConfigMap</span>
+<span style="color:#f92672">==</span>&gt; v1/ConfigMap
 plucking-condor-mariadb        0s
 plucking-condor-mariadb-tests  0s
 
-==<span style="color:#e6db74">&gt; v1/PersistentVolumeClaim</span>
+<span style="color:#f92672">==</span>&gt; v1/PersistentVolumeClaim
 plucking-condor-wordpress  0s
 
-==<span style="color:#e6db74">&gt; v1/Service</span>
+<span style="color:#f92672">==</span>&gt; v1/Service
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-==<span style="color:#e6db74">&gt; v1beta1/Deployment</span>
+<span style="color:#f92672">==</span>&gt; v1beta1/Deployment
 plucking-condor-wordpress  0s
 
-==<span style="color:#e6db74">&gt; v1beta1/StatefulSet</span>
+<span style="color:#f92672">==</span>&gt; v1beta1/StatefulSet
 plucking-condor-mariadb  0s
 
-==<span style="color:#e6db74">&gt; v1beta1/Ingress</span>
+<span style="color:#f92672">==</span>&gt; v1beta1/Ingress
 wordpress.local-plucking-condor  0s
 
 
@@ -202,21 +204,21 @@ NOTES:
 <span style="color:#ae81ff">2</span>. Login with the following credentials to see your blog
 
   echo Username: user
-  echo Password: $(kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath=<span style="color:#e6db74">&#34;{.data.wordpress-password}&#34;</span> <span style="color:#e6db74">| base64 --decode)</span></code></pre></div>
+  echo Password: <span style="color:#66d9ef">$(</span>kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.data.wordpress-password}&#34;</span> | base64 --decode<span style="color:#66d9ef">)</span></code></pre></div>
 Depending on the cluster provider or installation itself, you might need to replace the <code>persistence.storageClass</code> to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your <code>values.yaml</code> you need to stick to YAML format and indent <code>storageClass</code> under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.</p>
 
 <p>At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data <em>ALWAYS</em> have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &ldquo;working backup&rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.</p>
 
 <p>Now let&rsquo;s check that all resources are indeed working and that we can use our recently installed app.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get all
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get all
 NAME                                             READY     STATUS        RESTARTS   AGE
-pod/plucking-condor-mariadb-<span style="color:#ae81ff">0</span>                    <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running       <span style="color:#ae81ff">0</span>          12m
-pod/plucking-condor-wordpress-84845db8b5-hkqhc   <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running       <span style="color:#ae81ff">0</span>          12m
+pod/plucking-condor-mariadb-0                    <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          12m
 
-NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)                      AGE
-service/kubernetes                  ClusterIP      <span style="color:#ae81ff">10.96</span>.<span style="color:#ae81ff">0.1</span>        &lt;none<span style="color:#e6db74">&gt;           443/TCP                      37h</span>
-service/plucking-condor-mariadb     ClusterIP      <span style="color:#ae81ff">10.106</span>.<span style="color:#ae81ff">219.59</span>    &lt;none<span style="color:#e6db74">&gt;           3306/TCP                     12m</span>
-service/plucking-condor-wordpress   LoadBalancer   <span style="color:#ae81ff">10.100</span>.<span style="color:#ae81ff">239.163</span>   <span style="color:#ae81ff">10.100</span>.<span style="color:#ae81ff">239.163</span>   <span style="color:#ae81ff">80</span>:<span style="color:#ae81ff">31764</span>/TCP,<span style="color:#ae81ff">443</span>:<span style="color:#ae81ff">32308</span>/TCP   12m
+NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>                      AGE
+service/kubernetes                  ClusterIP      <span style="color:#ae81ff">10</span>.96.0.1        &lt;none&gt;           <span style="color:#ae81ff">443</span>/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      <span style="color:#ae81ff">10</span>.106.219.59    &lt;none&gt;           <span style="color:#ae81ff">3306</span>/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   <span style="color:#ae81ff">10</span>.100.239.163   <span style="color:#ae81ff">10</span>.100.239.163   <span style="color:#ae81ff">80</span>:31764/TCP,443:32308/TCP   12m
 
 NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/plucking-condor-wordpress   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           12m
@@ -229,19 +231,19 @@ statefulset.apps/plucking-condor-mariadb   <span style="color:#ae81ff">1</span> 
 You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter <code>--namespace</code> in the <code>helm install</code> line.</p>
 
 <p>If you use minikube then ingress will expose a nodeport that we can find using <code>minikube service list</code> then using the browser or curl to navigate our freshly installed wordpress.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"> $ minikube service list
-|-------------|---------------------------|--------------------------------<span style="color:#e6db74">|
-</span><span style="color:#e6db74">|  NAMESPACE  |           NAME            |              URL               |
-</span><span style="color:#e6db74">|-------------|---------------------------|--------------------------------|
-</span><span style="color:#e6db74">| default     | kubernetes                | No node port                   |
-</span><span style="color:#e6db74">| default     | plucking-condor-mariadb   | No node port                   |
-</span><span style="color:#e6db74">| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
-</span><span style="color:#e6db74">|             |                           | http://192.168.99.100:32308    |
-</span><span style="color:#e6db74">| kube-system | default-http-backend      | http://192.168.99.100:30001    |
-</span><span style="color:#e6db74">| kube-system | kube-dns                  | No node port                   |
-</span><span style="color:#e6db74">| kube-system | kubernetes-dashboard      | No node port                   |
-</span><span style="color:#e6db74">| kube-system | tiller-deploy             | No node port                   |
-</span><span style="color:#e6db74">|-------------|---------------------------|--------------------------------|</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ minikube service list
+|-------------|---------------------------|--------------------------------|
+|  NAMESPACE  |           NAME            |              URL               |
+|-------------|---------------------------|--------------------------------|
+| default     | kubernetes                | No node port                   |
+| default     | plucking-condor-mariadb   | No node port                   |
+| default     | plucking-condor-wordpress | http://192.168.99.100:31764    |
+|             |                           | http://192.168.99.100:32308    |
+| kube-system | default-http-backend      | http://192.168.99.100:30001    |
+| kube-system | kube-dns                  | No node port                   |
+| kube-system | kubernetes-dashboard      | No node port                   |
+| kube-system | tiller-deploy             | No node port                   |
+|-------------|---------------------------|--------------------------------|</code></pre></div>
 In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: <a href="http://192.168.99.100:31764">http://192.168.99.100:31764</a> and https at: <a href="http://192.168.99.100:32308">http://192.168.99.100:32308</a>, and <a href="http://192.168.99.100:30001">http://192.168.99.100:30001</a> is the default backend for the ingress controller), your ips can be different but the basics are the same.</p>
 
 <p>Sample screenshot:</p>
@@ -253,7 +255,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 <p>As long as we have the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">persistent volume</a> our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.</p>
 
 <p>Clean everything up:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">helm del --purge plucking-condor</code></pre></div></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm del --purge plucking-condor</code></pre></div></p>
 
 <p>That&rsquo;s all I have for now, I will be adding more content next week.</p>
 
@@ -370,7 +372,7 @@ In the cloud or on premises this will indeed be different and you should have a 
 <script src="https://techsquad.rocks/js/main.js"></script>
 
 <script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

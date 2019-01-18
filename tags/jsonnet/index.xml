@@ -93,33 +93,33 @@
 As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
 
 &lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;
-FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine as builder
-
-WORKDIR /app
-RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    chown -R app:app /app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    apk add git &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev
-
-ADD . /app/
-RUN go get -d -v ./... &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app
-
-&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;
-FROM golang:&lt;span style=&#34;color:#ae81ff&#34;&gt;1.11&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;-alpine
-
-WORKDIR /app
-RUN adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; \
-    chown -R app:app /app
-
-COPY --from=builder --chown=app /app/health_check.sh /app/health_check.sh
-COPY --from=builder --chown=app /app/main /app/main
-
-USER app
-CMD [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/app/main&amp;#34;&lt;/span&gt;]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-docker&#34; data-lang=&#34;docker&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine as builder&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    apk add git &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;ADD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; . /app/&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; go get -d -v ./... &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/health_check.sh /app/health_check.sh&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/main /app/main&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;USER app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CMD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; [&amp;#34;/app/main&amp;#34;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
 
 &lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks init echobot
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks init echobot
 INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
 INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.8.0&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
 INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
@@ -169,7 +169,7 @@ local resources = [deployment];
 // Return list of resources.
 k.core.v1.list.new(resources)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks apply default
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks apply default
 INFO Applying deployments echobot
 INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
@@ -178,17 +178,17 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 &lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And in the logs:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt; $ kubectl get pods
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
+echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc000468000&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xc0004482a0&lt;/span&gt; [] [] [] [] []}
+Event Received: Event Received: Infos: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 0xc000468000 0xc0004482a0 &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]}&lt;/span&gt;
 Connection counter: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256397423s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;25679313s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1.&lt;/span&gt;256788737s
-Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{message&lt;/span&gt; CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; echo! 1546124966.002300  false [] [] &amp;lt;nil&amp;gt;  false 0  false  1546124966.002300   &amp;lt;nil&amp;gt;      [] 0 []  [] false &amp;lt;nil&amp;gt;  0 TEDJT5CTD []  false false} &amp;lt;nil&amp;gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256397423s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.25679313s
+Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256788737s
+Event Received: Message: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{{&lt;/span&gt;message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300  false &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &amp;lt;nil&amp;gt;  false &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  false  &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300   &amp;lt;nil&amp;gt;      &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; false &amp;lt;nil&amp;gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; TEDJT5CTD &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  false false&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &amp;lt;nil&amp;gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
 
@@ -261,21 +261,21 @@ Event Received: Message: &lt;span style=&#34;color:#75715e&#34;&gt;&amp;amp;{{me
 &lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
 
 &lt;p&gt;This command will generate the following folder structure &lt;code&gt;ks init wordpress&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
 INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.12.4&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
 INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/k8s-examples/wordpress/lib/ksonnet-lib/v1.12.4&amp;#39;&lt;/span&gt;
 
-$ ls -l &lt;span style=&#34;color:#e6db74&#34;&gt;|  awk &amp;#39;{ print $9 }&amp;#39;&lt;/span&gt;
+$ ls -l |  awk &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ print $9 }&amp;#39;&lt;/span&gt;
 app.yaml        &amp;lt;--- Defines versions, namespace, cluster address, app name, registry.
-components      &amp;lt;--- Components by default it&amp;#39;s empty and has a params file.
+components      &amp;lt;--- Components by default it&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;s empty and has a params file.
 environments    &amp;lt;--- By default there is only one environment called default.
-lib             &amp;lt;--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources (Pods, Deployments, etc).
+lib             &amp;lt;--- Here we can find the ksonnet helpers that match the Kubernetes API with the common resources &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Pods, Deployments, etc&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;.
 vendor          &amp;lt;--- Here is where the installed packages/apps go, it can be seen as a dependencies folder.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s generate a &lt;em&gt;deployed-service&lt;/em&gt; and inspect it&amp;rsquo;s context:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks generate deployed-service wordpress \
-  --image bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; \
-  --type ClusterIP
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks generate deployed-service wordpress &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --image bitnami/wordpress:5.0.2 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --type ClusterIP
 
 INFO Writing component at &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/k8s-examples/wordpress/components/wordpress.jsonnet&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 At the moment of this writing the latest version of Wordpress is 5.0.2, it&amp;rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).&lt;/p&gt;
@@ -400,9 +400,9 @@ We will see what our package will generate in &lt;em&gt;YAML&lt;/em&gt; with som
 But that&amp;rsquo;s not enough to run wordpress is it?, No is not, we need a database with persistent storage for it to work properly, so we will need to generate and extend another &lt;em&gt;deployed-service&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;The next step would be to create another component:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ ks generate deployed-service mariadb \
-  --image bitnami/mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;10.1&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;37&lt;/span&gt; \
-  --type ClusterIP
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks generate deployed-service mariadb &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --image bitnami/mariadb:10.1.37 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --type ClusterIP
 
 INFO Writing component at &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/home/kainlite/Webs/k8s-examples/wordpress/components/mariadb.jsonnet&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 The latest stable version of MariaDB 10.1 GA at the moment of this writting is 10.1.37.&lt;/p&gt;
@@ -621,7 +621,7 @@ I know, I know, that is a lot of JSON, I trust you have a decent scroll :).&lt;/
 &lt;p&gt;This post only scratched the surface of what Ksonnet and Jsonnet can do, in another post I will describe more advances features with less &lt;em&gt;JSON&lt;/em&gt; / &lt;em&gt;YAML&lt;/em&gt;. There are a lot of things that can be improved and we will cover those things in the next post, if you want to see all the source code for this post go &lt;a href=&#34;https://github.com/kainlite/ksonnet-wordpress-example&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s clean up &lt;code&gt;ks delete default&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;INFO Deleting services mariadb
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;INFO Deleting services mariadb
 INFO Deleting deployments mariadb
 INFO Deleting services wordpress
 INFO Deleting deployments wordpress&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
@@ -633,15 +633,15 @@ INFO Deleting deployments wordpress&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&g
 &lt;p&gt;I&amp;rsquo;m not aware if Ksonnet supports releases and rollbacks like Helm, but it seems it could be emulated using git tags and just some git hooks.&lt;/p&gt;
 
 &lt;p&gt;If everything goes well, you should see something like this in the logs:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ kubectl logs -f wordpress-5b4d6bd47c-bdtmw
 
 Welcome to the Bitnami wordpress container
 Subscribe to project updates by watching https://github.com/bitnami/bitnami-docker-wordpress
 Submit issues and feature requests at https://github.com/bitnami/bitnami-docker-wordpress/issues
 
 nami    INFO  Initializing apache
-apache  INFO  ==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Patching httpoxy...&lt;/span&gt;
-apache  INFO  ==&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;gt; Configuring dummy certificates...&lt;/span&gt;
+apache  INFO  &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; Patching httpoxy...
+apache  INFO  &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt;&amp;gt; Configuring dummy certificates...
 nami    INFO  apache successfully initialized
 nami    INFO  Initializing php
 nami    INFO  php successfully initialized
@@ -651,15 +651,15 @@ nami    INFO  Initializing libphp
 nami    INFO  libphp successfully initialized
 nami    INFO  Initializing wordpress
 mysql-c INFO  Trying to connect to MySQL server
-mysql-c INFO  Found MySQL server listening at mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;
-mysql-c INFO  MySQL server listening and working at mariadb:&lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;
+mysql-c INFO  Found MySQL server listening at mariadb:3306
+mysql-c INFO  MySQL server listening and working at mariadb:3306
 wordpre INFO
 wordpre INFO  &lt;span style=&#34;color:#75715e&#34;&gt;########################################################################&lt;/span&gt;
-wordpre INFO   Installation parameters for wordpress:
+wordpre INFO   Installation parameters &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; wordpress:
 wordpre INFO     First Name: FirstName
 wordpre INFO     Last Name: LastName
 wordpre INFO     Username: user
-wordpre INFO     Password: &lt;span style=&#34;color:#75715e&#34;&gt;**********&lt;/span&gt;
+wordpre INFO     Password: **********
 wordpre INFO     Email: user@example.com
 wordpre INFO     Blog Name: User&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s Blog!
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;wordpre INFO     Table Prefix: wp_
@@ -673,13 +673,13 @@ wordpre INFO     Blog Name: User&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.738783 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.739701 2018] [ssl:warn] [pid 116] AH01909: localhost:443:0 server certificate does NOT include an ID which matches the server name
 &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.765798 2018] [mpm_prefork:notice] [pid 116] AH00163: Apache/2.4.37 (Unix) OpenSSL/1.1.0j PHP/7.2.13 configured -- resuming normal operations
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: &amp;#39;&lt;/span&gt;httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND&amp;#39;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;00&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET / HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3718&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;753&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;452&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4281&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;19371&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;172.17&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;0.1&lt;/span&gt; - - [&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/&lt;span style=&#34;color:#ae81ff&#34;&gt;2018&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;31&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;01&lt;/span&gt; +&lt;span style=&#34;color:#ae81ff&#34;&gt;0000&lt;/span&gt;] &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1230&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;[Thu Dec 27 04:30:59.765874 2018] [core:notice] [pid 116] AH00094: Command line: &amp;#39;&lt;/span&gt;httpd -f /bitnami/apache/conf/httpd.conf -D FOREGROUND&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:00 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET / HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3718&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:01 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/js/wp-embed.min.js?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;753&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:01 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/theme.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;452&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:01 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-includes/css/dist/block-library/style.min.css?ver=5.0.2 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4281&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:01 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/style.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;19371&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;172&lt;/span&gt;.17.0.1 - - &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;27&lt;/span&gt;/Dec/2018:04:31:01 +0000&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GET /wp-content/themes/twentynineteen/print.css?ver=1.1 HTTP/1.1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1230&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;And that folks is all I have for now, be sure to check out the &lt;a href=&#34;https://ksonnet.io/docs/&#34;&gt;Ksonnet official documentation&lt;/a&gt; and &lt;code&gt;ks help&lt;/code&gt; to know more about what ksonnet can do to help you deploy your applications to any kubernetes cluster.&lt;/p&gt;
 

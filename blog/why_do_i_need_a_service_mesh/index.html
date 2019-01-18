@@ -10,7 +10,9 @@
     <title>Why do I need a service mesh?</title>
     <meta name="generator" content="Hugo 0.53" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
     
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
@@ -146,15 +148,15 @@ Istio So&hellip; You might be wondering some of those questions: why Istio?"/>
 <h3 id="let-s-get-started">Let&rsquo;s get started</h3>
 
 <p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href="https://istio.io/docs/setup/kubernetes/helm-install/">more info</a>):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ curl -L https://git.io/getLatestIstio <span style="color:#e6db74">| sh -</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -L https://git.io/getLatestIstio | sh -</code></pre></div>
 This will download and extract the latest release, in this case 1.0.5 at this moment.</p>
 
 <p>So let&rsquo;s install Istio&hellip; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled=<span style="color:#66d9ef">true</span> <span style="color:#e6db74">&gt; $HOME/istio.yaml</span>
-istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ kubectl create namespace istio-system
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled<span style="color:#f92672">=</span>true &gt; $HOME/istio.yaml
+istio-1.0.5 $ kubectl create namespace istio-system
 namespace <span style="color:#e6db74">&#34;istio-system&#34;</span> created
 
-istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span> $ kubectl apply -f $HOME/istio.yaml
+istio-1.0.5 $ kubectl apply -f $HOME/istio.yaml
 configmap <span style="color:#e6db74">&#34;istio-galley-configuration&#34;</span> created
 configmap <span style="color:#e6db74">&#34;istio-statsd-prom-bridge&#34;</span> created
 configmap <span style="color:#e6db74">&#34;prometheus&#34;</span> created
@@ -291,18 +293,18 @@ destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-telem
 WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p>
 
 <p>So lets see what&rsquo;s running and what that means:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get pods -n istio-system
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
-istio-citadel-856f994c58-l96p8            <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-cleanup-secrets-xqqj4               <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>       Completed   <span style="color:#ae81ff">0</span>          3m
-istio-egressgateway-5649fcf57-7zwkh       <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-galley-7665f65c9c-tzn7d             <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-ingressgateway-6755b9bbf6-bh84r     <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-pilot-56855d999b-c4cp5              <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-policy-6fcb6d655f-9544z             <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-sidecar-injector-768c79f7bf-th8zh   <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m
-istio-telemetry-664d896cf5-jdcwv          <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running     <span style="color:#ae81ff">0</span>          3m
-prometheus-76b7745b64-f8jxn               <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
+istio-citadel-856f994c58-l96p8            <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-cleanup-secrets-xqqj4               <span style="color:#ae81ff">0</span>/1       Completed   <span style="color:#ae81ff">0</span>          3m
+istio-egressgateway-5649fcf57-7zwkh       <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-galley-7665f65c9c-tzn7d             <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-ingressgateway-6755b9bbf6-bh84r     <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-pilot-56855d999b-c4cp5              <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
+istio-policy-6fcb6d655f-9544z             <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
+istio-sidecar-injector-768c79f7bf-th8zh   <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-telemetry-664d896cf5-jdcwv          <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
+prometheus-76b7745b64-f8jxn               <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
 A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href="https://github.com/istio/istio">github</a>.</p>
 
 <p><strong>Envoy</strong>: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
@@ -319,8 +321,8 @@ Note: The service mesh is not an overlay network. It simplifies and enhances how
 <p><strong>Galley</strong>: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.</p>
 
 <p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href="https://istio.io/docs/examples/bookinfo/">test application</a> and check it:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ export PATH=<span style="color:#e6db74">&#34;$PATH:~/istio-1.0.5/bin&#34;</span>
-istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span>/samples/bookinfo $ kubectl apply -f &lt;(istioctl kube-inject -f platform/kube/bookinfo.yaml)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:~/istio-1.0.5/bin&#34;</span>
+istio-1.0.5/samples/bookinfo $ kubectl apply -f &lt;<span style="color:#f92672">(</span>istioctl kube-inject -f platform/kube/bookinfo.yaml<span style="color:#f92672">)</span>
 service <span style="color:#e6db74">&#34;details&#34;</span> created
 deployment.extensions <span style="color:#e6db74">&#34;details-v1&#34;</span> created
 service <span style="color:#e6db74">&#34;ratings&#34;</span> created
@@ -332,38 +334,38 @@ deployment.extensions <span style="color:#e6db74">&#34;reviews-v3&#34;</span> cr
 service <span style="color:#e6db74">&#34;productpage&#34;</span> created
 deployment.extensions <span style="color:#e6db74">&#34;productpage-v1&#34;</span> created</code></pre></div>
 That command not only deployed the application but injected the Istio sidecar to each pod:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get pods
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
-details-v1-8bd954dbb-zhrqq        <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
-productpage-v1-849c786f96-kpfx9   <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
-ratings-v1-68d648d6fd-w68qb       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v1-b4c984bdc-9s6j5        <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v2-575446d5db-r6kwc       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v3-74458c4889-kr4wb       <span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">2</span>       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
+details-v1-8bd954dbb-zhrqq        <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
+productpage-v1-849c786f96-kpfx9   <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
+ratings-v1-68d648d6fd-w68qb       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v1-b4c984bdc-9s6j5        <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v2-575446d5db-r6kwc       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v3-74458c4889-kr4wb       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
 As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection">automatic sidecar injection</a>.</p>
 
 <p>Also all services are running:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get services
-NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-details       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">134.179</span>   &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
-kubernetes    ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">0.1</span>       &lt;none<span style="color:#e6db74">&gt;        443/TCP    3d</span>
-productpage   ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">32.221</span>    &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
-ratings       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">159.112</span>   &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span>
-reviews       ClusterIP   <span style="color:#ae81ff">10.245</span>.<span style="color:#ae81ff">77.125</span>    &lt;none<span style="color:#e6db74">&gt;        9080/TCP   3m</span></code></pre></div></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>    AGE
+details       ClusterIP   <span style="color:#ae81ff">10</span>.245.134.179   &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
+kubernetes    ClusterIP   <span style="color:#ae81ff">10</span>.245.0.1       &lt;none&gt;        <span style="color:#ae81ff">443</span>/TCP    3d
+productpage   ClusterIP   <span style="color:#ae81ff">10</span>.245.32.221    &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
+ratings       ClusterIP   <span style="color:#ae81ff">10</span>.245.159.112   &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
+reviews       ClusterIP   <span style="color:#ae81ff">10</span>.245.77.125    &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m</code></pre></div></p>
 
 <p>But how do I access the app?
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">istio-<span style="color:#ae81ff">1.0</span>.<span style="color:#ae81ff">5</span>/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
 gateway.networking.istio.io <span style="color:#e6db74">&#34;bookinfo-gateway&#34;</span> created
 virtualservice.networking.istio.io <span style="color:#e6db74">&#34;bookinfo&#34;</span> created</code></pre></div>
 In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
 
 <p>After that we need to set some environment variables to fetch the LB ip, port, etc.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span>)
-$ export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span>)
-$ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath=<span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;https&#34;)].port}&#39;</span>)
-$ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export INGRESS_HOST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span style="color:#66d9ef">)</span>
+$ export INGRESS_PORT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span><span style="color:#66d9ef">)</span>
+$ export SECURE_INGRESS_PORT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;https&#34;)].port}&#39;</span><span style="color:#66d9ef">)</span>
+$ export GATEWAY_URL<span style="color:#f92672">=</span>$INGRESS_HOST:$INGRESS_PORT
 
-curl -o /dev/<span style="color:#66d9ef">null</span> -s -w <span style="color:#e6db74">&#34;%{http_code}\n&#34;</span> http://${GATEWAY_URL}/productpage</code></pre></div>
+curl -o /dev/null -s -w <span style="color:#e6db74">&#34;%{http_code}\n&#34;</span> http://<span style="color:#e6db74">${</span>GATEWAY_URL<span style="color:#e6db74">}</span>/productpage</code></pre></div>
 If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:
 <figure>
     <img src="/img/productpage-example.png" width="100%"/> <figcaption>
@@ -493,7 +495,7 @@ If the latest curl returns 200 then we&rsquo;re good, you can also browse the ap
 <script src="https://techsquad.rocks/js/main.js"></script>
 
 <script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

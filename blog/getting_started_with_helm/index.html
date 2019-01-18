@@ -10,7 +10,9 @@
     <title>Getting started with Helm</title>
     <meta name="generator" content="Hugo 0.53" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
     
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
@@ -127,16 +129,16 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
 <p>This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using <a href="https://helm.sh/">Helm</a>, in the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, you can follow with the following example:</p>
 
 <p>Create the chart:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">helm create hello-world</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm create hello-world</code></pre></div>
 Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
 
 <p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">cd hello-world
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd hello-world
 
 charts       &lt;--- Dependencies, charts that your chart depends on.
 Chart.yaml   &lt;--- Metadata mostly, defines the version of your chart, etc.
 templates    &lt;--- Here is where the magic happens.
-values.yaml  &lt;--- Default values file (this is used to replace in the templates at runtime)</code></pre></div>
+values.yaml  &lt;--- Default values file <span style="color:#f92672">(</span>this is used to replace in the templates at runtime<span style="color:#f92672">)</span></code></pre></div>
 Note: the following link explains the basics of <a href="https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory">dependencies</a>, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.</p>
 
 <p>The file <code>values.yaml</code> by default will look like the following snippet:
@@ -173,7 +175,7 @@ tolerations: []
 affinity: {}</code></pre></div></p>
 
 <p>The next step would be to check the <code>templates</code> folder:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     &lt;--- This file defines some common variables.
 ingress.yaml     &lt;--- Ingress route, etc.
 NOTES.txt        &lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
@@ -297,171 +299,171 @@ spec:
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p>
 
 <p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm init
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
 
-Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+Tiller <span style="color:#f92672">(</span>the Helm server-side component<span style="color:#f92672">)</span> has been installed into your Kubernetes Cluster.
 
 Please note: by default, Tiller is deployed with an insecure <span style="color:#e6db74">&#39;allow unauthenticated users&#39;</span> policy.
-To prevent this, run `helm init` with the --tiller-tls-verify flag.
-For more information on securing your installation see: https://docs.helm.sh/using_helm/<span style="color:#75715e">#securing-your-helm-installation</span>
+To prevent this, run <span style="color:#e6db74">`</span>helm init<span style="color:#e6db74">`</span> with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
 Happy Helming!</code></pre></div>
 Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
 
 <p>Deploy our chart:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm install --name my-nginx -f values.yaml .
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:<span style="color:#ae81ff">30</span>:<span style="color:#ae81ff">11</span> <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:30:11 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==<span style="color:#e6db74">&gt; v1/Service</span>
+<span style="color:#f92672">==</span>&gt; v1/Service
 NAME                  AGE
 my-nginx-hello-world  0s
 
-==<span style="color:#e6db74">&gt; v1beta2/Deployment</span>
+<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  0s
 
-==<span style="color:#e6db74">&gt; v1/Pod(related)</span>
+<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 
 NAME                                   READY  STATUS   RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>    Pending  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">0</span>/1    Pending  <span style="color:#ae81ff">0</span>         0s
 
 NOTES:
 <span style="color:#ae81ff">1</span>. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath=<span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span>)
+  export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
   echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:<span style="color:#ae81ff">80</span></code></pre></div>
+  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:80</code></pre></div>
 Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
 
 <p>Let&rsquo;s check that our service is there:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl get services
-NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
-kubernetes             ClusterIP   <span style="color:#ae81ff">10.96</span>.<span style="color:#ae81ff">0.1</span>       &lt;none<span style="color:#e6db74">&gt;        443/TCP   1h</span>
-my-nginx-hello-world   ClusterIP   <span style="color:#ae81ff">10.111</span>.<span style="color:#ae81ff">222.70</span>   &lt;none<span style="color:#e6db74">&gt;        80/TCP    5m</span></code></pre></div></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>   AGE
+kubernetes             ClusterIP   <span style="color:#ae81ff">10</span>.96.0.1       &lt;none&gt;        <span style="color:#ae81ff">443</span>/TCP   1h
+my-nginx-hello-world   ClusterIP   <span style="color:#ae81ff">10</span>.111.222.70   &lt;none&gt;        <span style="color:#ae81ff">80</span>/TCP    5m</code></pre></div></p>
 
 <p>And now we can test that everything is okay by running another pod in interactive mode, for example:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl run -i --tty alpine --image=alpine -- sh
-If you don&#39;t see a command prompt, try pressing enter.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl run -i --tty alpine --image<span style="color:#f92672">=</span>alpine -- sh
+If you don<span style="color:#960050;background-color:#1e0010">&#39;</span>t see a command prompt, try pressing enter.
 
 / <span style="color:#75715e"># apk add curl</span>
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.<span style="color:#ae81ff">8</span>/main/x86_64/APKINDEX.tar.gz
-fetch http://dl-cdn.alpinelinux.org/alpine/v3.<span style="color:#ae81ff">8</span>/community/x86_64/APKINDEX.tar.gz
-(<span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">5</span>) Installing ca-certificates (<span style="color:#ae81ff">20171114</span>-r3)
-(<span style="color:#ae81ff">2</span>/<span style="color:#ae81ff">5</span>) Installing nghttp2-libs (<span style="color:#ae81ff">1.32</span>.<span style="color:#ae81ff">0</span>-r0)
-(<span style="color:#ae81ff">3</span>/<span style="color:#ae81ff">5</span>) Installing libssh2 (<span style="color:#ae81ff">1.8</span>.<span style="color:#ae81ff">0</span>-r3)
-(<span style="color:#ae81ff">4</span>/<span style="color:#ae81ff">5</span>) Installing libcurl (<span style="color:#ae81ff">7.61</span>.<span style="color:#ae81ff">1</span>-r1)
-(<span style="color:#ae81ff">5</span>/<span style="color:#ae81ff">5</span>) Installing curl (<span style="color:#ae81ff">7.61</span>.<span style="color:#ae81ff">1</span>-r1)
-Executing busybox-<span style="color:#ae81ff">1.28</span>.<span style="color:#ae81ff">4</span>-r2.trigger
-Executing ca-certificates-<span style="color:#ae81ff">20171114</span>-r3.trigger
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
+<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>/5<span style="color:#f92672">)</span> Installing ca-certificates <span style="color:#f92672">(</span><span style="color:#ae81ff">20171114</span>-r3<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>/5<span style="color:#f92672">)</span> Installing nghttp2-libs <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.32.0-r0<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>/5<span style="color:#f92672">)</span> Installing libssh2 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.8.0-r3<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span><span style="color:#ae81ff">4</span>/5<span style="color:#f92672">)</span> Installing libcurl <span style="color:#f92672">(</span><span style="color:#ae81ff">7</span>.61.1-r1<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span><span style="color:#ae81ff">5</span>/5<span style="color:#f92672">)</span> Installing curl <span style="color:#f92672">(</span><span style="color:#ae81ff">7</span>.61.1-r1<span style="color:#f92672">)</span>
+Executing busybox-1.28.4-r2.trigger
+Executing ca-certificates-20171114-r3.trigger
 OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</span> packages
 
 / <span style="color:#75715e"># curl -v my-nginx-hello-world</span>
 * Rebuilt URL to: my-nginx-hello-world/
-*   Trying <span style="color:#ae81ff">10.111</span>.<span style="color:#ae81ff">222.70</span>...
+*   Trying <span style="color:#ae81ff">10</span>.111.222.70...
 * TCP_NODELAY set
-* Connected to my-nginx-hello-world (<span style="color:#ae81ff">10.111</span>.<span style="color:#ae81ff">222.70</span>) port <span style="color:#ae81ff">80</span> (<span style="color:#75715e">#0)</span>
-<span style="color:#e6db74">&gt; GET / HTTP/1.1</span>
-<span style="color:#e6db74">&gt; Host: my-nginx-hello-world</span>
-<span style="color:#e6db74">&gt; User-Agent: curl/7.61.1</span>
-<span style="color:#e6db74">&gt; Accept: */*</span>
-<span style="color:#e6db74">&gt;
-</span><span style="color:#e6db74">&lt; HTTP/1.1 200 OK
-</span><span style="color:#e6db74">&lt; Server: nginx/1.14.2
-</span><span style="color:#e6db74">&lt; Date: Sun, 23 Dec 2018 03:45:31 GMT
-</span><span style="color:#e6db74">&lt; Content-Type: text/html
-</span><span style="color:#e6db74">&lt; Content-Length: 612
-</span><span style="color:#e6db74">&lt; Last-Modified: Tue, 04 Dec 2018 14:44:49 GMT
-</span><span style="color:#e6db74">&lt; Connection: keep-alive
-</span><span style="color:#e6db74">&lt; ETag: &#34;5c0692e1-264&#34;
-</span><span style="color:#e6db74">&lt; Accept-Ranges: bytes
-</span><span style="color:#e6db74">&lt;
-</span><span style="color:#e6db74">&lt;!DOCTYPE html&gt;
-</span><span style="color:#e6db74">&lt;html&gt;
-</span><span style="color:#e6db74">&lt;head&gt;
-</span><span style="color:#e6db74">&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-</span><span style="color:#e6db74">&lt;style&gt;
-</span><span style="color:#e6db74">    body {
-</span><span style="color:#e6db74">        width: 35em;
-</span><span style="color:#e6db74">        margin: 0 auto;
-</span><span style="color:#e6db74">        font-family: Tahoma, Verdana, Arial, sans-serif;
-</span><span style="color:#e6db74">    }
-</span><span style="color:#e6db74">&lt;/style&gt;
-</span><span style="color:#e6db74">&lt;/head&gt;
-</span><span style="color:#e6db74">&lt;body&gt;
-</span><span style="color:#e6db74">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
-</span><span style="color:#e6db74">&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-</span><span style="color:#e6db74">working. Further configuration is required.&lt;/p&gt;
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">&lt;p&gt;For online documentation and support please refer to
-</span><span style="color:#e6db74">&lt;a href=&#34;http://nginx.org/&#34;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
-</span><span style="color:#e6db74">Commercial support is available at
-</span><span style="color:#e6db74">&lt;a href=&#34;http://nginx.com/&#34;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
-</span><span style="color:#e6db74">
-</span><span style="color:#e6db74">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
-</span><span style="color:#e6db74">&lt;/body&gt;
-</span><span style="color:#e6db74">&lt;/html&gt;
-</span><span style="color:#e6db74">* Connection #0 to host my-nginx-hello-world left intact</span></code></pre></div>
+* Connected to my-nginx-hello-world <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.111.222.70<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+&gt; GET / HTTP/1.1
+&gt; Host: my-nginx-hello-world
+&gt; User-Agent: curl/7.61.1
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 <span style="color:#ae81ff">200</span> OK
+&lt; Server: nginx/1.14.2
+&lt; Date: Sun, <span style="color:#ae81ff">23</span> Dec <span style="color:#ae81ff">2018</span> <span style="color:#ae81ff">03</span>:45:31 GMT
+&lt; Content-Type: text/html
+&lt; Content-Length: <span style="color:#ae81ff">612</span>
+&lt; Last-Modified: Tue, <span style="color:#ae81ff">04</span> Dec <span style="color:#ae81ff">2018</span> <span style="color:#ae81ff">14</span>:44:49 GMT
+&lt; Connection: keep-alive
+&lt; ETag: <span style="color:#e6db74">&#34;5c0692e1-264&#34;</span>
+&lt; Accept-Ranges: bytes
+&lt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body <span style="color:#f92672">{</span>
+        width: 35em;
+        margin: <span style="color:#ae81ff">0</span> auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    <span style="color:#f92672">}</span>
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you <span style="color:#66d9ef">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+* Connection <span style="color:#75715e">#0 to host my-nginx-hello-world left intact</span></code></pre></div>
 And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).</p>
 
 <p>Our current deployment can be checked like this:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm ls
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">1</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:<span style="color:#ae81ff">30</span>:<span style="color:#ae81ff">11</span> <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-<span style="color:#ae81ff">0.1</span>.<span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">1.0</span>             default</code></pre></div></p>
+my-nginx        <span style="color:#ae81ff">1</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:30:11 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.0       <span style="color:#ae81ff">1</span>.0             default</code></pre></div></p>
 
 <p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"> $ helm upgrade my-nginx . -f values.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ helm upgrade my-nginx . -f values.yaml
 Release <span style="color:#e6db74">&#34;my-nginx&#34;</span> has been upgraded. Happy Helming!
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:<span style="color:#ae81ff">55</span>:<span style="color:#ae81ff">22</span> <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:55:22 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==<span style="color:#e6db74">&gt; v1/Pod(related)</span>
+<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 NAME                                   READY  STATUS             RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">1</span>/<span style="color:#ae81ff">1</span>    Running            <span style="color:#ae81ff">0</span>         25m
-my-nginx-hello-world-c5cdcc95c-shgc6   <span style="color:#ae81ff">0</span>/<span style="color:#ae81ff">1</span>    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">1</span>/1    Running            <span style="color:#ae81ff">0</span>         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   <span style="color:#ae81ff">0</span>/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
 
-==<span style="color:#e6db74">&gt; v1/Service</span>
+<span style="color:#f92672">==</span>&gt; v1/Service
 
 NAME                  AGE
 my-nginx-hello-world  25m
 
-==<span style="color:#e6db74">&gt; v1beta2/Deployment</span>
+<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  25m
 
 
 NOTES:
 <span style="color:#ae81ff">1</span>. Get the application URL by running these commands:
-  export POD_NAME=$(kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath=<span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span>)
+  export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
   echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:<span style="color:#ae81ff">80</span></code></pre></div>
+  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:80</code></pre></div>
 Note that I always specify the -f values.yaml just for explicitness.</p>
 
 <p>It seems that our upgrade went well, let&rsquo;s see what Helm sees
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm ls
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">2</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:<span style="color:#ae81ff">55</span>:<span style="color:#ae81ff">22</span> <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-<span style="color:#ae81ff">0.1</span>.<span style="color:#ae81ff">1</span>       <span style="color:#ae81ff">1.0</span>             default</code></pre></div></p>
+my-nginx        <span style="color:#ae81ff">2</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:55:22 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.1       <span style="color:#ae81ff">1</span>.0             default</code></pre></div></p>
 
 <p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
-nginx version: nginx/<span style="color:#ae81ff">1.15</span>.<span style="color:#ae81ff">7</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+nginx version: nginx/1.15.7</code></pre></div>
 At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm rollback my-nginx <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm rollback my-nginx <span style="color:#ae81ff">1</span>
 Rollback was a success! Happy Helming!</code></pre></div>
 Basically this command needs a deployment name <code>my-nginx</code> and the revision number to rollback to in this case <code>1</code>.</p>
 
 <p>Let&rsquo;s check the versions again:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
-nginx version: nginx/<span style="color:#ae81ff">1.14</span>.<span style="color:#ae81ff">2</span></code></pre></div></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+nginx version: nginx/1.14.2</code></pre></div></p>
 
 <p>Let&rsquo;s clean up:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm del --purge my-nginx
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm del --purge my-nginx
 release <span style="color:#e6db74">&#34;my-nginx&#34;</span> deleted</code></pre></div></p>
 
 <p>If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&rsquo;s really useful for debugging or to inject a sidecar using pipes):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">$ helm template . -name my-nginx -f values.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm template . -name my-nginx -f values.yaml
 <span style="color:#75715e"># Source: hello-world/templates/service.yaml</span>
 apiVersion: v1
 kind: Service
@@ -584,7 +586,7 @@ metadata:
 <script src="https://techsquad.rocks/js/main.js"></script>
 
 <script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

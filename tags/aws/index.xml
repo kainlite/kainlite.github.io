@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://techsquad.rocks/categories/linux/</link>
-    <description>Recent content in Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <title>Aws on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/aws/</link>
+    <description>Recent content in Aws on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://techsquad.rocks/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/aws/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -625,76 +625,6 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
 &lt;li&gt;Documenting what you do and how you do it (Also keeping the documentation updated is really important), not only will help the future you (Yes, you can thank your past self when reading and old doc), but also it will make it easier to share the knowledge and purpose of whatever you are implementing with your team.&lt;/li&gt;
 &lt;li&gt;I spent 3 bucks with all the instances and dns zones, etc during this tutorial in case you are interested :).&lt;/li&gt;
 &lt;li&gt;Notes I also removed all $ from the code blocks and added the output of the commands with # OUTPUT:, let me know if this is clear and easy to read, or if you have any suggestion.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
-
-&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
-
-&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>My local environment</title>
-      <link>https://techsquad.rocks/blog/my_local_environment/</link>
-      <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/my_local_environment/</guid>
-      <description>
-
-&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
-
-&lt;p&gt;This article is about my current configuration, but I&amp;rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&amp;rsquo;m currently using &lt;strong&gt;Arch Linux&lt;/strong&gt; and &lt;strong&gt;AwesomeWM&lt;/strong&gt; (I used Gnome Shell previously, and Gnome 2 before that), you can find my &lt;a href=&#34;https://github.com/kainlite/dotfiles&#34;&gt;dotfiles here&lt;/a&gt; with all my configurations.&lt;/p&gt;
-
-&lt;p&gt;While my terminal doesn&amp;rsquo;t look exactly like the one from the picture you can get something like that with &lt;a href=&#34;https://github.com/jtyr/gbt&#34;&gt;GBT&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;terminal&#34;&gt;Terminal&lt;/h3&gt;
-
-&lt;p&gt;My current terminal is &lt;strong&gt;rxvt-unicode&lt;/strong&gt; and I&amp;rsquo;m pretty happy with it, it&amp;rsquo;s relatively easy to configure and use, it looks like this:
-&lt;figure&gt;
-    &lt;img src=&#34;https://techsquad.rocks/img/urxvt.png&#34; width=&#34;100%&#34;/&gt; 
-&lt;/figure&gt;
-
-And the configuration file can be &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.Xresources&#34;&gt;found here&lt;/a&gt;, note that even if you don&amp;rsquo;t like Ponys by any reason, it&amp;rsquo;s useful to test colors in the terminal.&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called &lt;code&gt;xrdb&lt;/code&gt; (X server resource database utility) to manage the configuration provided in the configuration file &lt;code&gt;.Xresources&lt;/code&gt;.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Loads the configuration from Xresources in xrdb&lt;/span&gt;
-$ xrdb -merge .Xresources
-
-&lt;span style=&#34;color:#75715e&#34;&gt;# List the current configuration&lt;/span&gt;
-$ xrdb -query
-
-&lt;span style=&#34;color:#75715e&#34;&gt;# Deletes the current database&lt;/span&gt;
-$ xrdb -remove&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;theme&#34;&gt;Theme&lt;/h3&gt;
-
-&lt;p&gt;My current theme is &lt;a href=&#34;https://github.com/morhetz/gruvbox&#34;&gt;gruvbox&lt;/a&gt; in Vim and also in my &lt;a href=&#34;https://github.com/morhetz/gruvbox-contrib/blob/master/xresources/gruvbox-dark.xresources&#34;&gt;terminal&lt;/a&gt;, and changing from &lt;a href=&#34;https://ethanschoonover.com/solarized/&#34;&gt;solazired&lt;/a&gt; to it is what inspired this small article.&lt;/p&gt;
-
-&lt;h3 id=&#34;tmux&#34;&gt;Tmux&lt;/h3&gt;
-
-&lt;p&gt;I also use tmux to maintan sessions, some of it&amp;rsquo;s nice features are tiling, tabs. The configuration can be &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.tmux.conf&#34;&gt;found here&lt;/a&gt;. I move between tabs with control-h and control-l, and between panes with control-a [hjkl].&lt;/p&gt;
-
-&lt;h3 id=&#34;vim&#34;&gt;Vim&lt;/h3&gt;
-
-&lt;p&gt;As my text editor I really like and enjoy using Vim, there is always something to learn but once you make some good habits it pays off in the way you write and move around, you can check some amazing screencasts on vim &lt;a href=&#34;http://vimcasts.org/&#34;&gt;here&lt;/a&gt; and also the book Practical Vim can be really helpful to get started and/or improve your current vim-fu.&lt;/p&gt;
-
-&lt;p&gt;As a plugin manager I use &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles&#34;&gt;Plug&lt;/a&gt; even that it&amp;rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.vimrc&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo &lt;em&gt;compiling&lt;/em&gt; the site after every save and live reloading it in my browser:
-&lt;figure&gt;
-    &lt;img src=&#34;https://techsquad.rocks/img/vim.png&#34; width=&#34;100%&#34;/&gt; 
-&lt;/figure&gt;
-&lt;/p&gt;
-
-&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;I&amp;rsquo;m also using zsh and &lt;a href=&#34;https://ohmyz.sh/&#34;&gt;oh-my-zsh&lt;/a&gt; with the theme agnoster. I really like zsh it&amp;rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.&lt;/li&gt;
-&lt;li&gt;I like to take advantage of all the space in the screen, that&amp;rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&amp;rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.&lt;/li&gt;
-&lt;li&gt;I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.&lt;/li&gt;
-&lt;li&gt;If you are going to use unicode I recommend you to install the fonts from nerd-fonts.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

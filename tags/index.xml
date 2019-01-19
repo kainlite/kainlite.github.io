@@ -6,10 +6,19 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 03 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aws</title>
+      <link>https://techsquad.rocks/tags/aws/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/aws/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Deployment Tools</title>
@@ -75,6 +84,15 @@
     </item>
     
     <item>
+      <title>Kops</title>
+      <link>https://techsquad.rocks/tags/kops/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/kops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Ksonnet</title>
       <link>https://techsquad.rocks/tags/ksonnet/</link>
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
@@ -86,7 +104,7 @@
     <item>
       <title>Kubernetes</title>
       <link>https://techsquad.rocks/tags/kubernetes/</link>
-      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/kubernetes/</guid>
       <description></description>

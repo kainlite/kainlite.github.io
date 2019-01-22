@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://techsquad.rocks/tags/go/</link>
-    <description>Recent content in Go on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <title>Serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/serverless/</link>
+    <description>Recent content in Serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Tue, 22 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://techsquad.rocks/tags/go/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/serverless/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -460,199 +460,6 @@ Wait, where did tweet came from?, if you look at the serverless manifest you wil
 &lt;li&gt;Why TBO, what&amp;rsquo;s tbo? bot misspelled.&lt;/li&gt;
 &lt;li&gt;The Serverless framework is really cool and works in a variety of environments, I certainly recommend taking a look and at least trying it, I use it for a few small projects and it eases my life a lot.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
-
-&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
-
-&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Go echo bot</title>
-      <link>https://techsquad.rocks/blog/go_echobot/</link>
-      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/go_echobot/</guid>
-      <description>
-
-&lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.&lt;/p&gt;
-
-&lt;p&gt;To be honest, there is no other way to get the benefits of having &lt;a href=&#34;https://ksonnet.io/&#34;&gt;ksonnet&lt;/a&gt; if you&amp;rsquo;re not going to take advantage of the &lt;em&gt;deployments as code&lt;/em&gt; facilities that it brings thanks to Jsonnet.&lt;/p&gt;
-
-&lt;p&gt;This time we will see how to use &lt;a href=&#34;https://github.com/cybermaggedon/ksonnet-cheat-sheet&#34;&gt;proper templates&lt;/a&gt;, it seems that the templates generated with &lt;code&gt;ks&lt;/code&gt; are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&amp;rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.&lt;/p&gt;
-
-&lt;p&gt;In the examples I will be using &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube&#34;&gt;minikube&lt;/a&gt; or you can &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;check out this repo&lt;/a&gt; that has a good overview of minikube, once installed and started (&lt;code&gt;minikube start&lt;/code&gt;) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:&lt;/p&gt;
-
-&lt;h3 id=&#34;let-s-get-started&#34;&gt;Let&amp;rsquo;s get started&lt;/h3&gt;
-
-&lt;p&gt;This time I&amp;rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
-
-&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
-        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
-        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
-        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;strings&amp;#34;&lt;/span&gt;
-
-        &lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/nlopes/slack&amp;#34;&lt;/span&gt;
-)
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
-        &lt;span style=&#34;color:#a6e22e&#34;&gt;api&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;New&lt;/span&gt;(
-                &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SLACK_API_TOKEN&amp;#34;&lt;/span&gt;),
-        )
-
-        &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;api&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewRTM&lt;/span&gt;()
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;go&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ManageConnection&lt;/span&gt;()
-
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IncomingEvents&lt;/span&gt; {
-                &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Event Received: &amp;#34;&lt;/span&gt;)
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;.(&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt;) {
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HelloEvent&lt;/span&gt;:
-                        &lt;span style=&#34;color:#75715e&#34;&gt;// Ignore hello
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ConnectedEvent&lt;/span&gt;:
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Infos:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Info&lt;/span&gt;)
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Connection counter:&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ConnectionCount&lt;/span&gt;)
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MessageEvent&lt;/span&gt;:
-                        &lt;span style=&#34;color:#75715e&#34;&gt;// Only echo what it said to me
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Message: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;)
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetInfo&lt;/span&gt;()
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;prefix&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;@%s&amp;gt; &amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;)
-
-                        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;info&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;User&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HasPrefix&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;prefix&lt;/span&gt;) {
-                                &lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SendMessage&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;rtm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewOutgoingMessage&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Channel&lt;/span&gt;))
-                        }
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;PresenceChangeEvent&lt;/span&gt;:
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Presence Change: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;)
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;LatencyReport&lt;/span&gt;:
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Current latency: %v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Value&lt;/span&gt;)
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RTMError&lt;/span&gt;:
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error: %s\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ev&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;slack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;InvalidAuthEvent&lt;/span&gt;:
-                        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Invalid credentials&amp;#34;&lt;/span&gt;)
-                        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt;
-
-                &lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
-
-                        &lt;span style=&#34;color:#75715e&#34;&gt;// Ignore other events..
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                        &lt;span style=&#34;color:#75715e&#34;&gt;// fmt.Printf(&amp;#34;Unexpected: %v\n&amp;#34;, msg.Data)
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;                }
-        }
-}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-As you can see it&amp;rsquo;s the simplest example from the readme of the &lt;a href=&#34;https://github.com/nlopes/slack&#34;&gt;Go Slack API&lt;/a&gt; project, it only connects to Slack and when it reads a message if it&amp;rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&amp;rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.&lt;/p&gt;
-
-&lt;p&gt;Here you can see the &lt;code&gt;Dockerfile&lt;/code&gt;, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-docker&#34; data-lang=&#34;docker&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine as builder&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    apk add git &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apk add gcc musl-dev&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;ADD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; . /app/&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; go get -d -v ./... &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; go build -o main . &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chown -R app:app /app /home/app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Run&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; golang:1.11.2-alpine&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; /app&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;RUN&lt;/span&gt; adduser -D -g &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;app&amp;#39;&lt;/span&gt; app &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;    chown -R app:app /app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/health_check.sh /app/health_check.sh&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;COPY --from&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;builder --chown&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;app /app/main /app/main&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;USER app&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;CMD&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt; [&amp;#34;/app/main&amp;#34;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-There are a few more files in there, you can see the full sources &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;, for example &lt;code&gt;health_check.sh&lt;/code&gt;, as our app doesn&amp;rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.&lt;/p&gt;
-
-&lt;p&gt;Okay, enough boilerplate let&amp;rsquo;s get to business, so let&amp;rsquo;s create a new ksonnet application:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks init echobot
-INFO Using context &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;minikube&amp;#34;&lt;/span&gt; from kubeconfig file &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.kube/config&amp;#34;&lt;/span&gt;
-INFO Creating environment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt; with namespace &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;, pointing to &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;version:v1.8.0&amp;#34;&lt;/span&gt; cluster at address &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://192.168.99.100:8443&amp;#34;&lt;/span&gt;
-INFO Generating ksonnet-lib data at path &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;And now let&amp;rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot &lt;code&gt;components/echobot.jsonnet&lt;/code&gt;:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;// Import KSonnet library
-local params = std.extVar(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;__ksonnet/params&amp;#39;&lt;/span&gt;).components.demo;
-local k = import &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;k.libsonnet&amp;#39;&lt;/span&gt;;
-
-// Specify the import objects that we need
-local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;
-local depl = k.extensions.v1beta1.deployment;
-
-// Environment variables, instead of hardcoding it here we could use a param or a secret
-// But I will leave that as an exercise for you :)
-local envs = [
-  {
-    name: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;SLACK_API_TOKEN&amp;#39;&lt;/span&gt;,
-    value: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;really-long-token&amp;#39;&lt;/span&gt;,
-  },
-];
-
-local livenessProbe = {
-  exec: {
-    command: [
-      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/bin/sh&amp;#39;&lt;/span&gt;,
-      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;-c&amp;#39;&lt;/span&gt;,
-      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/app/health_check.sh&amp;#39;&lt;/span&gt;,
-    ],
-  },
-};
-
-// Define containers
-local containers = [
-  container.new(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;kainlite/echobot:0.0.2&amp;#39;&lt;/span&gt;) {
-    env: (envs),
-    livenessProbe: livenessProbe,
-  },
-];
-
-// Define deployment with &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; replicas
-local deployment =
-  depl.new(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, containers, { app: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;echobot&amp;#39;&lt;/span&gt; });
-
-local resources = [deployment];
-
-// Return list of resources.
-k.core.v1.list.new(resources)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace &lt;code&gt;really-long-token&lt;/code&gt; with your token, and then do:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ ks apply default
-INFO Applying deployments echobot
-INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And in the logs:
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods
-NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;/1       Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          53s
-
-$ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; 0xc000468000 0xc0004482a0 &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]}&lt;/span&gt;
-Connection counter: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-Event Received: Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256397423s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.25679313s
-Event Received: Current latency: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;.256788737s
-Event Received: Message: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{{&lt;/span&gt;message CEDGU6EA0 UEDJT5DDH &amp;lt;@UED48HD33&amp;gt; echo! &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300  false &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &amp;lt;nil&amp;gt;  false &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;  false  &lt;span style=&#34;color:#ae81ff&#34;&gt;1546124966&lt;/span&gt;.002300   &amp;lt;nil&amp;gt;      &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; false &amp;lt;nil&amp;gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; TEDJT5CTD &lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt;  false false&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &amp;lt;nil&amp;gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found &lt;a href=&#34;https://github.com/kainlite/echobot&#34;&gt;here&lt;/a&gt;. In a future post I might explore &lt;a href=&#34;https://ksonnet.io/docs/examples/helm/&#34;&gt;ksonnet and helm charts&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;upcoming-topics&#34;&gt;Upcoming topics&lt;/h3&gt;
-
-&lt;p&gt;As promised I will be doing one post about &lt;a href=&#34;https://github.com/hasura/gitkube&#34;&gt;Gitkube&lt;/a&gt; and &lt;a href=&#34;https://github.com/GoogleContainerTools/skaffold&#34;&gt;Skaffold&lt;/a&gt;, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about &lt;a href=&#34;https://www.docker.com/&#34;&gt;Docker&lt;/a&gt;, &lt;a href=&#34;https://containerd.io/&#34;&gt;ContainerD&lt;/a&gt;, &lt;a href=&#34;https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/&#34;&gt;KubeADM&lt;/a&gt;, and Kubernetes in general.&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 

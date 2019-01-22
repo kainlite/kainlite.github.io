@@ -6,10 +6,468 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 22 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to create a serverless twitter bot</title>
+      <link>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</guid>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.&lt;/p&gt;
+
+&lt;h3 id=&#34;twitter&#34;&gt;&lt;strong&gt;Twitter&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;So before you can start with the Twitter API you need to get a developer account in &lt;a href=&#34;https://developer.twitter.com/en/apply/user&#34;&gt;this url&lt;/a&gt;, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-code&#34;&gt;&lt;strong&gt;The code&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;I added several comments over the code so it&amp;rsquo;s easy to understand what everything is supposed to do, also it can be found &lt;a href=&#34;https://github.com/kainlite/tbo&#34;&gt;here&lt;/a&gt;.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;encoding/json&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;io/ioutil&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;math/rand&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;os&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;strings&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;time&amp;#34;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/lambda&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/dghubble/go-twitter/twitter&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/dghubble/oauth1&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/joho/godotenv&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/sirupsen/logrus&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Version
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Environment
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Page JSON object
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Page&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;version&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;title&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;BaseURL&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;home_page_url&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;FeedURL&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;    &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;feed_url&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Articles&lt;/span&gt; []&lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;items&amp;#34;`&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Article JSON object
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;ID&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;id&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;URL&lt;/span&gt;       &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;url&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;     &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;title&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Content&lt;/span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;content_html&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Published&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;date_published&amp;#34;`&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Twitter Access
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;      &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;oauth1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;       &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;oauth1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Token&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;httpClient&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Client&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;      &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;twitter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Client&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;tweetFormat&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;screenName&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// This functions grabs all the necessary bits to connect to the Twitter API.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;Setup&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Setting up twitter client&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessSecret&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerKey&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerSecret&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Get the access keys from ENV
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessKey&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TWITTER_ACCESS_KEY&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessSecret&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TWITTER_ACCESS_SECRET&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerKey&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TWITTER_CONSUMER_KEY&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerSecret&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TWITTER_CONSUMER_SECRET&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterScreenName&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TWITTER_SCREEN_NAME&amp;#34;&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterScreenName&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter screen name cannot be null&amp;#34;&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerKey&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter consumer key can not be null&amp;#34;&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerSecret&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter consumer secret can not be null&amp;#34;&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessKey&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter access key can not be null&amp;#34;&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessSecret&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter access secret can not be null&amp;#34;&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Setting up oAuth for twitter&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Setup the new oauth client
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;oauth1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewConfig&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerKey&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterConsumerSecret&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;oauth1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewToken&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessKey&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterAccessSecret&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;httpClient&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;config&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Client&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;oauth1&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NoContext&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;token&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Twitter client
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;twitter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewClient&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;httpClient&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Set the screen name for later use
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;screenName&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;twitterScreenName&lt;/span&gt;
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// This is the format of the tweet
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;tweetFormat&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%s: %s - TBO&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Twitter client setup complete&amp;#34;&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Format tweets
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;GetTweetString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;tweetFormat&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Title&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;URL&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Send the tweet
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;Send&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sending tweet&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Infof&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Non production mode, would&amp;#39;ve tweeted: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetTweetString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;))
+	}
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Infof&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sending tweet: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetTweetString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;))
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Statuses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Update&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetTweetString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;), &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error sending tweet to twitter: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+		}
+	}
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Get a random article from the feed
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// This functions checks that the same tweet is not present
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// in the last 30 tweets
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt;) &lt;span style=&#34;color:#a6e22e&#34;&gt;PickArticle&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Checking to see if the tweet appeared in the last 30 tweets&amp;#34;&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;tweets&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Timelines&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;UserTimeline&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;twitter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;UserTimelineParams&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;ScreenName&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;screenName&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Count&lt;/span&gt;:      &lt;span style=&#34;color:#ae81ff&#34;&gt;30&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;TweetMode&lt;/span&gt;:  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;extended&amp;#34;&lt;/span&gt;,
+	})
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error getting last 30 tweets from user: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;tweet&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tweets&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;strings&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Contains&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;tweet&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;t&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetTweetString&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;)) {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
+		}
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Twitter API constant
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tw&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Twitter&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// This function is rather large, but basically grabs the a big json from
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// the jsonfeed url and tests several tweets until it finds one that it&amp;#39;s valid
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// a tweet could be invalid if for example it was already tweeted in the last 30 tweets
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GetArticle&lt;/span&gt;() &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://techsquad.rocks/index.json&amp;#34;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Setup a new HTTP Client with 3 seconds timeout
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;httpClient&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Client&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Timeout&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Second&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;,
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Create a new HTTP Request
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewRequest&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MethodGet&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#75715e&#34;&gt;// An error has occurred that we can&amp;#39;t recover from, bail.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error occurred creating new request: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Set the user agent to tbo &amp;lt;version&amp;gt; - twitter.com/kainlite
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;User-Agent&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TBO %s - twitter.com/kainlite&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt;))
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Tell the remote server to send us JSON
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Accept&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// We&amp;#39;re only going to try maxTries times, otherwise we&amp;#39;ll fatal out.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;// Execute the request
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debugf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Attempting request to %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;getErr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;httpClient&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Do&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;req&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;getErr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#75715e&#34;&gt;// We got an error, lets bail out, we can&amp;#39;t do anything more
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error occurred retrieving article from API: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;getErr&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// BGet the body from the result
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;readErr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ioutil&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ReadAll&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;res&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;readErr&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#75715e&#34;&gt;// This shouldn&amp;#39;t happen, but if it does, error out.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error occurred reading from result body: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;readErr&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Parse json into the struct Page
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Page&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Unmarshal&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#75715e&#34;&gt;// Invalid JSON was received, bail out
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatalf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error occurred decoding article: %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;invalidArticle&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;maxTries&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Attempt to get a valid article for the next tweet
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Article&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;invalidArticle&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;rand&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Seed&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;time&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Now&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;UnixNano&lt;/span&gt;())
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;randomInt&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rand&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Intn&lt;/span&gt;(len(&lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Articles&lt;/span&gt;))
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;page&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Articles&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;randomInt&lt;/span&gt;]
+
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%+v&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;randomInt&lt;/span&gt;)
+		&lt;span style=&#34;color:#75715e&#34;&gt;// check to make sure the tweet hasn&amp;#39;t been sent before
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;tw&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;PickArticle&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;) {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;continue&lt;/span&gt;
+		}
+
+		&lt;span style=&#34;color:#75715e&#34;&gt;// If we get here we&amp;#39;ve found a tweet, exit the loop
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;invalidArticle&lt;/span&gt; = &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;maxTries&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Exiting after attempts to retrieve article failed.&amp;#34;&lt;/span&gt;)
+
+		}
+	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Return the valid article response
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// HandleRequest - Handle the incoming Lambda request
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HandleRequest&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Started handling request&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;tw&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Setup&lt;/span&gt;()
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GetArticle&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Send tweet
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;tw&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Send&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;article&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Set the local environment
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;setRunningEnvironment&lt;/span&gt;() {
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Get the environment variable
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Getenv&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;APP_ENV&amp;#34;&lt;/span&gt;) {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;development&amp;#34;&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;development&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;development&amp;#34;&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt;
+	}
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;shutdown&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Info&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Shutdown request registered&amp;#34;&lt;/span&gt;)
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;init&lt;/span&gt;() {
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Set the environment
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;setRunningEnvironment&lt;/span&gt;()
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Set logging configuration
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SetFormatter&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;TextFormatter&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;DisableColors&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;FullTimestamp&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;,
+	})
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SetReportCaller&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; {
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;development&amp;#34;&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SetLevel&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;DebugLevel&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SetLevel&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrorLevel&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SetLevel&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;InfoLevel&lt;/span&gt;)
+	}
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Start the bot
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Starting main&amp;#34;&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TBO %s&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;Version&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;lambda&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleRequest&lt;/span&gt;)
+	} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+	        &lt;span style=&#34;color:#75715e&#34;&gt;// this environment variables are used locally while debugging, it can be quite handy
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;godotenv&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Load&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error loading .env file&amp;#34;&lt;/span&gt;)
+		}
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleRequest&lt;/span&gt;()
+	}
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The code is fairly straigth forward, it checks for the environment to have a locally runable/debuggable app if it&amp;rsquo;s development or if it&amp;rsquo;s running as an AWS Function in production.&lt;/p&gt;
+
+&lt;h3 id=&#34;while-debugging-locally-it-can-be-ran-like-this&#34;&gt;&lt;strong&gt;While debugging locally it can be ran like this&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;You can save use an .env file to test debug how your tweets are going to look.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;go run .
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Starting main&amp;#34; func=main.main file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:279&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=info msg=&amp;#34;TBO development&amp;#34; func=main.main file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:280&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Started handling request&amp;#34; func=main.HandleRequest file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:225&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Setting up twitter client&amp;#34; func=&amp;#34;main.(*Twitter).Setup&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:55&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Setting up oAuth for twitter&amp;#34; func=&amp;#34;main.(*Twitter).Setup&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:88&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Twitter client setup complete&amp;#34; func=&amp;#34;main.(*Twitter).Setup&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:102&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Attempting request to &amp;amp;{GET https://techsquad.rocks/index.json HTTP/1.1 %!s(int=1) %!s(int=1) map[User-Agent:[TBO development - twitter.com/kainlite] Accept:[application/json]] &amp;lt;nil&amp;gt; %!s(func() (io.ReadCloser, error)=&amp;lt;nil&amp;gt;) %!s(int64=0) [] %!s(bool=false) techsquad.rocks map[] map[] %!s(*multipart.Form=&amp;lt;nil&amp;gt;) map[]   %!s(*tls.ConnectionState=&amp;lt;nil&amp;gt;) %!s(&amp;lt;-chan struct {}=&amp;lt;nil&amp;gt;) %!s(*http.Response=&amp;lt;nil&amp;gt;) &amp;lt;nil&amp;gt;}&amp;#34; func=main.GetArticle file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:173&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 4time=&amp;#34;2019-01-21T22:39:15-03:00&amp;#34; level=debug msg=&amp;#34;Checking to see if the tweet appeared in the last 30 tweets&amp;#34; func=&amp;#34;main.(*Twitter).PickArticle&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:125&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:16-03:00&amp;#34; level=debug msg=&amp;#34;Sending tweet&amp;#34; func=&amp;#34;main.(*Twitter).Send&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:111&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# time=&amp;#34;2019-01-21T22:39:16-03:00&amp;#34; level=info msg=&amp;#34;Non production mode, would&amp;#39;ve tweeted: Getting started with skaffold: https://techsquad.rocks/blog/getting_started_with_skaffold/ - TBO&amp;#34; func=&amp;#34;main.(*Twitter).Send&amp;#34; file=&amp;#34;/home/kainlite/Webs/tbo/tbo/main.go:113&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The output is very verbose but it will show you everything that the function will do.&lt;/p&gt;
+
+&lt;h3 id=&#34;creating-the-project&#34;&gt;&lt;strong&gt;Creating the project&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;But how did you get the project skeleton?
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;mkdir tbo &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; cd tbo &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; serverless create -t aws-go&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+By default it creates two go functions: hello and world, if you look at the files serverless.yaml and the go code, it will be easy to understand how everything is tied together in the default example.&lt;/p&gt;
+
+&lt;h3 id=&#34;serverless-framework&#34;&gt;&lt;strong&gt;Serverless framework&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;This function is managed by the &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt;, as you can see it&amp;rsquo;s an easy way to manage your functions, what this small block of YAML will do is compile, upload, and schedule our function (because we use an event schedule)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Welcome to Serverless!&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# This file is the main config file for your service.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# It&amp;#39;s very minimal at this point and uses default values.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# You can always add more config options for more control.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# We&amp;#39;ve included some commented out config examples here.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Just uncomment any of them to get that config option.&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# For full config options, check the docs:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#    docs.serverless.com&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Happy Coding!&lt;/span&gt;
+
+service: handler
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# You can pin your service to only deploy with a specific Serverless version&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Check out our docs for more details&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# frameworkVersion: &amp;#34;=X.X.X&amp;#34;&lt;/span&gt;
+frameworkVersion: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;gt;=1.28.0 &amp;lt;2.0.0&amp;#34;&lt;/span&gt;
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: &lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;env:AWS_DEFAULT_REGION, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;us-east-1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
+  stage: &lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;env:TBO_BUILD_STAGE, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;prod&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
+  memorySize: &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;
+  versionFunctions: false
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./tbo/tbo
+
+functions:
+  tweet:
+    handler: tbo/tbo
+    events:
+      - schedule: cron&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; */12 * * ? *&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    environment:
+      APP_ENV: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt;
+      TWITTER_SCREEN_NAME: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;twitter_username&amp;#34;&lt;/span&gt;
+      TWITTER_CONSUMER_KEY: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example_key&amp;#34;&lt;/span&gt;
+      TWITTER_CONSUMER_SECRET: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example_secret&amp;#34;&lt;/span&gt;
+      TWITTER_ACCESS_KEY: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example_key&amp;#34;&lt;/span&gt;
+      TWITTER_ACCESS_SECRET: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;example_secret&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+We provide the environment variables there that the app needs to run, under the hood what serverless will do is create an s3 bucket for this function with a cloudformation stack and a zip file with your function (for each version or deployment), then it will apply that that stack and validate that everything went ok.&lt;/p&gt;
+
+&lt;h3 id=&#34;deploy-the-function&#34;&gt;&lt;strong&gt;Deploy the function&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Once the code is ready and you are ready to test it in production aka send a real tweet, just deploy it.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;serverless deploy
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: WARNING: Missing &amp;#34;tenant&amp;#34; and &amp;#34;app&amp;#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Packaging service...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Excluding development dependencies...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading CloudFormation file to S3...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading artifacts...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading service .zip file to S3 (9.86 MB)...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Validating template...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Updating Stack...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Checking Stack update progress...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ..................&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Stack update finished...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Service Information&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# service: handler&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stage: prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# region: us-east-1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stack: handler-prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# api keys:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# endpoints:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# functions:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   tweet: handler-prod-tweet&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# layers:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As we described before you can see everything that the serverless framework did for us, nothing really hard to remember and everything automated.&lt;/p&gt;
+
+&lt;h3 id=&#34;s3&#34;&gt;&lt;strong&gt;S3&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Example s3 bucket from the previous deployment.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws s3 ls
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 2019-01-21 22:42:05 handler-prod-serverlessdeploymentbucket-1s5fs5igk2pwc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As we can see after the deployment we see a new bucket with our function and if we take a look at the files we will find several (depending on how many deployments you do) stacks/manifests and the zip file with our function for each version/deployment.&lt;/p&gt;
+
+&lt;h3 id=&#34;invoke-the-function&#34;&gt;&lt;strong&gt;Invoke the function&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Ok, but I don&amp;rsquo;t want to wait 12 hours to see if everything is okay, then just invoke the function.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;serverless invoke -f tweet
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# null&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Wait, where did tweet came from?, if you look at the serverless manifest you will see that our function is called tweet. If everything went well you will be able to see that tweet in your profile, something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/twitter-tbo.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Why TBO, what&amp;rsquo;s tbo? bot misspelled.&lt;/li&gt;
+&lt;li&gt;The Serverless framework is really cool and works in a variety of environments, I certainly recommend taking a look and at least trying it, I use it for a few small projects and it eases my life a lot.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>From zero to hero with kops and AWS</title>

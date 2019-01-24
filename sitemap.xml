@@ -80,13 +80,13 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
+    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
+    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -140,13 +140,13 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
+    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
+    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -158,13 +158,13 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/linux/</loc>
+    <loc>https://techsquad.rocks/categories/linux/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/linux/</loc>
+    <loc>https://techsquad.rocks/tags/linux/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -176,25 +176,25 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/serverless/</loc>
-    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/categories/serverless/</loc>
     <lastmod>2019-01-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <loc>https://techsquad.rocks/tags/serverless/</loc>
+    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/service-mesh/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -214,6 +214,12 @@
   <url>
     <loc>https://techsquad.rocks/tags/</loc>
     <lastmod>2019-01-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/tmux/</loc>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

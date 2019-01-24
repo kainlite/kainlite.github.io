@@ -17,6 +17,17 @@
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/exploring_some_istio_features/</guid>
+      <tags>
+      
+        <tag>istio</tag>
+      
+        <tag>routing</tag>
+      
+        <tag>service-mesh</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;

@@ -17,6 +17,15 @@
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
+      <tags>
+      
+        <tag>helm</tag>
+      
+        <tag>deployment-tools</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
@@ -185,6 +194,15 @@ In the cloud or on premises this will indeed be different and you should have a 
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
+      <tags>
+      
+        <tag>helm</tag>
+      
+        <tag>deployment-tools</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;

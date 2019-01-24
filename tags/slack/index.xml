@@ -17,6 +17,21 @@
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/go_echobot/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>slack</tag>
+      
+        <tag>ksonnet</tag>
+      
+        <tag>jsonnet</tag>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>deployment-tools</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;

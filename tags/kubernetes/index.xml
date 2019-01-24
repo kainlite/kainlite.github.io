@@ -17,6 +17,15 @@
       <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</guid>
+      <tags>
+      
+        <tag>AWS</tag>
+      
+        <tag>kops</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -641,6 +650,17 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/exploring_some_istio_features/</guid>
+      <tags>
+      
+        <tag>istio</tag>
+      
+        <tag>routing</tag>
+      
+        <tag>service-mesh</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
@@ -894,6 +914,15 @@ spec:
       <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</guid>
+      <tags>
+      
+        <tag>istio</tag>
+      
+        <tag>service-mesh</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
@@ -1179,6 +1208,15 @@ If the latest curl returns 200 then we&amp;rsquo;re good, you can also browse th
       <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_skaffold/</guid>
+      <tags>
+      
+        <tag>skaffold</tag>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>deployment-tools</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;skaffold&#34;&gt;&lt;strong&gt;Skaffold&lt;/strong&gt;&lt;/h3&gt;
@@ -1456,6 +1494,17 @@ Cleanup complete in &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;.833
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_gitkube/</guid>
+      <tags>
+      
+        <tag>git</tag>
+      
+        <tag>gitkube</tag>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>deployment-tools</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;gitkube&#34;&gt;&lt;strong&gt;Gitkube&lt;/strong&gt;&lt;/h3&gt;
@@ -1710,6 +1759,21 @@ As we can see the image is the one that got built from our &lt;code&gt;git push&
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/go_echobot/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>slack</tag>
+      
+        <tag>ksonnet</tag>
+      
+        <tag>jsonnet</tag>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>deployment-tools</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;echo-bot&#34;&gt;&lt;strong&gt;Echo bot&lt;/strong&gt;&lt;/h3&gt;
@@ -1903,6 +1967,17 @@ Event Received: Message: &amp;amp;&lt;span style=&#34;color:#f92672&#34;&gt;{{&l
       <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_ksonnet/</guid>
+      <tags>
+      
+        <tag>ksonnet</tag>
+      
+        <tag>jsonnet</tag>
+      
+        <tag>deployment-tools</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -2390,6 +2465,15 @@ wordpre INFO     Blog Name: User&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#
       <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
+      <tags>
+      
+        <tag>helm</tag>
+      
+        <tag>deployment-tools</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;deploying-my-apps-with-helm&#34;&gt;&lt;strong&gt;Deploying my apps with Helm&lt;/strong&gt;&lt;/h3&gt;
@@ -2558,6 +2642,15 @@ In the cloud or on premises this will indeed be different and you should have a 
       <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
+      <tags>
+      
+        <tag>helm</tag>
+      
+        <tag>deployment-tools</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;

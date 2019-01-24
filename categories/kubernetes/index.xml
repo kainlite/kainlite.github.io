@@ -17,6 +17,15 @@
       <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</guid>
+      <tags>
+      
+        <tag>AWS</tag>
+      
+        <tag>kops</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -641,6 +650,17 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/exploring_some_istio_features/</guid>
+      <tags>
+      
+        <tag>istio</tag>
+      
+        <tag>routing</tag>
+      
+        <tag>service-mesh</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;
@@ -894,6 +914,15 @@ spec:
       <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</guid>
+      <tags>
+      
+        <tag>istio</tag>
+      
+        <tag>service-mesh</tag>
+      
+        <tag>kubernetes</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;

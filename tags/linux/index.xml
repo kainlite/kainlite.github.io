@@ -17,6 +17,17 @@
       <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</guid>
+      <tags>
+      
+        <tag>urxvt</tag>
+      
+        <tag>vim</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>tmux</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
@@ -189,6 +200,17 @@ bind -n Home send-key C-a&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
       <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/my_local_environment/</guid>
+      <tags>
+      
+        <tag>urxvt</tag>
+      
+        <tag>vim</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>tmux</tag>
+      
+      </tags>
       <description>
 
 &lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;

@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</loc>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</loc>
     <lastmod>2019-01-22T00:00:00+00:00</lastmod>
   </url>
@@ -65,7 +70,7 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -148,19 +153,19 @@
   
   <url>
     <loc>https://techsquad.rocks/</loc>
-    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/tags/linux/</loc>
-    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/linux/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -214,13 +219,13 @@
   
   <url>
     <loc>https://techsquad.rocks/tags/urxvt/</loc>
-    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/tags/vim/</loc>
-    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

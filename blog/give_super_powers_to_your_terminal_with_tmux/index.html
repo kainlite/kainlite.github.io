@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Give super powers to your terminal with tmux</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+                <![endif]-->
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    <meta property="description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it." />
+
+    <meta property="og:title" content="Give super powers to your terminal with tmux" />
+<meta property="og:description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/" />
+<meta property="og:image" content="https://techsquad.rocks/img/terminal.png" />
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Give super powers to your terminal with tmux"/>
+<meta name="twitter:description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it."/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/">Give super powers to your terminal with tmux</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 23, 2019
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">
+                    urxvt
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/vim/" class="label label-success">
+                    vim
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+                    linux
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="introduction"><strong>Introduction</strong></h3>
+
+<p>In this article I want to introduce you to <code>tmux</code>, you might have used <code>screen</code> in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it. The full configuration can be found <a href="https://github.com/kainlite/dotfiles/blob/master/.tmux.conf">here</a>. I&rsquo;m using ZSH as shell and Vim as text editor.</p>
+
+<h3 id="tmux"><strong>Tmux</strong></h3>
+
+<p>I also use tmux to maintain sessions, for example I can only have one terminal window open because with the help from ZSH it will attach automatically to a session thanks to <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a> and the plugin tmux, I use tabs aka windows a lot, sometimes I also use splits aka as panes.</p>
+
+<p>Now you have some basic understanding of what tmux does and how does it name its things, let&rsquo;s examine some bits of the config and how to use it.</p>
+
+<h5 id="attach-detach-from-a-session"><strong>Attach/detach from a session</strong></h5>
+
+<p>In order to create a session and attach to it you need to execute <code>tmux new -s my-session</code>, then to detach from it: <code>CTRL-a d</code> and to re-attach <code>tmux a -t my-session</code>, then kill it <code>tmux kill-session -t my-session</code> or logout from all windows.</p>
+
+<h5 id="prefix"><strong>Prefix</strong></h5>
+
+<p>I don&rsquo;t use the default prefix that is: <code>CTRL-b</code>, I use <code>CTRL-a</code> like in screen.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Use ctrl-a instead of ctrl-b</span>
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix</code></pre></div></p>
+
+<h5 id="example"><strong>Example</strong></h5>
+
+<p>You can print the numbers of the panes with <code>CTRL-a q</code>, and you can navigate windows and panes as a list with <code>CTRL-a w</code>.
+<figure>
+    <img src="/img/tmux-windows-panes.png" width="100%"/> 
+</figure>
+</p>
+
+<p>I usually like to have 3 panes, something like this:
+<figure>
+    <img src="/img/tmux-sample-usage.png" width="100%"/> 
+</figure>
+
+I can edit the code or whatever in the pane 0, run commands if I need to in the pane 1, and have the webserver or code compiler, etc in the pane 2. This is very handy because I can write and test things at the same time without leaving the keyboard, or look at 2 different projects/files/etc side by side.</p>
+
+<p>With <code>tmux ls</code> we can list active sessions, also tmux has a command mode (<code>CTRL-a :</code>) like Vim, where you can issue some commands or change settings on the fly, for example instead of executing <code>tmux ls</code>, you can get the same information doing <code>CTRL-a :</code> and then <code>ls&lt;CR&gt;</code>.</p>
+
+<h5 id="defaults"><strong>Defaults</strong></h5>
+
+<p>Some helpful settings, for example start windows at 1 instead of 0, renumber on exit also makes it easier with windows.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Start window numbers at 1 to match keyboard order with tmux window order</span>
+set -g base-index <span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e"># Scrollback buffer n lines</span>
+set -g history-limit <span style="color:#ae81ff">10000</span>
+
+<span style="color:#75715e"># Renumber tabs on exit</span>
+set-option -g renumber-windows on
+
+<span style="color:#75715e"># Use vi keybindings in copy and choice modes</span>
+set-window-option -g mode-keys vi
+
+<span style="color:#75715e"># Enable mouse, enables you to scroll in the tmux history buffer.</span>
+set -g mouse on</code></pre></div></p>
+
+<h5 id="movement"><strong>Movement</strong></h5>
+
+<p>I move between windows with <code>CTRL+h</code> and <code>CTRL+l</code>, and between panes with <code>CTRL-a [hjkl]</code>.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Move between windows</span>
+bind-key -n C-h prev
+bind-key -n C-l next
+
+<span style="color:#75715e"># Move between panes</span>
+unbind h
+bind h <span style="color:#66d9ef">select</span>-pane -L
+unbind j
+bind j <span style="color:#66d9ef">select</span>-pane -D
+unbind k
+bind k <span style="color:#66d9ef">select</span>-pane -U
+unbind l
+bind l <span style="color:#66d9ef">select</span>-pane -R</code></pre></div></p>
+
+<h5 id="configuration"><strong>Configuration</strong></h5>
+
+<p>A handy trick if you are testing the configuration is to reload it from the file with <code>CTRL-a r</code>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Force a reload of the config file</span>
+unbind r
+bind r source-file ~/.tmux.conf <span style="color:#ae81ff">\;</span> display <span style="color:#e6db74">&#34;Reloaded!&#34;</span></code></pre></div></p>
+
+<h5 id="panes"><strong>Panes</strong></h5>
+
+<p>Everything is nice and shiny, but how do I open a pane or a new window?
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Horizontal and vertical splits</span>
+unbind |
+bind | split-window -h
+unbind -
+bind - split-window</code></pre></div>
+Easy, <code>CTRL-a |</code> will give you a vertical pane, and <code>CTRL-a -</code> will give you an horizontal pane.
+You an also re-order the panes with <code>CTRL-a SPACE</code></p>
+
+<p>You can also re-order windows with <code>SHIFT-Left Arrow</code> and <code>SHIFT-Right Arrow</code>.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Swap windows</span>
+bind-key -n S-Left swap-window -t -1
+bind-key -n S-Right swap-window -t +1</code></pre></div></p>
+
+<h5 id="status-bar"><strong>Status bar</strong></h5>
+
+<p>The status bar and the colors, it&rsquo;s fairly simple but I like it.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Status bar has a dim gray background</span>
+set-option -g status-bg colour234
+set-option -g status-fg colour0
+<span style="color:#75715e"># Left shows the session name, in blue</span>
+set-option -g status-left-bg default
+set-option -g status-left-fg colour74
+<span style="color:#75715e"># Right is some CPU stats, so terminal green</span>
+set-option -g status-right-bg default
+set-option -g status-right-fg colour71
+<span style="color:#75715e"># Windows are medium gray; current window is white</span>
+set-window-option -g window-status-fg colour244
+set-window-option -g window-status-current-fg <span style="color:#e6db74">&#39;#ffffff&#39;</span>
+set-window-option -g window-status-current-bg <span style="color:#e6db74">&#39;#000000&#39;</span>
+<span style="color:#75715e"># Beeped windows get a blinding orange background</span>
+set-window-option -g window-status-bell-fg <span style="color:#e6db74">&#39;#000000&#39;</span>
+set-window-option -g window-status-bell-bg <span style="color:#e6db74">&#39;#d78700&#39;</span>
+set-window-option -g window-status-bell-attr none
+<span style="color:#75715e"># Trim window titles to a reasonable length</span>
+set-window-option -g window-status-format <span style="color:#e6db74">&#39;#[fg=yellow] #F#I#[default] #W &#39;</span>
+set-window-option -g window-status-current-format <span style="color:#e6db74">&#39;#[bg=yellow] #I#[bg=yellow] #W &#39;</span></code></pre></div></p>
+
+<h5 id="copy-paste"><strong>Copy/paste</strong></h5>
+
+<p><figure>
+    <img src="/img/tmux-vi-mode.png" width="100%"/> 
+</figure>
+
+Tmux also supports the vi-copy mode, you can enter this mode with <code>CTRL-a ESC</code>, then pressing <code>v</code> for normal selection or <code>V</code> for line selection you can mark and copy with <code>Y</code> (by default is <code>ENTER</code> aka <code>&lt;CR&gt;</code>).</p>
+
+<p>And as you can imagine you can paste with <code>CTRL-a p</code>, this is really handy when copying from one pane to another or from one window to another, in Vim I recommend you <code>:set paste!</code> before pasting into it, so it doesn&rsquo;t try to format, etc.</p>
+
+<p>It also copies to the clipboard buffer, using xsel.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Make copy mode more vim like</span>
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+bind-key -T edit-mode-vi Up send-keys -X history-up
+bind-key -T edit-mode-vi Down send-keys -X history-down
+unbind-key -T copy-mode-vi Space     ;   bind-key -T copy-mode-vi v send-keys -X begin-selection
+
+unbind-key -T copy-mode-vi Enter     ;   bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel <span style="color:#e6db74">&#34;xsel -i --clipboard&#34;</span>
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel <span style="color:#e6db74">&#34;xsel -i --clipboard&#34;</span>
+
+unbind-key -T copy-mode-vi C-v       ;   bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+unbind-key -T copy-mode-vi <span style="color:#f92672">[</span>         ;   bind-key -T copy-mode-vi <span style="color:#f92672">[</span> send-keys -X begin-selection
+unbind-key -T copy-mode-vi <span style="color:#f92672">]</span>         ;   bind-key -T copy-mode-vi <span style="color:#f92672">]</span> send-keys -X copy-selection</code></pre></div></p>
+
+<p>If you want to learn more about tmux a good place to start is the <a href="https://wiki.archlinux.org/index.php/tmux">Arch Linux wiki</a>.</p>
+
+<h5 id="notes"><strong>notes</strong></h5>
+
+<p>Sometimes you can have issues with the keys <code>HOME</code> and <code>END</code>, this can help with that.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Home / End patch</span>
+bind -n End send-key C-e
+bind -n Home send-key C-a</code></pre></div></p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 12, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/my_local_environment/">My local environment</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

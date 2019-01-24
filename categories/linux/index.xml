@@ -6,10 +6,182 @@
     <description>Recent content in Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 19 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Give super powers to your terminal with tmux</title>
+      <link>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</link>
+      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</guid>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;In this article I want to introduce you to &lt;code&gt;tmux&lt;/code&gt;, you might have used &lt;code&gt;screen&lt;/code&gt; in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it. The full configuration can be found &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.tmux.conf&#34;&gt;here&lt;/a&gt;. I&amp;rsquo;m using ZSH as shell and Vim as text editor.&lt;/p&gt;
+
+&lt;h3 id=&#34;tmux&#34;&gt;&lt;strong&gt;Tmux&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;I also use tmux to maintain sessions, for example I can only have one terminal window open because with the help from ZSH it will attach automatically to a session thanks to &lt;a href=&#34;https://github.com/robbyrussell/oh-my-zsh&#34;&gt;oh-my-zsh&lt;/a&gt; and the plugin tmux, I use tabs aka windows a lot, sometimes I also use splits aka as panes.&lt;/p&gt;
+
+&lt;p&gt;Now you have some basic understanding of what tmux does and how does it name its things, let&amp;rsquo;s examine some bits of the config and how to use it.&lt;/p&gt;
+
+&lt;h5 id=&#34;attach-detach-from-a-session&#34;&gt;&lt;strong&gt;Attach/detach from a session&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In order to create a session and attach to it you need to execute &lt;code&gt;tmux new -s my-session&lt;/code&gt;, then to detach from it: &lt;code&gt;CTRL-a d&lt;/code&gt; and to re-attach &lt;code&gt;tmux a -t my-session&lt;/code&gt;, then kill it &lt;code&gt;tmux kill-session -t my-session&lt;/code&gt; or logout from all windows.&lt;/p&gt;
+
+&lt;h5 id=&#34;prefix&#34;&gt;&lt;strong&gt;Prefix&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I don&amp;rsquo;t use the default prefix that is: &lt;code&gt;CTRL-b&lt;/code&gt;, I use &lt;code&gt;CTRL-a&lt;/code&gt; like in screen.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Use ctrl-a instead of ctrl-b&lt;/span&gt;
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;example&#34;&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;You can print the numbers of the panes with &lt;code&gt;CTRL-a q&lt;/code&gt;, and you can navigate windows and panes as a list with &lt;code&gt;CTRL-a w&lt;/code&gt;.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/tmux-windows-panes.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;I usually like to have 3 panes, something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/tmux-sample-usage.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+I can edit the code or whatever in the pane 0, run commands if I need to in the pane 1, and have the webserver or code compiler, etc in the pane 2. This is very handy because I can write and test things at the same time without leaving the keyboard, or look at 2 different projects/files/etc side by side.&lt;/p&gt;
+
+&lt;p&gt;With &lt;code&gt;tmux ls&lt;/code&gt; we can list active sessions, also tmux has a command mode (&lt;code&gt;CTRL-a :&lt;/code&gt;) like Vim, where you can issue some commands or change settings on the fly, for example instead of executing &lt;code&gt;tmux ls&lt;/code&gt;, you can get the same information doing &lt;code&gt;CTRL-a :&lt;/code&gt; and then &lt;code&gt;ls&amp;lt;CR&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;defaults&#34;&gt;&lt;strong&gt;Defaults&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Some helpful settings, for example start windows at 1 instead of 0, renumber on exit also makes it easier with windows.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Start window numbers at 1 to match keyboard order with tmux window order&lt;/span&gt;
+set -g base-index &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Scrollback buffer n lines&lt;/span&gt;
+set -g history-limit &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Renumber tabs on exit&lt;/span&gt;
+set-option -g renumber-windows on
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Use vi keybindings in copy and choice modes&lt;/span&gt;
+set-window-option -g mode-keys vi
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Enable mouse, enables you to scroll in the tmux history buffer.&lt;/span&gt;
+set -g mouse on&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;movement&#34;&gt;&lt;strong&gt;Movement&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I move between windows with &lt;code&gt;CTRL+h&lt;/code&gt; and &lt;code&gt;CTRL+l&lt;/code&gt;, and between panes with &lt;code&gt;CTRL-a [hjkl]&lt;/code&gt;.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Move between windows&lt;/span&gt;
+bind-key -n C-h prev
+bind-key -n C-l next
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Move between panes&lt;/span&gt;
+unbind h
+bind h &lt;span style=&#34;color:#66d9ef&#34;&gt;select&lt;/span&gt;-pane -L
+unbind j
+bind j &lt;span style=&#34;color:#66d9ef&#34;&gt;select&lt;/span&gt;-pane -D
+unbind k
+bind k &lt;span style=&#34;color:#66d9ef&#34;&gt;select&lt;/span&gt;-pane -U
+unbind l
+bind l &lt;span style=&#34;color:#66d9ef&#34;&gt;select&lt;/span&gt;-pane -R&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;configuration&#34;&gt;&lt;strong&gt;Configuration&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;A handy trick if you are testing the configuration is to reload it from the file with &lt;code&gt;CTRL-a r&lt;/code&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Force a reload of the config file&lt;/span&gt;
+unbind r
+bind r source-file ~/.tmux.conf &lt;span style=&#34;color:#ae81ff&#34;&gt;\;&lt;/span&gt; display &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Reloaded!&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;panes&#34;&gt;&lt;strong&gt;Panes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Everything is nice and shiny, but how do I open a pane or a new window?
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Horizontal and vertical splits&lt;/span&gt;
+unbind |
+bind | split-window -h
+unbind -
+bind - split-window&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Easy, &lt;code&gt;CTRL-a |&lt;/code&gt; will give you a vertical pane, and &lt;code&gt;CTRL-a -&lt;/code&gt; will give you an horizontal pane.
+You an also re-order the panes with &lt;code&gt;CTRL-a SPACE&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You can also re-order windows with &lt;code&gt;SHIFT-Left Arrow&lt;/code&gt; and &lt;code&gt;SHIFT-Right Arrow&lt;/code&gt;.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Swap windows&lt;/span&gt;
+bind-key -n S-Left swap-window -t -1
+bind-key -n S-Right swap-window -t +1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;status-bar&#34;&gt;&lt;strong&gt;Status bar&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The status bar and the colors, it&amp;rsquo;s fairly simple but I like it.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Status bar has a dim gray background&lt;/span&gt;
+set-option -g status-bg colour234
+set-option -g status-fg colour0
+&lt;span style=&#34;color:#75715e&#34;&gt;# Left shows the session name, in blue&lt;/span&gt;
+set-option -g status-left-bg default
+set-option -g status-left-fg colour74
+&lt;span style=&#34;color:#75715e&#34;&gt;# Right is some CPU stats, so terminal green&lt;/span&gt;
+set-option -g status-right-bg default
+set-option -g status-right-fg colour71
+&lt;span style=&#34;color:#75715e&#34;&gt;# Windows are medium gray; current window is white&lt;/span&gt;
+set-window-option -g window-status-fg colour244
+set-window-option -g window-status-current-fg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#ffffff&amp;#39;&lt;/span&gt;
+set-window-option -g window-status-current-bg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#000000&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Beeped windows get a blinding orange background&lt;/span&gt;
+set-window-option -g window-status-bell-fg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#000000&amp;#39;&lt;/span&gt;
+set-window-option -g window-status-bell-bg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#d78700&amp;#39;&lt;/span&gt;
+set-window-option -g window-status-bell-attr none
+&lt;span style=&#34;color:#75715e&#34;&gt;# Trim window titles to a reasonable length&lt;/span&gt;
+set-window-option -g window-status-format &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#[fg=yellow] #F#I#[default] #W &amp;#39;&lt;/span&gt;
+set-window-option -g window-status-current-format &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;#[bg=yellow] #I#[bg=yellow] #W &amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;copy-paste&#34;&gt;&lt;strong&gt;Copy/paste&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/tmux-vi-mode.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+Tmux also supports the vi-copy mode, you can enter this mode with &lt;code&gt;CTRL-a ESC&lt;/code&gt;, then pressing &lt;code&gt;v&lt;/code&gt; for normal selection or &lt;code&gt;V&lt;/code&gt; for line selection you can mark and copy with &lt;code&gt;Y&lt;/code&gt; (by default is &lt;code&gt;ENTER&lt;/code&gt; aka &lt;code&gt;&amp;lt;CR&amp;gt;&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;And as you can imagine you can paste with &lt;code&gt;CTRL-a p&lt;/code&gt;, this is really handy when copying from one pane to another or from one window to another, in Vim I recommend you &lt;code&gt;:set paste!&lt;/code&gt; before pasting into it, so it doesn&amp;rsquo;t try to format, etc.&lt;/p&gt;
+
+&lt;p&gt;It also copies to the clipboard buffer, using xsel.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Make copy mode more vim like&lt;/span&gt;
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+bind-key -T edit-mode-vi Up send-keys -X history-up
+bind-key -T edit-mode-vi Down send-keys -X history-down
+unbind-key -T copy-mode-vi Space     ;   bind-key -T copy-mode-vi v send-keys -X begin-selection
+
+unbind-key -T copy-mode-vi Enter     ;   bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;xsel -i --clipboard&amp;#34;&lt;/span&gt;
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;xsel -i --clipboard&amp;#34;&lt;/span&gt;
+
+unbind-key -T copy-mode-vi C-v       ;   bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+unbind-key -T copy-mode-vi &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;         ;   bind-key -T copy-mode-vi &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; send-keys -X begin-selection
+unbind-key -T copy-mode-vi &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;         ;   bind-key -T copy-mode-vi &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; send-keys -X copy-selection&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to learn more about tmux a good place to start is the &lt;a href=&#34;https://wiki.archlinux.org/index.php/tmux&#34;&gt;Arch Linux wiki&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;notes&#34;&gt;&lt;strong&gt;notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Sometimes you can have issues with the keys &lt;code&gt;HOME&lt;/code&gt; and &lt;code&gt;END&lt;/code&gt;, this can help with that.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Home / End patch&lt;/span&gt;
+bind -n End send-key C-e
+bind -n Home send-key C-a&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>From zero to hero with kops and AWS</title>

@@ -188,13 +188,13 @@ spec:
 What&amp;rsquo;s going on here, how Istio knows what user is logged in?, well, the app adds a header called end-user and value &lt;em&gt;jason&lt;/em&gt; then the route will be used, it&amp;rsquo;s a nifty trick.&lt;/p&gt;
 
 &lt;p&gt;Not jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev2.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -242,7 +242,7 @@ spec:
         subset: v1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for &lt;em&gt;jason&lt;/em&gt; everyone else will see the version without stars or the error message.
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
@@ -532,10 +532,8 @@ $ export GATEWAY_URL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$ING
 
 curl -o /dev/null -s -w &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%{http_code}\n&amp;#34;&lt;/span&gt; http://&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;GATEWAY_URL&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/productpage&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 If the latest curl returns 200 then we&amp;rsquo;re good, you can also browse the app &lt;code&gt;open http://${GATEWAY_URL}/productpage&lt;/code&gt; and you will see something like the following image:
-&lt;figure&gt;
-    &lt;img src=&#34;https://techsquad.rocks/img/productpage-example.png&#34; width=&#34;100%&#34;/&gt; &lt;figcaption&gt;
-            &lt;h4&gt;Product page example&lt;/h4&gt;
-        &lt;/figcaption&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/productpage-example.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 

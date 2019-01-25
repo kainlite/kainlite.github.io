@@ -329,7 +329,7 @@
 	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Env&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;production&amp;#34;&lt;/span&gt; {
 		&lt;span style=&#34;color:#a6e22e&#34;&gt;lambda&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;HandleRequest&lt;/span&gt;)
 	} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
-	        &lt;span style=&#34;color:#75715e&#34;&gt;// this environment variables are used locally while debugging, it can be quite handy
+		&lt;span style=&#34;color:#75715e&#34;&gt;// this environment variables are used locally while debugging, it can be quite handy
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;godotenv&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Load&lt;/span&gt;(); &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
 			&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fatal&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error loading .env file&amp;#34;&lt;/span&gt;)
 		}
@@ -458,7 +458,7 @@ As we can see after the deployment we see a new bucket with our function and if 
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# null&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 Wait, where did tweet came from?, if you look at the serverless manifest you will see that our function is called tweet. If everything went well you will be able to see that tweet in your profile, something like this:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/twitter-tbo.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
@@ -657,7 +657,10 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;p&gt;And in the logs:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods

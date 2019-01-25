@@ -590,19 +590,19 @@ Wait a few moments and verify.&lt;/p&gt;
 &lt;h3 id=&#34;results&#34;&gt;&lt;strong&gt;Results&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;The ALB&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-listeners.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;The DNS records&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-route53-records.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;And the app&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-result.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;

@@ -590,19 +590,19 @@ Wait a few moments and verify.&lt;/p&gt;
 &lt;h3 id=&#34;results&#34;&gt;&lt;strong&gt;Results&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;The ALB&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-listeners.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;The DNS records&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-route53-records.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;And the app&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-result.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
@@ -821,13 +821,13 @@ spec:
 What&amp;rsquo;s going on here, how Istio knows what user is logged in?, well, the app adds a header called end-user and value &lt;em&gt;jason&lt;/em&gt; then the route will be used, it&amp;rsquo;s a nifty trick.&lt;/p&gt;
 
 &lt;p&gt;Not jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev2.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -875,7 +875,7 @@ spec:
         subset: v1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for &lt;em&gt;jason&lt;/em&gt; everyone else will see the version without stars or the error message.
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
@@ -1165,10 +1165,8 @@ $ export GATEWAY_URL&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;$ING
 
 curl -o /dev/null -s -w &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%{http_code}\n&amp;#34;&lt;/span&gt; http://&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;GATEWAY_URL&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/productpage&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 If the latest curl returns 200 then we&amp;rsquo;re good, you can also browse the app &lt;code&gt;open http://${GATEWAY_URL}/productpage&lt;/code&gt; and you will see something like the following image:
-&lt;figure&gt;
-    &lt;img src=&#34;https://techsquad.rocks/img/productpage-example.png&#34; width=&#34;100%&#34;/&gt; &lt;figcaption&gt;
-            &lt;h4&gt;Product page example&lt;/h4&gt;
-        &lt;/figcaption&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/productpage-example.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
@@ -1932,7 +1930,10 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;p&gt;And in the logs:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods
@@ -2603,7 +2604,10 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 

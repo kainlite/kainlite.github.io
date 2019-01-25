@@ -55,13 +55,13 @@ bind C-a send-prefix&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 &lt;h5 id=&#34;example&#34;&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;You can print the numbers of the panes with &lt;code&gt;CTRL-a q&lt;/code&gt;, and you can navigate windows and panes as a list with &lt;code&gt;CTRL-a w&lt;/code&gt;.
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/tmux-windows-panes.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;I usually like to have 3 panes, something like this:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/tmux-sample-usage.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -153,7 +153,7 @@ set-window-option -g window-status-current-format &lt;span style=&#34;color:#e6d
 
 &lt;h5 id=&#34;copy-paste&#34;&gt;&lt;strong&gt;Copy/paste&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;&lt;figure&gt;
+&lt;p&gt;&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/tmux-vi-mode.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -773,19 +773,19 @@ Wait a few moments and verify.&lt;/p&gt;
 &lt;h3 id=&#34;results&#34;&gt;&lt;strong&gt;Results&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;The ALB&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-listeners.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;The DNS records&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-route53-records.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;And the app&lt;/strong&gt;
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/aws-alb-result.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
@@ -855,7 +855,7 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
 &lt;h3 id=&#34;terminal&#34;&gt;Terminal&lt;/h3&gt;
 
 &lt;p&gt;My current terminal is &lt;strong&gt;rxvt-unicode&lt;/strong&gt; and I&amp;rsquo;m pretty happy with it, it&amp;rsquo;s relatively easy to configure and use, it looks like this:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/urxvt.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -886,7 +886,7 @@ $ xrdb -remove&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 &lt;p&gt;As a plugin manager I use &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles&#34;&gt;Plug&lt;/a&gt; even that it&amp;rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration &lt;a href=&#34;https://github.com/kainlite/dotfiles/blob/master/.vimrc&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo &lt;em&gt;compiling&lt;/em&gt; the site after every save and live reloading it in my browser:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/vim.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;

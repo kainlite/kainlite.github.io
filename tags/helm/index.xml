@@ -155,7 +155,10 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 

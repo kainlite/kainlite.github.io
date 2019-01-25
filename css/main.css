@@ -2,7 +2,8 @@
 html, body {
   height: 100%;
   background-color: #fff;
-  font-family: 'Source Sans Pro', sans-serif;
+  /* font-family: 'Source Sans Pro', sans-serif; */
+  font-family: "DejaVu Sans mono",'Helvetica Neue",Helvetica,Arial,sans-serif';
   /* The html and body elements cannot have any padding or margin. */
   border-top: 3px solid #27A822;
 }
@@ -201,7 +202,7 @@ div.footer{
 
 }*/
 
-img {
+figure.zoom {
   cursor: zoom-in;
 }
 

@@ -20,9 +20,10 @@
     <!--[if lt IE 9]>
                         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <![endif]-->
 
-    
+
+	
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -35,22 +36,26 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
-    <meta property="description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts." />
+<meta property="description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts." />
 
     <meta property="og:title" content="Deploying my apps with Helm" />
 <meta property="og:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/deploying_my_apps_with_helm/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548388175" />
+
+
+<meta property="article:tag" content="helm" />
+<meta property="article:tag" content="deployment-tools" />
+<meta property="article:tag" content="kubernetes" />
 
 <meta property="og:locale" content="en" />
 
 
     <meta name="twitter:title" content="Deploying my apps with Helm"/>
-<meta name="twitter:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.?1548382281"/>
+<meta name="twitter:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.?1548388175"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548388175" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -259,7 +264,10 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 <p>Sample screenshot:</p>
 
-<p><img src="/img/wordpress-example.png" alt="Wordpress example" /></p>
+<figure class="zoom">
+    <img src="/img/wordpress-example.png" width="100%"/> 
+</figure>
+
 
 <h3 id="notes">Notes</h3>
 

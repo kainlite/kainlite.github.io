@@ -20,9 +20,10 @@
     <!--[if lt IE 9]>
                         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <![endif]-->
 
-    
+
+	
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -35,8 +36,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
-    <meta property="description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
+<meta property="description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
 Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services." />
 
     <meta property="og:title" content="How to create a serverless twitter bot" />
@@ -44,16 +44,21 @@ Twitter So before you can start with the Twitter API you need to get a developer
 Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548388175" />
+
+
+<meta property="article:tag" content="go" />
+<meta property="article:tag" content="aws" />
+<meta property="article:tag" content="serverless" />
 
 <meta property="og:locale" content="en" />
 
 
     <meta name="twitter:title" content="How to create a serverless twitter bot"/>
 <meta name="twitter:description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
-Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.?1548382281"/>
+Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.?1548388175"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548388175" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -436,7 +441,7 @@ Twitter So before you can start with the Twitter API you need to get a developer
 	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">Env</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;production&#34;</span> {
 		<span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">HandleRequest</span>)
 	} <span style="color:#66d9ef">else</span> {
-	        <span style="color:#75715e">// this environment variables are used locally while debugging, it can be quite handy
+		<span style="color:#75715e">// this environment variables are used locally while debugging, it can be quite handy
 </span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">godotenv</span>.<span style="color:#a6e22e">Load</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
 			<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#e6db74">&#34;Error loading .env file&#34;</span>)
 		}
@@ -565,7 +570,7 @@ As we can see after the deployment we see a new bucket with our function and if 
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># null</span></code></pre></div>
 Wait, where did tweet came from?, if you look at the serverless manifest you will see that our function is called tweet. If everything went well you will be able to see that tweet in your profile, something like this:
-<figure>
+<figure class="zoom">
     <img src="/img/twitter-tbo.png" width="100%"/> 
 </figure>
 </p>

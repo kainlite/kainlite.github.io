@@ -20,9 +20,10 @@
     <!--[if lt IE 9]>
                         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <![endif]-->
 
-    
+
+	
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -35,8 +36,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
-    <meta property="description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
+<meta property="description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
 While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
 
     <meta property="og:title" content="My local environment" />
@@ -44,16 +44,22 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
 While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/my_local_environment/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1548382281" />
+<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1548388175" />
+
+
+<meta property="article:tag" content="urxvt" />
+<meta property="article:tag" content="vim" />
+<meta property="article:tag" content="linux" />
+<meta property="article:tag" content="tmux" />
 
 <meta property="og:locale" content="en" />
 
 
     <meta name="twitter:title" content="My local environment"/>
 <meta name="twitter:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1548382281"/>
+While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1548388175"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1548382281" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1548388175" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -146,7 +152,7 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
 <h3 id="terminal">Terminal</h3>
 
 <p>My current terminal is <strong>rxvt-unicode</strong> and I&rsquo;m pretty happy with it, it&rsquo;s relatively easy to configure and use, it looks like this:
-<figure>
+<figure class="zoom">
     <img src="/img/urxvt.png" width="100%"/> 
 </figure>
 
@@ -177,7 +183,7 @@ $ xrdb -remove</code></pre></div></p>
 <p>As a plugin manager I use <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles">Plug</a> even that it&rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc">here</a>.</p>
 
 <p>It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo <em>compiling</em> the site after every save and live reloading it in my browser:
-<figure>
+<figure class="zoom">
     <img src="/img/vim.png" width="100%"/> 
 </figure>
 </p>

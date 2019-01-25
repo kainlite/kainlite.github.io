@@ -741,7 +741,10 @@ INFO Creating non-existent deployments echobot&lt;/code&gt;&lt;/pre&gt;&lt;/div&
 
 &lt;p&gt;And now if we check our deployment and pod, we should see something like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; alt=&#34;Echo bot&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/echobot.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;p&gt;And in the logs:
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; $ kubectl get pods
@@ -1412,7 +1415,10 @@ In the cloud or on premises this will indeed be different and you should have a 
 
 &lt;p&gt;Sample screenshot:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; alt=&#34;Wordpress example&#34; /&gt;&lt;/p&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/wordpress-example.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
 
 &lt;h3 id=&#34;notes&#34;&gt;Notes&lt;/h3&gt;
 

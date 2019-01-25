@@ -188,13 +188,13 @@ spec:
 What&amp;rsquo;s going on here, how Istio knows what user is logged in?, well, the app adds a header called end-user and value &lt;em&gt;jason&lt;/em&gt; then the route will be used, it&amp;rsquo;s a nifty trick.&lt;/p&gt;
 
 &lt;p&gt;Not jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev1.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
 &lt;p&gt;jason:
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev2.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
@@ -242,7 +242,7 @@ spec:
         subset: v1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
 &lt;p&gt;So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for &lt;em&gt;jason&lt;/em&gt; everyone else will see the version without stars or the error message.
-&lt;figure&gt;
+&lt;figure class=&#34;zoom&#34;&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/istio-servicev3.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;

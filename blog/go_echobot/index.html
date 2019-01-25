@@ -20,9 +20,10 @@
     <!--[if lt IE 9]>
                         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <![endif]-->
 
-    
+
+	
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -35,8 +36,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
-    <meta property="description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+<meta property="description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
 This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0." />
 
@@ -46,7 +46,15 @@ To be honest, there is no other way to get the benefits of having ksonnet if you
 This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/go_echobot/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1548388175" />
+
+
+<meta property="article:tag" content="go" />
+<meta property="article:tag" content="slack" />
+<meta property="article:tag" content="ksonnet" />
+<meta property="article:tag" content="jsonnet" />
+<meta property="article:tag" content="kubernetes" />
+<meta property="article:tag" content="deployment-tools" />
 
 <meta property="og:locale" content="en" />
 
@@ -54,9 +62,9 @@ This time we will see how to use proper templates, it seems that the templates g
     <meta name="twitter:title" content="Go echo bot"/>
 <meta name="twitter:description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.?1548382281"/>
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.?1548388175"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548382281" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1548388175" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -300,7 +308,10 @@ INFO Creating non-existent deployments echobot</code></pre></div></p>
 
 <p>And now if we check our deployment and pod, we should see something like this:</p>
 
-<p><img src="/img/echobot.png" alt="Echo bot" /></p>
+<figure class="zoom">
+    <img src="/img/echobot.png" width="100%"/> 
+</figure>
+
 
 <p>And in the logs:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl get pods

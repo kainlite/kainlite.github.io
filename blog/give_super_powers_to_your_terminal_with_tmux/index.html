@@ -20,9 +20,10 @@
     <!--[if lt IE 9]>
                         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
                         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-                <![endif]-->
+        <![endif]-->
 
-    
+
+	
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -35,22 +36,27 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-
-    <meta property="description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it." />
+<meta property="description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it." />
 
     <meta property="og:title" content="Give super powers to your terminal with tmux" />
 <meta property="og:description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/" />
-<meta property="og:image" content="https://techsquad.rocks/img/tmux-terminal.png?1548382281" />
+<meta property="og:image" content="https://techsquad.rocks/img/tmux-terminal.png?1548388175" />
+
+
+<meta property="article:tag" content="urxvt" />
+<meta property="article:tag" content="vim" />
+<meta property="article:tag" content="linux" />
+<meta property="article:tag" content="tmux" />
 
 <meta property="og:locale" content="en" />
 
 
     <meta name="twitter:title" content="Give super powers to your terminal with tmux"/>
-<meta name="twitter:description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it.?1548382281"/>
+<meta name="twitter:description" content="Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it.?1548388175"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/tmux-terminal.png?1548382281" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/tmux-terminal.png?1548388175" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -159,13 +165,13 @@ bind C-a send-prefix</code></pre></div></p>
 <h5 id="example"><strong>Example</strong></h5>
 
 <p>You can print the numbers of the panes with <code>CTRL-a q</code>, and you can navigate windows and panes as a list with <code>CTRL-a w</code>.
-<figure>
+<figure class="zoom">
     <img src="/img/tmux-windows-panes.png" width="100%"/> 
 </figure>
 </p>
 
 <p>I usually like to have 3 panes, something like this:
-<figure>
+<figure class="zoom">
     <img src="/img/tmux-sample-usage.png" width="100%"/> 
 </figure>
 
@@ -257,7 +263,7 @@ set-window-option -g window-status-current-format <span style="color:#e6db74">&#
 
 <h5 id="copy-paste"><strong>Copy/paste</strong></h5>
 
-<p><figure>
+<p><figure class="zoom">
     <img src="/img/tmux-vi-mode.png" width="100%"/> 
 </figure>
 

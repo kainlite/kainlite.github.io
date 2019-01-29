@@ -6,10 +6,110 @@
     <description>Recent content on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 23 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 Jan 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serve your static website in Github</title>
+      <link>https://techsquad.rocks/blog/serving_static_sites_with_github/</link>
+      <pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serving_static_sites_with_github/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>git</tag>
+      
+      </tags>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;GitHub offers static web hosting for you and your apps this is called &lt;a href=&#34;https://pages.github.com/&#34;&gt;GitHub Pages&lt;/a&gt;, you can use markdown (&lt;a href=&#34;https://jekyllrb.com/&#34;&gt;jekyll&lt;/a&gt; or just plain html), for example for this blog I generate all the files with &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo.io&lt;/a&gt; and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).&lt;/p&gt;
+
+&lt;p&gt;GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.&lt;/p&gt;
+
+&lt;h3 id=&#34;pages&#34;&gt;&lt;strong&gt;Pages&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;The first step in order to use GH Pages is to create a repo (assuming that you already have an account) with the following name: username.github.io in my case is kainlite.github.io, as we can see in the following screenshot:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/github-pages-repository.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+This repo already has the blog files, but as with any github repo you will see the default commands to push something to it, the next step is to configure the pages itself, for that you need to go to &lt;a href=&#34;https://github.com/username/username.github.io/settings&#34;&gt;Settings&lt;/a&gt; (be sure to replace username in the link), then scroll down to the GitHub Pages section. It will look something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/github-pages-configuration.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html to the master branch.&lt;/p&gt;
+
+&lt;h5 id=&#34;dns&#34;&gt;&lt;strong&gt;DNS&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;For the custom domain you need to create the following entries in your DNS &lt;code&gt;dig techsquad.rocks&lt;/code&gt;, you can find these ips in &lt;a href=&#34;https://help.github.com/articles/setting-up-an-apex-domain/&#34;&gt;this page&lt;/a&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;techsquad.rocks.        &lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;     IN      A       &lt;span style=&#34;color:#ae81ff&#34;&gt;185&lt;/span&gt;.199.110.153
+techsquad.rocks.        &lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;     IN      A       &lt;span style=&#34;color:#ae81ff&#34;&gt;185&lt;/span&gt;.199.111.153
+techsquad.rocks.        &lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;     IN      A       &lt;span style=&#34;color:#ae81ff&#34;&gt;185&lt;/span&gt;.199.108.153
+techsquad.rocks.        &lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;     IN      A       &lt;span style=&#34;color:#ae81ff&#34;&gt;185&lt;/span&gt;.199.109.153&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+After a few minutes it should start working, and whatever you have in that repo will be served as static files, there are some limits but they are really high so you can probably start your site or blog or whatever without having to worry to much about it. If you want to know what those limits are go &lt;a href=&#34;https://help.github.com/articles/what-is-github-pages/&#34;&gt;here&lt;/a&gt;, as of now the repository size limit is 1Gb, and there is a soft bandwidth limit of 100GB per month, also 10 builds per hour.&lt;/p&gt;
+
+&lt;h5 id=&#34;go-hugo&#34;&gt;&lt;strong&gt;Go Hugo&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Now to the interesting part, &lt;a href=&#34;https://gohugo.io&#34;&gt;Hugo&lt;/a&gt; let&amp;rsquo;s you configure and customize several aspects of the generated files, first be sure to install hugo with your package manager or with go, the steps to create a blog are fairly simple:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;hugo new site testing-hugo
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Congratulations! Your new Hugo site is created in /home/kainlite/Webs/testing-hugo.&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Just a few more steps and you&amp;#39;re ready to go:&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# 1. Download a theme into the same-named folder.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#    Choose a theme from https://themes.gohugo.io/, or&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#    create your own with the &amp;#34;hugo new theme &amp;lt;THEMENAME&amp;gt;&amp;#34; command.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 2. Perhaps you want to add some content. You can add single files&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#    with &amp;#34;hugo new &amp;lt;SECTIONNAME&amp;gt;/&amp;lt;FILENAME&amp;gt;.&amp;lt;FORMAT&amp;gt;&amp;#34;.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 3. Start the built-in live server via &amp;#34;hugo server&amp;#34;.&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Visit https://gohugo.io/ for quickstart guide and full documentation.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As I have shown in the tmux article, I like to have 2 panes one small pane where I can see the files being rebuilt at each save and another pane with Vim to edit the source code. You can start the hugo webserver for development with &lt;code&gt;hugo serve -D&lt;/code&gt; and it will listen by default in the port 1313. It is very common to use themes, so you can go to the &lt;a href=&#34;https://themes.gohugo.io/&#34;&gt;themes page&lt;/a&gt; and start your project with one of those, there are several ways to install the themes, and you can see the installation steps at the theme page, for example for the blog I started with &lt;a href=&#34;https://themes.gohugo.io/hugo-sustain/&#34;&gt;Sustain&lt;/a&gt; but then modified it to match my needs.&lt;/p&gt;
+
+&lt;h5 id=&#34;publishing-with-git-push&#34;&gt;&lt;strong&gt;Publishing with git push&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The most interesting part of this setup is the simple automation that I use to publish with &lt;code&gt;git push&lt;/code&gt;, I created the following hook in the blog repo &lt;code&gt;.git/hooks/pre-push&lt;/code&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+COMMIT_MESSAGE&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;git log -n &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; --pretty&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;format:%s &lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;local_ref&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;
+
+hugo -d ~/Webs/kainlite.github.io
+ANYTHING_CHANGED&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;cd ~/Webs/kainlite.github.io &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git diff --exit-code&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[[&lt;/span&gt; $? -gt &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]]&lt;/span&gt;; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt;
+    cd ~/Webs/kainlite.github.io &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git add . &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;COMMIT_MESSAGE&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push origin master
+&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+What this simple hook does is check if there is any change and push the changes with the same commit message than in the original repo, we first grab the commit message from the original repo, and then check if something changed with git, if it did then we just add all files and push that to the repo, that will trigger a build in github pages and once completed our page will be updated and visible (it can take a few seconds sometimes, but in general it&amp;rsquo;s pretty fast).&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s how this blog was configured, in the upcoming articles I will show you how to host your static website with S3 and serve it with cloudflare, after that we will use a go lambda function to send the form email, let me know any comments or anything that you might want me to write about.&lt;/p&gt;
+
+&lt;h5 id=&#34;pages-environment&#34;&gt;&lt;strong&gt;Pages Environment&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;If you paid attention at the first screenshot you probably noticed that it says &lt;em&gt;1 Environment&lt;/em&gt; that means that GH Pages have been already configured and if we click it we can see something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/github-pages-environment.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+&lt;br /&gt;
+For static html sites it would be unlikely to see a failure, but it can happen if you use Jekyll for example and there is any syntax error.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Give super powers to your terminal with tmux</title>

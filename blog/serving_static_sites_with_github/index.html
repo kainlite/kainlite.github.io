@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Serve your static website in Github</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+	
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Introduction GitHub offers static web hosting for you and your apps this is called GitHub Pages, you can use markdown (jekyll or just plain html), for example for this blog I generate all the files with Hugo.io and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
+GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page." />
+
+    <meta property="og:title" content="Serve your static website in Github" />
+<meta property="og:description" content="Introduction GitHub offers static web hosting for you and your apps this is called GitHub Pages, you can use markdown (jekyll or just plain html), for example for this blog I generate all the files with Hugo.io and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
+GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_github/" />
+<meta property="og:image" content="https://techsquad.rocks/img/serve-github.png?1548732031" />
+
+
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="serverless" />
+<meta property="article:tag" content="git" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Serve your static website in Github"/>
+<meta name="twitter:description" content="Introduction GitHub offers static web hosting for you and your apps this is called GitHub Pages, you can use markdown (jekyll or just plain html), for example for this blog I generate all the files with Hugo.io and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
+GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.?1548732031"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-github.png?1548732031" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/serving_static_sites_with_github/">Serve your static website in Github</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 29, 2019
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">
+                    serverless
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/git/" class="label label-success">
+                    git
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="introduction"><strong>Introduction</strong></h3>
+
+<p>GitHub offers static web hosting for you and your apps this is called <a href="https://pages.github.com/">GitHub Pages</a>, you can use markdown (<a href="https://jekyllrb.com/">jekyll</a> or just plain html), for example for this blog I generate all the files with <a href="https://gohugo.io/">Hugo.io</a> and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).</p>
+
+<p>GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.</p>
+
+<h3 id="pages"><strong>Pages</strong></h3>
+
+<p>The first step in order to use GH Pages is to create a repo (assuming that you already have an account) with the following name: username.github.io in my case is kainlite.github.io, as we can see in the following screenshot:
+<figure>
+    <img src="/img/github-pages-repository.png" width="100%"/> 
+</figure>
+
+This repo already has the blog files, but as with any github repo you will see the default commands to push something to it, the next step is to configure the pages itself, for that you need to go to <a href="https://github.com/username/username.github.io/settings">Settings</a> (be sure to replace username in the link), then scroll down to the GitHub Pages section. It will look something like this:</p>
+
+<p><figure>
+    <img src="/img/github-pages-configuration.png" width="100%"/> 
+</figure>
+
+As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html to the master branch.</p>
+
+<h5 id="dns"><strong>DNS</strong></h5>
+
+<p>For the custom domain you need to create the following entries in your DNS <code>dig techsquad.rocks</code>, you can find these ips in <a href="https://help.github.com/articles/setting-up-an-apex-domain/">this page</a>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.110.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.111.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.108.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.109.153</code></pre></div>
+After a few minutes it should start working, and whatever you have in that repo will be served as static files, there are some limits but they are really high so you can probably start your site or blog or whatever without having to worry to much about it. If you want to know what those limits are go <a href="https://help.github.com/articles/what-is-github-pages/">here</a>, as of now the repository size limit is 1Gb, and there is a soft bandwidth limit of 100GB per month, also 10 builds per hour.</p>
+
+<h5 id="go-hugo"><strong>Go Hugo</strong></h5>
+
+<p>Now to the interesting part, <a href="https://gohugo.io">Hugo</a> let&rsquo;s you configure and customize several aspects of the generated files, first be sure to install hugo with your package manager or with go, the steps to create a blog are fairly simple:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo new site testing-hugo
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># Congratulations! Your new Hugo site is created in /home/kainlite/Webs/testing-hugo.</span>
+#
+<span style="color:#75715e"># Just a few more steps and you&#39;re ready to go:</span>
+#
+<span style="color:#75715e"># 1. Download a theme into the same-named folder.</span>
+<span style="color:#75715e">#    Choose a theme from https://themes.gohugo.io/, or</span>
+<span style="color:#75715e">#    create your own with the &#34;hugo new theme &lt;THEMENAME&gt;&#34; command.</span>
+<span style="color:#75715e"># 2. Perhaps you want to add some content. You can add single files</span>
+<span style="color:#75715e">#    with &#34;hugo new &lt;SECTIONNAME&gt;/&lt;FILENAME&gt;.&lt;FORMAT&gt;&#34;.</span>
+<span style="color:#75715e"># 3. Start the built-in live server via &#34;hugo server&#34;.</span>
+#
+<span style="color:#75715e"># Visit https://gohugo.io/ for quickstart guide and full documentation.</span></code></pre></div>
+As I have shown in the tmux article, I like to have 2 panes one small pane where I can see the files being rebuilt at each save and another pane with Vim to edit the source code. You can start the hugo webserver for development with <code>hugo serve -D</code> and it will listen by default in the port 1313. It is very common to use themes, so you can go to the <a href="https://themes.gohugo.io/">themes page</a> and start your project with one of those, there are several ways to install the themes, and you can see the installation steps at the theme page, for example for the blog I started with <a href="https://themes.gohugo.io/hugo-sustain/">Sustain</a> but then modified it to match my needs.</p>
+
+<h5 id="publishing-with-git-push"><strong>Publishing with git push</strong></h5>
+
+<p>The most interesting part of this setup is the simple automation that I use to publish with <code>git push</code>, I created the following hook in the blog repo <code>.git/hooks/pre-push</code>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+COMMIT_MESSAGE<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>git log -n <span style="color:#ae81ff">1</span> --pretty<span style="color:#f92672">=</span>format:%s <span style="color:#e6db74">${</span>local_ref<span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>
+
+hugo -d ~/Webs/kainlite.github.io
+ANYTHING_CHANGED<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cd ~/Webs/kainlite.github.io <span style="color:#f92672">&amp;&amp;</span> git diff --exit-code<span style="color:#e6db74">`</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $? -gt <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+    cd ~/Webs/kainlite.github.io <span style="color:#f92672">&amp;&amp;</span> git add . <span style="color:#f92672">&amp;&amp;</span> git commit -m <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>COMMIT_MESSAGE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> git push origin master
+<span style="color:#66d9ef">fi</span></code></pre></div>
+What this simple hook does is check if there is any change and push the changes with the same commit message than in the original repo, we first grab the commit message from the original repo, and then check if something changed with git, if it did then we just add all files and push that to the repo, that will trigger a build in github pages and once completed our page will be updated and visible (it can take a few seconds sometimes, but in general it&rsquo;s pretty fast).</p>
+
+<p>And that&rsquo;s how this blog was configured, in the upcoming articles I will show you how to host your static website with S3 and serve it with cloudflare, after that we will use a go lambda function to send the form email, let me know any comments or anything that you might want me to write about.</p>
+
+<h5 id="pages-environment"><strong>Pages Environment</strong></h5>
+
+<p>If you paid attention at the first screenshot you probably noticed that it says <em>1 Environment</em> that means that GH Pages have been already configured and if we click it we can see something like this:
+<figure>
+    <img src="/img/github-pages-environment.png" width="100%"/> 
+</figure>
+
+<br />
+For static html sites it would be unlikely to see a failure, but it can happen if you use Jekyll for example and there is any syntax error.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 22, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/creating_a_serverless_twitter_bot/">How to create a serverless twitter bot</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 1, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/getting_started_with_gitkube/">Getting started with gitkube</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

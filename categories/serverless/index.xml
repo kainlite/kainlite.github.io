@@ -6,10 +6,322 @@
     <description>Recent content in Serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 29 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/categories/serverless/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serve your static website with S3 and CloudFront</title>
+      <link>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</guid>
+      <tags>
+      
+        <tag>elm</tag>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using &lt;a href=&#34;https://elm-lang.org/&#34;&gt;elm&lt;/a&gt; and can be &lt;a href=&#34;https://github.com/kainlite/aws-serverless-s3-elm-example&#34;&gt;found here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;s3&#34;&gt;&lt;strong&gt;S3&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;First of all we need to create a bucket&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Location&amp;#34;: &amp;#34;/techsquad-serverless-site&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by &lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/reference/s3/website.html&#34;&gt;enabling web hosting in the bucket&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;For this setup to work we first need to create a cloud-front-origin-access-identity&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin
+{
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Location&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ETag&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;E2XHDQQ0DDY9IJ&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CloudFrontOriginAccessIdentity&amp;#34;&lt;/span&gt;: {
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;E3IJG9M5PO9BYE&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;S3CanonicalUserId&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CloudFrontOriginAccessIdentityConfig&amp;#34;&lt;/span&gt;: {
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CallerReference&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-cloudfront-origin&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Comment&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-cloudfront-origin&amp;#34;&lt;/span&gt;
+        }
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Our origin access identity was successfully created, we need to grab the S3CanonicalUserId for our S3 bucket policy.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Limit access to your bucket with the following policy (save as bucket-policy.json)&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;{
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Version&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2012-10-17&amp;#34;&lt;/span&gt;,
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Id&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;PolicyForCloudFrontPrivateContent&amp;#34;&lt;/span&gt;,
+   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Statement&amp;#34;&lt;/span&gt;:[
+        {
+               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Sid&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-cloudfront-origin&amp;#34;&lt;/span&gt;,
+               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Effect&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Allow&amp;#34;&lt;/span&gt;,
+               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Principal&amp;#34;&lt;/span&gt;:{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CanonicalUser&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&amp;#34;&lt;/span&gt;},
+               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Action&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;s3:GetObject&amp;#34;&lt;/span&gt;,
+               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Resource&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;arn:aws:s3:::techsquad-serverless-site/*&amp;#34;&lt;/span&gt;
+             }
+      ]
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+This policy will only allow CloudFront to fetch the files from the S3 bucket, because we want to avoid users or anyone actually from hitting the bucket directly.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;And then just attach that policy to the bucket&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;I&amp;rsquo;m using an old example I created and probably will continue building upon it, copy the files (the source files are in &lt;a href=&#34;https://github.com/kainlite/aws-serverless-s3-elm-example&#34;&gt;this github repo&lt;/a&gt;)&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws s3 sync . s3://techsquad-serverless-site/&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+So far so good, We have our S3 bucket ready.&lt;/p&gt;
+
+&lt;h5 id=&#34;cloudfront&#34;&gt;&lt;strong&gt;CloudFront&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;We will use this file to create our CF distribution (save it as distconfig.json or generate it with &lt;code&gt;aws cloudfront create-distribution --generate-cli-skeleton &amp;gt; /tmp/distconfig.json&lt;/code&gt; and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CallerReference&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-distribution&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Aliases&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Items&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;serverless.techsquad.rocks&amp;#34;&lt;/span&gt;
+	 &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DefaultRootObject&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index.html&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Origins&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Items&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-cloudfront&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DomainName&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site.s3.amazonaws.com&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;S3OriginConfig&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+          &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OriginAccessIdentity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DefaultCacheBehavior&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TargetOriginId&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;techsquad-serverless-site-cloudfront&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ForwardedValues&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;QueryString&amp;#34;&lt;/span&gt;: true,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Cookies&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Forward&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;none&amp;#34;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;TrustedSigners&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Enabled&amp;#34;&lt;/span&gt;: false,
+      &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ViewerProtocolPolicy&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;allow-all&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MinTTL&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;3600&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CacheBehaviors&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Comment&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Logging&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Enabled&amp;#34;&lt;/span&gt;: false,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;IncludeCookies&amp;#34;&lt;/span&gt;: true,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Bucket&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Prefix&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;PriceClass&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;PriceClass_All&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Enabled&amp;#34;&lt;/span&gt;: true
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+We will leave most values in their defaults, but if you want to know more or customize your deployment &lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-distribution.html&#34;&gt;check here&lt;/a&gt; or type &lt;code&gt;aws cloudfront create-distribution help&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s finally create the CloudFront distribution for our site&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws cloudfront create-distribution --distribution-config file://distconfig.json
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Location&amp;#34;: &amp;#34;https://cloudfront.amazonaws.com/2018-11-05/distribution/E1M22XXNIJ5BLN&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;ETag&amp;#34;: &amp;#34;EW1AZUQ33NKQ7&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Distribution&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;Id&amp;#34;: &amp;#34;E1M22XXNIJ5BLN&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;ARN&amp;#34;: &amp;#34;arn:aws:cloudfront::894527626897:distribution/E1M22XXNIJ5BLN&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;Status&amp;#34;: &amp;#34;InProgress&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;LastModifiedTime&amp;#34;: &amp;#34;2019-02-02T19:35:45.729Z&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;InProgressInvalidationBatches&amp;#34;: 0,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;DomainName&amp;#34;: &amp;#34;d3v3xtkl1l2ynj.cloudfront.net&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;ActiveTrustedSigners&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Enabled&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;DistributionConfig&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;CallerReference&amp;#34;: &amp;#34;techsquad-serverless-site-distribution&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Aliases&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;DefaultRootObject&amp;#34;: &amp;#34;index.html&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Origins&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Quantity&amp;#34;: 1,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Items&amp;#34;: [&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Id&amp;#34;: &amp;#34;techsquad-serverless-site-cloudfront&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;DomainName&amp;#34;: &amp;#34;techsquad-serverless-site.s3.amazonaws.com&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;OriginPath&amp;#34;: &amp;#34;&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;CustomHeaders&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                             &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;S3OriginConfig&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                             &amp;#34;OriginAccessIdentity&amp;#34;: &amp;#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 ]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;OriginGroups&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Quantity&amp;#34;: 0,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Items&amp;#34;: []&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;DefaultCacheBehavior&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;TargetOriginId&amp;#34;: &amp;#34;techsquad-serverless-site-cloudfront&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;ForwardedValues&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;QueryString&amp;#34;: true,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Cookies&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Forward&amp;#34;: &amp;#34;none&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Headers&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;QueryStringCacheKeys&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;TrustedSigners&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Enabled&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;ViewerProtocolPolicy&amp;#34;: &amp;#34;allow-all&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;MinTTL&amp;#34;: 3600,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;AllowedMethods&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Quantity&amp;#34;: 2,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Items&amp;#34;: [&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;HEAD&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;GET&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     ],&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;CachedMethods&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Quantity&amp;#34;: 2,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         &amp;#34;Items&amp;#34;: [&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                             &amp;#34;HEAD&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                             &amp;#34;GET&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                         ]&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;SmoothStreaming&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;DefaultTTL&amp;#34;: 86400,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;MaxTTL&amp;#34;: 31536000,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Compress&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;LambdaFunctionAssociations&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;FieldLevelEncryptionId&amp;#34;: &amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;CacheBehaviors&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;CustomErrorResponses&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Comment&amp;#34;: &amp;#34;&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Logging&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Enabled&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;IncludeCookies&amp;#34;: false,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Bucket&amp;#34;: &amp;#34;&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;Prefix&amp;#34;: &amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;PriceClass&amp;#34;: &amp;#34;PriceClass_All&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Enabled&amp;#34;: true,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;ViewerCertificate&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;CloudFrontDefaultCertificate&amp;#34;: true,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;MinimumProtocolVersion&amp;#34;: &amp;#34;TLSv1&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;CertificateSource&amp;#34;: &amp;#34;cloudfront&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;Restrictions&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 &amp;#34;GeoRestriction&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;RestrictionType&amp;#34;: &amp;#34;none&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                     &amp;#34;Quantity&amp;#34;: 0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#                 }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;WebACLId&amp;#34;: &amp;#34;&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;HttpVersion&amp;#34;: &amp;#34;http2&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#             &amp;#34;IsIPV6Enabled&amp;#34;: true&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     }&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Woah a lot of details in there, but what we might need later is the ETAG if we want to download and update our distribution, so have that handy, also we can see our CloudFront URL in there which is: d3v3xtkl1l2ynj.cloudfront.net in this case.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;It might take a few minutes to initialize the distribution, you can check the progress with&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws cloudfront list-distributions | jq &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;.DistributionList.Items[0].Status&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;#34;InProgress&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Once it&amp;rsquo;s ready the status will be: &amp;ldquo;Deployed&amp;rdquo;, and now if we go to the CloudFront url you should see the site :). The S3 bucket will only let CloudFront access to the files so the only way to serve the site is through CloudFront.&lt;/p&gt;
+
+&lt;h5 id=&#34;dns&#34;&gt;&lt;strong&gt;DNS&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;The only thing missing is the record in the DNS (I don&amp;rsquo;t have this domain name in Route53, shame on me but a CNAME will do for now), so let&amp;rsquo;s add it and verify it using dig.&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;dig serverless.techsquad.rocks
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# dig CNAME serverless.techsquad.rocks&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# ; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.13.5 &amp;lt;&amp;lt;&amp;gt;&amp;gt; CNAME serverless.techsquad.rocks&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; global options: +cmd&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; Got answer:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 52651&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; OPT PSEUDOSECTION:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ; EDNS: version: 0, flags:; udp: 1452&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; QUESTION SECTION:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;serverless.techsquad.rocks.    IN      CNAME&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; ANSWER SECTION:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# serverless.techsquad.rocks. 292 IN      CNAME   d3v3xtkl1l2ynj.cloudfront.net.&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; Query time: 20 msec&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; SERVER: 1.1.1.1#53(1.1.1.1)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; WHEN: Sat Feb 02 17:47:11 -03 2019&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ;; MSG SIZE  rcvd: 98&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As we can see the record is already there so we can go to &lt;a href=&#34;http://serverless.techsquad.rocks&#34;&gt;http://serverless.techsquad.rocks&lt;/a&gt; (note that this only works because we set that alias in the distribution), We could add SSL by creating a certificate using Amazon Certificate Manager, but we will leave that as an exercise or a future small article.&lt;/p&gt;
+
+&lt;h5 id=&#34;useful-commands&#34;&gt;&lt;strong&gt;Useful commands&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In case you need to get some information some useful commands:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;This command will give us the Id of our distribution&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws cloudfront list-distributions --output table --query &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;DistributionList.Items[*].Id&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# -------------------&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |ListDistributions|&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# +-----------------+&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |  EFJVJEPWAPGU2  |&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# +-----------------+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;This one the ETag (needed to perform updates for example)&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;. | .ETag&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;#34;E2TPQRAUPJL2P3&amp;#34;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;And this one will save the current config in /tmp so we can update it.&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;. | .DistributionConfig&amp;#39;&lt;/span&gt; &amp;gt; /tmp/curent-distribution-E2TPQRAUPJL2P&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;upcoming-articles&#34;&gt;&lt;strong&gt;Upcoming articles&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This article is the first one in this series of serverless articles, the idea is to build a fully functional website using only serverless technologies, the next post will cover the AWS Lambda function used to send the contact form, also all code from the site can be &lt;a href=&#34;https://github.com/kainlite/aws-serverless-s3-elm-example&#34;&gt;found here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainjkjkjklite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Serve your static website in Github</title>
@@ -47,7 +359,7 @@ This repo already has the blog files, but as with any github repo you will see t
     &lt;img src=&#34;https://techsquad.rocks/img/github-pages-configuration.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
-As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html to the master branch.&lt;/p&gt;
+As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html files to the master branch I selected that branch, you can have any branch you like but it&amp;rsquo;s common to use gh-pages.&lt;/p&gt;
 
 &lt;h5 id=&#34;dns&#34;&gt;&lt;strong&gt;DNS&lt;/strong&gt;&lt;/h5&gt;
 

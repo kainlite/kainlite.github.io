@@ -47,7 +47,7 @@ This repo already has the blog files, but as with any github repo you will see t
     &lt;img src=&#34;https://techsquad.rocks/img/github-pages-configuration.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
-As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html to the master branch.&lt;/p&gt;
+As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html files to the master branch I selected that branch, you can have any branch you like but it&amp;rsquo;s common to use gh-pages.&lt;/p&gt;
 
 &lt;h5 id=&#34;dns&#34;&gt;&lt;strong&gt;DNS&lt;/strong&gt;&lt;/h5&gt;
 

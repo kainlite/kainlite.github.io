@@ -36,13 +36,17 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
+<meta property="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
 
     <meta property="og:title" content="Serve your static website with S3 and CloudFront" />
-<meta property="og:description" content="Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
+<meta property="og:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1549143746" />
+<meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1549247532" />
 
 
 <meta property="article:tag" content="elm" />
@@ -54,9 +58,11 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Serve your static website with S3 and CloudFront"/>
-<meta name="twitter:description" content="Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).?1549143746"/>
+<meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).?1549247532"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1549143746" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1549247532" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -140,6 +146,12 @@ if (!doNotTrack) {
             <div class="blogpost">
               
 
+<h3 id="serverless-series"><strong>Serverless series</strong></h3>
+
+<p>Part I: <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/">Serving static websites with s3 and cloudfront</a>, <strong>You&rsquo;re here</strong>.</p>
+
+<p>Part II: <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></p>
+
 <h5 id="introduction"><strong>Introduction</strong></h5>
 
 <p>This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using <a href="https://elm-lang.org/">elm</a> and can be <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">found here</a>.</p>
@@ -202,7 +214,7 @@ So far so good, We have our S3 bucket ready.</p>
     <span style="color:#e6db74">&#34;Quantity&#34;</span>: <span style="color:#ae81ff">1</span>,
     <span style="color:#e6db74">&#34;Items&#34;</span>: <span style="color:#f92672">[</span>
       <span style="color:#e6db74">&#34;serverless.techsquad.rocks&#34;</span>
-	 <span style="color:#f92672">]</span>
+         <span style="color:#f92672">]</span>
    <span style="color:#f92672">}</span>,
   <span style="color:#e6db74">&#34;DefaultRootObject&#34;</span>: <span style="color:#e6db74">&#34;index.html&#34;</span>,
   <span style="color:#e6db74">&#34;Origins&#34;</span>: <span style="color:#f92672">{</span>
@@ -435,6 +447,19 @@ As we can see the record is already there so we can go to <a href="http://server
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 3, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form.</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">

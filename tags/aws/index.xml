@@ -30,6 +30,12 @@
       </tags>
       <description>
 
+&lt;h3 id=&#34;serverless-series&#34;&gt;&lt;strong&gt;Serverless series&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Part I: &lt;a href=&#34;https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/&#34;&gt;Serving static websites with s3 and cloudfront&lt;/a&gt;, &lt;strong&gt;You&amp;rsquo;re here&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Part II: &lt;a href=&#34;https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/&#34;&gt;Sending emails with AWS Lambda and SES from a HTML form&lt;/a&gt;&lt;/p&gt;
+
 &lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using &lt;a href=&#34;https://elm-lang.org/&#34;&gt;elm&lt;/a&gt; and can be &lt;a href=&#34;https://github.com/kainlite/aws-serverless-s3-elm-example&#34;&gt;found here&lt;/a&gt;.&lt;/p&gt;
@@ -92,7 +98,7 @@ So far so good, We have our S3 bucket ready.&lt;/p&gt;
     &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
     &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Items&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;
       &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;serverless.techsquad.rocks&amp;#34;&lt;/span&gt;
-	 &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+         &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DefaultRootObject&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index.html&amp;#34;&lt;/span&gt;,
   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Origins&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;

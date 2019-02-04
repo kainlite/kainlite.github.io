@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Sending emails with AWS Lambda and SES from a HTML form.</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+	
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one." />
+
+    <meta property="og:title" content="Sending emails with AWS Lambda and SES from a HTML form." />
+<meta property="og:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/" />
+<meta property="og:image" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549247532" />
+
+
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="serverless" />
+<meta property="article:tag" content="git" />
+<meta property="article:tag" content="linux" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Sending emails with AWS Lambda and SES from a HTML form."/>
+<meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.?1549247532"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549247532" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form.</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          February 3, 2019
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">
+                    serverless
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/git/" class="label label-success">
+                    git
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+                    linux
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h5 id="serverless-series"><strong>Serverless series</strong></h5>
+
+<p>Part I: <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/">Serving static websites with s3 and cloudfront</a>, so refer to that one before starting this one if you want to know how did we get here.</p>
+
+<p>Part II: <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a>, <strong>You are here</strong>.</p>
+
+<h5 id="introduction"><strong>Introduction</strong></h5>
+
+<p>This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be <a href="https://github.com/kainlite/aws-serverless-go-ses-example">found here</a>, that is the go version but if you prefer node you can use <a href="https://github.com/kainlite/aws-serverless-nodejs-ses-example">this one</a>.</p>
+
+<h5 id="serverless-framework"><strong>Serverless framework</strong></h5>
+
+<p><strong>As usual I will be using the serverless framework to manage our functions, create the project</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir techsquad-functions <span style="color:#f92672">&amp;&amp;</span> cd techsquad-functions <span style="color:#f92672">&amp;&amp;</span> serverless create -t aws-go
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># Serverless: Generating boilerplate...</span>
+<span style="color:#75715e">#  _______                             __</span>
+<span style="color:#75715e"># |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.</span>
+<span style="color:#75715e"># |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|</span>
+<span style="color:#75715e"># |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|</span>
+<span style="color:#75715e"># |   |   |             The Serverless Application Framework</span>
+<span style="color:#75715e"># |       |                           serverless.com, v1.36.1</span>
+<span style="color:#75715e">#  -------&#39;</span>
+#
+<span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
+<span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div></p>
+
+<p>After creating the project we can update the serverless manifest as follow:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">service: sendMail
+
+frameworkVersion: <span style="color:#e6db74">&#34;&gt;=1.28.0 &lt;2.0.0&#34;</span>
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  memorySize: <span style="color:#ae81ff">128</span>
+  versionFunctions: false
+  stage: <span style="color:#e6db74">&#39;prod&#39;</span>
+
+  iamRoleStatements:
+    - Effect: <span style="color:#e6db74">&#34;Allow&#34;</span>
+      Action:
+        - <span style="color:#e6db74">&#34;ses:*&#34;</span>
+        - <span style="color:#e6db74">&#34;lambda:*&#34;</span>
+      Resource:
+        - <span style="color:#e6db74">&#34;*&#34;</span>
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./send_mail/send_mail
+
+functions:
+  send_mail:
+    handler: send_mail/send_mail
+    events:
+      - http:
+          path: sendMail
+          method: post</code></pre></div>
+The interesting parts here are the IAM permissions and the function send_mail, the rest is pretty much standard, we define a function and the event HTTP POST for the API Gateway, where our executable can be found and we also request permissions to send emails via SES.</p>
+
+<p><strong>Deploy the function</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make deploy
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># rm -rf ./send_mail/send_mail</span>
+<span style="color:#75715e"># env GOOS=linux go build -ldflags=&#34;-s -w&#34; -o send_mail/send_mail send_mail/main.go</span>
+<span style="color:#75715e"># sls deploy --verbose</span>
+<span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
+<span style="color:#75715e"># Serverless: Packaging service...</span>
+<span style="color:#75715e"># Serverless: Excluding development dependencies...</span>
+<span style="color:#75715e"># Serverless: Uploading CloudFormation file to S3...</span>
+<span style="color:#75715e"># Serverless: Uploading artifacts...</span>
+<span style="color:#75715e"># Serverless: Uploading service .zip file to S3 (7.31 MB)...</span>
+<span style="color:#75715e"># Serverless: Validating template...</span>
+<span style="color:#75715e"># Serverless: Updating Stack...</span>
+<span style="color:#75715e"># Serverless: Checking Stack update progress...</span>
+<span style="color:#75715e"># CloudFormation - UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - sendMail-prod</span>
+<span style="color:#75715e"># CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - SendUnderscoremailLambdaFunction</span>
+<span style="color:#75715e"># CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - SendUnderscoremailLambdaFunction</span>
+<span style="color:#75715e"># CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486</span>
+<span style="color:#75715e"># CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486</span>
+<span style="color:#75715e"># CloudFormation - CREATE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486</span>
+<span style="color:#75715e"># CloudFormation - UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - sendMail-prod</span>
+<span style="color:#75715e"># CloudFormation - DELETE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246013644</span>
+<span style="color:#75715e"># CloudFormation - DELETE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246013644</span>
+<span style="color:#75715e"># CloudFormation - UPDATE_COMPLETE - AWS::CloudFormation::Stack - sendMail-prod</span>
+<span style="color:#75715e"># Serverless: Stack update finished...</span>
+<span style="color:#75715e"># Service Information</span>
+<span style="color:#75715e"># service: sendMail</span>
+<span style="color:#75715e"># stage: prod</span>
+<span style="color:#75715e"># region: us-east-1</span>
+<span style="color:#75715e"># stack: sendMail-prod</span>
+<span style="color:#75715e"># api keys:</span>
+<span style="color:#75715e">#   None</span>
+<span style="color:#75715e"># endpoints:</span>
+<span style="color:#75715e">#   POST - https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail</span>
+<span style="color:#75715e"># functions:</span>
+<span style="color:#75715e">#   send_mail: sendMail-prod-send_mail</span>
+<span style="color:#75715e"># layers:</span>
+<span style="color:#75715e">#   None</span>
+#
+<span style="color:#75715e"># Stack Outputs</span>
+<span style="color:#75715e"># ServiceEndpoint: https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod</span>
+<span style="color:#75715e"># ServerlessDeploymentBucketName: sendmail-prod-serverlessdeploymentbucket-1vbmb6gwt8559</span></code></pre></div>
+Everything looks right, so what&rsquo;s next? the source code.</p>
+
+<h5 id="lambda"><strong>Lambda</strong></h5>
+
+<p>This is basically the full source code for this function, as you will see it&rsquo;s really simple:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;context&#34;</span>
+	<span style="color:#e6db74">&#34;encoding/json&#34;</span>
+	<span style="color:#e6db74">&#34;fmt&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/events&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/lambda&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws/awserr&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/aws/session&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/aws/aws-sdk-go/service/ses&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Response</span> <span style="color:#a6e22e">events</span>.<span style="color:#a6e22e">APIGatewayProxyResponse</span>
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">RequestData</span> <span style="color:#66d9ef">struct</span> {
+	<span style="color:#a6e22e">Email</span>   <span style="color:#66d9ef">string</span>
+	<span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">string</span>
+}
+
+<span style="color:#75715e">// This could be env vars
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> (
+	<span style="color:#a6e22e">Sender</span>    = <span style="color:#e6db74">&#34;web@serverless.techsquad.rocks&#34;</span>
+	<span style="color:#a6e22e">Recipient</span> = <span style="color:#e6db74">&#34;kainlite@gmail.com&#34;</span>
+	<span style="color:#a6e22e">CharSet</span>   = <span style="color:#e6db74">&#34;UTF-8&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Handler</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">request</span> <span style="color:#a6e22e">events</span>.<span style="color:#a6e22e">APIGatewayProxyRequest</span>) (<span style="color:#a6e22e">Response</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Request: %+v\n&#34;</span>, <span style="color:#a6e22e">request</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Processing request data for request %s.\n&#34;</span>, <span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">RequestContext</span>.<span style="color:#a6e22e">RequestID</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Body size = %d.\n&#34;</span>, len(<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">Body</span>))
+
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">requestData</span> <span style="color:#a6e22e">RequestData</span>
+	<span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Unmarshal</span>([]byte(<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">Body</span>), <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">requestData</span>)
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;RequestData: %+v&#34;</span>, <span style="color:#a6e22e">requestData</span>)
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result</span> <span style="color:#66d9ef">string</span>
+	<span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">requestData</span>.<span style="color:#a6e22e">Email</span>) &gt; <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> len(<span style="color:#a6e22e">requestData</span>.<span style="color:#a6e22e">Message</span>) &gt; <span style="color:#ae81ff">0</span> {
+		<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">_</span> = <span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">requestData</span>.<span style="color:#a6e22e">Email</span>, <span style="color:#a6e22e">requestData</span>.<span style="color:#a6e22e">Message</span>)
+	}
+
+	<span style="color:#a6e22e">resp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Response</span>{
+		<span style="color:#a6e22e">StatusCode</span>:      <span style="color:#ae81ff">200</span>,
+		<span style="color:#a6e22e">IsBase64Encoded</span>: <span style="color:#66d9ef">false</span>,
+		<span style="color:#a6e22e">Body</span>:            <span style="color:#a6e22e">result</span>,
+		<span style="color:#a6e22e">Headers</span>: <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>{
+			<span style="color:#e6db74">&#34;Content-Type&#34;</span>:           <span style="color:#e6db74">&#34;application/json&#34;</span>,
+			<span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;send-mail-handler&#34;</span>,
+		},
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">resp</span>, <span style="color:#66d9ef">nil</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">send</span>(<span style="color:#a6e22e">Email</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">string</span>) (<span style="color:#66d9ef">string</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#75715e">// This could be an env var
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">sess</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">NewSession</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">Config</span>{
+		<span style="color:#a6e22e">Region</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#e6db74">&#34;us-east-1&#34;</span>)},
+	)
+
+	<span style="color:#75715e">// Create an SES session.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">svc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">sess</span>)
+
+	<span style="color:#75715e">// Assemble the email.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">input</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">SendEmailInput</span>{
+		<span style="color:#a6e22e">Destination</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Destination</span>{
+			<span style="color:#a6e22e">CcAddresses</span>: []<span style="color:#f92672">*</span><span style="color:#66d9ef">string</span>{},
+			<span style="color:#a6e22e">ToAddresses</span>: []<span style="color:#f92672">*</span><span style="color:#66d9ef">string</span>{
+				<span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">Recipient</span>),
+			},
+		},
+		<span style="color:#a6e22e">Message</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Message</span>{
+			<span style="color:#a6e22e">Body</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Body</span>{
+				<span style="color:#a6e22e">Html</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Content</span>{
+					<span style="color:#a6e22e">Charset</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">CharSet</span>),
+					<span style="color:#a6e22e">Data</span>:    <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">Message</span>),
+				},
+				<span style="color:#a6e22e">Text</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Content</span>{
+					<span style="color:#a6e22e">Charset</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">CharSet</span>),
+					<span style="color:#a6e22e">Data</span>:    <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">Message</span>),
+				},
+			},
+			<span style="color:#a6e22e">Subject</span>: <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">Content</span>{
+				<span style="color:#a6e22e">Charset</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">CharSet</span>),
+				<span style="color:#a6e22e">Data</span>:    <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">Email</span>),
+			},
+		},
+		<span style="color:#75715e">// We are using the same sender because it needs to be validated in SES.
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">Source</span>: <span style="color:#a6e22e">aws</span>.<span style="color:#a6e22e">String</span>(<span style="color:#a6e22e">Sender</span>),
+
+		<span style="color:#75715e">// Uncomment to use a configuration set
+</span><span style="color:#75715e"></span>		<span style="color:#75715e">//ConfigurationSetName: aws.String(ConfigurationSet),
+</span><span style="color:#75715e"></span>	}
+
+	<span style="color:#75715e">// Attempt to send the email.
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">svc</span>.<span style="color:#a6e22e">SendEmail</span>(<span style="color:#a6e22e">input</span>)
+
+	<span style="color:#75715e">// Display error messages if they occur.
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">aerr</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">err</span>.(<span style="color:#a6e22e">awserr</span>.<span style="color:#a6e22e">Error</span>); <span style="color:#a6e22e">ok</span> {
+			<span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">aerr</span>.<span style="color:#a6e22e">Code</span>() {
+			<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeMessageRejected</span>:
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeMessageRejected</span>, <span style="color:#a6e22e">aerr</span>.<span style="color:#a6e22e">Error</span>())
+			<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeMailFromDomainNotVerifiedException</span>:
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeMailFromDomainNotVerifiedException</span>, <span style="color:#a6e22e">aerr</span>.<span style="color:#a6e22e">Error</span>())
+			<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeConfigurationSetDoesNotExistException</span>:
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">ses</span>.<span style="color:#a6e22e">ErrCodeConfigurationSetDoesNotExistException</span>, <span style="color:#a6e22e">aerr</span>.<span style="color:#a6e22e">Error</span>())
+			<span style="color:#66d9ef">default</span>:
+				<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">aerr</span>.<span style="color:#a6e22e">Error</span>())
+			}
+		} <span style="color:#66d9ef">else</span> {
+			<span style="color:#75715e">// Print the error, cast err to awserr.Error to get the Code and
+</span><span style="color:#75715e"></span>			<span style="color:#75715e">// Message from an error.
+</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">Error</span>())
+		}
+
+		<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;there was an unexpected error&#34;</span>, <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Email Sent to address: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">Recipient</span>)
+	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;sent!&#34;</span>, <span style="color:#a6e22e">err</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+	<span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">Handler</span>)
+}</code></pre></div>
+The code is pretty much straight forward it only expects 2 parameters and it will send an email and return sent! if everything went well. You can debug and compile your function before uploading by issuing the command <code>make</code> (This is really useful), and if you use <code>make deploy</code> you will save lots of time by only deploying working files.</p>
+
+<h5 id="ses"><strong>SES</strong></h5>
+
+<p>For this to work you will need to verify/validate your domain in SES.</p>
+
+<p>Go to <code>SES-&gt;Domains-&gt;Verify a New Domain</code>.
+<figure>
+    <img src="/img/aws-ses-validate-domain.png" width="100%"/> 
+</figure>
+</p>
+
+<p>After putting your domain in, you will see something like this:
+<figure>
+    <img src="/img/aws-ses-validation-and-dkim.png" width="100%"/> 
+</figure>
+</p>
+
+<p>As I don&rsquo;t have this domain in Route53 I don&rsquo;t have a button to add the records to it (which makes everything simpler and faster), but it&rsquo;s easy enough just create a few dns records and wait a few minutes until you get something like this:
+<figure>
+    <img src="/img/aws-ses-validation-ok.png" width="100%"/> 
+</figure>
+</p>
+
+<p><strong>After that just test it</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless invoke -f send_mail -d <span style="color:#e6db74">&#39;{ &#34;Email&#34;: &#34;kainlite@gmail.com&#34;, &#34;Message&#34;: &#34;test&#34; }&#39;</span>
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;statusCode&#34;</span>: <span style="color:#ae81ff">200</span>,
+    <span style="color:#e6db74">&#34;headers&#34;</span>: <span style="color:#f92672">{</span>
+        <span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>,
+        <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;send-mail-handler&#34;</span>
+    <span style="color:#f92672">}</span>,
+    <span style="color:#e6db74">&#34;body&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#f92672">}</span></code></pre></div>
+After hitting enter the message popped up right away in my inbox :).</p>
+
+<p><strong>Another option is to use <a href="https://devhints.io/curl">curl</a></strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test2&#34; }&#39;</span> | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># HTTP/1.1 200 OK</span>
+<span style="color:#75715e"># Access-Control-Allow-Origin: *</span>
+<span style="color:#75715e"># Connection: keep-alive</span>
+<span style="color:#75715e"># Content-Length: 32</span>
+<span style="color:#75715e"># Content-Type: application/json</span>
+<span style="color:#75715e"># Date: Sun, 03 Feb 2019 02:24:25 GMT</span>
+<span style="color:#75715e"># Via: 1.1 3421ea0c15d4fdc0bcb792131861cb1f.cloudfront.net (CloudFront)</span>
+<span style="color:#75715e"># X-Amz-Cf-Id: kGK4R9kTpcWjZap8aeyPu0vdiCtpQ4gnhCAtCeeA6OJufzaTDL__0w==</span>
+<span style="color:#75715e"># X-Amzn-Trace-Id: Root=1-5c5650d9-7c3c8fcc5e303ca480739560;Sampled=0</span>
+<span style="color:#75715e"># X-Cache: Miss from cloudfront</span>
+<span style="color:#75715e"># x-amz-apigw-id: UgGR7FlWIAMF75Q=</span>
+<span style="color:#75715e"># x-amzn-RequestId: d2f45b14-275a-11e9-a8f3-47d675eed13e</span>
+#
+<span style="color:#75715e"># sent!</span></code></pre></div></p>
+
+<p><strong>OR <a href="https://devhints.io/httpie">httpie</a></strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test3&#34; }&#39;</span>
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># HTTP/2 200</span>
+<span style="color:#75715e"># content-type: application/json</span>
+<span style="color:#75715e"># content-length: 32</span>
+<span style="color:#75715e"># date: Sun, 03 Feb 2019 02:28:04 GMT</span>
+<span style="color:#75715e"># x-amzn-requestid: 55cc72d0-275b-11e9-99bd-91c3fab78a2f</span>
+<span style="color:#75715e"># access-control-allow-origin: *</span>
+<span style="color:#75715e"># x-amz-apigw-id: UgG0OEigoAMF-Yg=</span>
+<span style="color:#75715e"># x-amzn-trace-id: Root=1-5c5651b4-fc5427b4798e14dc61fe161e;Sampled=0</span>
+<span style="color:#75715e"># x-cache: Miss from cloudfront</span>
+<span style="color:#75715e"># via: 1.1 2167e4d6cf81822217c1ea31b3d3ba7e.cloudfront.net (CloudFront)</span>
+<span style="color:#75715e"># x-amz-cf-id: FttmBoeUaSwQ2AArTgVmI5br51zwVMfUrVpXPLGm1HacV4yS9IYMHA==</span>
+#
+<span style="color:#75715e"># sent!</span></code></pre></div></p>
+
+<p>And that&rsquo;s all for now, see you in the next article.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serving_static_sites_with_s3_and_cloudfront/">Serve your static website with S3 and CloudFront</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 29, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serving_static_sites_with_github/">Serve your static website in Github</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 23, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/give_super_powers_to_your_terminal_with_tmux/">Give super powers to your terminal with tmux</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

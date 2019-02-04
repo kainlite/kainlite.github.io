@@ -6,10 +6,352 @@
     <description>Recent content in Development on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/development/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sending emails with AWS Lambda and SES from a HTML form.</title>
+      <link>https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>git</tag>
+      
+        <tag>linux</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;serverless-series&#34;&gt;&lt;strong&gt;Serverless series&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Part I: &lt;a href=&#34;https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/&#34;&gt;Serving static websites with s3 and cloudfront&lt;/a&gt;, so refer to that one before starting this one if you want to know how did we get here.&lt;/p&gt;
+
+&lt;p&gt;Part II: &lt;a href=&#34;https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/&#34;&gt;Sending emails with AWS Lambda and SES from a HTML form&lt;/a&gt;, &lt;strong&gt;You are here&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be &lt;a href=&#34;https://github.com/kainlite/aws-serverless-go-ses-example&#34;&gt;found here&lt;/a&gt;, that is the go version but if you prefer node you can use &lt;a href=&#34;https://github.com/kainlite/aws-serverless-nodejs-ses-example&#34;&gt;this one&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;serverless-framework&#34;&gt;&lt;strong&gt;Serverless framework&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;strong&gt;As usual I will be using the serverless framework to manage our functions, create the project&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;mkdir techsquad-functions &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; cd techsquad-functions &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; serverless create -t aws-go
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Generating boilerplate...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#  _______                             __&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   |   |             The Serverless Application Framework&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |       |                           serverless.com, v1.36.1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#  -------&amp;#39;&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Successfully generated boilerplate for template: &amp;#34;aws-go&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: NOTE: Please update the &amp;#34;service&amp;#34; property in serverless.yml with your service name&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;After creating the project we can update the serverless manifest as follow:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;service: sendMail
+
+frameworkVersion: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;gt;=1.28.0 &amp;lt;2.0.0&amp;#34;&lt;/span&gt;
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: us-east-1
+  memorySize: &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;
+  versionFunctions: false
+  stage: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;prod&amp;#39;&lt;/span&gt;
+
+  iamRoleStatements:
+    - Effect: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Allow&amp;#34;&lt;/span&gt;
+      Action:
+        - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ses:*&amp;#34;&lt;/span&gt;
+        - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;lambda:*&amp;#34;&lt;/span&gt;
+      Resource:
+        - &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./send_mail/send_mail
+
+functions:
+  send_mail:
+    handler: send_mail/send_mail
+    events:
+      - http:
+          path: sendMail
+          method: post&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The interesting parts here are the IAM permissions and the function send_mail, the rest is pretty much standard, we define a function and the event HTTP POST for the API Gateway, where our executable can be found and we also request permissions to send emails via SES.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Deploy the function&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;make deploy
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# rm -rf ./send_mail/send_mail&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# env GOOS=linux go build -ldflags=&amp;#34;-s -w&amp;#34; -o send_mail/send_mail send_mail/main.go&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# sls deploy --verbose&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: WARNING: Missing &amp;#34;tenant&amp;#34; and &amp;#34;app&amp;#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Packaging service...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Excluding development dependencies...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading CloudFormation file to S3...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading artifacts...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading service .zip file to S3 (7.31 MB)...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Validating template...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Updating Stack...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Checking Stack update progress...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - sendMail-prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - UPDATE_IN_PROGRESS - AWS::Lambda::Function - SendUnderscoremailLambdaFunction&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - UPDATE_COMPLETE - AWS::Lambda::Function - SendUnderscoremailLambdaFunction&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - CREATE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - CREATE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246566486&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - sendMail-prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - DELETE_IN_PROGRESS - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246013644&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - DELETE_COMPLETE - AWS::ApiGateway::Deployment - ApiGatewayDeployment1549246013644&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# CloudFormation - UPDATE_COMPLETE - AWS::CloudFormation::Stack - sendMail-prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Stack update finished...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Service Information&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# service: sendMail&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stage: prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# region: us-east-1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stack: sendMail-prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# api keys:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# endpoints:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   POST - https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# functions:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   send_mail: sendMail-prod-send_mail&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# layers:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Stack Outputs&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ServiceEndpoint: https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ServerlessDeploymentBucketName: sendmail-prod-serverlessdeploymentbucket-1vbmb6gwt8559&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Everything looks right, so what&amp;rsquo;s next? the source code.&lt;/p&gt;
+
+&lt;h5 id=&#34;lambda&#34;&gt;&lt;strong&gt;Lambda&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This is basically the full source code for this function, as you will see it&amp;rsquo;s really simple:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;encoding/json&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/events&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/lambda&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-sdk-go/aws&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-sdk-go/aws/awserr&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-sdk-go/aws/session&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-sdk-go/service/ses&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;events&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;APIGatewayProxyResponse&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RequestData&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Email&lt;/span&gt;   &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// This could be env vars
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; (
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Sender&lt;/span&gt;    = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;web@serverless.techsquad.rocks&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipient&lt;/span&gt; = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kainlite@gmail.com&amp;#34;&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;CharSet&lt;/span&gt;   = &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;UTF-8&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Handler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Context&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;events&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;APIGatewayProxyRequest&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Request: %+v\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Processing request data for request %s.\n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RequestContext&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RequestID&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Body size = %d.\n&amp;#34;&lt;/span&gt;, len(&lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;))
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RequestData&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Unmarshal&lt;/span&gt;([]byte(&lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;), &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;RequestData: %+v&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; len(&lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Email&lt;/span&gt;) &amp;gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; len(&lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;) &amp;gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Email&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;requestData&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;StatusCode&lt;/span&gt;:      &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;IsBase64Encoded&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;:            &lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Headers&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;map&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{
+			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;:           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;,
+			&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;X-MyCompany-Func-Reply&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;send-mail-handler&amp;#34;&lt;/span&gt;,
+		},
+	}
+
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Email&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;) (&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+	&lt;span style=&#34;color:#75715e&#34;&gt;// This could be an env var
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;sess&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;session&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewSession&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Config&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Region&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;us-east-1&amp;#34;&lt;/span&gt;)},
+	)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Create an SES session.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;svc&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;New&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;sess&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Assemble the email.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SendEmailInput&lt;/span&gt;{
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Destination&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Destination&lt;/span&gt;{
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;CcAddresses&lt;/span&gt;: []&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{},
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;ToAddresses&lt;/span&gt;: []&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Recipient&lt;/span&gt;),
+			},
+		},
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;{
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;{
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;Html&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Content&lt;/span&gt;{
+					&lt;span style=&#34;color:#a6e22e&#34;&gt;Charset&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;CharSet&lt;/span&gt;),
+					&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;:    &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;),
+				},
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;Text&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Content&lt;/span&gt;{
+					&lt;span style=&#34;color:#a6e22e&#34;&gt;Charset&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;CharSet&lt;/span&gt;),
+					&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;:    &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Message&lt;/span&gt;),
+				},
+			},
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;Subject&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Content&lt;/span&gt;{
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;Charset&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;CharSet&lt;/span&gt;),
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;Data&lt;/span&gt;:    &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Email&lt;/span&gt;),
+			},
+		},
+		&lt;span style=&#34;color:#75715e&#34;&gt;// We are using the same sender because it needs to be validated in SES.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;Source&lt;/span&gt;: &lt;span style=&#34;color:#a6e22e&#34;&gt;aws&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Sender&lt;/span&gt;),
+
+		&lt;span style=&#34;color:#75715e&#34;&gt;// Uncomment to use a configuration set
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;		&lt;span style=&#34;color:#75715e&#34;&gt;//ConfigurationSetName: aws.String(ConfigurationSet),
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	}
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Attempt to send the email.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;svc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;SendEmail&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;input&lt;/span&gt;)
+
+	&lt;span style=&#34;color:#75715e&#34;&gt;// Display error messages if they occur.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;.(&lt;span style=&#34;color:#a6e22e&#34;&gt;awserr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt; {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;switch&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Code&lt;/span&gt;() {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeMessageRejected&lt;/span&gt;:
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeMessageRejected&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeMailFromDomainNotVerifiedException&lt;/span&gt;:
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeMailFromDomainNotVerifiedException&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;case&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeConfigurationSetDoesNotExistException&lt;/span&gt;:
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ses&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ErrCodeConfigurationSetDoesNotExistException&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;default&lt;/span&gt;:
+				&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;aerr&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+			}
+		} &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+			&lt;span style=&#34;color:#75715e&#34;&gt;// Print the error, cast err to awserr.Error to get the Code and
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#75715e&#34;&gt;// Message from an error.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Error&lt;/span&gt;())
+		}
+
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;there was an unexpected error&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Email Sent to address: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Recipient&lt;/span&gt;)
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sent!&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;lambda&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Handler&lt;/span&gt;)
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+The code is pretty much straight forward it only expects 2 parameters and it will send an email and return sent! if everything went well. You can debug and compile your function before uploading by issuing the command &lt;code&gt;make&lt;/code&gt; (This is really useful), and if you use &lt;code&gt;make deploy&lt;/code&gt; you will save lots of time by only deploying working files.&lt;/p&gt;
+
+&lt;h5 id=&#34;ses&#34;&gt;&lt;strong&gt;SES&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;For this to work you will need to verify/validate your domain in SES.&lt;/p&gt;
+
+&lt;p&gt;Go to &lt;code&gt;SES-&amp;gt;Domains-&amp;gt;Verify a New Domain&lt;/code&gt;.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/aws-ses-validate-domain.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;After putting your domain in, you will see something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/aws-ses-validation-and-dkim.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As I don&amp;rsquo;t have this domain in Route53 I don&amp;rsquo;t have a button to add the records to it (which makes everything simpler and faster), but it&amp;rsquo;s easy enough just create a few dns records and wait a few minutes until you get something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/aws-ses-validation-ok.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;After that just test it&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;serverless invoke -f send_mail -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;Email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;Message&amp;#34;: &amp;#34;test&amp;#34; }&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;statusCode&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;headers&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;X-MyCompany-Func-Reply&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;send-mail-handler&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;body&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+After hitting enter the message popped up right away in my inbox :).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Another option is to use &lt;a href=&#34;https://devhints.io/curl&#34;&gt;curl&lt;/a&gt;&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test2&amp;#34; }&amp;#39;&lt;/span&gt; | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/1.1 200 OK&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Access-Control-Allow-Origin: *&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Connection: keep-alive&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Content-Length: 32&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Content-Type: application/json&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Date: Sun, 03 Feb 2019 02:24:25 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Via: 1.1 3421ea0c15d4fdc0bcb792131861cb1f.cloudfront.net (CloudFront)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# X-Amz-Cf-Id: kGK4R9kTpcWjZap8aeyPu0vdiCtpQ4gnhCAtCeeA6OJufzaTDL__0w==&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# X-Amzn-Trace-Id: Root=1-5c5650d9-7c3c8fcc5e303ca480739560;Sampled=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# X-Cache: Miss from cloudfront&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amz-apigw-id: UgGR7FlWIAMF75Q=&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amzn-RequestId: d2f45b14-275a-11e9-a8f3-47d675eed13e&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# sent!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;OR &lt;a href=&#34;https://devhints.io/httpie&#34;&gt;httpie&lt;/a&gt;&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test3&amp;#34; }&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/2 200&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# content-type: application/json&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# content-length: 32&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# date: Sun, 03 Feb 2019 02:28:04 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amzn-requestid: 55cc72d0-275b-11e9-99bd-91c3fab78a2f&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# access-control-allow-origin: *&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amz-apigw-id: UgG0OEigoAMF-Yg=&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amzn-trace-id: Root=1-5c5651b4-fc5427b4798e14dc61fe161e;Sampled=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-cache: Miss from cloudfront&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# via: 1.1 2167e4d6cf81822217c1ea31b3d3ba7e.cloudfront.net (CloudFront)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# x-amz-cf-id: FttmBoeUaSwQ2AArTgVmI5br51zwVMfUrVpXPLGm1HacV4yS9IYMHA==&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# sent!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s all for now, see you in the next article.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Serve your static website with S3 and CloudFront</title>
@@ -29,6 +371,12 @@
       
       </tags>
       <description>
+
+&lt;h3 id=&#34;serverless-series&#34;&gt;&lt;strong&gt;Serverless series&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Part I: &lt;a href=&#34;https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/&#34;&gt;Serving static websites with s3 and cloudfront&lt;/a&gt;, &lt;strong&gt;You&amp;rsquo;re here&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Part II: &lt;a href=&#34;https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/&#34;&gt;Sending emails with AWS Lambda and SES from a HTML form&lt;/a&gt;&lt;/p&gt;
 
 &lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
 
@@ -92,7 +440,7 @@ So far so good, We have our S3 bucket ready.&lt;/p&gt;
     &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Quantity&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,
     &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Items&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;
       &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;serverless.techsquad.rocks&amp;#34;&lt;/span&gt;
-	 &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+         &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DefaultRootObject&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index.html&amp;#34;&lt;/span&gt;,
   &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Origins&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;

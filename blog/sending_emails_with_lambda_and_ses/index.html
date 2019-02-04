@@ -46,7 +46,7 @@ Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
 Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/" />
-<meta property="og:image" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549247680" />
+<meta property="og:image" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549283251" />
 
 
 <meta property="article:tag" content="development" />
@@ -59,9 +59,9 @@ Introduction This article is part of the serverless series, in this article we w
     <meta name="twitter:title" content="Sending emails with AWS Lambda and SES from a HTML form"/>
 <meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
-Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.?1549247680"/>
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.?1549283251"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549247680" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/aws-lambda-ses.png?1549283251" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -421,7 +421,7 @@ The code is pretty much straight forward it only expects 2 parameters and it wil
 <span style="color:#f92672">}</span></code></pre></div>
 After hitting enter the message popped up right away in my inbox :).</p>
 
-<p><strong>Another option is to use <a href="https://devhints.io/curl">curl</a></strong>
+<p><strong>Another option is to use <a href="https://devhints.io/httpie">httpie</a></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test2&#34; }&#39;</span> | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># HTTP/1.1 200 OK</span>
@@ -439,7 +439,7 @@ After hitting enter the message popped up right away in my inbox :).</p>
 #
 <span style="color:#75715e"># sent!</span></code></pre></div></p>
 
-<p><strong>OR <a href="https://devhints.io/httpie">httpie</a></strong>
+<p><strong>OR <a href="https://devhints.io/curl">curl</a></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test3&#34; }&#39;</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># HTTP/2 200</span>

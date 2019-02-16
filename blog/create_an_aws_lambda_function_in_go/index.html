@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Create an AWS lambda function in Go</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+	
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool." />
+
+    <meta property="og:title" content="Create an AWS lambda function in Go" />
+<meta property="og:description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1550337776" />
+
+
+<meta property="article:tag" content="go" />
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="serverless" />
+<meta property="article:tag" content="linux" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Create an AWS lambda function in Go"/>
+<meta name="twitter:description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.?1550337776"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1550337776" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/">Create an AWS lambda function in Go</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          February 16, 2019
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/go/" class="label label-success">
+                    go
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">
+                    serverless
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+                    linux
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h5 id="introduction"><strong>Introduction</strong></h5>
+
+<p>In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article <a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a>, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.</p>
+
+<h5 id="let-s-see-the-code-one-more-time"><strong>Let&rsquo;s see the code one more time</strong></h5>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;bytes&#34;</span>
+    <span style="color:#e6db74">&#34;context&#34;</span>
+    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
+
+    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/events&#34;</span>
+    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/lambda&#34;</span>
+)
+
+<span style="color:#75715e">// Response is of type APIGatewayProxyResponse since we&#39;re leveraging the
+</span><span style="color:#75715e">// AWS Lambda Proxy Request functionality (default behavior)
+</span><span style="color:#75715e">//
+</span><span style="color:#75715e">// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Response</span> <span style="color:#a6e22e">events</span>.<span style="color:#a6e22e">APIGatewayProxyResponse</span>
+
+<span style="color:#75715e">// Handler is our lambda handler invoked by the `lambda.Start` function call
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Handler</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>) (<span style="color:#a6e22e">Response</span>, <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">buf</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>
+
+    <span style="color:#a6e22e">body</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Marshal</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{
+        <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Go Serverless v1.0! Your function executed successfully!&#34;</span>,
+    })
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Response</span>{<span style="color:#a6e22e">StatusCode</span>: <span style="color:#ae81ff">404</span>}, <span style="color:#a6e22e">err</span>
+    }
+    <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">HTMLEscape</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">buf</span>, <span style="color:#a6e22e">body</span>)
+
+    <span style="color:#a6e22e">resp</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Response</span>{
+        <span style="color:#a6e22e">StatusCode</span>:      <span style="color:#ae81ff">200</span>,
+        <span style="color:#a6e22e">IsBase64Encoded</span>: <span style="color:#66d9ef">false</span>,
+        <span style="color:#a6e22e">Body</span>:            <span style="color:#a6e22e">buf</span>.<span style="color:#a6e22e">String</span>(),
+        <span style="color:#a6e22e">Headers</span>: <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>{
+            <span style="color:#e6db74">&#34;Content-Type&#34;</span>:           <span style="color:#e6db74">&#34;application/json&#34;</span>,
+            <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;hello-handler&#34;</span>,
+        },
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">resp</span>, <span style="color:#66d9ef">nil</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">Handler</span>)
+}</code></pre></div>
+
+<p>With that code as a starting point, now we need to build, package, upload, and deploy our function:</p>
+
+<p><strong>Build</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GOOS<span style="color:#f92672">=</span>linux go build main.go</code></pre></div></p>
+
+<p><strong>Package</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">zip main.zip ./main
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e">#   adding: main (deflated 51%)</span></code></pre></div></p>
+
+<p><strong>Create the role</strong></p>
+
+<p>Go to IAM &gt; Roles &gt; Create.
+Then select Lambda, assign a name and a description and then get the ARN for this role. Note that with the serverless framework this is done automatically for us, so we don&rsquo;t need to create a new role for each</p>
+
+<p><strong>Upload / Deploy</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws lambda create-function <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --region us-east-1 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --function-name helloworld <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --memory <span style="color:#ae81ff">128</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --role arn:aws:iam::894527626897:role/testing-aws-go <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --runtime go1.x <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --zip-file fileb://main.zip <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>  --handler main
+
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># {</span>
+<span style="color:#75715e">#     &#34;FunctionName&#34;: &#34;helloworld&#34;,</span>
+<span style="color:#75715e">#     &#34;FunctionArn&#34;: &#34;arn:aws:lambda:us-east-1:894527626897:function:helloworld&#34;,</span>
+<span style="color:#75715e">#     &#34;Runtime&#34;: &#34;go1.x&#34;,</span>
+<span style="color:#75715e">#     &#34;Role&#34;: &#34;arn:aws:iam::894527626897:role/testing-aws-go&#34;,</span>
+<span style="color:#75715e">#     &#34;Handler&#34;: &#34;main&#34;,</span>
+<span style="color:#75715e">#     &#34;CodeSize&#34;: 4346283,</span>
+<span style="color:#75715e">#     &#34;Description&#34;: &#34;&#34;,</span>
+<span style="color:#75715e">#     &#34;Timeout&#34;: 3,</span>
+<span style="color:#75715e">#     &#34;MemorySize&#34;: 128,</span>
+<span style="color:#75715e">#     &#34;LastModified&#34;: &#34;2019-02-16T15:44:10.610+0000&#34;,</span>
+<span style="color:#75715e">#     &#34;CodeSha256&#34;: &#34;02/PQBeQuCC8JS1TLjyU38oiUwiyQSmKJXjya25XpFA=&#34;,</span>
+<span style="color:#75715e">#     &#34;Version&#34;: &#34;$LATEST&#34;,</span>
+<span style="color:#75715e">#     &#34;TracingConfig&#34;: {</span>
+<span style="color:#75715e">#         &#34;Mode&#34;: &#34;PassThrough&#34;</span>
+<span style="color:#75715e">#     },</span>
+<span style="color:#75715e">#     &#34;RevisionId&#34;: &#34;7c9030e5-4a26-4f7e-968d-3a4f65dfde21&#34;</span>
+<span style="color:#75715e"># }</span></code></pre></div>
+Note that your function-name must match the name of your Lambda handler name (Handler). Note that this role might be insecure in some scenarios if you grant too much permissions, so try to restrict it as much as possible as with any role and policy.</p>
+
+<p><strong>Test the function</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># {&#34;statusCode&#34;:200,&#34;headers&#34;:{&#34;Content-Type&#34;:&#34;application/json&#34;,&#34;X-MyCompany-Func-Reply&#34;:&#34;hello-handler&#34;},&#34;body&#34;:&#34;{\&#34;message\&#34;:\&#34;Go Serverless v1.0! Your function executed successfully!\&#34;}&#34;}{</span>
+<span style="color:#75715e">#     &#34;StatusCode&#34;: 200,</span>
+<span style="color:#75715e">#     &#34;LogResult&#34;: &#34;U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=&#34;,</span>
+<span style="color:#75715e">#     &#34;ExecutedVersion&#34;: &#34;$LATEST&#34;</span>
+<span style="color:#75715e"># }</span></code></pre></div>
+Everything looks about right, so what&rsquo;s next? We will eventually need to communicate with this code from an external source, so let&rsquo;s see how we can do that with the API Gateway. Also the log is encoded in base64, so if you want to see what the log result was do the following.</p>
+
+<p><strong>Check the logs</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=&#34;</span> | base64 -d
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># START RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad Version: $LATEST</span>
+<span style="color:#75715e"># END RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad</span>
+<span style="color:#75715e"># REPORT RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad  Duration: 13.19 ms      Billed Duration: 100 ms         Memory Size: 128 MB     Max Memory Used: 45 MB</span></code></pre></div>
+You should also be able to see this same output in CloudWatch.</p>
+
+<h5 id="api-gateway"><strong>API Gateway</strong></h5>
+
+<p>To make this step simpler I decided to use the AWS Console instead of the CLI it will also cut down the size of this article substantially.</p>
+
+<p><strong>Now we need to create the API Gateway endpoint</strong></p>
+
+<p>Note that you only have to go to Lambda-&gt;Functions-&gt;helloworld-&gt;Add triggers-&gt;API Gateway. And then complete as shown in the image, when you save this new trigger you will get the resource that then can be used to test the API Gateway integration.
+<figure>
+    <img src="/img/lambda-helloworld-example.png" width="100%"/> 
+</figure>
+</p>
+
+<p>The endpoint will show as follows (Click on API Gateway):
+<figure>
+    <img src="/img/lambda-helloworld-example-endpoint.png" width="100%"/> 
+</figure>
+</p>
+
+<p><strong>Test the API</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworld
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># *   Trying 54.236.123.239...</span>
+<span style="color:#75715e"># * TCP_NODELAY set</span>
+<span style="color:#75715e"># * Connected to r8efasfb26.execute-api.us-east-1.amazonaws.com (54.236.123.239) port 443 (#0)</span>
+<span style="color:#75715e"># * ALPN, offering h2</span>
+<span style="color:#75715e"># * ALPN, offering http/1.1</span>
+<span style="color:#75715e"># * successfully set certificate verify locations:</span>
+<span style="color:#75715e"># *   CAfile: /etc/ssl/certs/ca-certificates.crt</span>
+<span style="color:#75715e">#   CApath: none</span>
+<span style="color:#75715e"># * TLSv1.3 (OUT), TLS handshake, Client hello (1):</span>
+<span style="color:#75715e"># * TLSv1.3 (IN), TLS handshake, Server hello (2):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Certificate (11):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server finished (14):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Finished (20):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Finished (20):</span>
+<span style="color:#75715e"># * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256</span>
+<span style="color:#75715e"># * ALPN, server accepted to use h2</span>
+<span style="color:#75715e"># * Server certificate:</span>
+<span style="color:#75715e"># *  subject: CN=*.execute-api.us-east-1.amazonaws.com</span>
+<span style="color:#75715e"># *  start date: Sep 20 00:00:00 2018 GMT</span>
+<span style="color:#75715e"># *  expire date: Oct 20 12:00:00 2019 GMT</span>
+<span style="color:#75715e"># *  subjectAltName: host &#34;r8efasfb26.execute-api.us-east-1.amazonaws.com&#34; matched cert&#39;s &#34;*.execute-api.us-east-1.amazonaws.com&#34;</span>
+<span style="color:#75715e"># *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon</span>
+<span style="color:#75715e"># *  SSL certificate verify ok.</span>
+<span style="color:#75715e"># * Using HTTP2, server supports multi-use</span>
+<span style="color:#75715e"># * Connection state changed (HTTP/2 confirmed)</span>
+<span style="color:#75715e"># * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0</span>
+<span style="color:#75715e"># * Using Stream ID: 1 (easy handle 0x56394c766db0)</span>
+<span style="color:#75715e"># &gt; GET /default/helloworld HTTP/2</span>
+<span style="color:#75715e"># &gt; Host: r8efasfb26.execute-api.us-east-1.amazonaws.com</span>
+<span style="color:#75715e"># &gt; User-Agent: curl/7.63.0</span>
+<span style="color:#75715e"># &gt; Accept: */*</span>
+<span style="color:#75715e"># &gt;</span>
+<span style="color:#75715e"># * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!</span>
+<span style="color:#75715e"># &lt; HTTP/2 200</span>
+<span style="color:#75715e"># &lt; date: Sat, 16 Feb 2019 17:17:58 GMT</span>
+<span style="color:#75715e"># &lt; content-type: application/json</span>
+<span style="color:#75715e"># &lt; content-length: 70</span>
+<span style="color:#75715e"># &lt; x-amzn-requestid: ce5c5863-320e-11e9-9e76-875e7540974c</span>
+<span style="color:#75715e"># &lt; x-amz-apigw-id: VM_XAGhoIAMFqoQ=</span>
+<span style="color:#75715e"># &lt; x-mycompany-func-reply: hello-handler</span>
+<span style="color:#75715e"># &lt; x-amzn-trace-id: Root=1-5c6845c6-920cfc7da3cfd94f3e644647;Sampled=0</span>
+<span style="color:#75715e"># &lt;</span>
+<span style="color:#75715e"># * Connection #0 to host r8efasfb26.execute-api.us-east-1.amazonaws.com left intact</span>
+<span style="color:#75715e"># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}</span></code></pre></div></p>
+
+<p>If you ask me that was a lot of effort to handle without automation, maybe AWS SAM or the serverless framework can make things easier and let you focus on your application rather than the boilerplate required for it to run.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 16, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 3, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serving_static_sites_with_s3_and_cloudfront/">Serve your static website with S3 and CloudFront</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

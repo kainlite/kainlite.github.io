@@ -549,7 +549,7 @@ The code is pretty much straight forward it only expects 2 parameters and it wil
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 After hitting enter the message popped up right away in my inbox :).&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Another option is to use &lt;a href=&#34;https://devhints.io/curl&#34;&gt;curl&lt;/a&gt;&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;Another option is to use &lt;a href=&#34;https://devhints.io/httpie&#34;&gt;httpie&lt;/a&gt;&lt;/strong&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test2&amp;#34; }&amp;#39;&lt;/span&gt; | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/1.1 200 OK&lt;/span&gt;
@@ -567,7 +567,7 @@ After hitting enter the message popped up right away in my inbox :).&lt;/p&gt;
 #
 &lt;span style=&#34;color:#75715e&#34;&gt;# sent!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;OR &lt;a href=&#34;https://devhints.io/httpie&#34;&gt;httpie&lt;/a&gt;&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;OR &lt;a href=&#34;https://devhints.io/curl&#34;&gt;curl&lt;/a&gt;&lt;/strong&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test3&amp;#34; }&amp;#39;&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/2 200&lt;/span&gt;

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>What does the serverless framework does for me</title>
+    <meta name="generator" content="Hugo 0.53" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+	
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us." />
+
+    <meta property="og:title" content="What does the serverless framework does for me" />
+<meta property="og:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" />
+<meta property="og:image" content="https://techsquad.rocks/img/serveless.png?1550293302" />
+
+
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="serverless" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="What does the serverless framework does for me"/>
+<meta name="twitter:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.?1550293302"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serveless.png?1550293302" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          February 16, 2019
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">
+                    serverless
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h3 id="introduction"><strong>Introduction</strong></h3>
+
+<p>The <a href="https://serverless.com/">serverless framework</a> is a nice tool to manage all your cloud functions. from their page:</p>
+
+<blockquote>
+<p>The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.</p>
+</blockquote>
+
+<h3 id="let-s-take-the-golang-example-for-a-spin"><strong>Let&rsquo;s take the golang example for a spin</strong></h3>
+
+<p>So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir foo <span style="color:#f92672">&amp;&amp;</span> cd <span style="color:#e6db74">&#34;</span>$_<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span>  serverless create -t aws-go
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># Serverless: Generating boilerplate...</span>
+<span style="color:#75715e">#  _______                             __</span>
+<span style="color:#75715e"># |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.</span>
+<span style="color:#75715e"># |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|</span>
+<span style="color:#75715e"># |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|</span>
+<span style="color:#75715e"># |   |   |             The Serverless Application Framework</span>
+<span style="color:#75715e"># |       |                           serverless.com, v1.36.1</span>
+<span style="color:#75715e">#  -------&#39;</span>
+#
+<span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
+<span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div>
+Got you a bit of command line fu right there with the &ldquo;$_&rdquo; (it means the first parameter of the previous command)</p>
+
+<p>Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.</p>
+
+<p><strong>Let&rsquo;s take a look at the files</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tree .
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># ├── hello</span>
+<span style="color:#75715e"># │   └── main.go</span>
+<span style="color:#75715e"># ├── Makefile</span>
+<span style="color:#75715e"># ├── serverless.yml</span>
+<span style="color:#75715e"># └── world</span>
+<span style="color:#75715e">#     └── main.go</span>
+#
+<span style="color:#75715e"># 2 directories, 4 files</span></code></pre></div>
+We got a manifest <code>serverless.yml</code> a <code>Makefile</code> (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)</p>
+
+<p><strong>The manifest file indicates a lot of things, I will add comments to the <em>code</em></strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">frameworkVersion: <span style="color:#e6db74">&#34;&gt;=1.28.0 &lt;2.0.0&#34;</span>
+
+provider:
+  name: aws
+  runtime: go1.x
+
+<span style="color:#75715e"># Which files needs to be included and which to be ignored</span>
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+<span style="color:#75715e"># The functions and the handlers (the actual function definition in the code), and events which then will be translated into API Gateway endpoints for your functions</span>
+functions:
+  hello:
+    handler: bin/hello
+    events:
+      - http:
+          path: hello
+          method: get
+  world:
+    handler: bin/world
+    events:
+      - http:
+          path: world
+          method: get</code></pre></div></p>
+
+<p><strong>Let&rsquo;s take a look at the hello function / file</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">package main
+
+import <span style="color:#f92672">(</span>
+    <span style="color:#e6db74">&#34;bytes&#34;</span>
+    <span style="color:#e6db74">&#34;context&#34;</span>
+    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
+
+    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/events&#34;</span>
+    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/lambda&#34;</span>
+<span style="color:#f92672">)</span>
+
+// Response is of type APIGatewayProxyResponse since we<span style="color:#960050;background-color:#1e0010">&#39;</span>re leveraging the
+// AWS Lambda Proxy Request functionality <span style="color:#f92672">(</span>default behavior<span style="color:#f92672">)</span>
+//
+// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
+type Response events.APIGatewayProxyResponse
+
+// Handler is our lambda handler invoked by the <span style="color:#e6db74">`</span>lambda.Start<span style="color:#e6db74">`</span> <span style="color:#66d9ef">function</span> call
+func Handler<span style="color:#f92672">(</span>ctx context.Context<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Response, error<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    var buf bytes.Buffer
+
+    body, err :<span style="color:#f92672">=</span> json.Marshal<span style="color:#f92672">(</span>map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>interface<span style="color:#f92672">{}{</span>
+        <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Go Serverless v1.0! Your function executed successfully!&#34;</span>,
+    <span style="color:#f92672">})</span>
+    <span style="color:#66d9ef">if</span> err !<span style="color:#f92672">=</span> nil <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">{</span>StatusCode: <span style="color:#ae81ff">404</span><span style="color:#f92672">}</span>, err
+    <span style="color:#f92672">}</span>
+    json.HTMLEscape<span style="color:#f92672">(</span>&amp;buf, body<span style="color:#f92672">)</span>
+
+    resp :<span style="color:#f92672">=</span> Response<span style="color:#f92672">{</span>
+        StatusCode:      <span style="color:#ae81ff">200</span>,
+        IsBase64Encoded: false,
+        Body:            buf.String<span style="color:#f92672">()</span>,
+        Headers: map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>string<span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;Content-Type&#34;</span>:           <span style="color:#e6db74">&#34;application/json&#34;</span>,
+            <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;hello-handler&#34;</span>,
+        <span style="color:#f92672">}</span>,
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">return</span> resp, nil
+<span style="color:#f92672">}</span>
+
+func main<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    lambda.Start<span style="color:#f92672">(</span>Handler<span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span></code></pre></div>
+This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.</p>
+
+<h5 id="let-s-deploy-it"><strong>Let&rsquo;s deploy it</strong></h5>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless deploy
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
+<span style="color:#75715e"># Serverless: Packaging service...</span>
+<span style="color:#75715e"># Serverless: Excluding development dependencies...</span>
+<span style="color:#75715e"># Serverless: Uploading CloudFormation file to S3...</span>
+<span style="color:#75715e"># Serverless: Uploading artifacts...</span>
+<span style="color:#75715e"># Serverless: Uploading service .zip file to S3 (10.88 MB)...</span>
+<span style="color:#75715e"># Serverless: Validating template...</span>
+<span style="color:#75715e"># Serverless: Updating Stack...</span>
+<span style="color:#75715e"># Serverless: Checking Stack update progress...</span>
+<span style="color:#75715e"># ............</span>
+<span style="color:#75715e"># Serverless: Stack update finished...</span>
+<span style="color:#75715e"># Service Information</span>
+<span style="color:#75715e"># service: aws-go</span>
+<span style="color:#75715e"># stage: dev</span>
+<span style="color:#75715e"># region: us-east-1</span>
+<span style="color:#75715e"># stack: aws-go-dev</span>
+<span style="color:#75715e"># api keys:</span>
+<span style="color:#75715e">#   None</span>
+<span style="color:#75715e"># endpoints:</span>
+<span style="color:#75715e">#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello</span>
+<span style="color:#75715e">#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/world</span>
+<span style="color:#75715e"># functions:</span>
+<span style="color:#75715e">#   hello: aws-go-dev-hello</span>
+<span style="color:#75715e">#   world: aws-go-dev-world</span>
+<span style="color:#75715e"># layers:</span>
+<span style="color:#75715e">#   None</span></code></pre></div>
+So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.</p>
+
+<p><strong>And test it</strong>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># *   Trying 99.84.27.2...</span>
+<span style="color:#75715e"># * TCP_NODELAY set</span>
+<span style="color:#75715e"># * Connected to cfr9zyw3r1.execute-api.us-east-1.amazonaws.com (99.84.27.2) port 443 (#0)</span>
+<span style="color:#75715e"># * ALPN, offering h2</span>
+<span style="color:#75715e"># * ALPN, offering http/1.1</span>
+<span style="color:#75715e"># * successfully set certificate verify locations:</span>
+<span style="color:#75715e"># *   CAfile: /etc/ssl/certs/ca-certificates.crt</span>
+<span style="color:#75715e">#   CApath: none</span>
+<span style="color:#75715e"># * TLSv1.3 (OUT), TLS handshake, Client hello (1):</span>
+<span style="color:#75715e"># * TLSv1.3 (IN), TLS handshake, Server hello (2):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Certificate (11):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server finished (14):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):</span>
+<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Finished (20):</span>
+<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Finished (20):</span>
+<span style="color:#75715e"># * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256</span>
+<span style="color:#75715e"># * ALPN, server accepted to use h2</span>
+<span style="color:#75715e"># * Server certificate:</span>
+<span style="color:#75715e"># *  subject: CN=*.execute-api.us-east-1.amazonaws.com</span>
+<span style="color:#75715e"># *  start date: Oct  9 00:00:00 2018 GMT</span>
+<span style="color:#75715e"># *  expire date: Oct  9 12:00:00 2019 GMT</span>
+<span style="color:#75715e"># *  subjectAltName: host &#34;cfr9zyw3r1.execute-api.us-east-1.amazonaws.com&#34; matched cert&#39;s &#34;*.execute-api.us-east-1.amazonaws.com&#34;</span>
+<span style="color:#75715e"># *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon</span>
+<span style="color:#75715e"># *  SSL certificate verify ok.</span>
+<span style="color:#75715e"># * Using HTTP2, server supports multi-use</span>
+<span style="color:#75715e"># * Connection state changed (HTTP/2 confirmed)</span>
+<span style="color:#75715e"># * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0</span>
+<span style="color:#75715e"># * Using Stream ID: 1 (easy handle 0x55944b9d7db0)</span>
+<span style="color:#75715e"># &gt; GET /dev/hello HTTP/2</span>
+<span style="color:#75715e"># &gt; Host: cfr9zyw3r1.execute-api.us-east-1.amazonaws.com</span>
+<span style="color:#75715e"># &gt; User-Agent: curl/7.63.0</span>
+<span style="color:#75715e"># &gt; Accept: */*</span>
+<span style="color:#75715e"># &gt;</span>
+<span style="color:#75715e"># * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!</span>
+<span style="color:#75715e"># &lt; HTTP/2 200</span>
+<span style="color:#75715e"># &lt; content-type: application/json</span>
+<span style="color:#75715e"># &lt; content-length: 70</span>
+<span style="color:#75715e"># &lt; date: Sat, 16 Feb 2019 04:32:04 GMT</span>
+<span style="color:#75715e"># &lt; x-amzn-requestid: cf4c6094-31a3-11e9-b61e-bb2138b2f390</span>
+<span style="color:#75715e"># &lt; x-amz-apigw-id: VLPKmHj4oAMFbbw=</span>
+<span style="color:#75715e"># &lt; x-mycompany-func-reply: hello-handler</span>
+<span style="color:#75715e"># &lt; x-amzn-trace-id: Root=1-5c679243-d4f945debb1a2b675c41675f;Sampled=0</span>
+<span style="color:#75715e"># &lt; x-cache: Miss from cloudfront</span>
+<span style="color:#75715e"># &lt; via: 1.1 655473215401ef909f449b92f216caa1.cloudfront.net (CloudFront)</span>
+<span style="color:#75715e"># &lt; x-amz-cf-id: LOHG0oG-WbGKpTnlGz-VDVqb9DxXQX-kgJJEUkchh1v_zLfUqNCpEQ==</span>
+<span style="color:#75715e"># &lt;</span>
+<span style="color:#75715e"># * Connection #0 to host cfr9zyw3r1.execute-api.us-east-1.amazonaws.com left intact</span>
+<span style="color:#75715e"># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}%</span></code></pre></div>
+As expected we can see the headers x-my-company-func-reply and the json object that it created for us.</p>
+
+<h3 id="cleanup"><strong>Cleanup</strong></h3>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless remove
+<span style="color:#75715e"># OUTPUT:</span>
+<span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
+<span style="color:#75715e"># Serverless: Getting all objects in S3 bucket...</span>
+<span style="color:#75715e"># Serverless: Removing objects in S3 bucket...</span>
+<span style="color:#75715e"># Serverless: Removing Stack...</span>
+<span style="color:#75715e"># Serverless: Checking Stack removal progress...</span>
+<span style="color:#75715e"># ...............</span>
+<span style="color:#75715e"># Serverless: Stack removal finished...</span></code></pre></div>
+This will as you expect remove everything that was created with the deploy command.</p>
+
+<p>In the next article we will explore how to do create and deploy a function like this one by hand.</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 3, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serving_static_sites_with_s3_and_cloudfront/">Serve your static website with S3 and CloudFront</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 29, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serving_static_sites_with_github/">Serve your static website in Github</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

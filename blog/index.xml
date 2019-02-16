@@ -6,10 +6,253 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>What does the serverless framework does for me</title>
+      <link>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+      </tags>
+      <description>
+
+&lt;h3 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt; is a nice tool to manage all your cloud functions. from their page:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&amp;rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;let-s-take-the-golang-example-for-a-spin&#34;&gt;&lt;strong&gt;Let&amp;rsquo;s take the golang example for a spin&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;So let&amp;rsquo;s generate a project with the serverless framework and see everything that it does for us.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;mkdir foo &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; cd &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$_&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt;  serverless create -t aws-go
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Generating boilerplate...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#  _______                             __&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |   |   |             The Serverless Application Framework&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# |       |                           serverless.com, v1.36.1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#  -------&amp;#39;&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Successfully generated boilerplate for template: &amp;#34;aws-go&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: NOTE: Please update the &amp;#34;service&amp;#34; property in serverless.yml with your service name&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Got you a bit of command line fu right there with the &amp;ldquo;$_&amp;rdquo; (it means the first parameter of the previous command)&lt;/p&gt;
+
+&lt;p&gt;Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s take a look at the files&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;tree .
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ├── hello&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# │   └── main.go&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ├── Makefile&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ├── serverless.yml&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# └── world&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     └── main.go&lt;/span&gt;
+#
+&lt;span style=&#34;color:#75715e&#34;&gt;# 2 directories, 4 files&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+We got a manifest &lt;code&gt;serverless.yml&lt;/code&gt; a &lt;code&gt;Makefile&lt;/code&gt; (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The manifest file indicates a lot of things, I will add comments to the &lt;em&gt;code&lt;/em&gt;&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;frameworkVersion: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;gt;=1.28.0 &amp;lt;2.0.0&amp;#34;&lt;/span&gt;
+
+provider:
+  name: aws
+  runtime: go1.x
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# Which files needs to be included and which to be ignored&lt;/span&gt;
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# The functions and the handlers (the actual function definition in the code), and events which then will be translated into API Gateway endpoints for your functions&lt;/span&gt;
+functions:
+  hello:
+    handler: bin/hello
+    events:
+      - http:
+          path: hello
+          method: get
+  world:
+    handler: bin/world
+    events:
+      - http:
+          path: world
+          method: get&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s take a look at the hello function / file&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;package main
+
+import &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bytes&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;encoding/json&amp;#34;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/events&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/lambda&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+
+// Response is of type APIGatewayProxyResponse since we&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;re leveraging the
+// AWS Lambda Proxy Request functionality &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;default behavior&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+//
+// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
+type Response events.APIGatewayProxyResponse
+
+// Handler is our lambda handler invoked by the &lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;lambda.Start&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; call
+func Handler&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ctx context.Context&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Response, error&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    var buf bytes.Buffer
+
+    body, err :&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; json.Marshal&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;map&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;interface&lt;span style=&#34;color:#f92672&#34;&gt;{}{&lt;/span&gt;
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Go Serverless v1.0! Your function executed successfully!&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;})&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; err !&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nil &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Response&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;StatusCode: &lt;span style=&#34;color:#ae81ff&#34;&gt;404&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;, err
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    json.HTMLEscape&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&amp;amp;buf, body&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+
+    resp :&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Response&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        StatusCode:      &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;,
+        IsBase64Encoded: false,
+        Body:            buf.String&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt;,
+        Headers: map&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;string&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;:           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;X-MyCompany-Func-Reply&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello-handler&amp;#34;&lt;/span&gt;,
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;,
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; resp, nil
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+
+func main&lt;span style=&#34;color:#f92672&#34;&gt;()&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    lambda.Start&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Handler&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.&lt;/p&gt;
+
+&lt;h5 id=&#34;let-s-deploy-it&#34;&gt;&lt;strong&gt;Let&amp;rsquo;s deploy it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;serverless deploy
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: WARNING: Missing &amp;#34;tenant&amp;#34; and &amp;#34;app&amp;#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Packaging service...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Excluding development dependencies...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading CloudFormation file to S3...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading artifacts...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Uploading service .zip file to S3 (10.88 MB)...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Validating template...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Updating Stack...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Checking Stack update progress...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ............&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Stack update finished...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Service Information&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# service: aws-go&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stage: dev&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# region: us-east-1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# stack: aws-go-dev&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# api keys:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# endpoints:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/world&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# functions:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   hello: aws-go-dev-hello&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   world: aws-go-dev-world&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# layers:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   None&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;And test it&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *   Trying 99.84.27.2...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TCP_NODELAY set&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connected to cfr9zyw3r1.execute-api.us-east-1.amazonaws.com (99.84.27.2) port 443 (#0)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, offering h2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, offering http/1.1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * successfully set certificate verify locations:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *   CAfile: /etc/ssl/certs/ca-certificates.crt&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   CApath: none&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.3 (OUT), TLS handshake, Client hello (1):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.3 (IN), TLS handshake, Server hello (2):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Certificate (11):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Server key exchange (12):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Server finished (14):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS handshake, Finished (20):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Finished (20):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, server accepted to use h2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Server certificate:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  subject: CN=*.execute-api.us-east-1.amazonaws.com&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  start date: Oct  9 00:00:00 2018 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  expire date: Oct  9 12:00:00 2019 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  subjectAltName: host &amp;#34;cfr9zyw3r1.execute-api.us-east-1.amazonaws.com&amp;#34; matched cert&amp;#39;s &amp;#34;*.execute-api.us-east-1.amazonaws.com&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  SSL certificate verify ok.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Using HTTP2, server supports multi-use&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection state changed (HTTP/2 confirmed)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Using Stream ID: 1 (easy handle 0x55944b9d7db0)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; GET /dev/hello HTTP/2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; Host: cfr9zyw3r1.execute-api.us-east-1.amazonaws.com&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; User-Agent: curl/7.63.0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; Accept: */*&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; HTTP/2 200&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; content-type: application/json&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; content-length: 70&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; date: Sat, 16 Feb 2019 04:32:04 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amzn-requestid: cf4c6094-31a3-11e9-b61e-bb2138b2f390&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amz-apigw-id: VLPKmHj4oAMFbbw=&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-mycompany-func-reply: hello-handler&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amzn-trace-id: Root=1-5c679243-d4f945debb1a2b675c41675f;Sampled=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-cache: Miss from cloudfront&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; via: 1.1 655473215401ef909f449b92f216caa1.cloudfront.net (CloudFront)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amz-cf-id: LOHG0oG-WbGKpTnlGz-VDVqb9DxXQX-kgJJEUkchh1v_zLfUqNCpEQ==&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection #0 to host cfr9zyw3r1.execute-api.us-east-1.amazonaws.com left intact&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&amp;#34;message&amp;#34;:&amp;#34;Go Serverless v1.0! Your function executed successfully!&amp;#34;}%&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+As expected we can see the headers x-my-company-func-reply and the json object that it created for us.&lt;/p&gt;
+
+&lt;h3 id=&#34;cleanup&#34;&gt;&lt;strong&gt;Cleanup&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;serverless remove
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: WARNING: Missing &amp;#34;tenant&amp;#34; and &amp;#34;app&amp;#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Getting all objects in S3 bucket...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Removing objects in S3 bucket...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Removing Stack...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Checking Stack removal progress...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# ...............&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# Serverless: Stack removal finished...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+This will as you expect remove everything that was created with the deploy command.&lt;/p&gt;
+
+&lt;p&gt;In the next article we will explore how to do create and deploy a function like this one by hand.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Sending emails with AWS Lambda and SES from a HTML form</title>
@@ -306,7 +549,7 @@ The code is pretty much straight forward it only expects 2 parameters and it wil
 &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 After hitting enter the message popped up right away in my inbox :).&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Another option is to use &lt;a href=&#34;https://devhints.io/httpie&#34;&gt;httpie&lt;/a&gt;&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;Another option is to use &lt;a href=&#34;https://devhints.io/curl&#34;&gt;curl&lt;/a&gt;&lt;/strong&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test2&amp;#34; }&amp;#39;&lt;/span&gt; | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/1.1 200 OK&lt;/span&gt;
@@ -324,7 +567,7 @@ After hitting enter the message popped up right away in my inbox :).&lt;/p&gt;
 #
 &lt;span style=&#34;color:#75715e&#34;&gt;# sent!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;OR &lt;a href=&#34;https://devhints.io/curl&#34;&gt;curl&lt;/a&gt;&lt;/strong&gt;
+&lt;p&gt;&lt;strong&gt;OR &lt;a href=&#34;https://devhints.io/httpie&#34;&gt;httpie&lt;/a&gt;&lt;/strong&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;{ &amp;#34;email&amp;#34;: &amp;#34;kainlite@gmail.com&amp;#34;, &amp;#34;message&amp;#34;: &amp;#34;test3&amp;#34; }&amp;#39;&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# HTTP/2 200&lt;/span&gt;

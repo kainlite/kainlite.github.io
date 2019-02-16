@@ -217,6 +217,10 @@ You should also be able to see this same output in CloudWatch.&lt;/p&gt;
 
 &lt;p&gt;If you ask me that was a lot of effort to handle without automation, maybe AWS SAM or the serverless framework can make things easier and let you focus on your application rather than the boilerplate required for it to run.&lt;/p&gt;
 
+&lt;h3 id=&#34;clean-up&#34;&gt;Clean up&lt;/h3&gt;
+
+&lt;p&gt;Always remember to clean up and delete everything that you created (to avoid surprises and save money), in this article I will leave that as an exercise for the reader :)&lt;/p&gt;
+
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 
 &lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;

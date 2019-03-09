@@ -170,9 +170,21 @@
     <item>
       <title>Linux</title>
       <link>https://techsquad.rocks/tags/linux/</link>
-      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/linux/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Openssh</title>
+      <link>https://techsquad.rocks/tags/openssh/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/openssh/</guid>
       <tags>
       
       </tags>
@@ -233,6 +245,18 @@
       <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/slack/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tips and Tricks</title>
+      <link>https://techsquad.rocks/tags/tips-and-tricks/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/tips-and-tricks/</guid>
       <tags>
       
       </tags>

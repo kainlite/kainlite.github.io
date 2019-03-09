@@ -305,19 +305,19 @@ spec:
               path: /
               port: http
           resources:
-{{ toYaml .Values.resources &lt;span style=&#34;color:#e6db74&#34;&gt;| indent 12 }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- with .Values.nodeSelector }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      nodeSelector:&lt;/span&gt;
-{{ toYaml . &lt;span style=&#34;color:#e6db74&#34;&gt;| indent 8 }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- end }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- with .Values.affinity }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      affinity:&lt;/span&gt;
-{{ toYaml . &lt;span style=&#34;color:#e6db74&#34;&gt;| indent 8 }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- end }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- with .Values.tolerations }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      tolerations:&lt;/span&gt;
-{{ toYaml . &lt;span style=&#34;color:#e6db74&#34;&gt;| indent 8 }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;    {{- end }}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+{{ toYaml .Values.resources | indent &lt;span style=&#34;color:#ae81ff&#34;&gt;12&lt;/span&gt; }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; }}
+    {{- end }}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 As you can see everything will get replaced by what you define in the &lt;code&gt;values.yaml&lt;/code&gt; file and everything is under &lt;code&gt;.Values&lt;/code&gt; unless you define a local variable or some other variable using helpers for example.&lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s check the &lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/service/&#34;&gt;service&lt;/a&gt; file:
@@ -356,7 +356,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
   annotations:
-{{ toYaml . &lt;span style=&#34;color:#e6db74&#34;&gt;| indent 4 }}&lt;/span&gt;
+{{ toYaml . | indent &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt; }}
 {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
@@ -364,21 +364,21 @@ spec:
   {{- range .Values.ingress.tls }}
     - hosts:
       {{- range .hosts }}
-        - {{ . &lt;span style=&#34;color:#e6db74&#34;&gt;| quote }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      {{- end }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      secretName: {{ .secretName }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  {{- end }}&lt;/span&gt;
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ . &lt;span style=&#34;color:#e6db74&#34;&gt;| quote }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;      http:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;        paths:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;          - path: {{ $ingressPath }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;            backend:
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;              serviceName: {{ $fullName }}
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;              servicePort: http
-&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;  {{- end }}&lt;/span&gt;
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http
+  {{- end }}
 {{- end }}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (&lt;code&gt;$fullName&lt;/code&gt; for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&amp;rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).&lt;/p&gt;
 

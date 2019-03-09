@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Getting started with Helm</title>
-    <meta name="generator" content="Hugo 0.53" />
+    <meta name="generator" content="Hugo 0.54.0" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
 Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_helm/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1550346395" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552159306" />
 
 
 <meta property="article:tag" content="helm" />
@@ -56,9 +56,9 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
 
     <meta name="twitter:title" content="Getting started with Helm"/>
 <meta name="twitter:description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.?1550346395"/>
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.?1552159306"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1550346395" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552159306" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -237,19 +237,19 @@ spec:
               path: /
               port: http
           resources:
-{{ toYaml .Values.resources <span style="color:#e6db74">| indent 12 }}
-</span><span style="color:#e6db74">    {{- with .Values.nodeSelector }}
-</span><span style="color:#e6db74">      nodeSelector:</span>
-{{ toYaml . <span style="color:#e6db74">| indent 8 }}
-</span><span style="color:#e6db74">    {{- end }}
-</span><span style="color:#e6db74">    {{- with .Values.affinity }}
-</span><span style="color:#e6db74">      affinity:</span>
-{{ toYaml . <span style="color:#e6db74">| indent 8 }}
-</span><span style="color:#e6db74">    {{- end }}
-</span><span style="color:#e6db74">    {{- with .Values.tolerations }}
-</span><span style="color:#e6db74">      tolerations:</span>
-{{ toYaml . <span style="color:#e6db74">| indent 8 }}
-</span><span style="color:#e6db74">    {{- end }}</span></code></pre></div>
+{{ toYaml .Values.resources | indent <span style="color:#ae81ff">12</span> }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
+    {{- end }}</code></pre></div>
 As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p>
 
 <p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> file:
@@ -288,7 +288,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
   annotations:
-{{ toYaml . <span style="color:#e6db74">| indent 4 }}</span>
+{{ toYaml . | indent <span style="color:#ae81ff">4</span> }}
 {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
@@ -296,21 +296,21 @@ spec:
   {{- range .Values.ingress.tls }}
     - hosts:
       {{- range .hosts }}
-        - {{ . <span style="color:#e6db74">| quote }}
-</span><span style="color:#e6db74">      {{- end }}
-</span><span style="color:#e6db74">      secretName: {{ .secretName }}
-</span><span style="color:#e6db74">  {{- end }}</span>
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ . <span style="color:#e6db74">| quote }}
-</span><span style="color:#e6db74">      http:
-</span><span style="color:#e6db74">        paths:
-</span><span style="color:#e6db74">          - path: {{ $ingressPath }}
-</span><span style="color:#e6db74">            backend:
-</span><span style="color:#e6db74">              serviceName: {{ $fullName }}
-</span><span style="color:#e6db74">              servicePort: http
-</span><span style="color:#e6db74">  {{- end }}</span>
+    - host: {{ . | quote }}
+      http:
+        paths:
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http
+  {{- end }}
 {{- end }}</code></pre></div>
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p>
 

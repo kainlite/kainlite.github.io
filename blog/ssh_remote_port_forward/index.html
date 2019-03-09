@@ -44,7 +44,7 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
 Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/ssh_remote_port_forward/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552159359" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552159903" />
 
 
 <meta property="article:tag" content="openssh" />
@@ -56,9 +56,9 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
 
     <meta name="twitter:title" content="SSH Remote Port Forward"/>
 <meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1552159359"/>
+Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1552159903"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552159359" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552159903" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -157,16 +157,19 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -R Specifies that connections to the given TCP port or Unix socket on the remote (server) host are to be forwarded to the local side.</code></pre></div></p>
 
-<p><strong>Server configuration</strong>
-There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are <code>GatewayPorts</code> and <code>AllowTcpForwarding</code>.</p>
+<h5 id="server-configuration"><strong>Server configuration</strong></h5>
 
-<p><strong>GatewayPorts</strong>
-By default this option is <code>no</code> which means that only the remote computer will be able to connect to the forwarded port, you can set it to <code>yes</code> or <code>clientspecified</code> to allow other machines use that remote port-forward (handy and dangerous).</p>
+<p>There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are <code>GatewayPorts</code> and <code>AllowTcpForwarding</code>.</p>
 
-<p><strong>AllowTcpForwarding</strong>
-By default this option is set to <code>yes</code>, you can restrict remote and local port forwarding by setting it to <code>no</code> or allow only local by setting it to <code>local</code>.</p>
+<h5 id="gatewayports"><strong>GatewayPorts</strong></h5>
 
-<h3 id="closing-notes">Closing notes</h3>
+<p>By default this option is <code>no</code> which means that only the remote computer will be able to connect to the forwarded port, you can set it to <code>yes</code> or <code>clientspecified</code> to allow other machines use that remote port-forward (handy and dangerous).</p>
+
+<h5 id="allowtcpforwarding"><strong>AllowTcpForwarding</strong></h5>
+
+<p>By default this option is set to <code>yes</code>, you can restrict remote and local port forwarding by setting it to <code>no</code> or allow only local by setting it to <code>local</code>.</p>
+
+<h3 id="closing-notes"><strong>Closing notes</strong></h3>
 
 <p>As you can see this option can be really handy to bypass firewalls for example or have a temporary port forward, also if you want to make this automatic and not so temporary you can check autossh. You can use nc (netcat) if you don&rsquo;t want to install anything to test the connections and the tunnels (nc -l -p PORT) in the server side and (nc HOST PORT) in the client.</p>
 

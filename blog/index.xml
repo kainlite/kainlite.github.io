@@ -45,16 +45,19 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -R Specifies that connections to the given TCP port or Unix socket on the remote (server) host are to be forwarded to the local side.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;
-There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are &lt;code&gt;GatewayPorts&lt;/code&gt; and &lt;code&gt;AllowTcpForwarding&lt;/code&gt;.&lt;/p&gt;
+&lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;&lt;strong&gt;GatewayPorts&lt;/strong&gt;
-By default this option is &lt;code&gt;no&lt;/code&gt; which means that only the remote computer will be able to connect to the forwarded port, you can set it to &lt;code&gt;yes&lt;/code&gt; or &lt;code&gt;clientspecified&lt;/code&gt; to allow other machines use that remote port-forward (handy and dangerous).&lt;/p&gt;
+&lt;p&gt;There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are &lt;code&gt;GatewayPorts&lt;/code&gt; and &lt;code&gt;AllowTcpForwarding&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;
-By default this option is set to &lt;code&gt;yes&lt;/code&gt;, you can restrict remote and local port forwarding by setting it to &lt;code&gt;no&lt;/code&gt; or allow only local by setting it to &lt;code&gt;local&lt;/code&gt;.&lt;/p&gt;
+&lt;h5 id=&#34;gatewayports&#34;&gt;&lt;strong&gt;GatewayPorts&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;h3 id=&#34;closing-notes&#34;&gt;Closing notes&lt;/h3&gt;
+&lt;p&gt;By default this option is &lt;code&gt;no&lt;/code&gt; which means that only the remote computer will be able to connect to the forwarded port, you can set it to &lt;code&gt;yes&lt;/code&gt; or &lt;code&gt;clientspecified&lt;/code&gt; to allow other machines use that remote port-forward (handy and dangerous).&lt;/p&gt;
+
+&lt;h5 id=&#34;allowtcpforwarding&#34;&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;By default this option is set to &lt;code&gt;yes&lt;/code&gt;, you can restrict remote and local port forwarding by setting it to &lt;code&gt;no&lt;/code&gt; or allow only local by setting it to &lt;code&gt;local&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;p&gt;As you can see this option can be really handy to bypass firewalls for example or have a temporary port forward, also if you want to make this automatic and not so temporary you can check autossh. You can use nc (netcat) if you don&amp;rsquo;t want to install anything to test the connections and the tunnels (nc -l -p PORT) in the server side and (nc HOST PORT) in the client.&lt;/p&gt;
 
@@ -91,27 +94,31 @@ By default this option is set to &lt;code&gt;yes&lt;/code&gt;, you can restrict 
 
 &lt;p&gt;Local port forward basically let&amp;rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&amp;rsquo;t let you do it, let&amp;rsquo;s say you want to connect to a mysql instance on the default port (3306).&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;The command&lt;/strong&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -Nn -L &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;:localhost:3306 user@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -Nn -L &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;:localhost:3306 user@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:&lt;/p&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -Nn -L &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;:172.16.16.200:3306 user@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;
-I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
+&lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;-N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -L Specifies that connections to the given TCP port or Unix socket on the local (client) host are to be forwarded to the given host and port, or Unix socket, on the remote side.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;
-There is a configuration parameter that can change the behaviour of remote and local forwarded ports, that parameter is &lt;code&gt;AllowTcpForwarding&lt;/code&gt;.&lt;/p&gt;
+&lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;
-By default this option is set to &lt;code&gt;yes&lt;/code&gt;, you can restrict remote and local port forwarding by setting it to &lt;code&gt;no&lt;/code&gt; or allow only local by setting it to &lt;code&gt;local&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;There is a configuration parameter that can change the behaviour of remote and local forwarded ports, that parameter is &lt;code&gt;AllowTcpForwarding&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h3 id=&#34;closing-notes&#34;&gt;Closing notes&lt;/h3&gt;
+&lt;h5 id=&#34;allowtcpforwarding&#34;&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;By default this option is set to &lt;code&gt;yes&lt;/code&gt;, you can restrict remote and local port forwarding by setting it to &lt;code&gt;no&lt;/code&gt; or allow only local by setting it to &lt;code&gt;local&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As you can see this option can be really handy to bypass firewalls for example or have a temporary port forward, also if you want to make this automatic and not so temporary you can check autossh. You can use nc (netcat) if you don&amp;rsquo;t want to install anything to test the connections and the tunnels (nc -l -p PORT) in the server side and (nc HOST PORT) in the client.&lt;/p&gt;
 

@@ -44,7 +44,7 @@ Explanation SOCKS is an Internet protocol that exchanges network packets between
 Explanation SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server (Extracted from Wikipedia). So basically it allows our remote server to become a VPNey likey thingy using SSH, so let&rsquo;s see the different options of how and when to use it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/ssh_socks_proxy/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552176196" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552239667" />
 
 
 <meta property="article:tag" content="openssh" />
@@ -56,9 +56,9 @@ Explanation SOCKS is an Internet protocol that exchanges network packets between
 
     <meta name="twitter:title" content="SSH Socks Proxy"/>
 <meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Socks proxy and what it means, we also will explore SSH Remote Port Forward and SSH Local Port Forward and how to use that functionality.
-Explanation SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server (Extracted from Wikipedia). So basically it allows our remote server to become a VPNey likey thingy using SSH, so let&rsquo;s see the different options of how and when to use it.?1552176196"/>
+Explanation SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server (Extracted from Wikipedia). So basically it allows our remote server to become a VPNey likey thingy using SSH, so let&rsquo;s see the different options of how and when to use it.?1552239667"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552176196" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552239667" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -156,13 +156,14 @@ Explanation SOCKS is an Internet protocol that exchanges network packets between
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># 54.210.37.203</span></code></pre></div></p>
 
-<p><strong>The parameters and their meaning</strong>
-I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
+<h5 id="the-parameters-and-their-meaning"><strong>The parameters and their meaning</strong></h5>
+
+<p>I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -D Specifies a local “dynamic” application-level port forwarding.  This works by allocating a socket to listen to port on the local side, optionally bound to the specified bind_address.</code></pre></div></p>
 
-<h3 id="closing-notes">Closing notes</h3>
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
 <p>As you can see this option can be really handy to have a temporary VPN or proxy, also if you want to make this automatic and not so temporary you can check autossh or any real VPN solution like OpenVPN. You can use this kind of proxy in any App that supports SOCKS, most browsers do for example.</p>
 

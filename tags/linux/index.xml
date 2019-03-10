@@ -44,13 +44,14 @@
 &lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
 &lt;span style=&#34;color:#75715e&#34;&gt;# 54.210.37.203&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;
-I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
+&lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;-N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -D Specifies a local “dynamic” application-level port forwarding.  This works by allocating a socket to listen to port on the local side, optionally bound to the specified bind_address.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;closing-notes&#34;&gt;Closing notes&lt;/h3&gt;
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As you can see this option can be really handy to have a temporary VPN or proxy, also if you want to make this automatic and not so temporary you can check autossh or any real VPN solution like OpenVPN. You can use this kind of proxy in any App that supports SOCKS, most browsers do for example.&lt;/p&gt;
 

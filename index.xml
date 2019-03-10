@@ -6,10 +6,61 @@
     <description>Recent content on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 09 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SSH Socks Proxy</title>
+      <link>https://techsquad.rocks/blog/ssh_socks_proxy/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/ssh_socks_proxy/</guid>
+      <tags>
+      
+        <tag>openssh</tag>
+      
+        <tag>tips-and-tricks</tag>
+      
+        <tag>linux</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Socks proxy and what it means, we also will explore &lt;a href=&#34;https://techsquad.rocks/blog/ssh_remote_port_forward/&#34;&gt;SSH Remote Port Forward&lt;/a&gt; and &lt;a href=&#34;https://techsquad.rocks/blog/ssh_local_port_forward/&#34;&gt;SSH Local Port Forward&lt;/a&gt; and how to use that functionality.&lt;/p&gt;
+
+&lt;h5 id=&#34;explanation&#34;&gt;&lt;strong&gt;Explanation&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server (Extracted from Wikipedia). So basically it allows our remote server to become a VPNey likey thingy using SSH, so let&amp;rsquo;s see the different options of how and when to use it. But we will need to tell the application to use that SOCKS proxy, for example our browser or curl.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The command&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -D &lt;span style=&#34;color:#ae81ff&#34;&gt;9999&lt;/span&gt; -Nn ec2-user@54.210.37.203&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;For example I started a EC2 instance for this example and this is the output from curl:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;$ curl --socks4 localhost:9999 icanhazip.com
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# 54.210.37.203&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;
+I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means dynamic port forward without a shell.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;-N Do not execute a remote command. This is useful for just forwarding ports.
+-n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
+-D Specifies a local “dynamic” application-level port forwarding.  This works by allocating a socket to listen to port on the local side, optionally bound to the specified bind_address.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;closing-notes&#34;&gt;Closing notes&lt;/h3&gt;
+
+&lt;p&gt;As you can see this option can be really handy to have a temporary VPN or proxy, also if you want to make this automatic and not so temporary you can check autossh or any real VPN solution like OpenVPN. You can use this kind of proxy in any App that supports SOCKS, most browsers do for example.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>SSH Remote Port Forward</title>
@@ -30,7 +81,7 @@
 
 &lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore &lt;a href=&#34;https://techsquad.rocks/blog/ssh_local_port_forward/&#34;&gt;SSH Local Port Forward&lt;/a&gt; and &lt;a href=&#34;&#34;&gt;SSH Socks Proxy&lt;/a&gt; and how to use that functionality.&lt;/p&gt;
+&lt;p&gt;SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore &lt;a href=&#34;https://techsquad.rocks/blog/ssh_local_port_forward/&#34;&gt;SSH Local Port Forward&lt;/a&gt; and &lt;a href=&#34;https://techsquad.rocks/blog/ssh_socks_proxy/&#34;&gt;SSH Socks Proxy&lt;/a&gt; and how to use that functionality.&lt;/p&gt;
 
 &lt;h5 id=&#34;explanation&#34;&gt;&lt;strong&gt;Explanation&lt;/strong&gt;&lt;/h5&gt;
 
@@ -88,7 +139,7 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 
 &lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore &lt;a href=&#34;https://techsquad.rocks/blog/ssh_remote_port_forward/&#34;&gt;SSH Remote Port Forward&lt;/a&gt; and &lt;a href=&#34;&#34;&gt;SSH Socks Proxy&lt;/a&gt; and how to use that functionality.&lt;/p&gt;
+&lt;p&gt;SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore &lt;a href=&#34;https://techsquad.rocks/blog/ssh_remote_port_forward/&#34;&gt;SSH Remote Port Forward&lt;/a&gt; and &lt;a href=&#34;https://techsquad.rocks/blog/ssh_socks_proxy/&#34;&gt;SSH Socks Proxy&lt;/a&gt; and how to use that functionality.&lt;/p&gt;
 
 &lt;h5 id=&#34;explanation&#34;&gt;&lt;strong&gt;Explanation&lt;/strong&gt;&lt;/h5&gt;
 

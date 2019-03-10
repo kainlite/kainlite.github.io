@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://techsquad.rocks/blog/ssh_socks_proxy/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/ssh_remote_port_forward/</loc>
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
   </url>
@@ -105,7 +110,7 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -200,25 +205,25 @@
   
   <url>
     <loc>https://techsquad.rocks/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/tags/linux/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/linux/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/tags/openssh/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -272,7 +277,7 @@
   
   <url>
     <loc>https://techsquad.rocks/tags/tips-and-tricks/</loc>
-    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

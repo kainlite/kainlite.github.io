@@ -148,19 +148,17 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 
 &lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -Nn -L &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;:localhost:3306 user@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ssh -Nn -L &lt;span style=&#34;color:#ae81ff&#34;&gt;3306&lt;/span&gt;:172.16.16.200:3306 user@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh&#34;&gt;&lt;/script&gt;
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.&lt;/p&gt;
 
 &lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;-N Do not execute a remote command. This is useful for just forwarding ports.
--n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
--L Specifies that connections to the given TCP port or Unix socket on the local (client) host are to be forwarded to the given host and port, or Unix socket, on the remote side.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
 

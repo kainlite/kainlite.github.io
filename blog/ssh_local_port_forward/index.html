@@ -44,7 +44,7 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/ssh_local_port_forward/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1552239667" />
+<meta property="og:image" content="https://techsquad.rocks/img/openssh.png?1555629869" />
 
 
 <meta property="article:tag" content="openssh" />
@@ -56,9 +56,9 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 
     <meta name="twitter:title" content="SSH Local Port Forward"/>
 <meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore SSH Remote Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1552239667"/>
+Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1555629869"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1552239667" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/openssh.png?1555629869" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -150,19 +150,17 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 
 <h5 id="the-command"><strong>The command</strong></h5>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -Nn -L <span style="color:#ae81ff">3306</span>:localhost:3306 user@example.com</code></pre></div>
+<script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh"></script>
 
 <p>Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:</p>
 
-<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -Nn -L <span style="color:#ae81ff">3306</span>:172.16.16.200:3306 user@example.com</code></pre></div>
+<p><script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh"></script>
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.</p>
 
 <h5 id="the-parameters-and-their-meaning"><strong>The parameters and their meaning</strong></h5>
 
 <p>I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-N Do not execute a remote command. This is useful for just forwarding ports.
--n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
--L Specifies that connections to the given TCP port or Unix socket on the local (client) host are to be forwarded to the given host and port, or Unix socket, on the remote side.</code></pre></div></p>
+<script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt"></script></p>
 
 <h5 id="server-configuration"><strong>Server configuration</strong></h5>
 

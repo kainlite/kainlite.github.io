@@ -6,10 +6,122 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Creating a lambda function with terraform</title>
+      <link>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a &lt;a href=&#34;https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958&#34;&gt;gist here&lt;/a&gt;, note that I did not create this example but it&amp;rsquo;s really close to the official documentation but shorter, you can see another example with &lt;a href=&#34;https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda&#34;&gt;python here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before you start make sure you already have your account configured for &lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html&#34;&gt;awscli&lt;/a&gt; and &lt;a href=&#34;https://learn.hashicorp.com/terraform/getting-started/install.html&#34;&gt;terraform&lt;/a&gt; installed.&lt;/p&gt;
+
+&lt;h5 id=&#34;configuration-files&#34;&gt;&lt;strong&gt;Configuration files&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;the-code-itself&#34;&gt;&lt;strong&gt;The code itself&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then we need the code that we need or want to run there.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;initialize-terraform&#34;&gt;&lt;strong&gt;Initialize terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&amp;rsquo;t be able to run.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;apply-the-changes&#34;&gt;&lt;strong&gt;Apply the changes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;running-the-function&#34;&gt;&lt;strong&gt;Running the function&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then the last step would be to run our function to see if it actually works, in this case we&amp;rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;clean-up&#34;&gt;&lt;strong&gt;Clean up&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Remember to clean up before leaving.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&amp;rsquo;t know about you, but I&amp;rsquo;m going to keep using the &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt; for now, but it&amp;rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting started with HashiCorp Vault on Kubernetes</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</guid>
+      <tags>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>vault</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>security</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.&lt;/p&gt;
+
+&lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we will need to install our Vault server in our cluster, you can use the following podspec to deploy it to your cluster, just adjust the amount of replicas.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then in order to interact with our new vault server just download the same binary version from &lt;a href=&#34;https://www.vaultproject.io/downloads.html&#34;&gt;Vault Downloads&lt;/a&gt;, unzip and move the binary to an executable path, for example: &lt;code&gt;/usr/local/bin/&lt;/code&gt;, then let&amp;rsquo;s just create a sample secret that later we will provide to our App.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;
+
+&lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;allowtcpforwarding&#34;&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>SSH Socks Proxy</title>

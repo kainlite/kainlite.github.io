@@ -6,10 +6,59 @@
     <description>Recent content in Linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Getting started with HashiCorp Vault on Kubernetes</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</guid>
+      <tags>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>vault</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>security</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.&lt;/p&gt;
+
+&lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we will need to install our Vault server in our cluster, you can use the following podspec to deploy it to your cluster, just adjust the amount of replicas.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then in order to interact with our new vault server just download the same binary version from &lt;a href=&#34;https://www.vaultproject.io/downloads.html&#34;&gt;Vault Downloads&lt;/a&gt;, unzip and move the binary to an executable path, for example: &lt;code&gt;/usr/local/bin/&lt;/code&gt;, then let&amp;rsquo;s just create a sample secret that later we will provide to our App.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;
+
+&lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;allowtcpforwarding&#34;&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>SSH Socks Proxy</title>

@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>My local environment</title>
+    <title>Creating a lambda function with terraform</title>
     <meta name="generator" content="Hugo 0.54.0" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,30 +36,29 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+<meta property="description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
+Before you start make sure you already have your account configured for awscli and terraform installed." />
 
-    <meta property="og:title" content="My local environment" />
-<meta property="og:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+    <meta property="og:title" content="Creating a lambda function with terraform" />
+<meta property="og:description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
+Before you start make sure you already have your account configured for awscli and terraform installed." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/my_local_environment/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1556397557" />
+<meta property="og:url" content="https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/" />
+<meta property="og:image" content="https://techsquad.rocks/img/terraform-lambda.png?1556397557" />
 
 
-<meta property="article:tag" content="urxvt" />
-<meta property="article:tag" content="vim" />
-<meta property="article:tag" content="linux" />
-<meta property="article:tag" content="tmux" />
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="serverless" />
+<meta property="article:tag" content="aws" />
 
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="My local environment"/>
-<meta name="twitter:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1556397557"/>
+    <meta name="twitter:title" content="Creating a lambda function with terraform"/>
+<meta name="twitter:description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
+Before you start make sure you already have your account configured for awscli and terraform installed.?1556397557"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1556397557" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform-lambda.png?1556397557" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -118,23 +117,21 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/my_local_environment/">My local environment</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/">Creating a lambda function with terraform</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          January 12, 2019
+          April 27, 2019
             &nbsp;&nbsp;
             
             
-              <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">
-                    urxvt
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/vim/" class="label label-success">
-                    vim
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
-                    linux
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/tmux/" class="label label-success">
-                    tmux
+              <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">
+                    serverless
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/aws/" class="label label-success">
+                    aws
                   </a>
           </h4>
         </div>
@@ -143,59 +140,43 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
             <div class="blogpost">
               
 
-<h3 id="introduction">Introduction</h3>
+<h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using <strong>Arch Linux</strong> and <strong>AwesomeWM</strong> (I used Gnome Shell previously, and Gnome 2 before that), you can find my <a href="https://github.com/kainlite/dotfiles">dotfiles here</a> with all my configurations.</p>
+<p>Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a <a href="https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958">gist here</a>, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with <a href="https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda">python here</a>.</p>
 
-<p>While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with <a href="https://github.com/jtyr/gbt">GBT</a>.</p>
+<p>Before you start make sure you already have your account configured for <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">awscli</a> and <a href="https://learn.hashicorp.com/terraform/getting-started/install.html">terraform</a> installed.</p>
 
-<h3 id="terminal">Terminal</h3>
+<h5 id="configuration-files"><strong>Configuration files</strong></h5>
 
-<p>My current terminal is <strong>rxvt-unicode</strong> and I&rsquo;m pretty happy with it, it&rsquo;s relatively easy to configure and use, it looks like this:
-<figure class="zoom">
-    <img src="/img/urxvt.png" width="100%"/> 
-</figure>
+<p>First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
+<script type="application/javascript" src="//gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js"></script></p>
 
-And the configuration file can be <a href="https://github.com/kainlite/dotfiles/blob/master/.Xresources">found here</a>, note that even if you don&rsquo;t like Ponys by any reason, it&rsquo;s useful to test colors in the terminal.</p>
+<h5 id="the-code-itself"><strong>The code itself</strong></h5>
 
-<p>It&rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called <code>xrdb</code> (X server resource database utility) to manage the configuration provided in the configuration file <code>.Xresources</code>.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Loads the configuration from Xresources in xrdb</span>
-$ xrdb -merge .Xresources
+<p>Then we need the code that we need or want to run there.
+<script type="application/javascript" src="//gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js"></script></p>
 
-<span style="color:#75715e"># List the current configuration</span>
-$ xrdb -query
+<h5 id="initialize-terraform"><strong>Initialize terraform</strong></h5>
 
-<span style="color:#75715e"># Deletes the current database</span>
-$ xrdb -remove</code></pre></div></p>
+<p>First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&rsquo;t be able to run.
+<script type="application/javascript" src="//gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js"></script></p>
 
-<h3 id="theme">Theme</h3>
+<h5 id="apply-the-changes"><strong>Apply the changes</strong></h5>
 
-<p>My current theme is <a href="https://github.com/morhetz/gruvbox">gruvbox</a> in Vim and also in my <a href="https://github.com/morhetz/gruvbox-contrib/blob/master/xresources/gruvbox-dark.xresources">terminal</a>, and changing from <a href="https://ethanschoonover.com/solarized/">solazired</a> to it is what inspired this small article.</p>
+<p>The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
+<script type="application/javascript" src="//gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js"></script></p>
 
-<h3 id="tmux">Tmux</h3>
+<h5 id="running-the-function"><strong>Running the function</strong></h5>
 
-<p>I also use tmux to maintan sessions, some of it&rsquo;s nice features are tiling, tabs. The configuration can be <a href="https://github.com/kainlite/dotfiles/blob/master/.tmux.conf">found here</a>. I move between tabs with control-h and control-l, and between panes with control-a [hjkl].</p>
+<p>Then the last step would be to run our function to see if it actually works, in this case we&rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
+<script type="application/javascript" src="//gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js"></script></p>
 
-<h3 id="vim">Vim</h3>
+<h5 id="clean-up"><strong>Clean up</strong></h5>
 
-<p>As my text editor I really like and enjoy using Vim, there is always something to learn but once you make some good habits it pays off in the way you write and move around, you can check some amazing screencasts on vim <a href="http://vimcasts.org/">here</a> and also the book Practical Vim can be really helpful to get started and/or improve your current vim-fu.</p>
+<p>Remember to clean up before leaving.
+<script type="application/javascript" src="//gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js"></script></p>
 
-<p>As a plugin manager I use <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles">Plug</a> even that it&rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc">here</a>.</p>
-
-<p>It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo <em>compiling</em> the site after every save and live reloading it in my browser:
-<figure class="zoom">
-    <img src="/img/vim.png" width="100%"/> 
-</figure>
-</p>
-
-<h3 id="notes">Notes</h3>
-
-<ul>
-<li>I&rsquo;m also using zsh and <a href="https://ohmyz.sh/">oh-my-zsh</a> with the theme agnoster. I really like zsh it&rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.</li>
-<li>I like to take advantage of all the space in the screen, that&rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.</li>
-<li>I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.</li>
-<li>If you are going to use unicode I recommend you to install the fonts from nerd-fonts.</li>
-</ul>
+<p>I don&rsquo;t know about you, but I&rsquo;m going to keep using the <a href="https://serverless.com/">serverless framework</a> for now, but it&rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -211,12 +192,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        April 21, 2019
+                        February 16, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a></strong>
+                        <strong><a href="/blog/create_an_aws_lambda_function_in_go/">Create an AWS lambda function in Go</a></strong>
                       </h6>
                     </div>
                   </div>
@@ -224,12 +205,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        March 10, 2019
+                        February 15, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/ssh_socks_proxy/">SSH Socks Proxy</a></strong>
+                        <strong><a href="/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a></strong>
                       </h6>
                     </div>
                   </div>
@@ -237,12 +218,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        March 9, 2019
+                        February 3, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/ssh_remote_port_forward/">SSH Remote Port Forward</a></strong>
+                        <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></strong>
                       </h6>
                     </div>
                   </div>

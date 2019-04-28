@@ -109,6 +109,8 @@
 
 &lt;p&gt;Before you start you will need &lt;a href=&#34;https://www.consul.io/docs/install/index.html&#34;&gt;Consul&lt;/a&gt;, &lt;a href=&#34;https://www.vaultproject.io/docs/install/&#34;&gt;Vault&lt;/a&gt; client binaries and &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube/&#34;&gt;Minikube&lt;/a&gt; or any running cluster, you can find the files used here in &lt;a href=&#34;https://github.com/kainlite/vault-consul-tls&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
 
+&lt;p&gt;This is the part one of &lt;a href=&#34;https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/&#34;&gt;two&lt;/a&gt;&lt;/p&gt;
+
 &lt;h5 id=&#34;preparing-the-cluster&#34;&gt;&lt;strong&gt;Preparing the cluster&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start minikube and validate that we can reach our cluster with &lt;code&gt;minikube start&lt;/code&gt; and then with &lt;code&gt;kubectl get nodes&lt;/code&gt;, also the dashboard can become handy you can invoke it like this &lt;code&gt;minikube dashboard&lt;/code&gt;

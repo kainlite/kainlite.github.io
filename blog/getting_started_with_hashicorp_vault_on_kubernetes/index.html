@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/vault.png?1556490529" />
+<meta property="og:image" content="https://techsquad.rocks/img/vault.png?1556490743" />
 
 
 <meta property="article:tag" content="kubernetes" />
@@ -54,9 +54,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Getting started with HashiCorp Vault on Kubernetes"/>
-<meta name="twitter:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.?1556490529"/>
+<meta name="twitter:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.?1556490743"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault.png?1556490529" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault.png?1556490743" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -145,6 +145,8 @@ if (!doNotTrack) {
 <p>Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.</p>
 
 <p>Before you start you will need <a href="https://www.consul.io/docs/install/index.html">Consul</a>, <a href="https://www.vaultproject.io/docs/install/">Vault</a> client binaries and <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a> or any running cluster, you can find the files used here in <a href="https://github.com/kainlite/vault-consul-tls">this repo</a>.</p>
+
+<p>This is the part one of <a href="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/">two</a></p>
 
 <h5 id="preparing-the-cluster"><strong>Preparing the cluster</strong></h5>
 

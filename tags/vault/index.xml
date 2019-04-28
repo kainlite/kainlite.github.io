@@ -6,7 +6,7 @@
     <description>Recent content in Vault on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 21 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/vault/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Getting started with HashiCorp Vault on Kubernetes</title>
       <link>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</link>
-      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</guid>
       <tags>
@@ -34,23 +34,31 @@
 
 &lt;p&gt;Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.&lt;/p&gt;
 
-&lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;Before you start you will need &lt;a href=&#34;https://www.consul.io/docs/install/index.html&#34;&gt;Consul&lt;/a&gt;, &lt;a href=&#34;https://www.vaultproject.io/docs/install/&#34;&gt;Vault&lt;/a&gt; client binaries and &lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-minikube/&#34;&gt;Minikube&lt;/a&gt; or any running cluster, you can find the files used here in &lt;a href=&#34;https://github.com/kainlite/vault-consul-tls&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;First of all we will need to install our Vault server in our cluster, you can use the following podspec to deploy it to your cluster, just adjust the amount of replicas.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;h5 id=&#34;preparing-the-cluster&#34;&gt;&lt;strong&gt;Preparing the cluster&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;Then in order to interact with our new vault server just download the same binary version from &lt;a href=&#34;https://www.vaultproject.io/downloads.html&#34;&gt;Vault Downloads&lt;/a&gt;, unzip and move the binary to an executable path, for example: &lt;code&gt;/usr/local/bin/&lt;/code&gt;, then let&amp;rsquo;s just create a sample secret that later we will provide to our App.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s start minikube and validate that we can reach our cluster with &lt;code&gt;minikube start&lt;/code&gt; and then with &lt;code&gt;kubectl get nodes&lt;/code&gt;, also the dashboard can become handy you can invoke it like this &lt;code&gt;minikube dashboard&lt;/code&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
-&lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
+&lt;h5 id=&#34;creating-certificates-for-consul-and-vault&#34;&gt;&lt;strong&gt;Creating certificates for Consul and Vault&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/.js&#34;&gt;&lt;/script&gt;
+&lt;p&gt;Vault needs a backend to store data, this backend can be consul, etcd, postgres, and &lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/index.html&#34;&gt;many more&lt;/a&gt;, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
-&lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
+&lt;h5 id=&#34;consul&#34;&gt;&lt;strong&gt;Consul&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;h5 id=&#34;allowtcpforwarding&#34;&gt;&lt;strong&gt;AllowTcpForwarding&lt;/strong&gt;&lt;/h5&gt;
+&lt;p&gt;The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;vault&#34;&gt;&lt;strong&gt;Vault&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Once we have Consul runnning starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily insiped by &lt;a href=&#34;https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/&#34;&gt;this one&lt;/a&gt; and &lt;a href=&#34;https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents&#34;&gt;this one&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 

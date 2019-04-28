@@ -53,12 +53,12 @@
 
 &lt;h5 id=&#34;vault&#34;&gt;&lt;strong&gt;Vault&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;Once we have Consul runnning starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
+&lt;p&gt;Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
 &lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily insiped by &lt;a href=&#34;https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/&#34;&gt;this one&lt;/a&gt; and &lt;a href=&#34;https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents&#34;&gt;this one&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily inspired by &lt;a href=&#34;https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/&#34;&gt;this one&lt;/a&gt; and &lt;a href=&#34;https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents&#34;&gt;this one&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 

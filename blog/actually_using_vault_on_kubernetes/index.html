@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>Getting started with HashiCorp Vault on Kubernetes</title>
+    <title>Actually using Vault on Kubernetes</title>
     <meta name="generator" content="Hugo 0.54.0" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,13 +36,15 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1." />
+<meta property="description" content="Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo." />
 
-    <meta property="og:title" content="Getting started with HashiCorp Vault on Kubernetes" />
-<meta property="og:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1." />
+    <meta property="og:title" content="Actually using Vault on Kubernetes" />
+<meta property="og:description" content="Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/vault.png?1556490529" />
+<meta property="og:url" content="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/" />
+<meta property="og:image" content="https://techsquad.rocks/img/vault-kubernetes.png?1556490529" />
 
 
 <meta property="article:tag" content="kubernetes" />
@@ -53,10 +55,11 @@ if (!doNotTrack) {
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="Getting started with HashiCorp Vault on Kubernetes"/>
-<meta name="twitter:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.?1556490529"/>
+    <meta name="twitter:title" content="Actually using Vault on Kubernetes"/>
+<meta name="twitter:description" content="Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.?1556490529"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault.png?1556490529" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault-kubernetes.png?1556490529" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -115,12 +118,12 @@ if (!doNotTrack) {
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          April 28, 2019
+          April 29, 2019
             &nbsp;&nbsp;
             
             
@@ -142,33 +145,49 @@ if (!doNotTrack) {
 
 <h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.</p>
+<p>In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to <a href="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a>.</p>
 
-<p>Before you start you will need <a href="https://www.consul.io/docs/install/index.html">Consul</a>, <a href="https://www.vaultproject.io/docs/install/">Vault</a> client binaries and <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a> or any running cluster, you can find the files used here in <a href="https://github.com/kainlite/vault-consul-tls">this repo</a>.</p>
+<p>In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in <a href="https://github.com/kainlite/vault-kubernetes">this repo</a>.</p>
 
-<h5 id="preparing-the-cluster"><strong>Preparing the cluster</strong></h5>
+<h5 id="creating-a-cert-for-our-new-client"><strong>Creating a cert for our new client</strong></h5>
 
-<p>Let&rsquo;s start minikube and validate that we can reach our cluster with <code>minikube start</code> and then with <code>kubectl get nodes</code>, also the dashboard can become handy you can invoke it like this <code>minikube dashboard</code>
-<script type="application/javascript" src="//gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js"></script></p>
+<p>As we see here we need to enable kv version 1 on <code>/secret</code> for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
+<script type="application/javascript" src="//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js"></script></p>
 
-<h5 id="creating-certificates-for-consul-and-vault"><strong>Creating certificates for Consul and Vault</strong></h5>
+<h5 id="service-account-for-kubernetes"><strong>Service account for kubernetes</strong></h5>
 
-<p>Vault needs a backend to store data, this backend can be consul, etcd, postgres, and <a href="https://www.vaultproject.io/docs/configuration/storage/index.html">many more</a>, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-<script type="application/javascript" src="//gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js"></script></p>
+<p>In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
+<script type="application/javascript" src="//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js"></script></p>
 
-<h5 id="consul"><strong>Consul</strong></h5>
+<h5 id="vault-policy"><strong>Vault policy</strong></h5>
 
-<p>The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-<script type="application/javascript" src="//gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js"></script></p>
+<p>Then we need to set a read-only policy for our secrets, we don&rsquo;t want or app to be able to write or rewrite secrets.
+<script type="application/javascript" src="//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js"></script></p>
 
-<h5 id="vault"><strong>Vault</strong></h5>
+<h5 id="kubernetes-configuration"><strong>Kubernetes configuration</strong></h5>
 
-<p>Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-<script type="application/javascript" src="//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js"></script></p>
+<p>Set the environment variables to point to the running Minikube environment and enable the <a href="https://www.vaultproject.io/docs/auth/kubernetes.html#configuration">kubernetes authentication method</a> and then validate it from a temporal Pod.
+<script type="application/javascript" src="//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js"></script></p>
+
+<h5 id="the-deployment-and-the-consul-template-configuration"><strong>The deployment and the consul-template configuration</strong></h5>
+
+<p>If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
+<script type="application/javascript" src="//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js"></script></p>
+
+<p>This is where the magic happens so we&rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
+<script type="application/javascript" src="//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js"></script></p>
+
+<p>And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
+<script type="application/javascript" src="//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js"></script></p>
+
+<h5 id="test-it"><strong>Test it!</strong></h5>
+
+<p>The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
+<script type="application/javascript" src="//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js"></script></p>
 
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
-<p>As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily inspired by <a href="https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/">this one</a> and <a href="https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents">this one</a>.</p>
+<p>This post was heavily inspired by <a href="https://learn.hashicorp.com/vault/identity-access-management/vault-agent-k8s">this doc page</a>, the main difference is that we have mutual TLS on, the only thing left would be to auto unseal our Vault, but we will left that for a future article or as an excercise for the reader.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -184,12 +203,12 @@ if (!doNotTrack) {
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        April 29, 2019
+                        April 28, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
+                        <strong><a href="/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

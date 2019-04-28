@@ -6,10 +6,83 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 28 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Actually using Vault on Kubernetes</title>
+      <link>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</guid>
+      <tags>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>vault</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>security</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In the previous article we configured Vault with Consul on our cluster, now it&amp;rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&amp;rsquo;t remember about it or don&amp;rsquo;t have your Vault already configured you can go to &lt;a href=&#34;https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/&#34;&gt;Getting started with HashiCorp Vault on Kubernetes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in &lt;a href=&#34;https://github.com/kainlite/vault-kubernetes&#34;&gt;this repo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;creating-a-cert-for-our-new-client&#34;&gt;&lt;strong&gt;Creating a cert for our new client&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As we see here we need to enable kv version 1 on &lt;code&gt;/secret&lt;/code&gt; for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;service-account-for-kubernetes&#34;&gt;&lt;strong&gt;Service account for kubernetes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;vault-policy&#34;&gt;&lt;strong&gt;Vault policy&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then we need to set a read-only policy for our secrets, we don&amp;rsquo;t want or app to be able to write or rewrite secrets.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;kubernetes-configuration&#34;&gt;&lt;strong&gt;Kubernetes configuration&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Set the environment variables to point to the running Minikube environment and enable the &lt;a href=&#34;https://www.vaultproject.io/docs/auth/kubernetes.html#configuration&#34;&gt;kubernetes authentication method&lt;/a&gt; and then validate it from a temporal Pod.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;the-deployment-and-the-consul-template-configuration&#34;&gt;&lt;strong&gt;The deployment and the consul-template configuration&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;This is where the magic happens so we&amp;rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;test-it&#34;&gt;&lt;strong&gt;Test it!&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This post was heavily inspired by &lt;a href=&#34;https://learn.hashicorp.com/vault/identity-access-management/vault-agent-k8s&#34;&gt;this doc page&lt;/a&gt;, the main difference is that we have mutual TLS on, the only thing left would be to auto unseal our Vault, but we will left that for a future article or as an excercise for the reader.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting started with HashiCorp Vault on Kubernetes</title>

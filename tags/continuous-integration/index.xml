@@ -1,0 +1,113 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>continuous-integration on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/continuous-integration/</link>
+    <description>Recent content in continuous-integration on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://techsquad.rocks/tags/continuous-integration/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go continuous integration with Travis CI and Docker</title>
+      <link>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</guid>
+      <tags>
+      
+        <tag>travis-ci</tag>
+      
+        <tag>docker</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>continuous-integration</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see how to create a simple continuous integration process using &lt;a href=&#34;https://github.com&#34;&gt;Github&lt;/a&gt;, &lt;a href=&#34;https://travis-ci.org&#34;&gt;Travis-CI&lt;/a&gt; and &lt;a href=&#34;https://cloud.docker.com&#34;&gt;Docker HUB&lt;/a&gt;, the files used here can be found &lt;a href=&#34;https://github.com/kainlite/whatismyip-go&#34;&gt;HERE&lt;/a&gt;, in the next article we will continue with what we have here to provide continuous deployment possibly using Jenkins or maybe Travis, let me know which one you would prefer to see.&lt;/p&gt;
+
+&lt;h5 id=&#34;first-thing-first&#34;&gt;&lt;strong&gt;First thing first&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h5 id=&#34;app&#34;&gt;App&lt;/h5&gt;
+
+&lt;p&gt;We will review the docker file, the app code and the travis-ci file, so let&amp;rsquo;s start with the app &lt;code&gt;main.go&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f7e0c3e40b02cc31a78f4eef491fa834.js&#34;&gt;&lt;/script&gt;
+Let&amp;rsquo;s quickly check what this code does, first we check for the port to use, then convert it to a number, register the handler for our HTTP function and listen for requests, this code should print our ip address as you would expect by the name.&lt;/p&gt;
+
+&lt;p&gt;Then the &lt;code&gt;main_test.go&lt;/code&gt; code:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/13391af166c77ffb10b940e5a9a1ac4d.js&#34;&gt;&lt;/script&gt;
+The test is fairly simple it just checks that the web server works by trying to fetch &lt;code&gt;/&lt;/code&gt; and checking for an empty body and &lt;code&gt;200&lt;/code&gt; status code.&lt;/p&gt;
+
+&lt;h5 id=&#34;docker&#34;&gt;Docker&lt;/h5&gt;
+
+&lt;p&gt;Next the &lt;code&gt;Dockerfile&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/5db561f6f8808f1b5eaf091887416311.js&#34;&gt;&lt;/script&gt;
+We set the working directory to please go, then fetch dependencies and install our binary, we also generate a test binary, expose the port that we want to use and set the user as nobody in case someone can exploit our app and jump into our container, then just set the command to execute on &lt;code&gt;docker run&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;travis&#34;&gt;Travis&lt;/h5&gt;
+
+&lt;p&gt;And last but not least the &lt;code&gt;.travis.yml&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/55c5fcd1fde0bfc148b8a9ee8a41fc5a.js&#34;&gt;&lt;/script&gt;
+We let travis know that we will be running some go code and also docker, then build the image, run the tests and then the app as initialization, after that we validate that the app works and lastly login to dockerhub and push the image, the important things to have in mind here is that we use variables for example the repo name, the commit SHA, and the docker username and password in a secure way, since travis-ci hides the values that we tell them to.&lt;/p&gt;
+
+&lt;h5 id=&#34;putting-everything-together&#34;&gt;&lt;strong&gt;Putting everything together&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So far we got the &lt;a href=&#34;https://github.com/kainlite/whatismyip-go&#34;&gt;repo&lt;/a&gt; going, the configuration for travis, the dockerfile, the app, but now we need to make use of it, so you will need to create a travis account for this to work then link your github account to it, then you will be able to sync your repositories and you should see something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/whatismyip-go-travis-list.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+Once you have your account linked you will be able to sync and enable repositories to be built.&lt;/p&gt;
+
+&lt;p&gt;After enabling the repository you can configure some details like environment variables, here we will set the credentials for dockerhub.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/whatismyip-go-travis-settings.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;And now we will create the repository in dockerhub:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/whatismyip-go-docker-repo.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+After the repository is created we can trigger a build from travis or push a commit to the repo in order to trigger a build and to validate that everything works.&lt;/p&gt;
+
+&lt;p&gt;You should see something like this in travis if everything went well:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/whatismyip-go-travis-log-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+You can validate that everything went well by checking the commit SHA that triggered the build.&lt;/p&gt;
+
+&lt;p&gt;And dockerhub:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/whatismyip-go-travis-log-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+The same SHA will be used to tag the image.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the first part of a possible series of two or three articles with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).&lt;/p&gt;
+
+&lt;p&gt;Some useful links for travis and &lt;a href=&#34;https://docs.travis-ci.com/user/docker/&#34;&gt;docker&lt;/a&gt; and the &lt;a href=&#34;https://docs.travis-ci.com/user/environment-variables/&#34;&gt;environment variables list&lt;/a&gt; that can be used.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

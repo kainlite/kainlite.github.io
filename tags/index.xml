@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
@@ -6,17 +5,17 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Aws</title>
-      <link>https://techsquad.rocks/tags/aws/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      <title>continuous-integration</title>
+      <link>https://techsquad.rocks/tags/continuous-integration/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/tags/aws/</guid>
+      <guid>https://techsquad.rocks/tags/continuous-integration/</guid>
       <tags>
       
       </tags>
@@ -24,11 +23,11 @@
     </item>
     
     <item>
-      <title>Deployment Tools</title>
-      <link>https://techsquad.rocks/tags/deployment-tools/</link>
-      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      <title>docker</title>
+      <link>https://techsquad.rocks/tags/docker/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/tags/deployment-tools/</guid>
+      <guid>https://techsquad.rocks/tags/docker/</guid>
       <tags>
       
       </tags>
@@ -36,11 +35,11 @@
     </item>
     
     <item>
-      <title>Development</title>
-      <link>https://techsquad.rocks/tags/development/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      <title>golang</title>
+      <link>https://techsquad.rocks/tags/golang/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/tags/development/</guid>
+      <guid>https://techsquad.rocks/tags/golang/</guid>
       <tags>
       
       </tags>
@@ -48,115 +47,7 @@
     </item>
     
     <item>
-      <title>Elm</title>
-      <link>https://techsquad.rocks/tags/elm/</link>
-      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/elm/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Git</title>
-      <link>https://techsquad.rocks/tags/git/</link>
-      <pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/git/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gitkube</title>
-      <link>https://techsquad.rocks/tags/gitkube/</link>
-      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/gitkube/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go</title>
-      <link>https://techsquad.rocks/tags/go/</link>
-      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/go/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Helm</title>
-      <link>https://techsquad.rocks/tags/helm/</link>
-      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/helm/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Istio</title>
-      <link>https://techsquad.rocks/tags/istio/</link>
-      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/istio/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Jsonnet</title>
-      <link>https://techsquad.rocks/tags/jsonnet/</link>
-      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/jsonnet/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kops</title>
-      <link>https://techsquad.rocks/tags/kops/</link>
-      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/kops/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ksonnet</title>
-      <link>https://techsquad.rocks/tags/ksonnet/</link>
-      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/ksonnet/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kubernetes</title>
+      <title>kubernetes</title>
       <link>https://techsquad.rocks/tags/kubernetes/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -168,7 +59,7 @@
     </item>
     
     <item>
-      <title>Linux</title>
+      <title>linux</title>
       <link>https://techsquad.rocks/tags/linux/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -180,31 +71,7 @@
     </item>
     
     <item>
-      <title>Openssh</title>
-      <link>https://techsquad.rocks/tags/openssh/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/openssh/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Routing</title>
-      <link>https://techsquad.rocks/tags/routing/</link>
-      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/routing/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Security</title>
+      <title>security</title>
       <link>https://techsquad.rocks/tags/security/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -216,11 +83,11 @@
     </item>
     
     <item>
-      <title>Serverless</title>
-      <link>https://techsquad.rocks/tags/serverless/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      <title>travis-ci</title>
+      <link>https://techsquad.rocks/tags/travis-ci/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/tags/serverless/</guid>
+      <guid>https://techsquad.rocks/tags/travis-ci/</guid>
       <tags>
       
       </tags>
@@ -228,79 +95,7 @@
     </item>
     
     <item>
-      <title>Service Mesh</title>
-      <link>https://techsquad.rocks/tags/service-mesh/</link>
-      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/service-mesh/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Skaffold</title>
-      <link>https://techsquad.rocks/tags/skaffold/</link>
-      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/skaffold/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Slack</title>
-      <link>https://techsquad.rocks/tags/slack/</link>
-      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/slack/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tips and Tricks</title>
-      <link>https://techsquad.rocks/tags/tips-and-tricks/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/tips-and-tricks/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tmux</title>
-      <link>https://techsquad.rocks/tags/tmux/</link>
-      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/tmux/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Urxvt</title>
-      <link>https://techsquad.rocks/tags/urxvt/</link>
-      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/urxvt/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vault</title>
+      <title>vault</title>
       <link>https://techsquad.rocks/tags/vault/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -312,11 +107,263 @@
     </item>
     
     <item>
-      <title>Vim</title>
+      <title>aws</title>
+      <link>https://techsquad.rocks/tags/aws/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/aws/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>development</title>
+      <link>https://techsquad.rocks/tags/development/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/development/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>serverless</title>
+      <link>https://techsquad.rocks/tags/serverless/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/serverless/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>openssh</title>
+      <link>https://techsquad.rocks/tags/openssh/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/openssh/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tips-and-tricks</title>
+      <link>https://techsquad.rocks/tags/tips-and-tricks/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/tips-and-tricks/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://techsquad.rocks/tags/go/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/go/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elm</title>
+      <link>https://techsquad.rocks/tags/elm/</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/elm/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://techsquad.rocks/tags/git/</link>
+      <pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/git/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tmux</title>
+      <link>https://techsquad.rocks/tags/tmux/</link>
+      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/tmux/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>urxvt</title>
+      <link>https://techsquad.rocks/tags/urxvt/</link>
+      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/urxvt/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
       <link>https://techsquad.rocks/tags/vim/</link>
       <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/vim/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kops</title>
+      <link>https://techsquad.rocks/tags/kops/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/kops/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>istio</title>
+      <link>https://techsquad.rocks/tags/istio/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/istio/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>routing</title>
+      <link>https://techsquad.rocks/tags/routing/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/routing/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>service-mesh</title>
+      <link>https://techsquad.rocks/tags/service-mesh/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/service-mesh/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deployment-tools</title>
+      <link>https://techsquad.rocks/tags/deployment-tools/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/deployment-tools/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>skaffold</title>
+      <link>https://techsquad.rocks/tags/skaffold/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/skaffold/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gitkube</title>
+      <link>https://techsquad.rocks/tags/gitkube/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/gitkube/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jsonnet</title>
+      <link>https://techsquad.rocks/tags/jsonnet/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/jsonnet/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ksonnet</title>
+      <link>https://techsquad.rocks/tags/ksonnet/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/ksonnet/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>slack</title>
+      <link>https://techsquad.rocks/tags/slack/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/slack/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>helm</title>
+      <link>https://techsquad.rocks/tags/helm/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/helm/</guid>
       <tags>
       
       </tags>

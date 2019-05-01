@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <title>ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://techsquad.rocks/tags/ksonnet/</link>
-    <description>Recent content in Ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <description>Recent content in ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 29 Dec 2018 00:00:00 +0000</lastBuildDate>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>travis-ci</title>
+    <meta name="generator" content="Hugo 0.55.3" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed." />
+
+    <meta property="og:title" content="travis-ci" />
+<meta property="og:description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://techsquad.rocks/tags/travis-ci/" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1556734895" />
+
+
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="travis-ci"/>
+<meta name="twitter:description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.?1556734895"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1556734895" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <h3>Archive by date</h3>
+          <ul id="all-tags">
+            
+              
+                <a href="https://techsquad.rocks/tags/aws/" class="label label-success">aws</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/continuous-integration/" class="label label-success">continuous-integration</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/deployment-tools/" class="label label-success">deployment-tools</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/development/" class="label label-success">development</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/docker/" class="label label-success">docker</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/elm/" class="label label-success">elm</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/git/" class="label label-success">git</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/gitkube/" class="label label-success">gitkube</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/go/" class="label label-success">go</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/golang/" class="label label-success">golang</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/helm/" class="label label-success">helm</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/istio/" class="label label-success">istio</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/jsonnet/" class="label label-success">jsonnet</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/kops/" class="label label-success">kops</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/ksonnet/" class="label label-success">ksonnet</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/kubernetes/" class="label label-success">kubernetes</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/linux/" class="label label-success">linux</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/openssh/" class="label label-success">openssh</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/routing/" class="label label-success">routing</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/security/" class="label label-success">security</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">serverless</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/service-mesh/" class="label label-success">service-mesh</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/skaffold/" class="label label-success">skaffold</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/slack/" class="label label-success">slack</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/tips-and-tricks/" class="label label-success">tips-and-tricks</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/tmux/" class="label label-success">tmux</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/travis-ci/" class="label label-success">travis-ci</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">urxvt</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/vault/" class="label label-success">vault</a>
+              
+            
+              
+                <a href="https://techsquad.rocks/tags/vim/" class="label label-success">vim</a>
+              
+            
+          </ul>
+          <div class="col-sm-3 col-md-3 col-lg-3 pull-right">
+            <a href="/index.xml">
+              <img height="20px" width="20px" src="/img/rss.png" />
+            </a>
+            <a href="/index.json">
+              <img height="20px" width="20px" src="/img/jsonfeed.png" />
+            </a>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+            
+              <div class="row">
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                  <h5 style="text-align: right">
+                    April 29, 2019
+                  </h5>
+                 </div>
+                 <div class="col-sm-8 col-md-8 col-lg-8">
+                   <h5 style="text-align: left">
+                    <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
+                  </h5>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+      </div>
+    </div>
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script>
+
+
+  </body>
+</html>

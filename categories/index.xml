@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
@@ -6,16 +5,17 @@
     <description>Recent content in Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Deployment Tools</title>
-      <link>https://techsquad.rocks/categories/deployment-tools/</link>
-      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      <title>continuous-integration</title>
+      <link>https://techsquad.rocks/categories/continuous-integration/</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/categories/deployment-tools/</guid>
+      <guid>https://techsquad.rocks/categories/continuous-integration/</guid>
       <tags>
       
       </tags>
@@ -23,7 +23,7 @@
     </item>
     
     <item>
-      <title>Kubernetes</title>
+      <title>kubernetes</title>
       <link>https://techsquad.rocks/categories/kubernetes/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -35,19 +35,7 @@
     </item>
     
     <item>
-      <title>Linux</title>
-      <link>https://techsquad.rocks/categories/linux/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/categories/linux/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Serverless</title>
+      <title>serverless</title>
       <link>https://techsquad.rocks/categories/serverless/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -59,11 +47,35 @@
     </item>
     
     <item>
-      <title>Service Mesh</title>
+      <title>linux</title>
+      <link>https://techsquad.rocks/categories/linux/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/categories/linux/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>service-mesh</title>
       <link>https://techsquad.rocks/categories/service-mesh/</link>
       <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/categories/service-mesh/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deployment-tools</title>
+      <link>https://techsquad.rocks/categories/deployment-tools/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/categories/deployment-tools/</guid>
       <tags>
       
       </tags>

@@ -8,6 +8,95 @@
   </url>
   
   <url>
+    <loc>https://techsquad.rocks/blog/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/continuous-integration/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/continuous-integration/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/docker/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/golang/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/linux/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/security/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/travis-ci/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/vault/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</loc>
     <lastmod>2019-04-28T00:00:00+00:00</lastmod>
   </url>
@@ -18,8 +107,50 @@
   </url>
   
   <url>
+    <loc>https://techsquad.rocks/tags/aws/</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/development/</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/serverless/</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/serverless/</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/ssh_socks_proxy/</loc>
     <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/linux/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/openssh/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/tips-and-tricks/</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -38,6 +169,12 @@
   </url>
   
   <url>
+    <loc>https://techsquad.rocks/tags/go/</loc>
+    <lastmod>2019-02-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</loc>
     <lastmod>2019-02-15T00:00:00+00:00</lastmod>
   </url>
@@ -53,109 +190,14 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/serving_static_sites_with_github/</loc>
-    <lastmod>2019-01-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</loc>
-    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</loc>
-    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/my_local_environment/</loc>
-    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/exploring_some_istio_features/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</loc>
-    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_skaffold/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_gitkube/</loc>
-    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/go_echobot/</loc>
-    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_ksonnet/</loc>
-    <lastmod>2018-12-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
-    <lastmod>2018-12-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/aws/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/development/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/tags/elm/</loc>
     <lastmod>2019-02-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/serving_static_sites_with_github/</loc>
+    <lastmod>2019-01-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -165,141 +207,8 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/gitkube/</loc>
-    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/go/</loc>
-    <lastmod>2019-02-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/helm/</loc>
-    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/istio/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/jsonnet/</loc>
-    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/kops/</loc>
-    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/ksonnet/</loc>
-    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/linux/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/linux/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/openssh/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/routing/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/security/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/serverless/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/serverless/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
-    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/skaffold/</loc>
-    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/slack/</loc>
-    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/tips-and-tricks/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</loc>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -315,15 +224,142 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/vault/</loc>
-    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <loc>https://techsquad.rocks/tags/vim/</loc>
+    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/vim/</loc>
-    <lastmod>2019-01-23T00:00:00+00:00</lastmod>
+    <loc>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</loc>
+    <lastmod>2019-01-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</loc>
+    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/kops/</loc>
+    <lastmod>2019-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/my_local_environment/</loc>
+    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/exploring_some_istio_features/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/istio/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/routing/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
+    <lastmod>2019-01-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/getting_started_with_skaffold/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/skaffold/</loc>
+    <lastmod>2019-01-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/getting_started_with_gitkube/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/gitkube/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/go_echobot/</loc>
+    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/jsonnet/</loc>
+    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/ksonnet/</loc>
+    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/slack/</loc>
+    <lastmod>2018-12-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/getting_started_with_ksonnet/</loc>
+    <lastmod>2018-12-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/helm/</loc>
+    <lastmod>2018-12-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
+    <lastmod>2018-12-23T00:00:00+00:00</lastmod>
   </url>
   
 </urlset>

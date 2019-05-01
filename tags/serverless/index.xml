@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <title>serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://techsquad.rocks/tags/serverless/</link>
-    <description>Recent content in Serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <description>Recent content in serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>

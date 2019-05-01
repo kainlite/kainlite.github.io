@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Actually using Vault on Kubernetes</title>
-    <meta name="generator" content="Hugo 0.54.0" />
+    <meta name="generator" content="Hugo 0.55.3" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -23,7 +23,7 @@
         <![endif]-->
 
 
-	
+    
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -44,7 +44,7 @@ In this article we will actually create an example using mutual TLS and provisio
 In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/vault-kubernetes.png?1556490743" />
+<meta property="og:image" content="https://techsquad.rocks/img/vault-kubernetes.png?1556734895" />
 
 
 <meta property="article:tag" content="kubernetes" />
@@ -57,9 +57,9 @@ In this article we will actually create an example using mutual TLS and provisio
 
     <meta name="twitter:title" content="Actually using Vault on Kubernetes"/>
 <meta name="twitter:description" content="Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
-In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.?1556490743"/>
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.?1556734895"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault-kubernetes.png?1556490743" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault-kubernetes.png?1556734895" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -187,7 +187,7 @@ In this article we will actually create an example using mutual TLS and provisio
 
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
-<p>This post was heavily inspired by <a href="https://learn.hashicorp.com/vault/identity-access-management/vault-agent-k8s">this doc page</a>, the main difference is that we have mutual TLS on, the only thing left would be to auto unseal our Vault, but we will left that for a future article or as an excercise for the reader.</p>
+<p>This post was heavily inspired by <a href="https://learn.hashicorp.com/vault/identity-access-management/vault-agent-k8s">this doc page</a>, the main difference is that we have mutual TLS on, the only thing left would be to auto unseal our Vault, but we will left that for a future article or as an exercise for the reader.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -199,6 +199,19 @@ In this article we will actually create an example using mutual TLS and provisio
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        April 29, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -222,19 +235,6 @@ In this article we will actually create an example using mutual TLS and provisio
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/ssh_socks_proxy/">SSH Socks Proxy</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        March 9, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/ssh_remote_port_forward/">SSH Remote Port Forward</a></strong>
                       </h6>
                     </div>
                   </div>

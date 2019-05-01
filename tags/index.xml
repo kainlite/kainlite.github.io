@@ -5,7 +5,7 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,7 +13,7 @@
     <item>
       <title>continuous-integration</title>
       <link>https://techsquad.rocks/tags/continuous-integration/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/continuous-integration/</guid>
       <tags>
@@ -25,7 +25,7 @@
     <item>
       <title>docker</title>
       <link>https://techsquad.rocks/tags/docker/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/docker/</guid>
       <tags>
@@ -37,9 +37,33 @@
     <item>
       <title>golang</title>
       <link>https://techsquad.rocks/tags/golang/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/golang/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://techsquad.rocks/tags/linux/</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/linux/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>travis-ci</title>
+      <link>https://techsquad.rocks/tags/travis-ci/</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/travis-ci/</guid>
       <tags>
       
       </tags>
@@ -59,35 +83,11 @@
     </item>
     
     <item>
-      <title>linux</title>
-      <link>https://techsquad.rocks/tags/linux/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/linux/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>security</title>
       <link>https://techsquad.rocks/tags/security/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/security/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>travis-ci</title>
-      <link>https://techsquad.rocks/tags/travis-ci/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/travis-ci/</guid>
       <tags>
       
       </tags>

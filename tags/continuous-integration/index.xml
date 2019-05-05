@@ -127,6 +127,8 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
 
 &lt;p&gt;In this example many things could be improved, for example we use a node port and there is no firewall so we can hit our app directly via nodeport or using the load balancer, we should add some firewall rules so only the load balancer is able to talk to the node port range (30000-32767).&lt;/p&gt;
 
+&lt;p&gt;Also be aware that for production this setup will not be sufficient but for a development environment would suffice initially.&lt;/p&gt;
+
 &lt;p&gt;Some useful links for &lt;a href=&#34;https://docs.travis-ci.com/user/job-lifecycle/&#34;&gt;travis&lt;/a&gt; and &lt;a href=&#34;https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html&#34;&gt;terraform&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;

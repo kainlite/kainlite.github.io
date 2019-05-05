@@ -44,7 +44,7 @@ DigitalOcean We need to create a token so terraform can create resources using D
 DigitalOcean We need to create a token so terraform can create resources using DO API." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/travis-ci-docker.png?1557097672" />
+<meta property="og:image" content="https://techsquad.rocks/img/travis-ci-docker.png?1557098605" />
 
 
 <meta property="article:tag" content="travis-ci" />
@@ -59,9 +59,9 @@ DigitalOcean We need to create a token so terraform can create resources using D
 
     <meta name="twitter:title" content="Go continuous delivery with Terraform and Kubernetes"/>
 <meta name="twitter:description" content="Introduction In this article we will continue where we left off the last time Go continuous integration with Travis CI and Docker, the files used here can be found HERE, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
-DigitalOcean We need to create a token so terraform can create resources using DO API.?1557097672"/>
+DigitalOcean We need to create a token so terraform can create resources using DO API.?1557098605"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/travis-ci-docker.png?1557097672" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/travis-ci-docker.png?1557098605" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -242,6 +242,8 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
 <p>I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the second part of a possible series of three articles (Next one should be about the same but using Jenkins) with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).</p>
 
 <p>In this example many things could be improved, for example we use a node port and there is no firewall so we can hit our app directly via nodeport or using the load balancer, we should add some firewall rules so only the load balancer is able to talk to the node port range (30000-32767).</p>
+
+<p>Also be aware that for production this setup will not be sufficient but for a development environment would suffice initially.</p>
 
 <p>Some useful links for <a href="https://docs.travis-ci.com/user/job-lifecycle/">travis</a> and <a href="https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html">terraform</a>.</p>
 

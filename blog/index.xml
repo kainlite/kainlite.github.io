@@ -5,10 +5,137 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 May 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go continuous delivery with Terraform and Kubernetes</title>
+      <link>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</link>
+      <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</guid>
+      <tags>
+      
+        <tag>travis-ci</tag>
+      
+        <tag>docker</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>continuous-integration</tag>
+      
+        <tag>continuous-delivery</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will continue where we left off the last time &lt;a href=&#34;https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/&#34;&gt;Go continuous integration with Travis CI and Docker&lt;/a&gt;, the files used here can be found &lt;a href=&#34;https://github.com/kainlite/whatismyip-go/tree/continuos-delivery&#34;&gt;HERE&lt;/a&gt;, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.&lt;/p&gt;
+
+&lt;h5 id=&#34;digitalocean&#34;&gt;&lt;strong&gt;DigitalOcean&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;We need to create a token so terraform can create resources using DO API. Go to your account then in the menu on the left click API, then you should see something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-token-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+Once there click generate token (give it a meaningful name to you), and make sure it can write.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-token-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As the next step it would be good to set the token for terraform, so let&amp;rsquo;s examine all files and see what they are going to do, but first we&amp;rsquo;re going to provide the secrets to our app via environment variables, and I&amp;rsquo;ve found quite useful to use &lt;code&gt;direnv&lt;/code&gt; on many projects, so the content of the first file &lt;code&gt;.envrc&lt;/code&gt; would look something like:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js&#34;&gt;&lt;/script&gt;
+and after that you will need to allow it&amp;rsquo;s execution by running &lt;code&gt;direnv allow&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The first terraform file that we are going to check is &lt;code&gt;provider.tf&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js&#34;&gt;&lt;/script&gt;
+As we&amp;rsquo;re using environment variables we need to declare it and then set it in the provider, for now we only need the token.&lt;/p&gt;
+
+&lt;p&gt;Then the &lt;code&gt;kubernetes.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js&#34;&gt;&lt;/script&gt;
+This file will be the responsible of creating the kubernetes cluster, as it&amp;rsquo;s our development cluster we only need one node.&lt;/p&gt;
+
+&lt;p&gt;Next the file &lt;code&gt;lb.tf&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js&#34;&gt;&lt;/script&gt;
+This one is particularly interesting because it will provide a point of access to our applications (port 80 on it&amp;rsquo;s public IP address), and it also uses a basic health check.&lt;/p&gt;
+
+&lt;p&gt;And last but not least the &lt;code&gt;output.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js&#34;&gt;&lt;/script&gt;
+This file will print the kubernetes config file that we need to be able to use &lt;code&gt;kubectl&lt;/code&gt;, and also the IP address of our load balancer.&lt;/p&gt;
+
+&lt;p&gt;So what do we do with all of this?, first you will need to run &lt;code&gt;terraform init&lt;/code&gt; inside the terraform folder to download plugins and providers, once that is done you can run &lt;code&gt;terraform plan&lt;/code&gt; to see what changes terraform wants to make or &lt;code&gt;terraform apply&lt;/code&gt; to do the changes. How is that going to look?:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js&#34;&gt;&lt;/script&gt;
+This will create our cluster in DigitalOcean, remember to destroy it after you&amp;rsquo;re done using it with &lt;code&gt;terraform destroy&lt;/code&gt;, if you don&amp;rsquo;t use a plan you will be prompted for a confirmation when you do &lt;code&gt;terraform apply&lt;/code&gt;, review and say &lt;code&gt;yes&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;travis&#34;&gt;&lt;strong&gt;Travis&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;We did some additions to our &lt;code&gt;.travis.yml&lt;/code&gt; file, which are mostly to prepare &lt;code&gt;kubectl&lt;/code&gt; and to also trigger a deployment if the build succeeded.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js&#34;&gt;&lt;/script&gt;
+As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.&lt;/p&gt;
+
+&lt;p&gt;This is how it should look in travis:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-environment-variables.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at the generated kubernetes configuration and what values you should take into account:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js&#34;&gt;&lt;/script&gt;
+Never do that, don&amp;rsquo;t share your configuration or anybody will be able to use your cluster, also be careful not to commit it to your repo, in this example it&amp;rsquo;s no longer valid because after running the examples I destroyed the cluster with &lt;code&gt;terraform destroy&lt;/code&gt;. Now there are four values of interest for us: certificate-authority-data: KUBERNETES_CA, client-certificate-data: KUBERNETES_CLIENT_CA, client-key-data: KUBERNETES_CLIENT_KEY and server: KUBERNETES_ENDPOINT, with these variables we can re-create our kubernetes configuration easily using kubectl, be aware that we&amp;rsquo;re not decoding to save it in travis, we do that in the travis configuration file (&lt;code&gt;.travis.yml&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h5 id=&#34;kubernetes&#34;&gt;&lt;strong&gt;Kubernetes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So after all that, we still need to have a deployment template to deploy our application, and it&amp;rsquo;s a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let&amp;rsquo;s check it &lt;code&gt;manifest.yml.template&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js&#34;&gt;&lt;/script&gt;
+Here we expose our service in the port 30000 as a NodePort, and deploy the current SHA (replaced during execution by travis)&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-everything&#34;&gt;&lt;strong&gt;Testing everything&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Validate that the deployment went well by checking our kubernetes cluster:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;First we test the load balancer, and as we will see the ip is not right, it&amp;rsquo;s the internal ip of the load balancer and not our public ip address.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;But if we hit our service directly we can see the correct IP address, this could be improved but it&amp;rsquo;s left as an exercise for the avid reader ◕_◕.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally let&amp;rsquo;s check what we should see in travis:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-travis-result-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As we can see everything went well and our deployment applied successfully in our cluster
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-travis-result-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the second part of a possible series of three articles (Next one should be about the same but using Jenkins) with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).&lt;/p&gt;
+
+&lt;p&gt;In this example many things could be improved, for example we use a node port and there is no firewall so we can hit our app directly via nodeport or using the load balancer, we should add some firewall rules so only the load balancer is able to talk to the node port range (30000-32767).&lt;/p&gt;
+
+&lt;p&gt;Some useful links for &lt;a href=&#34;https://docs.travis-ci.com/user/job-lifecycle/&#34;&gt;travis&lt;/a&gt; and &lt;a href=&#34;https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html&#34;&gt;terraform&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Go continuous integration with Travis CI and Docker</title>

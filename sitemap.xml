@@ -113,14 +113,14 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
-    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/tags/aws/</loc>
     <lastmod>2019-04-27T00:00:00+00:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>

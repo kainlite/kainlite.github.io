@@ -4,31 +4,54 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2019-05-05T00:00:00+00:00</lastmod>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/</loc>
-    <lastmod>2019-05-05T00:00:00+00:00</lastmod>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/go_grpc_cheap_ping/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/go/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/grpc/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/linux/</loc>
+    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2019-05-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
-    <lastmod>2019-05-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -113,14 +136,14 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/aws/</loc>
+    <loc>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
     <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
+    <loc>https://techsquad.rocks/tags/aws/</loc>
     <lastmod>2019-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -144,12 +167,6 @@
   <url>
     <loc>https://techsquad.rocks/blog/ssh_socks_proxy/</loc>
     <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/linux/</loc>
-    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -177,12 +194,6 @@
   <url>
     <loc>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</loc>
     <lastmod>2019-02-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/go/</loc>
-    <lastmod>2019-02-16T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

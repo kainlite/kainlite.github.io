@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>My local environment</title>
+    <title>Go gRPC Cheap Ping</title>
     <meta name="generator" content="Hugo 0.55.6" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,30 +36,28 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+<meta property="description" content="Introduction In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code here.
+Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows." />
 
-    <meta property="og:title" content="My local environment" />
-<meta property="og:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+    <meta property="og:title" content="Go gRPC Cheap Ping" />
+<meta property="og:description" content="Introduction In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code here.
+Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/my_local_environment/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1561324288" />
+<meta property="og:url" content="https://techsquad.rocks/blog/go_grpc_cheap_ping/" />
+<meta property="og:image" content="https://techsquad.rocks/img/golang-grpc.png?1561324288" />
 
 
-<meta property="article:tag" content="urxvt" />
-<meta property="article:tag" content="vim" />
-<meta property="article:tag" content="linux" />
-<meta property="article:tag" content="tmux" />
+<meta property="article:tag" content="go" />
+<meta property="article:tag" content="grpc" />
 
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="My local environment"/>
-<meta name="twitter:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1561324288"/>
+    <meta name="twitter:title" content="Go gRPC Cheap Ping"/>
+<meta name="twitter:description" content="Introduction In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code here.
+Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows.?1561324288"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1561324288" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/golang-grpc.png?1561324288" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -118,23 +116,19 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/my_local_environment/">My local environment</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/go_grpc_cheap_ping/">Go gRPC Cheap Ping</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          January 12, 2019
+          June 23, 2019
             &nbsp;&nbsp;
             
             
-              <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">
-                    urxvt
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/vim/" class="label label-success">
-                    vim
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
-                    linux
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/tmux/" class="label label-success">
-                    tmux
+              <a href="https://techsquad.rocks/tags/go/" class="label label-success">
+                    go
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/grpc/" class="label label-success">
+                    grpc
                   </a>
           </h4>
         </div>
@@ -143,59 +137,52 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
             <div class="blogpost">
               
 
-<h3 id="introduction">Introduction</h3>
+<h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using <strong>Arch Linux</strong> and <strong>AwesomeWM</strong> (I used Gnome Shell previously, and Gnome 2 before that), you can find my <a href="https://github.com/kainlite/dotfiles">dotfiles here</a> with all my configurations.</p>
+<p>In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code <a href="https://github.com/kainlite/grpc-ping">here</a>.</p>
 
-<p>While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with <a href="https://github.com/jtyr/gbt">GBT</a>.</p>
+<h5 id="protobuf"><strong>Protobuf</strong></h5>
 
-<h3 id="terminal">Terminal</h3>
+<p>As you might already know gRPC serializes data using <a href="https://developers.google.com/protocol-buffers/">protocol buffers</a>, We are just going to create a <a href="https://grpc.io/docs/guides/concepts/">Unary RPC</a> as follows.
+<script type="application/javascript" src="//gist.github.com/kainlite/ad4f85164730c6c6fb2257329f7fc164.js"></script>
+With this file in place we are defining a service that will be able to send a single <code>PingRequest</code> and get a single <code>PingResponse</code>, we have a <code>Data</code> field that goes back and forth in order to send some bytes over the wire (even that we don&rsquo;t really care about that, it could be important or crucial in a performance test).</p>
 
-<p>My current terminal is <strong>rxvt-unicode</strong> and I&rsquo;m pretty happy with it, it&rsquo;s relatively easy to configure and use, it looks like this:
-<figure class="zoom">
-    <img src="/img/urxvt.png" width="100%"/> 
-</figure>
+<h5 id="generating-the-code"><strong>Generating the code</strong></h5>
 
-And the configuration file can be <a href="https://github.com/kainlite/dotfiles/blob/master/.Xresources">found here</a>, note that even if you don&rsquo;t like Ponys by any reason, it&rsquo;s useful to test colors in the terminal.</p>
+<p>In order to be able to use protobuf we need to generate the code for the app that we&rsquo;re writing in this case for golang the command would be this one:
+<script type="application/javascript" src="//gist.github.com/kainlite/dac49c31ffaedac1d0cc1584a8cce306.js"></script>
+This will give us a definition of the service and the required structs to carry the data that we have defined as messages.</p>
 
-<p>It&rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called <code>xrdb</code> (X server resource database utility) to manage the configuration provided in the configuration file <code>.Xresources</code>.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Loads the configuration from Xresources in xrdb</span>
-$ xrdb -merge .Xresources
+<h5 id="client"><strong>Client</strong></h5>
 
-<span style="color:#75715e"># List the current configuration</span>
-$ xrdb -query
+<p>The client does most of the work here, as you can see you can supply 2 arguments one to point to another host:port and the second to send a string of your liking, then it measures the time it takes to send and receive the message back and prints it to the screen with a similar line to what the actual <code>ping</code> command looks in linux.
+<script type="application/javascript" src="//gist.github.com/kainlite/663a25de0321b85bde37e006c1621e60.js"></script></p>
 
-<span style="color:#75715e"># Deletes the current database</span>
-$ xrdb -remove</code></pre></div></p>
+<h5 id="server"><strong>Server</strong></h5>
 
-<h3 id="theme">Theme</h3>
+<p>The server is a merely echo server since it will send back whatever you send to it and log it to the console, by default it will listen in port <code>50000</code>.
+<script type="application/javascript" src="//gist.github.com/kainlite/7c809672a86b6454f7080a88d87da977.js"></script></p>
 
-<p>My current theme is <a href="https://github.com/morhetz/gruvbox">gruvbox</a> in Vim and also in my <a href="https://github.com/morhetz/gruvbox-contrib/blob/master/xresources/gruvbox-dark.xresources">terminal</a>, and changing from <a href="https://ethanschoonover.com/solarized/">solazired</a> to it is what inspired this small article.</p>
+<h5 id="testing-it"><strong>Testing it</strong></h5>
 
-<h3 id="tmux">Tmux</h3>
+<h6 id="regular-ping"><strong>Regular ping</strong></h6>
 
-<p>I also use tmux to maintan sessions, some of it&rsquo;s nice features are tiling, tabs. The configuration can be <a href="https://github.com/kainlite/dotfiles/blob/master/.tmux.conf">found here</a>. I move between tabs with control-h and control-l, and between panes with control-a [hjkl].</p>
+<script type="application/javascript" src="//gist.github.com/kainlite/8f60f178d0e6796256647d0e5a5c4078.js"></script>
 
-<h3 id="vim">Vim</h3>
+<h6 id="client-1"><strong>Client</strong></h6>
 
-<p>As my text editor I really like and enjoy using Vim, there is always something to learn but once you make some good habits it pays off in the way you write and move around, you can check some amazing screencasts on vim <a href="http://vimcasts.org/">here</a> and also the book Practical Vim can be really helpful to get started and/or improve your current vim-fu.</p>
+<p>This is what we would see in the terminal while testing it.
+<script type="application/javascript" src="//gist.github.com/kainlite/3abc2ac34d1390680fc9fb5787c1da02.js"></script>
+As you can see the initial connection takes a bit more time but after that the roundtrip time is very consistent (of course our cheap ping doesn&rsquo;t cover errors, packet loss, etc).</p>
 
-<p>As a plugin manager I use <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles">Plug</a> even that it&rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc">here</a>.</p>
+<h6 id="server-1"><strong>Server</strong></h6>
 
-<p>It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo <em>compiling</em> the site after every save and live reloading it in my browser:
-<figure class="zoom">
-    <img src="/img/vim.png" width="100%"/> 
-</figure>
-</p>
+<p>The server just echoes back and logs what received over the wire.
+<script type="application/javascript" src="//gist.github.com/kainlite/edf6fc9b5f1c71e2eab054b5dbae3a24.js"></script></p>
 
-<h3 id="notes">Notes</h3>
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
-<ul>
-<li>I&rsquo;m also using zsh and <a href="https://ohmyz.sh/">oh-my-zsh</a> with the theme agnoster. I really like zsh it&rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.</li>
-<li>I like to take advantage of all the space in the screen, that&rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.</li>
-<li>I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.</li>
-<li>If you are going to use unicode I recommend you to install the fonts from nerd-fonts.</li>
-</ul>
+<p>As you can see gRPC is pretty fast and simplifies a lot everything that you need to do in order to have a highly efficient message system or communication between microservices for example, it&rsquo;s also easy to generate the boilerplate for whatever language you prefer and have a common interface that everyone has to agree on.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -211,12 +198,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        May 5, 2019
+                        February 16, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_delivery_with_terraform_and_kubernetes/">Go continuous delivery with Terraform and Kubernetes</a></strong>
+                        <strong><a href="/blog/create_an_aws_lambda_function_in_go/">Create an AWS lambda function in Go</a></strong>
                       </h6>
                     </div>
                   </div>
@@ -224,12 +211,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        May 1, 2019
+                        February 15, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
+                        <strong><a href="/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a></strong>
                       </h6>
                     </div>
                   </div>
@@ -237,12 +224,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        April 29, 2019
+                        February 3, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
+                        <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></strong>
                       </h6>
                     </div>
                   </div>

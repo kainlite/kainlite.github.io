@@ -5,10 +5,80 @@
     <description>Recent content in linux on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go gRPC Cheap Ping</title>
+      <link>https://techsquad.rocks/blog/go_grpc_cheap_ping/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/go_grpc_cheap_ping/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>grpc</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code &lt;a href=&#34;https://github.com/kainlite/grpc-ping&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;protobuf&#34;&gt;&lt;strong&gt;Protobuf&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As you might already know gRPC serializes data using &lt;a href=&#34;https://developers.google.com/protocol-buffers/&#34;&gt;protocol buffers&lt;/a&gt;, We are just going to create a &lt;a href=&#34;https://grpc.io/docs/guides/concepts/&#34;&gt;Unary RPC&lt;/a&gt; as follows.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ad4f85164730c6c6fb2257329f7fc164.js&#34;&gt;&lt;/script&gt;
+With this file in place we are defining a service that will be able to send a single &lt;code&gt;PingRequest&lt;/code&gt; and get a single &lt;code&gt;PingResponse&lt;/code&gt;, we have a &lt;code&gt;Data&lt;/code&gt; field that goes back and forth in order to send some bytes over the wire (even that we don&amp;rsquo;t really care about that, it could be important or crucial in a performance test).&lt;/p&gt;
+
+&lt;h5 id=&#34;generating-the-code&#34;&gt;&lt;strong&gt;Generating the code&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In order to be able to use protobuf we need to generate the code for the app that we&amp;rsquo;re writing in this case for golang the command would be this one:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dac49c31ffaedac1d0cc1584a8cce306.js&#34;&gt;&lt;/script&gt;
+This will give us a definition of the service and the required structs to carry the data that we have defined as messages.&lt;/p&gt;
+
+&lt;h5 id=&#34;client&#34;&gt;&lt;strong&gt;Client&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The client does most of the work here, as you can see you can supply 2 arguments one to point to another host:port and the second to send a string of your liking, then it measures the time it takes to send and receive the message back and prints it to the screen with a similar line to what the actual &lt;code&gt;ping&lt;/code&gt; command looks in linux.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/663a25de0321b85bde37e006c1621e60.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;server&#34;&gt;&lt;strong&gt;Server&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The server is a merely echo server since it will send back whatever you send to it and log it to the console, by default it will listen in port &lt;code&gt;50000&lt;/code&gt;.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/7c809672a86b6454f7080a88d87da977.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h6 id=&#34;regular-ping&#34;&gt;&lt;strong&gt;Regular ping&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8f60f178d0e6796256647d0e5a5c4078.js&#34;&gt;&lt;/script&gt;
+
+&lt;h6 id=&#34;client-1&#34;&gt;&lt;strong&gt;Client&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;This is what we would see in the terminal while testing it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3abc2ac34d1390680fc9fb5787c1da02.js&#34;&gt;&lt;/script&gt;
+As you can see the initial connection takes a bit more time but after that the roundtrip time is very consistent (of course our cheap ping doesn&amp;rsquo;t cover errors, packet loss, etc).&lt;/p&gt;
+
+&lt;h6 id=&#34;server-1&#34;&gt;&lt;strong&gt;Server&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;The server just echoes back and logs what received over the wire.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/edf6fc9b5f1c71e2eab054b5dbae3a24.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As you can see gRPC is pretty fast and simplifies a lot everything that you need to do in order to have a highly efficient message system or communication between microservices for example, it&amp;rsquo;s also easy to generate the boilerplate for whatever language you prefer and have a common interface that everyone has to agree on.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>SSH Socks Proxy</title>

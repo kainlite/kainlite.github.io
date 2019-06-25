@@ -71,7 +71,7 @@ If we check the output we will see that the name of the cluster matches the one 
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;As you can see, creating a module is pretty simple and with good planing and practice it can save you a lot of effort along big projects or while working on multiple projects, let me know your thoughts about it.&lt;/p&gt;
+&lt;p&gt;As you can see, creating a module is pretty simple and with good planing and practice it can save you a lot of effort along big projects or while working on multiple projects, let me know your thoughts about it. Always remember to destroy the resources that you&amp;rsquo;re not going to use with &lt;code&gt;terraform destroy&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 

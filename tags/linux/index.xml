@@ -30,6 +30,8 @@
       
         <tag>continuous-delivery</tag>
       
+        <tag>terraform</tag>
+      
       </tags>
       <description>
 
@@ -554,6 +556,8 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
         <tag>serverless</tag>
       
         <tag>linux</tag>
+      
+        <tag>terraform</tag>
       
       </tags>
       <description>

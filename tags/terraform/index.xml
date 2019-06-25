@@ -1,0 +1,497 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>terraform on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/terraform/</link>
+    <description>Recent content in terraform on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Mon, 24 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://techsquad.rocks/tags/terraform/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting started with terraform modules</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</guid>
+      <tags>
+      
+        <tag>terraform</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&amp;rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project. So let&amp;rsquo;s see what it takes to create and use a module. The source code for this article can be found &lt;a href=&#34;https://github.com/kainlite/terraform-module-example&#34;&gt;here&lt;/a&gt;. Note that in this example I&amp;rsquo;m using GCP since they give you $300 USD for a year to try their services and it looks pretty good so far, after sign-up you will need to go to IAM, then create a service account and after that export the the key (this is required for the terraform provider to talk to GCP).&lt;/p&gt;
+
+&lt;h5 id=&#34;composition-of-a-module&#34;&gt;&lt;strong&gt;Composition of a module&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;A module can be any folder with a &lt;code&gt;main.tf&lt;/code&gt; file in it, yes, that is the only &lt;em&gt;required&lt;/em&gt; file for a module to be usable, but the recommendation is that you also put a &lt;code&gt;README.md&lt;/code&gt; file with a description of the module if it&amp;rsquo;s intended to be used by people if it&amp;rsquo;s a sub-module it&amp;rsquo;s not necessary, also you will need a file called &lt;code&gt;variables.tf&lt;/code&gt; and other &lt;code&gt;outputs.tf&lt;/code&gt; of course if it&amp;rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module &lt;a href=&#34;https://www.terraform.io/docs/modules/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before moving on let&amp;rsquo;s see the folder structure of our project:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;okay-enough-talking-show-me-the-code&#34;&gt;&lt;strong&gt;Okay enough talking, show me the code&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h6 id=&#34;the-project&#34;&gt;&lt;strong&gt;The project&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;Let&amp;rsquo;s start with the &lt;code&gt;main.tf&lt;/code&gt; that will call our module, notice that I added a few additional comments but it&amp;rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then &lt;code&gt;terraform.tfvars&lt;/code&gt; has some values to override the defaults that we defined:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;the-module&#34;&gt;&lt;strong&gt;The module&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;Now into the module itself, this module will create a GKE cluster, and while it&amp;rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the &lt;code&gt;main.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;variables.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;And finally the &lt;code&gt;outputs.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)&lt;/p&gt;
+
+&lt;h6 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;First we need to initialize our project so terraform can put modules, provider files, etc in place, it&amp;rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we will just run it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As you can see, creating a module is pretty simple and with good planing and practice it can save you a lot of effort along big projects or while working on multiple projects, let me know your thoughts about it.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Go continuous delivery with Terraform and Kubernetes</title>
+      <link>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</link>
+      <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</guid>
+      <tags>
+      
+        <tag>travis-ci</tag>
+      
+        <tag>docker</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>continuous-integration</tag>
+      
+        <tag>continuous-delivery</tag>
+      
+        <tag>terraform</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will continue where we left off the last time &lt;a href=&#34;https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/&#34;&gt;Go continuous integration with Travis CI and Docker&lt;/a&gt;, the files used here can be found &lt;a href=&#34;https://github.com/kainlite/whatismyip-go/tree/continuos-delivery&#34;&gt;HERE&lt;/a&gt;, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.&lt;/p&gt;
+
+&lt;h5 id=&#34;digitalocean&#34;&gt;&lt;strong&gt;DigitalOcean&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;We need to create a token so terraform can create resources using DO API. Go to your account then in the menu on the left click API, then you should see something like this:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-token-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+
+Once there click generate token (give it a meaningful name to you), and make sure it can write.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-token-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As the next step it would be good to set the token for terraform, so let&amp;rsquo;s examine all files and see what they are going to do, but first we&amp;rsquo;re going to provide the secrets to our app via environment variables, and I&amp;rsquo;ve found quite useful to use &lt;code&gt;direnv&lt;/code&gt; on many projects, so the content of the first file &lt;code&gt;.envrc&lt;/code&gt; would look something like:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js&#34;&gt;&lt;/script&gt;
+and after that you will need to allow it&amp;rsquo;s execution by running &lt;code&gt;direnv allow&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The first terraform file that we are going to check is &lt;code&gt;provider.tf&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js&#34;&gt;&lt;/script&gt;
+As we&amp;rsquo;re using environment variables we need to declare it and then set it in the provider, for now we only need the token.&lt;/p&gt;
+
+&lt;p&gt;Then the &lt;code&gt;kubernetes.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js&#34;&gt;&lt;/script&gt;
+This file will be the responsible of creating the kubernetes cluster, as it&amp;rsquo;s our development cluster we only need one node.&lt;/p&gt;
+
+&lt;p&gt;Next the file &lt;code&gt;lb.tf&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js&#34;&gt;&lt;/script&gt;
+This one is particularly interesting because it will provide a point of access to our applications (port 80 on it&amp;rsquo;s public IP address), and it also uses a basic health check.&lt;/p&gt;
+
+&lt;p&gt;And last but not least the &lt;code&gt;output.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js&#34;&gt;&lt;/script&gt;
+This file will print the kubernetes config file that we need to be able to use &lt;code&gt;kubectl&lt;/code&gt;, and also the IP address of our load balancer.&lt;/p&gt;
+
+&lt;p&gt;So what do we do with all of this?, first you will need to run &lt;code&gt;terraform init&lt;/code&gt; inside the terraform folder to download plugins and providers, once that is done you can run &lt;code&gt;terraform plan&lt;/code&gt; to see what changes terraform wants to make or &lt;code&gt;terraform apply&lt;/code&gt; to do the changes. How is that going to look?:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js&#34;&gt;&lt;/script&gt;
+This will create our cluster in DigitalOcean, remember to destroy it after you&amp;rsquo;re done using it with &lt;code&gt;terraform destroy&lt;/code&gt;, if you don&amp;rsquo;t use a plan you will be prompted for a confirmation when you do &lt;code&gt;terraform apply&lt;/code&gt;, review and say &lt;code&gt;yes&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;travis&#34;&gt;&lt;strong&gt;Travis&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;We did some additions to our &lt;code&gt;.travis.yml&lt;/code&gt; file, which are mostly to prepare &lt;code&gt;kubectl&lt;/code&gt; and to also trigger a deployment if the build succeeded.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js&#34;&gt;&lt;/script&gt;
+As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.&lt;/p&gt;
+
+&lt;p&gt;This is how it should look in travis:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-environment-variables.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a look at the generated kubernetes configuration and what values you should take into account:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js&#34;&gt;&lt;/script&gt;
+Never do that, don&amp;rsquo;t share your configuration or anybody will be able to use your cluster, also be careful not to commit it to your repo, in this example it&amp;rsquo;s no longer valid because after running the examples I destroyed the cluster with &lt;code&gt;terraform destroy&lt;/code&gt;. Now there are four values of interest for us: certificate-authority-data: KUBERNETES_CA, client-certificate-data: KUBERNETES_CLIENT_CA, client-key-data: KUBERNETES_CLIENT_KEY and server: KUBERNETES_ENDPOINT, with these variables we can re-create our kubernetes configuration easily using kubectl, be aware that we&amp;rsquo;re not decoding to save it in travis, we do that in the travis configuration file (&lt;code&gt;.travis.yml&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h5 id=&#34;kubernetes&#34;&gt;&lt;strong&gt;Kubernetes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So after all that, we still need to have a deployment template to deploy our application, and it&amp;rsquo;s a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let&amp;rsquo;s check it &lt;code&gt;manifest.yml.template&lt;/code&gt;:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js&#34;&gt;&lt;/script&gt;
+Here we expose our service in the port 30000 as a NodePort, and deploy the current SHA (replaced during execution by travis)&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-everything&#34;&gt;&lt;strong&gt;Testing everything&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Validate that the deployment went well by checking our kubernetes cluster:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;First we test the load balancer, and as we will see the ip is not right, it&amp;rsquo;s the internal ip of the load balancer and not our public ip address.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;But if we hit our service directly we can see the correct IP address, this could be improved but it&amp;rsquo;s left as an exercise for the avid reader ◕_◕.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally let&amp;rsquo;s check what we should see in travis:
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-travis-result-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As we can see everything went well and our deployment applied successfully in our cluster
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/terraform-do-travis-result-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I will be posting some articles about CI and CD and good practices that DevOps/SREs should have in mind, tips, tricks, and full deployment examples, this is the second part of a possible series of three articles (Next one should be about the same but using Jenkins) with a complete but basic example of CI first and then CD. This can of course change and any feedback would be greatly appreciated :).&lt;/p&gt;
+
+&lt;p&gt;In this example many things could be improved, for example we use a node port and there is no firewall so we can hit our app directly via nodeport or using the load balancer, we should add some firewall rules so only the load balancer is able to talk to the node port range (30000-32767).&lt;/p&gt;
+
+&lt;p&gt;Also be aware that for production this setup will not be sufficient but for a development environment would suffice initially.&lt;/p&gt;
+
+&lt;p&gt;Some useful links for &lt;a href=&#34;https://docs.travis-ci.com/user/job-lifecycle/&#34;&gt;travis&lt;/a&gt; and &lt;a href=&#34;https://www.terraform.io/docs/providers/do/r/kubernetes_cluster.html&#34;&gt;terraform&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Creating a lambda function with terraform</title>
+      <link>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+        <tag>terraform</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a &lt;a href=&#34;https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958&#34;&gt;gist here&lt;/a&gt;, note that I did not create this example but it&amp;rsquo;s really close to the official documentation but shorter, you can see another example with &lt;a href=&#34;https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda&#34;&gt;python here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before you start make sure you already have your account configured for &lt;a href=&#34;https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html&#34;&gt;awscli&lt;/a&gt; and &lt;a href=&#34;https://learn.hashicorp.com/terraform/getting-started/install.html&#34;&gt;terraform&lt;/a&gt; installed.&lt;/p&gt;
+
+&lt;h5 id=&#34;configuration-files&#34;&gt;&lt;strong&gt;Configuration files&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;the-code-itself&#34;&gt;&lt;strong&gt;The code itself&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then we need the code that we need or want to run there.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;initialize-terraform&#34;&gt;&lt;strong&gt;Initialize terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&amp;rsquo;t be able to run.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;apply-the-changes&#34;&gt;&lt;strong&gt;Apply the changes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;running-the-function&#34;&gt;&lt;strong&gt;Running the function&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then the last step would be to run our function to see if it actually works, in this case we&amp;rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;clean-up&#34;&gt;&lt;strong&gt;Clean up&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Remember to clean up before leaving.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&amp;rsquo;t know about you, but I&amp;rsquo;m going to keep using the &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt; for now, but it&amp;rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Create an AWS lambda function in Go</title>
+      <link>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>development</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>terraform</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article &lt;a href=&#34;https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/&#34;&gt;What does the serverless framework does for me&lt;/a&gt;, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.&lt;/p&gt;
+
+&lt;h5 id=&#34;let-s-see-the-code-one-more-time&#34;&gt;&lt;strong&gt;Let&amp;rsquo;s see the code one more time&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;bytes&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;context&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;encoding/json&amp;#34;&lt;/span&gt;
+
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/events&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;github.com/aws/aws-lambda-go/lambda&amp;#34;&lt;/span&gt;
+)
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Response is of type APIGatewayProxyResponse since we&amp;#39;re leveraging the
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// AWS Lambda Proxy Request functionality (default behavior)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;events&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;APIGatewayProxyResponse&lt;/span&gt;
+
+&lt;span style=&#34;color:#75715e&#34;&gt;// Handler is our lambda handler invoked by the `lambda.Start` function call
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Handler&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ctx&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;context&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Context&lt;/span&gt;) (&lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;) {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bytes&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Buffer&lt;/span&gt;
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Marshal&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;map&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt;{}{
+        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Go Serverless v1.0! Your function executed successfully!&amp;#34;&lt;/span&gt;,
+    })
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;StatusCode&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;404&lt;/span&gt;}, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+    }
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;json&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HTMLEscape&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;body&lt;/span&gt;)
+
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Response&lt;/span&gt;{
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;StatusCode&lt;/span&gt;:      &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;,
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;IsBase64Encoded&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;,
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;Body&lt;/span&gt;:            &lt;span style=&#34;color:#a6e22e&#34;&gt;buf&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;String&lt;/span&gt;(),
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;Headers&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;map&lt;/span&gt;[&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;]&lt;span style=&#34;color:#66d9ef&#34;&gt;string&lt;/span&gt;{
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;:           &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;application/json&amp;#34;&lt;/span&gt;,
+            &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;X-MyCompany-Func-Reply&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello-handler&amp;#34;&lt;/span&gt;,
+        },
+    }
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;resp&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;
+}
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;lambda&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Start&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;Handler&lt;/span&gt;)
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;With that code as a starting point, now we need to build, package, upload, and deploy our function:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Build&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;GOOS&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;linux go build main.go&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Package&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;zip main.zip ./main
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   adding: main (deflated 51%)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Create the role&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Go to IAM &amp;gt; Roles &amp;gt; Create.
+Then select Lambda, assign a name and a description and then get the ARN for this role. Note that with the serverless framework this is done automatically for us, so we don&amp;rsquo;t need to create a new role for each&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Upload / Deploy&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws lambda create-function &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --region us-east-1 &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --function-name helloworld &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --memory &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --role arn:aws:iam::894527626897:role/testing-aws-go &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --runtime go1.x &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --zip-file fileb://main.zip &lt;span style=&#34;color:#ae81ff&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;&lt;/span&gt;  --handler main
+
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;FunctionName&amp;#34;: &amp;#34;helloworld&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;FunctionArn&amp;#34;: &amp;#34;arn:aws:lambda:us-east-1:894527626897:function:helloworld&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Runtime&amp;#34;: &amp;#34;go1.x&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Role&amp;#34;: &amp;#34;arn:aws:iam::894527626897:role/testing-aws-go&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Handler&amp;#34;: &amp;#34;main&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;CodeSize&amp;#34;: 4346283,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Description&amp;#34;: &amp;#34;&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Timeout&amp;#34;: 3,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;MemorySize&amp;#34;: 128,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;LastModified&amp;#34;: &amp;#34;2019-02-16T15:44:10.610+0000&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;CodeSha256&amp;#34;: &amp;#34;02/PQBeQuCC8JS1TLjyU38oiUwiyQSmKJXjya25XpFA=&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;Version&amp;#34;: &amp;#34;$LATEST&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;TracingConfig&amp;#34;: {&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#         &amp;#34;Mode&amp;#34;: &amp;#34;PassThrough&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     },&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;RevisionId&amp;#34;: &amp;#34;7c9030e5-4a26-4f7e-968d-3a4f65dfde21&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Note that your function-name must match the name of your Lambda handler name (Handler). Note that this role might be insecure in some scenarios if you grant too much permissions, so try to restrict it as much as possible as with any role and policy.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Test the function&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&amp;#34;statusCode&amp;#34;:200,&amp;#34;headers&amp;#34;:{&amp;#34;Content-Type&amp;#34;:&amp;#34;application/json&amp;#34;,&amp;#34;X-MyCompany-Func-Reply&amp;#34;:&amp;#34;hello-handler&amp;#34;},&amp;#34;body&amp;#34;:&amp;#34;{\&amp;#34;message\&amp;#34;:\&amp;#34;Go Serverless v1.0! Your function executed successfully!\&amp;#34;}&amp;#34;}{&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;StatusCode&amp;#34;: 200,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;LogResult&amp;#34;: &amp;#34;U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=&amp;#34;,&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#     &amp;#34;ExecutedVersion&amp;#34;: &amp;#34;$LATEST&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# }&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+Everything looks about right, so what&amp;rsquo;s next? We will eventually need to communicate with this code from an external source, so let&amp;rsquo;s see how we can do that with the API Gateway. Also the log is encoded in base64, so if you want to see what the log result was do the following.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Check the logs&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=&amp;#34;&lt;/span&gt; | base64 -d
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# START RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad Version: $LATEST&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# END RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# REPORT RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad  Duration: 13.19 ms      Billed Duration: 100 ms         Memory Size: 128 MB     Max Memory Used: 45 MB&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+You should also be able to see this same output in CloudWatch.&lt;/p&gt;
+
+&lt;h5 id=&#34;api-gateway&#34;&gt;&lt;strong&gt;API Gateway&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;To make this step simpler I decided to use the AWS Console instead of the CLI it will also cut down the size of this article substantially.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Now we need to create the API Gateway endpoint&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Note that you only have to go to Lambda-&amp;gt;Functions-&amp;gt;helloworld-&amp;gt;Add triggers-&amp;gt;API Gateway. And then complete as shown in the image, when you save this new trigger you will get the resource that then can be used to test the API Gateway integration.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/lambda-helloworld-example.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The endpoint will show as follows (Click on API Gateway):
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/lambda-helloworld-example-endpoint.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Test the API&lt;/strong&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworld
+&lt;span style=&#34;color:#75715e&#34;&gt;# OUTPUT:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *   Trying 54.236.123.239...&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TCP_NODELAY set&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connected to r8efasfb26.execute-api.us-east-1.amazonaws.com (54.236.123.239) port 443 (#0)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, offering h2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, offering http/1.1&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * successfully set certificate verify locations:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *   CAfile: /etc/ssl/certs/ca-certificates.crt&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;#   CApath: none&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.3 (OUT), TLS handshake, Client hello (1):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.3 (IN), TLS handshake, Server hello (2):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Certificate (11):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Server key exchange (12):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Server finished (14):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (OUT), TLS handshake, Finished (20):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * TLSv1.2 (IN), TLS handshake, Finished (20):&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * ALPN, server accepted to use h2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Server certificate:&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  subject: CN=*.execute-api.us-east-1.amazonaws.com&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  start date: Sep 20 00:00:00 2018 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  expire date: Oct 20 12:00:00 2019 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  subjectAltName: host &amp;#34;r8efasfb26.execute-api.us-east-1.amazonaws.com&amp;#34; matched cert&amp;#39;s &amp;#34;*.execute-api.us-east-1.amazonaws.com&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# *  SSL certificate verify ok.&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Using HTTP2, server supports multi-use&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection state changed (HTTP/2 confirmed)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Using Stream ID: 1 (easy handle 0x56394c766db0)&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; GET /default/helloworld HTTP/2&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; Host: r8efasfb26.execute-api.us-east-1.amazonaws.com&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; User-Agent: curl/7.63.0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt; Accept: */*&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; HTTP/2 200&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; date: Sat, 16 Feb 2019 17:17:58 GMT&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; content-type: application/json&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; content-length: 70&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amzn-requestid: ce5c5863-320e-11e9-9e76-875e7540974c&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amz-apigw-id: VM_XAGhoIAMFqoQ=&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-mycompany-func-reply: hello-handler&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt; x-amzn-trace-id: Root=1-5c6845c6-920cfc7da3cfd94f3e644647;Sampled=0&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# &amp;lt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# * Connection #0 to host r8efasfb26.execute-api.us-east-1.amazonaws.com left intact&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;# {&amp;#34;message&amp;#34;:&amp;#34;Go Serverless v1.0! Your function executed successfully!&amp;#34;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;If you ask me that was a lot of effort to handle without automation, maybe AWS SAM or the serverless framework can make things easier and let you focus on your application rather than the boilerplate required for it to run.&lt;/p&gt;
+
+&lt;h3 id=&#34;clean-up&#34;&gt;Clean up&lt;/h3&gt;
+
+&lt;p&gt;Always remember to clean up and delete everything that you created (to avoid surprises and save money), in this article I will leave that as an exercise for the reader :)&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

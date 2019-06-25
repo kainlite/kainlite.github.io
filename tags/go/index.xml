@@ -96,6 +96,8 @@ As you can see the initial connection takes a bit more time but after that the r
       
         <tag>linux</tag>
       
+        <tag>terraform</tag>
+      
       </tags>
       <description>
 

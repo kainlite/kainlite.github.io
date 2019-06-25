@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>My local environment</title>
+    <title>Getting started with terraform modules</title>
     <meta name="generator" content="Hugo 0.55.6" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,30 +36,24 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+<meta property="description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project." />
 
-    <meta property="og:title" content="My local environment" />
-<meta property="og:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
+    <meta property="og:title" content="Getting started with terraform modules" />
+<meta property="og:description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/my_local_environment/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1561505516" />
+<meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_terraform_modules/" />
+<meta property="og:image" content="https://techsquad.rocks/img/terraform.png?1561505516" />
 
 
-<meta property="article:tag" content="urxvt" />
-<meta property="article:tag" content="vim" />
-<meta property="article:tag" content="linux" />
-<meta property="article:tag" content="tmux" />
+<meta property="article:tag" content="terraform" />
 
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="My local environment"/>
-<meta name="twitter:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1561505516"/>
+    <meta name="twitter:title" content="Getting started with terraform modules"/>
+<meta name="twitter:description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project.?1561505516"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1561505516" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform.png?1561505516" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -118,23 +112,17 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/my_local_environment/">My local environment</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          January 12, 2019
+          June 24, 2019
             &nbsp;&nbsp;
             
             
-              <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">
-                    urxvt
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/vim/" class="label label-success">
-                    vim
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
-                    linux
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/tmux/" class="label label-success">
-                    tmux
+              <a href="https://techsquad.rocks/tags/terraform/" class="label label-success">
+                    terraform
                   </a>
           </h4>
         </div>
@@ -143,59 +131,51 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
             <div class="blogpost">
               
 
-<h3 id="introduction">Introduction</h3>
+<h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using <strong>Arch Linux</strong> and <strong>AwesomeWM</strong> (I used Gnome Shell previously, and Gnome 2 before that), you can find my <a href="https://github.com/kainlite/dotfiles">dotfiles here</a> with all my configurations.</p>
+<p>In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project. So let&rsquo;s see what it takes to create and use a module. The source code for this article can be found <a href="https://github.com/kainlite/terraform-module-example">here</a>. Note that in this example I&rsquo;m using GCP since they give you $300 USD for a year to try their services and it looks pretty good so far, after sign-up you will need to go to IAM, then create a service account and after that export the the key (this is required for the terraform provider to talk to GCP).</p>
 
-<p>While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with <a href="https://github.com/jtyr/gbt">GBT</a>.</p>
+<h5 id="composition-of-a-module"><strong>Composition of a module</strong></h5>
 
-<h3 id="terminal">Terminal</h3>
+<p>A module can be any folder with a <code>main.tf</code> file in it, yes, that is the only <em>required</em> file for a module to be usable, but the recommendation is that you also put a <code>README.md</code> file with a description of the module if it&rsquo;s intended to be used by people if it&rsquo;s a sub-module it&rsquo;s not necessary, also you will need a file called <code>variables.tf</code> and other <code>outputs.tf</code> of course if it&rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module <a href="https://www.terraform.io/docs/modules/index.html">here</a>.</p>
 
-<p>My current terminal is <strong>rxvt-unicode</strong> and I&rsquo;m pretty happy with it, it&rsquo;s relatively easy to configure and use, it looks like this:
-<figure class="zoom">
-    <img src="/img/urxvt.png" width="100%"/> 
-</figure>
+<p>Before moving on let&rsquo;s see the folder structure of our project:
+<script type="application/javascript" src="//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js"></script></p>
 
-And the configuration file can be <a href="https://github.com/kainlite/dotfiles/blob/master/.Xresources">found here</a>, note that even if you don&rsquo;t like Ponys by any reason, it&rsquo;s useful to test colors in the terminal.</p>
+<h5 id="okay-enough-talking-show-me-the-code"><strong>Okay enough talking, show me the code</strong></h5>
 
-<p>It&rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called <code>xrdb</code> (X server resource database utility) to manage the configuration provided in the configuration file <code>.Xresources</code>.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Loads the configuration from Xresources in xrdb</span>
-$ xrdb -merge .Xresources
+<h6 id="the-project"><strong>The project</strong></h6>
 
-<span style="color:#75715e"># List the current configuration</span>
-$ xrdb -query
+<p>Let&rsquo;s start with the <code>main.tf</code> that will call our module, notice that I added a few additional comments but it&rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
+<script type="application/javascript" src="//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js"></script></p>
 
-<span style="color:#75715e"># Deletes the current database</span>
-$ xrdb -remove</code></pre></div></p>
+<p>Then <code>terraform.tfvars</code> has some values to override the defaults that we defined:
+<script type="application/javascript" src="//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js"></script></p>
 
-<h3 id="theme">Theme</h3>
+<h6 id="the-module"><strong>The module</strong></h6>
 
-<p>My current theme is <a href="https://github.com/morhetz/gruvbox">gruvbox</a> in Vim and also in my <a href="https://github.com/morhetz/gruvbox-contrib/blob/master/xresources/gruvbox-dark.xresources">terminal</a>, and changing from <a href="https://ethanschoonover.com/solarized/">solazired</a> to it is what inspired this small article.</p>
+<p>Now into the module itself, this module will create a GKE cluster, and while it&rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the <code>main.tf</code> file:
+<script type="application/javascript" src="//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js"></script></p>
 
-<h3 id="tmux">Tmux</h3>
+<p>The <code>variables.tf</code> file:
+<script type="application/javascript" src="//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js"></script></p>
 
-<p>I also use tmux to maintan sessions, some of it&rsquo;s nice features are tiling, tabs. The configuration can be <a href="https://github.com/kainlite/dotfiles/blob/master/.tmux.conf">found here</a>. I move between tabs with control-h and control-l, and between panes with control-a [hjkl].</p>
+<p>And finally the <code>outputs.tf</code> file:
+<script type="application/javascript" src="//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js"></script>
+Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)</p>
 
-<h3 id="vim">Vim</h3>
+<h6 id="testing-it"><strong>Testing it</strong></h6>
 
-<p>As my text editor I really like and enjoy using Vim, there is always something to learn but once you make some good habits it pays off in the way you write and move around, you can check some amazing screencasts on vim <a href="http://vimcasts.org/">here</a> and also the book Practical Vim can be really helpful to get started and/or improve your current vim-fu.</p>
+<p>First we need to initialize our project so terraform can put modules, provider files, etc in place, it&rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
+<script type="application/javascript" src="//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js"></script></p>
 
-<p>As a plugin manager I use <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles">Plug</a> even that it&rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc">here</a>.</p>
+<p>Then we will just run it.
+<script type="application/javascript" src="//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js"></script>
+If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.</p>
 
-<p>It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo <em>compiling</em> the site after every save and live reloading it in my browser:
-<figure class="zoom">
-    <img src="/img/vim.png" width="100%"/> 
-</figure>
-</p>
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
-<h3 id="notes">Notes</h3>
-
-<ul>
-<li>I&rsquo;m also using zsh and <a href="https://ohmyz.sh/">oh-my-zsh</a> with the theme agnoster. I really like zsh it&rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.</li>
-<li>I like to take advantage of all the space in the screen, that&rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.</li>
-<li>I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.</li>
-<li>If you are going to use unicode I recommend you to install the fonts from nerd-fonts.</li>
-</ul>
+<p>As you can see, creating a module is pretty simple and with good planing and practice it can save you a lot of effort along big projects or while working on multiple projects, let me know your thoughts about it.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -224,12 +204,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        May 1, 2019
+                        April 27, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
+                        <strong><a href="/blog/creating_a_lambda_function_with_terraform/">Creating a lambda function with terraform</a></strong>
                       </h6>
                     </div>
                   </div>
@@ -237,12 +217,12 @@ $ xrdb -remove</code></pre></div></p>
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        April 29, 2019
+                        February 16, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
+                        <strong><a href="/blog/create_an_aws_lambda_function_in_go/">Create an AWS lambda function in Go</a></strong>
                       </h6>
                     </div>
                   </div>

@@ -24,6 +24,8 @@
       
         <tag>aws</tag>
       
+        <tag>terraform</tag>
+      
       </tags>
       <description>
 
@@ -88,6 +90,8 @@
         <tag>serverless</tag>
       
         <tag>linux</tag>
+      
+        <tag>terraform</tag>
       
       </tags>
       <description>

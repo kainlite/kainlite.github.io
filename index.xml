@@ -5,10 +5,77 @@
     <description>Recent content on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 23 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 24 Jun 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Getting started with terraform modules</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</guid>
+      <tags>
+      
+        <tag>terraform</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&amp;rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project. So let&amp;rsquo;s see what it takes to create and use a module. The source code for this article can be found &lt;a href=&#34;https://github.com/kainlite/terraform-module-example&#34;&gt;here&lt;/a&gt;. Note that in this example I&amp;rsquo;m using GCP since they give you $300 USD for a year to try their services and it looks pretty good so far, after sign-up you will need to go to IAM, then create a service account and after that export the the key (this is required for the terraform provider to talk to GCP).&lt;/p&gt;
+
+&lt;h5 id=&#34;composition-of-a-module&#34;&gt;&lt;strong&gt;Composition of a module&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;A module can be any folder with a &lt;code&gt;main.tf&lt;/code&gt; file in it, yes, that is the only &lt;em&gt;required&lt;/em&gt; file for a module to be usable, but the recommendation is that you also put a &lt;code&gt;README.md&lt;/code&gt; file with a description of the module if it&amp;rsquo;s intended to be used by people if it&amp;rsquo;s a sub-module it&amp;rsquo;s not necessary, also you will need a file called &lt;code&gt;variables.tf&lt;/code&gt; and other &lt;code&gt;outputs.tf&lt;/code&gt; of course if it&amp;rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module &lt;a href=&#34;https://www.terraform.io/docs/modules/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Before moving on let&amp;rsquo;s see the folder structure of our project:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;okay-enough-talking-show-me-the-code&#34;&gt;&lt;strong&gt;Okay enough talking, show me the code&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;h6 id=&#34;the-project&#34;&gt;&lt;strong&gt;The project&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;Let&amp;rsquo;s start with the &lt;code&gt;main.tf&lt;/code&gt; that will call our module, notice that I added a few additional comments but it&amp;rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then &lt;code&gt;terraform.tfvars&lt;/code&gt; has some values to override the defaults that we defined:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h6 id=&#34;the-module&#34;&gt;&lt;strong&gt;The module&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;Now into the module itself, this module will create a GKE cluster, and while it&amp;rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the &lt;code&gt;main.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;variables.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;And finally the &lt;code&gt;outputs.tf&lt;/code&gt; file:
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)&lt;/p&gt;
+
+&lt;h6 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h6&gt;
+
+&lt;p&gt;First we need to initialize our project so terraform can put modules, provider files, etc in place, it&amp;rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Then we will just run it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;As you can see, creating a module is pretty simple and with good planing and practice it can save you a lot of effort along big projects or while working on multiple projects, let me know your thoughts about it.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Go gRPC Cheap Ping</title>
@@ -99,6 +166,8 @@ As you can see the initial connection takes a bit more time but after that the r
         <tag>continuous-integration</tag>
       
         <tag>continuous-delivery</tag>
+      
+        <tag>terraform</tag>
       
       </tags>
       <description>
@@ -454,6 +523,8 @@ The same SHA will be used to tag the image.&lt;/p&gt;
       
         <tag>aws</tag>
       
+        <tag>terraform</tag>
+      
       </tags>
       <description>
 
@@ -687,6 +758,8 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
         <tag>serverless</tag>
       
         <tag>linux</tag>
+      
+        <tag>terraform</tag>
       
       </tags>
       <description>

@@ -11,6 +11,30 @@
     
     
     <item>
+      <title>gcp</title>
+      <link>https://techsquad.rocks/tags/gcp/</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/gcp/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://techsquad.rocks/tags/kubernetes/</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/kubernetes/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
       <title>terraform</title>
       <link>https://techsquad.rocks/tags/terraform/</link>
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
@@ -112,18 +136,6 @@
       <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/travis-ci/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kubernetes</title>
-      <link>https://techsquad.rocks/tags/kubernetes/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/kubernetes/</guid>
       <tags>
       
       </tags>

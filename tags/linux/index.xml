@@ -24,6 +24,8 @@
       
         <tag>golang</tag>
       
+        <tag>go</tag>
+      
         <tag>linux</tag>
       
         <tag>continuous-integration</tag>
@@ -551,6 +553,8 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
       
         <tag>go</tag>
       
+        <tag>golang</tag>
+      
         <tag>development</tag>
       
         <tag>serverless</tag>
@@ -770,6 +774,8 @@ You should also be able to see this same output in CloudWatch.&lt;/p&gt;
       <tags>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
         <tag>development</tag>
       

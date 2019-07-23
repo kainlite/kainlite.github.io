@@ -165,6 +165,8 @@ As you can see the initial connection takes a bit more time but after that the r
       
         <tag>golang</tag>
       
+        <tag>go</tag>
+      
         <tag>linux</tag>
       
         <tag>continuous-integration</tag>
@@ -757,6 +759,8 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
       
         <tag>go</tag>
       
+        <tag>golang</tag>
+      
         <tag>development</tag>
       
         <tag>serverless</tag>
@@ -980,6 +984,8 @@ You should also be able to see this same output in CloudWatch.&lt;/p&gt;
         <tag>serverless</tag>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
       </tags>
       <description>
@@ -1221,6 +1227,8 @@ This will as you expect remove everything that was created with the deploy comma
       <tags>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
         <tag>development</tag>
       
@@ -4452,6 +4460,8 @@ As we can see the image is the one that got built from our &lt;code&gt;git push&
       <tags>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
         <tag>slack</tag>
       

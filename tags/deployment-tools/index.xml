@@ -571,6 +571,8 @@ As we can see the image is the one that got built from our &lt;code&gt;git push&
       
         <tag>go</tag>
       
+        <tag>golang</tag>
+      
         <tag>slack</tag>
       
         <tag>ksonnet</tag>

@@ -85,6 +85,8 @@
       
         <tag>go</tag>
       
+        <tag>golang</tag>
+      
         <tag>development</tag>
       
         <tag>serverless</tag>
@@ -308,6 +310,8 @@ You should also be able to see this same output in CloudWatch.&lt;/p&gt;
         <tag>serverless</tag>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
       </tags>
       <description>
@@ -549,6 +553,8 @@ This will as you expect remove everything that was created with the deploy comma
       <tags>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
         <tag>development</tag>
       

@@ -95,6 +95,8 @@ If we check the output we will see that the name of the cluster matches the one 
       
         <tag>golang</tag>
       
+        <tag>go</tag>
+      
         <tag>linux</tag>
       
         <tag>continuous-integration</tag>
@@ -286,6 +288,8 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
       <tags>
       
         <tag>go</tag>
+      
+        <tag>golang</tag>
       
         <tag>development</tag>
       

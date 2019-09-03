@@ -5,10 +5,72 @@
     <description>Recent content on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 24 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serverless authentication with Cognito and Go</title>
+      <link>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+        <tag>security</tag>
+      
+        <tag>cognito</tag>
+      
+        <tag>lambda</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found &lt;a href=&#34;https://github.com/kainlite/serverless-cognito&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/1e466c6ac28f9cfcf1513c105325e100.js&#34;&gt;&lt;/script&gt;
+
+As we can see it&amp;rsquo;s really simple to have a cognito user pool working, the most important part here is the &lt;code&gt;auto_verified_attributes&lt;/code&gt; because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values.&lt;/p&gt;
+
+&lt;h5 id=&#34;go&#34;&gt;&lt;strong&gt;Go&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The good thing is that everything is code, but we don&amp;rsquo;t have to manage any server, we just consume services from AWS completely from code, isn&amp;rsquo;t that amazing?, I apologize for the length of the file, but you will notice that it&amp;rsquo;s very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we&amp;rsquo;re also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (&lt;code&gt;/user/profile&lt;/code&gt;), and we also have another unauthenticated path which is a health check (&lt;code&gt;/app/health&lt;/code&gt;), the other two paths (&lt;code&gt;/user&lt;/code&gt; and &lt;code&gt;/user/validate&lt;/code&gt;) are exclusively for the user creation process with cognito.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/755f0c1b2381af46fb2f69f8865cabb9.js&#34;&gt;&lt;/script&gt;
+
+All logs go to Cloudwatch and you can also use X-Ray to diagnose issues.&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So we&amp;rsquo;re going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/71ba07ed304b527793ddd1f95c92d244.js&#34;&gt;&lt;/script&gt;
+
+I have added most info in as comments in the snippet, note that I also used my test domain &lt;code&gt;skynetng.pw&lt;/code&gt; with the subdomain &lt;code&gt;api&lt;/code&gt; for all tests.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This post was heavily inspired by &lt;a href=&#34;https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html&#34;&gt;this post&lt;/a&gt; from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting started with terraform modules</title>
@@ -36,37 +98,45 @@
 &lt;p&gt;A module can be any folder with a &lt;code&gt;main.tf&lt;/code&gt; file in it, yes, that is the only &lt;em&gt;required&lt;/em&gt; file for a module to be usable, but the recommendation is that you also put a &lt;code&gt;README.md&lt;/code&gt; file with a description of the module if it&amp;rsquo;s intended to be used by people if it&amp;rsquo;s a sub-module it&amp;rsquo;s not necessary, also you will need a file called &lt;code&gt;variables.tf&lt;/code&gt; and other &lt;code&gt;outputs.tf&lt;/code&gt; of course if it&amp;rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module &lt;a href=&#34;https://www.terraform.io/docs/modules/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Before moving on let&amp;rsquo;s see the folder structure of our project:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;okay-enough-talking-show-me-the-code&#34;&gt;&lt;strong&gt;Okay enough talking, show me the code&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;h6 id=&#34;the-project&#34;&gt;&lt;strong&gt;The project&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start with the &lt;code&gt;main.tf&lt;/code&gt; that will call our module, notice that I added a few additional comments but it&amp;rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then &lt;code&gt;terraform.tfvars&lt;/code&gt; has some values to override the defaults that we defined:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h6 id=&#34;the-module&#34;&gt;&lt;strong&gt;The module&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Now into the module itself, this module will create a GKE cluster, and while it&amp;rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the &lt;code&gt;main.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;variables.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And finally the &lt;code&gt;outputs.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+
 Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)&lt;/p&gt;
 
 &lt;h6 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;First we need to initialize our project so terraform can put modules, provider files, etc in place, it&amp;rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then we will just run it.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+
 If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
@@ -103,41 +173,48 @@ If we check the output we will see that the name of the cluster matches the one 
 &lt;h5 id=&#34;protobuf&#34;&gt;&lt;strong&gt;Protobuf&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As you might already know gRPC serializes data using &lt;a href=&#34;https://developers.google.com/protocol-buffers/&#34;&gt;protocol buffers&lt;/a&gt;, We are just going to create a &lt;a href=&#34;https://grpc.io/docs/guides/concepts/&#34;&gt;Unary RPC&lt;/a&gt; as follows.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ad4f85164730c6c6fb2257329f7fc164.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/ad4f85164730c6c6fb2257329f7fc164.js&#34;&gt;&lt;/script&gt;
+
 With this file in place we are defining a service that will be able to send a single &lt;code&gt;PingRequest&lt;/code&gt; and get a single &lt;code&gt;PingResponse&lt;/code&gt;, we have a &lt;code&gt;Data&lt;/code&gt; field that goes back and forth in order to send some bytes over the wire (even that we don&amp;rsquo;t really care about that, it could be important or crucial in a performance test).&lt;/p&gt;
 
 &lt;h5 id=&#34;generating-the-code&#34;&gt;&lt;strong&gt;Generating the code&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;In order to be able to use protobuf we need to generate the code for the app that we&amp;rsquo;re writing in this case for golang the command would be this one:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dac49c31ffaedac1d0cc1584a8cce306.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/dac49c31ffaedac1d0cc1584a8cce306.js&#34;&gt;&lt;/script&gt;
+
 This will give us a definition of the service and the required structs to carry the data that we have defined as messages.&lt;/p&gt;
 
 &lt;h5 id=&#34;client&#34;&gt;&lt;strong&gt;Client&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The client does most of the work here, as you can see you can supply 2 arguments one to point to another host:port and the second to send a string of your liking, then it measures the time it takes to send and receive the message back and prints it to the screen with a similar line to what the actual &lt;code&gt;ping&lt;/code&gt; command looks in linux.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/663a25de0321b85bde37e006c1621e60.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/663a25de0321b85bde37e006c1621e60.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;server&#34;&gt;&lt;strong&gt;Server&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The server is a merely echo server since it will send back whatever you send to it and log it to the console, by default it will listen in port &lt;code&gt;50000&lt;/code&gt;.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/7c809672a86b6454f7080a88d87da977.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/7c809672a86b6454f7080a88d87da977.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;h6 id=&#34;regular-ping&#34;&gt;&lt;strong&gt;Regular ping&lt;/strong&gt;&lt;/h6&gt;
 
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8f60f178d0e6796256647d0e5a5c4078.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8f60f178d0e6796256647d0e5a5c4078.js&#34;&gt;&lt;/script&gt;
+
 
 &lt;h6 id=&#34;client-1&#34;&gt;&lt;strong&gt;Client&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;This is what we would see in the terminal while testing it.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3abc2ac34d1390680fc9fb5787c1da02.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3abc2ac34d1390680fc9fb5787c1da02.js&#34;&gt;&lt;/script&gt;
+
 As you can see the initial connection takes a bit more time but after that the roundtrip time is very consistent (of course our cheap ping doesn&amp;rsquo;t cover errors, packet loss, etc).&lt;/p&gt;
 
 &lt;h6 id=&#34;server-1&#34;&gt;&lt;strong&gt;Server&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;The server just echoes back and logs what received over the wire.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/edf6fc9b5f1c71e2eab054b5dbae3a24.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/edf6fc9b5f1c71e2eab054b5dbae3a24.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -198,33 +275,40 @@ Once there click generate token (give it a meaningful name to you), and make sur
 &lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As the next step it would be good to set the token for terraform, so let&amp;rsquo;s examine all files and see what they are going to do, but first we&amp;rsquo;re going to provide the secrets to our app via environment variables, and I&amp;rsquo;ve found quite useful to use &lt;code&gt;direnv&lt;/code&gt; on many projects, so the content of the first file &lt;code&gt;.envrc&lt;/code&gt; would look something like:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js&#34;&gt;&lt;/script&gt;
+
 and after that you will need to allow it&amp;rsquo;s execution by running &lt;code&gt;direnv allow&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The first terraform file that we are going to check is &lt;code&gt;provider.tf&lt;/code&gt;:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js&#34;&gt;&lt;/script&gt;
+
 As we&amp;rsquo;re using environment variables we need to declare it and then set it in the provider, for now we only need the token.&lt;/p&gt;
 
 &lt;p&gt;Then the &lt;code&gt;kubernetes.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js&#34;&gt;&lt;/script&gt;
+
 This file will be the responsible of creating the kubernetes cluster, as it&amp;rsquo;s our development cluster we only need one node.&lt;/p&gt;
 
 &lt;p&gt;Next the file &lt;code&gt;lb.tf&lt;/code&gt;:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js&#34;&gt;&lt;/script&gt;
+
 This one is particularly interesting because it will provide a point of access to our applications (port 80 on it&amp;rsquo;s public IP address), and it also uses a basic health check.&lt;/p&gt;
 
 &lt;p&gt;And last but not least the &lt;code&gt;output.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js&#34;&gt;&lt;/script&gt;
+
 This file will print the kubernetes config file that we need to be able to use &lt;code&gt;kubectl&lt;/code&gt;, and also the IP address of our load balancer.&lt;/p&gt;
 
 &lt;p&gt;So what do we do with all of this?, first you will need to run &lt;code&gt;terraform init&lt;/code&gt; inside the terraform folder to download plugins and providers, once that is done you can run &lt;code&gt;terraform plan&lt;/code&gt; to see what changes terraform wants to make or &lt;code&gt;terraform apply&lt;/code&gt; to do the changes. How is that going to look?:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js&#34;&gt;&lt;/script&gt;
+
 This will create our cluster in DigitalOcean, remember to destroy it after you&amp;rsquo;re done using it with &lt;code&gt;terraform destroy&lt;/code&gt;, if you don&amp;rsquo;t use a plan you will be prompted for a confirmation when you do &lt;code&gt;terraform apply&lt;/code&gt;, review and say &lt;code&gt;yes&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h5 id=&#34;travis&#34;&gt;&lt;strong&gt;Travis&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;We did some additions to our &lt;code&gt;.travis.yml&lt;/code&gt; file, which are mostly to prepare &lt;code&gt;kubectl&lt;/code&gt; and to also trigger a deployment if the build succeeded.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js&#34;&gt;&lt;/script&gt;
+
 As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.&lt;/p&gt;
 
 &lt;p&gt;This is how it should look in travis:
@@ -234,25 +318,30 @@ As shown in the screenshot we took the base64 encoded certificates and loaded th
 &lt;/p&gt;
 
 &lt;p&gt;Let&amp;rsquo;s take a look at the generated kubernetes configuration and what values you should take into account:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js&#34;&gt;&lt;/script&gt;
+
 Never do that, don&amp;rsquo;t share your configuration or anybody will be able to use your cluster, also be careful not to commit it to your repo, in this example it&amp;rsquo;s no longer valid because after running the examples I destroyed the cluster with &lt;code&gt;terraform destroy&lt;/code&gt;. Now there are four values of interest for us: certificate-authority-data: KUBERNETES_CA, client-certificate-data: KUBERNETES_CLIENT_CA, client-key-data: KUBERNETES_CLIENT_KEY and server: KUBERNETES_ENDPOINT, with these variables we can re-create our kubernetes configuration easily using kubectl, be aware that we&amp;rsquo;re not decoding to save it in travis, we do that in the travis configuration file (&lt;code&gt;.travis.yml&lt;/code&gt;).&lt;/p&gt;
 
 &lt;h5 id=&#34;kubernetes&#34;&gt;&lt;strong&gt;Kubernetes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;So after all that, we still need to have a deployment template to deploy our application, and it&amp;rsquo;s a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let&amp;rsquo;s check it &lt;code&gt;manifest.yml.template&lt;/code&gt;:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js&#34;&gt;&lt;/script&gt;
+
 Here we expose our service in the port 30000 as a NodePort, and deploy the current SHA (replaced during execution by travis)&lt;/p&gt;
 
 &lt;h5 id=&#34;testing-everything&#34;&gt;&lt;strong&gt;Testing everything&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Validate that the deployment went well by checking our kubernetes cluster:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;First we test the load balancer, and as we will see the ip is not right, it&amp;rsquo;s the internal ip of the load balancer and not our public ip address.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;But if we hit our service directly we can see the correct IP address, this could be improved but it&amp;rsquo;s left as an exercise for the avid reader ◕_◕.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Finally let&amp;rsquo;s check what we should see in travis:
 &lt;figure&gt;
@@ -314,23 +403,27 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
 &lt;h5 id=&#34;app&#34;&gt;App&lt;/h5&gt;
 
 &lt;p&gt;We will review the docker file, the app code and the travis-ci file, so let&amp;rsquo;s start with the app &lt;code&gt;main.go&lt;/code&gt;:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f7e0c3e40b02cc31a78f4eef491fa834.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f7e0c3e40b02cc31a78f4eef491fa834.js&#34;&gt;&lt;/script&gt;
+
 Let&amp;rsquo;s quickly check what this code does, first we check for the port to use, then convert it to a number, register the handler for our HTTP function and listen for requests, this code should print our ip address as you would expect by the name.&lt;/p&gt;
 
 &lt;p&gt;Then the &lt;code&gt;main_test.go&lt;/code&gt; code:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/13391af166c77ffb10b940e5a9a1ac4d.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/13391af166c77ffb10b940e5a9a1ac4d.js&#34;&gt;&lt;/script&gt;
+
 The test is fairly simple it just checks that the web server works by trying to fetch &lt;code&gt;/&lt;/code&gt; and checking for an empty body and &lt;code&gt;200&lt;/code&gt; status code.&lt;/p&gt;
 
 &lt;h5 id=&#34;docker&#34;&gt;Docker&lt;/h5&gt;
 
 &lt;p&gt;Next the &lt;code&gt;Dockerfile&lt;/code&gt;:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/5db561f6f8808f1b5eaf091887416311.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/5db561f6f8808f1b5eaf091887416311.js&#34;&gt;&lt;/script&gt;
+
 We set the working directory to please go, then fetch dependencies and install our binary, we also generate a test binary, expose the port that we want to use and set the user as nobody in case someone can exploit our app and jump into our container, then just set the command to execute on &lt;code&gt;docker run&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h5 id=&#34;travis&#34;&gt;Travis&lt;/h5&gt;
 
 &lt;p&gt;And last but not least the &lt;code&gt;.travis.yml&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/55c5fcd1fde0bfc148b8a9ee8a41fc5a.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/55c5fcd1fde0bfc148b8a9ee8a41fc5a.js&#34;&gt;&lt;/script&gt;
+
 We let travis know that we will be running some go code and also docker, then build the image, run the tests and then the app as initialization, after that we validate that the app works and lastly login to dockerhub and push the image, the important things to have in mind here is that we use variables for example the repo name, the commit SHA, and the docker username and password in a secure way, since travis-ci hides the values that we tell them to.&lt;/p&gt;
 
 &lt;h5 id=&#34;putting-everything-together&#34;&gt;&lt;strong&gt;Putting everything together&lt;/strong&gt;&lt;/h5&gt;
@@ -411,38 +504,46 @@ The same SHA will be used to tag the image.&lt;/p&gt;
 &lt;h5 id=&#34;creating-a-cert-for-our-new-client&#34;&gt;&lt;strong&gt;Creating a cert for our new client&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As we see here we need to enable kv version 1 on &lt;code&gt;/secret&lt;/code&gt; for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;service-account-for-kubernetes&#34;&gt;&lt;strong&gt;Service account for kubernetes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault-policy&#34;&gt;&lt;strong&gt;Vault policy&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then we need to set a read-only policy for our secrets, we don&amp;rsquo;t want or app to be able to write or rewrite secrets.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;kubernetes-configuration&#34;&gt;&lt;strong&gt;Kubernetes configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Set the environment variables to point to the running Minikube environment and enable the &lt;a href=&#34;https://www.vaultproject.io/docs/auth/kubernetes.html#configuration&#34;&gt;kubernetes authentication method&lt;/a&gt; and then validate it from a temporal Pod.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;the-deployment-and-the-consul-template-configuration&#34;&gt;&lt;strong&gt;The deployment and the consul-template configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;This is where the magic happens so we&amp;rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;test-it&#34;&gt;&lt;strong&gt;Test it!&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -486,22 +587,26 @@ The same SHA will be used to tag the image.&lt;/p&gt;
 &lt;h5 id=&#34;preparing-the-cluster&#34;&gt;&lt;strong&gt;Preparing the cluster&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start minikube and validate that we can reach our cluster with &lt;code&gt;minikube start&lt;/code&gt; and then with &lt;code&gt;kubectl get nodes&lt;/code&gt;, also the dashboard can become handy you can invoke it like this &lt;code&gt;minikube dashboard&lt;/code&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;creating-certificates-for-consul-and-vault&#34;&gt;&lt;strong&gt;Creating certificates for Consul and Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Vault needs a backend to store data, this backend can be consul, etcd, postgres, and &lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/index.html&#34;&gt;many more&lt;/a&gt;, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;consul&#34;&gt;&lt;strong&gt;Consul&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault&#34;&gt;&lt;strong&gt;Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -543,32 +648,38 @@ The same SHA will be used to tag the image.&lt;/p&gt;
 &lt;h5 id=&#34;configuration-files&#34;&gt;&lt;strong&gt;Configuration files&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;the-code-itself&#34;&gt;&lt;strong&gt;The code itself&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then we need the code that we need or want to run there.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;initialize-terraform&#34;&gt;&lt;strong&gt;Initialize terraform&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&amp;rsquo;t be able to run.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;apply-the-changes&#34;&gt;&lt;strong&gt;Apply the changes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;running-the-function&#34;&gt;&lt;strong&gt;Running the function&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then the last step would be to run our function to see if it actually works, in this case we&amp;rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;clean-up&#34;&gt;&lt;strong&gt;Clean up&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Remember to clean up before leaving.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;I don&amp;rsquo;t know about you, but I&amp;rsquo;m going to keep using the &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt; for now, but it&amp;rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.&lt;/p&gt;
 
@@ -717,17 +828,20 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 
 &lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh&#34;&gt;&lt;/script&gt;
+
 
 &lt;p&gt;Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh&#34;&gt;&lt;/script&gt;
+&lt;p&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh&#34;&gt;&lt;/script&gt;
+
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.&lt;/p&gt;
 
 &lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
 
@@ -4845,7 +4959,7 @@ spec:
         app: wordpress
     spec:
       containers:
-      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0.2&lt;/span&gt;
         name: wordpress
         ports:
         - containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

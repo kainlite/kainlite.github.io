@@ -5,10 +5,72 @@
     <description>Recent content in serverless on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/serverless/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serverless authentication with Cognito and Go</title>
+      <link>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+        <tag>security</tag>
+      
+        <tag>cognito</tag>
+      
+        <tag>lambda</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found &lt;a href=&#34;https://github.com/kainlite/serverless-cognito&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/1e466c6ac28f9cfcf1513c105325e100.js&#34;&gt;&lt;/script&gt;
+
+As we can see it&amp;rsquo;s really simple to have a cognito user pool working, the most important part here is the &lt;code&gt;auto_verified_attributes&lt;/code&gt; because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values.&lt;/p&gt;
+
+&lt;h5 id=&#34;go&#34;&gt;&lt;strong&gt;Go&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The good thing is that everything is code, but we don&amp;rsquo;t have to manage any server, we just consume services from AWS completely from code, isn&amp;rsquo;t that amazing?, I apologize for the length of the file, but you will notice that it&amp;rsquo;s very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we&amp;rsquo;re also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (&lt;code&gt;/user/profile&lt;/code&gt;), and we also have another unauthenticated path which is a health check (&lt;code&gt;/app/health&lt;/code&gt;), the other two paths (&lt;code&gt;/user&lt;/code&gt; and &lt;code&gt;/user/validate&lt;/code&gt;) are exclusively for the user creation process with cognito.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/755f0c1b2381af46fb2f69f8865cabb9.js&#34;&gt;&lt;/script&gt;
+
+All logs go to Cloudwatch and you can also use X-Ray to diagnose issues.&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So we&amp;rsquo;re going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/71ba07ed304b527793ddd1f95c92d244.js&#34;&gt;&lt;/script&gt;
+
+I have added most info in as comments in the snippet, note that I also used my test domain &lt;code&gt;skynetng.pw&lt;/code&gt; with the subdomain &lt;code&gt;api&lt;/code&gt; for all tests.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This post was heavily inspired by &lt;a href=&#34;https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html&#34;&gt;this post&lt;/a&gt; from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Creating a lambda function with terraform</title>
@@ -38,32 +100,38 @@
 &lt;h5 id=&#34;configuration-files&#34;&gt;&lt;strong&gt;Configuration files&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;the-code-itself&#34;&gt;&lt;strong&gt;The code itself&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then we need the code that we need or want to run there.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;initialize-terraform&#34;&gt;&lt;strong&gt;Initialize terraform&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&amp;rsquo;t be able to run.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;apply-the-changes&#34;&gt;&lt;strong&gt;Apply the changes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;running-the-function&#34;&gt;&lt;strong&gt;Running the function&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then the last step would be to run our function to see if it actually works, in this case we&amp;rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;clean-up&#34;&gt;&lt;strong&gt;Clean up&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Remember to clean up before leaving.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;I don&amp;rsquo;t know about you, but I&amp;rsquo;m going to keep using the &lt;a href=&#34;https://serverless.com/&#34;&gt;serverless framework&lt;/a&gt; for now, but it&amp;rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.&lt;/p&gt;
 

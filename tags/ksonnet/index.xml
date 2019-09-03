@@ -404,7 +404,7 @@ spec:
         app: wordpress
     spec:
       containers:
-      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0.2&lt;/span&gt;
         name: wordpress
         ports:
         - containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

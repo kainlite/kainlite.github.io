@@ -5,10 +5,72 @@
     <description>Recent content in security on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/security/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Serverless authentication with Cognito and Go</title>
+      <link>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>serverless</tag>
+      
+        <tag>aws</tag>
+      
+        <tag>security</tag>
+      
+        <tag>cognito</tag>
+      
+        <tag>lambda</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found &lt;a href=&#34;https://github.com/kainlite/serverless-cognito&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h5 id=&#34;terraform&#34;&gt;&lt;strong&gt;Terraform&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/1e466c6ac28f9cfcf1513c105325e100.js&#34;&gt;&lt;/script&gt;
+
+As we can see it&amp;rsquo;s really simple to have a cognito user pool working, the most important part here is the &lt;code&gt;auto_verified_attributes&lt;/code&gt; because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values.&lt;/p&gt;
+
+&lt;h5 id=&#34;go&#34;&gt;&lt;strong&gt;Go&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;The good thing is that everything is code, but we don&amp;rsquo;t have to manage any server, we just consume services from AWS completely from code, isn&amp;rsquo;t that amazing?, I apologize for the length of the file, but you will notice that it&amp;rsquo;s very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we&amp;rsquo;re also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (&lt;code&gt;/user/profile&lt;/code&gt;), and we also have another unauthenticated path which is a health check (&lt;code&gt;/app/health&lt;/code&gt;), the other two paths (&lt;code&gt;/user&lt;/code&gt; and &lt;code&gt;/user/validate&lt;/code&gt;) are exclusively for the user creation process with cognito.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/755f0c1b2381af46fb2f69f8865cabb9.js&#34;&gt;&lt;/script&gt;
+
+All logs go to Cloudwatch and you can also use X-Ray to diagnose issues.&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;So we&amp;rsquo;re going to hit the API to create, validate, and query the empty profile of the user from the terminal using curl.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/71ba07ed304b527793ddd1f95c92d244.js&#34;&gt;&lt;/script&gt;
+
+I have added most info in as comments in the snippet, note that I also used my test domain &lt;code&gt;skynetng.pw&lt;/code&gt; with the subdomain &lt;code&gt;api&lt;/code&gt; for all tests.&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This post was heavily inspired by &lt;a href=&#34;https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html&#34;&gt;this post&lt;/a&gt; from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Actually using Vault on Kubernetes</title>
@@ -38,38 +100,46 @@
 &lt;h5 id=&#34;creating-a-cert-for-our-new-client&#34;&gt;&lt;strong&gt;Creating a cert for our new client&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As we see here we need to enable kv version 1 on &lt;code&gt;/secret&lt;/code&gt; for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;service-account-for-kubernetes&#34;&gt;&lt;strong&gt;Service account for kubernetes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault-policy&#34;&gt;&lt;strong&gt;Vault policy&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then we need to set a read-only policy for our secrets, we don&amp;rsquo;t want or app to be able to write or rewrite secrets.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;kubernetes-configuration&#34;&gt;&lt;strong&gt;Kubernetes configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Set the environment variables to point to the running Minikube environment and enable the &lt;a href=&#34;https://www.vaultproject.io/docs/auth/kubernetes.html#configuration&#34;&gt;kubernetes authentication method&lt;/a&gt; and then validate it from a temporal Pod.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;the-deployment-and-the-consul-template-configuration&#34;&gt;&lt;strong&gt;The deployment and the consul-template configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;This is where the magic happens so we&amp;rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;test-it&#34;&gt;&lt;strong&gt;Test it!&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -113,22 +183,26 @@
 &lt;h5 id=&#34;preparing-the-cluster&#34;&gt;&lt;strong&gt;Preparing the cluster&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start minikube and validate that we can reach our cluster with &lt;code&gt;minikube start&lt;/code&gt; and then with &lt;code&gt;kubectl get nodes&lt;/code&gt;, also the dashboard can become handy you can invoke it like this &lt;code&gt;minikube dashboard&lt;/code&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;creating-certificates-for-consul-and-vault&#34;&gt;&lt;strong&gt;Creating certificates for Consul and Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Vault needs a backend to store data, this backend can be consul, etcd, postgres, and &lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/index.html&#34;&gt;many more&lt;/a&gt;, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;consul&#34;&gt;&lt;strong&gt;Consul&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault&#34;&gt;&lt;strong&gt;Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 

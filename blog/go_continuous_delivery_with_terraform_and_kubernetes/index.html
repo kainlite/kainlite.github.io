@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Go continuous delivery with Terraform and Kubernetes</title>
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ DigitalOcean We need to create a token so terraform can create resources using D
 DigitalOcean We need to create a token so terraform can create resources using DO API." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/travis-ci-docker.png?1563849452" />
+<meta property="og:image" content="https://techsquad.rocks/img/travis-ci-docker.png?1567477295" />
 
 
 <meta property="article:tag" content="travis-ci" />
@@ -61,9 +61,9 @@ DigitalOcean We need to create a token so terraform can create resources using D
 
     <meta name="twitter:title" content="Go continuous delivery with Terraform and Kubernetes"/>
 <meta name="twitter:description" content="Introduction In this article we will continue where we left off the last time Go continuous integration with Travis CI and Docker, the files used here can be found HERE, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
-DigitalOcean We need to create a token so terraform can create resources using DO API.?1563849452"/>
+DigitalOcean We need to create a token so terraform can create resources using DO API.?1567477295"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/travis-ci-docker.png?1563849452" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/travis-ci-docker.png?1567477295" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -175,33 +175,40 @@ Once there click generate token (give it a meaningful name to you), and make sur
 <h5 id="terraform"><strong>Terraform</strong></h5>
 
 <p>As the next step it would be good to set the token for terraform, so let&rsquo;s examine all files and see what they are going to do, but first we&rsquo;re going to provide the secrets to our app via environment variables, and I&rsquo;ve found quite useful to use <code>direnv</code> on many projects, so the content of the first file <code>.envrc</code> would look something like:
-<script type="application/javascript" src="//gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/2da0abc285e227b966b492f8e7f3eddc.js"></script>
+
 and after that you will need to allow it&rsquo;s execution by running <code>direnv allow</code>.</p>
 
 <p>The first terraform file that we are going to check is <code>provider.tf</code>:
-<script type="application/javascript" src="//gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/add2f8b31929468359e9222bce0855f1.js"></script>
+
 As we&rsquo;re using environment variables we need to declare it and then set it in the provider, for now we only need the token.</p>
 
 <p>Then the <code>kubernetes.tf</code> file:
-<script type="application/javascript" src="//gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/11d6eb62a0b3c5f0e5978e6b43e4b166.js"></script>
+
 This file will be the responsible of creating the kubernetes cluster, as it&rsquo;s our development cluster we only need one node.</p>
 
 <p>Next the file <code>lb.tf</code>:
-<script type="application/javascript" src="//gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/85185e39960765a189ee70b5c9489fea.js"></script>
+
 This one is particularly interesting because it will provide a point of access to our applications (port 80 on it&rsquo;s public IP address), and it also uses a basic health check.</p>
 
 <p>And last but not least the <code>output.tf</code> file:
-<script type="application/javascript" src="//gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/18205b3ba693be054e2ea22832f4ecef.js"></script>
+
 This file will print the kubernetes config file that we need to be able to use <code>kubectl</code>, and also the IP address of our load balancer.</p>
 
 <p>So what do we do with all of this?, first you will need to run <code>terraform init</code> inside the terraform folder to download plugins and providers, once that is done you can run <code>terraform plan</code> to see what changes terraform wants to make or <code>terraform apply</code> to do the changes. How is that going to look?:
-<script type="application/javascript" src="//gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/d4a4c4f18be5022e2ed23e74879ff975.js"></script>
+
 This will create our cluster in DigitalOcean, remember to destroy it after you&rsquo;re done using it with <code>terraform destroy</code>, if you don&rsquo;t use a plan you will be prompted for a confirmation when you do <code>terraform apply</code>, review and say <code>yes</code>.</p>
 
 <h5 id="travis"><strong>Travis</strong></h5>
 
 <p>We did some additions to our <code>.travis.yml</code> file, which are mostly to prepare <code>kubectl</code> and to also trigger a deployment if the build succeeded.
-<script type="application/javascript" src="//gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/69cdd243a815b68c483bdc71e6bf9186.js"></script>
+
 As shown in the screenshot we took the base64 encoded certificates and loaded them into travis as environment variables (KUBERNETES_CA, KUBERNETES_CLIENT_CA, KUBERNETES_CLIENT_KEY, KUBERNETES_ENDPOINT), then we decode that into files, create the configuration using kubectl and set it as active and then we apply the deployment with the newly rendered hash.</p>
 
 <p>This is how it should look in travis:
@@ -211,25 +218,30 @@ As shown in the screenshot we took the base64 encoded certificates and loaded th
 </p>
 
 <p>Let&rsquo;s take a look at the generated kubernetes configuration and what values you should take into account:
-<script type="application/javascript" src="//gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/ebd9e3c82d4aa0f1e43be53078a9b593.js"></script>
+
 Never do that, don&rsquo;t share your configuration or anybody will be able to use your cluster, also be careful not to commit it to your repo, in this example it&rsquo;s no longer valid because after running the examples I destroyed the cluster with <code>terraform destroy</code>. Now there are four values of interest for us: certificate-authority-data: KUBERNETES_CA, client-certificate-data: KUBERNETES_CLIENT_CA, client-key-data: KUBERNETES_CLIENT_KEY and server: KUBERNETES_ENDPOINT, with these variables we can re-create our kubernetes configuration easily using kubectl, be aware that we&rsquo;re not decoding to save it in travis, we do that in the travis configuration file (<code>.travis.yml</code>).</p>
 
 <h5 id="kubernetes"><strong>Kubernetes</strong></h5>
 
 <p>So after all that, we still need to have a deployment template to deploy our application, and it&rsquo;s a template because we need to replace the SHA of the current build in the manifest before committing it to the Kubernetes API, so let&rsquo;s check it <code>manifest.yml.template</code>:
-<script type="application/javascript" src="//gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/aa1d9181112582ef94b5602480f95bf9.js"></script>
+
 Here we expose our service in the port 30000 as a NodePort, and deploy the current SHA (replaced during execution by travis)</p>
 
 <h5 id="testing-everything"><strong>Testing everything</strong></h5>
 
 <p>Validate that the deployment went well by checking our kubernetes cluster:
-<script type="application/javascript" src="//gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/fa4e77e771c564bc14185afba4903a8c.js"></script>
+</p>
 
 <p>First we test the load balancer, and as we will see the ip is not right, it&rsquo;s the internal ip of the load balancer and not our public ip address.
-<script type="application/javascript" src="//gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/4d9b99cd269d2eb346f60c308af054da.js"></script>
+</p>
 
 <p>But if we hit our service directly we can see the correct IP address, this could be improved but it&rsquo;s left as an exercise for the avid reader ◕_◕.
-<script type="application/javascript" src="//gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/cc2618efbf28bdb8c2a83d344a6dcff7.js"></script>
+</p>
 
 <p>Finally let&rsquo;s check what we should see in travis:
 <figure>
@@ -267,6 +279,19 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
+                        September 2, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito and Go</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
                         June 24, 2019
                       </h6>
                     </div>
@@ -286,19 +311,6 @@ Here we expose our service in the port 30000 as a NodePort, and deploy the curre
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/go_grpc_cheap_ping/">Go gRPC Cheap Ping</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        May 1, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
                       </h6>
                     </div>
                   </div>

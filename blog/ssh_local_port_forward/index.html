@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>SSH Local Port Forward</title>
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/ssh_local_port_forward/" />
-<meta property="og:image" content="https://techsquad.rocks/img/openssh.png?1563849453" />
+<meta property="og:image" content="https://techsquad.rocks/img/openssh.png?1567477295" />
 
 
 <meta property="article:tag" content="openssh" />
@@ -56,9 +56,9 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 
     <meta name="twitter:title" content="SSH Local Port Forward"/>
 <meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore SSH Remote Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1563849453"/>
+Explanation Local port forward basically let&rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&rsquo;t let you do it, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1567477295"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/openssh.png?1563849453" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/openssh.png?1567477295" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -150,17 +150,20 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
 
 <h5 id="the-command"><strong>The command</strong></h5>
 
-<script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh"></script>
+
 
 <p>Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:</p>
 
-<p><script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh"></script>
+<p><script type="application/javascript" src="https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh"></script>
+
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.</p>
 
 <h5 id="the-parameters-and-their-meaning"><strong>The parameters and their meaning</strong></h5>
 
 <p>I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-<script type="application/javascript" src="//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt"></script>
+</p>
 
 <h5 id="server-configuration"><strong>Server configuration</strong></h5>
 

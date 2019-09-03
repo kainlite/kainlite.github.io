@@ -5,10 +5,22 @@
     <description>Recent content in Categories on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 24 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>serverless</title>
+      <link>https://techsquad.rocks/categories/serverless/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/categories/serverless/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
     
     <item>
       <title>terraform</title>
@@ -52,18 +64,6 @@
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/categories/kubernetes/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>serverless</title>
-      <link>https://techsquad.rocks/categories/serverless/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/categories/serverless/</guid>
       <tags>
       
       </tags>

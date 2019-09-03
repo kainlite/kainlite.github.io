@@ -36,37 +36,45 @@
 &lt;p&gt;A module can be any folder with a &lt;code&gt;main.tf&lt;/code&gt; file in it, yes, that is the only &lt;em&gt;required&lt;/em&gt; file for a module to be usable, but the recommendation is that you also put a &lt;code&gt;README.md&lt;/code&gt; file with a description of the module if it&amp;rsquo;s intended to be used by people if it&amp;rsquo;s a sub-module it&amp;rsquo;s not necessary, also you will need a file called &lt;code&gt;variables.tf&lt;/code&gt; and other &lt;code&gt;outputs.tf&lt;/code&gt; of course if it&amp;rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module &lt;a href=&#34;https://www.terraform.io/docs/modules/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Before moving on let&amp;rsquo;s see the folder structure of our project:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;okay-enough-talking-show-me-the-code&#34;&gt;&lt;strong&gt;Okay enough talking, show me the code&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;h6 id=&#34;the-project&#34;&gt;&lt;strong&gt;The project&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start with the &lt;code&gt;main.tf&lt;/code&gt; that will call our module, notice that I added a few additional comments but it&amp;rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then &lt;code&gt;terraform.tfvars&lt;/code&gt; has some values to override the defaults that we defined:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h6 id=&#34;the-module&#34;&gt;&lt;strong&gt;The module&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Now into the module itself, this module will create a GKE cluster, and while it&amp;rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the &lt;code&gt;main.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;variables.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And finally the &lt;code&gt;outputs.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+
 Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)&lt;/p&gt;
 
 &lt;h6 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;First we need to initialize our project so terraform can put modules, provider files, etc in place, it&amp;rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then we will just run it.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+
 If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;

@@ -5,10 +5,94 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 24 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>aws</title>
+      <link>https://techsquad.rocks/tags/aws/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/aws/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cognito</title>
+      <link>https://techsquad.rocks/tags/cognito/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/cognito/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://techsquad.rocks/tags/go/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/go/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://techsquad.rocks/tags/golang/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/golang/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lambda</title>
+      <link>https://techsquad.rocks/tags/lambda/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/lambda/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>security</title>
+      <link>https://techsquad.rocks/tags/security/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/security/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>serverless</title>
+      <link>https://techsquad.rocks/tags/serverless/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/serverless/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
     
     <item>
       <title>gcp</title>
@@ -40,18 +124,6 @@
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/terraform/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://techsquad.rocks/tags/go/</link>
-      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/go/</guid>
       <tags>
       
       </tags>
@@ -107,18 +179,6 @@
     </item>
     
     <item>
-      <title>golang</title>
-      <link>https://techsquad.rocks/tags/golang/</link>
-      <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/golang/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>linux</title>
       <link>https://techsquad.rocks/tags/linux/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
@@ -143,18 +203,6 @@
     </item>
     
     <item>
-      <title>security</title>
-      <link>https://techsquad.rocks/tags/security/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/security/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>vault</title>
       <link>https://techsquad.rocks/tags/vault/</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
@@ -167,35 +215,11 @@
     </item>
     
     <item>
-      <title>AWS</title>
-      <link>https://techsquad.rocks/tags/aws/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/aws/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>development</title>
       <link>https://techsquad.rocks/tags/development/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/development/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>serverless</title>
-      <link>https://techsquad.rocks/tags/serverless/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/serverless/</guid>
       <tags>
       
       </tags>

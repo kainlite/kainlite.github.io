@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Actually using Vault on Kubernetes</title>
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ In this article we will actually create an example using mutual TLS and provisio
 In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/vault-kubernetes.png?1563849452" />
+<meta property="og:image" content="https://techsquad.rocks/img/vault-kubernetes.png?1567477295" />
 
 
 <meta property="article:tag" content="kubernetes" />
@@ -57,9 +57,9 @@ In this article we will actually create an example using mutual TLS and provisio
 
     <meta name="twitter:title" content="Actually using Vault on Kubernetes"/>
 <meta name="twitter:description" content="Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
-In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.?1563849452"/>
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.?1567477295"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault-kubernetes.png?1563849452" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault-kubernetes.png?1567477295" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -152,38 +152,46 @@ In this article we will actually create an example using mutual TLS and provisio
 <h5 id="creating-a-cert-for-our-new-client"><strong>Creating a cert for our new client</strong></h5>
 
 <p>As we see here we need to enable kv version 1 on <code>/secret</code> for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
-<script type="application/javascript" src="//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js"></script>
+</p>
 
 <h5 id="service-account-for-kubernetes"><strong>Service account for kubernetes</strong></h5>
 
 <p>In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
-<script type="application/javascript" src="//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js"></script>
+</p>
 
 <h5 id="vault-policy"><strong>Vault policy</strong></h5>
 
 <p>Then we need to set a read-only policy for our secrets, we don&rsquo;t want or app to be able to write or rewrite secrets.
-<script type="application/javascript" src="//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js"></script>
+</p>
 
 <h5 id="kubernetes-configuration"><strong>Kubernetes configuration</strong></h5>
 
 <p>Set the environment variables to point to the running Minikube environment and enable the <a href="https://www.vaultproject.io/docs/auth/kubernetes.html#configuration">kubernetes authentication method</a> and then validate it from a temporal Pod.
-<script type="application/javascript" src="//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js"></script>
+</p>
 
 <h5 id="the-deployment-and-the-consul-template-configuration"><strong>The deployment and the consul-template configuration</strong></h5>
 
 <p>If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
-<script type="application/javascript" src="//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js"></script>
+</p>
 
 <p>This is where the magic happens so we&rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
-<script type="application/javascript" src="//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js"></script>
+</p>
 
 <p>And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
-<script type="application/javascript" src="//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js"></script>
+</p>
 
 <h5 id="test-it"><strong>Test it!</strong></h5>
 
 <p>The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
-<script type="application/javascript" src="//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js"></script>
+</p>
 
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
@@ -199,6 +207,19 @@ In this article we will actually create an example using mutual TLS and provisio
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        September 2, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito and Go</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -222,19 +243,6 @@ In this article we will actually create an example using mutual TLS and provisio
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/go_continuous_delivery_with_terraform_and_kubernetes/">Go continuous delivery with Terraform and Kubernetes</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        May 1, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
                       </h6>
                     </div>
                   </div>

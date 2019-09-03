@@ -147,17 +147,20 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 
 &lt;h5 id=&#34;the-command&#34;&gt;&lt;strong&gt;The command&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet1.sh&#34;&gt;&lt;/script&gt;
+
 
 &lt;p&gt;Here we are forwarding localhost:3306 in the remote machine to localhost:3306, but you can specify another address in the network for example 172.16.16.200 and the command would look like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh&#34;&gt;&lt;/script&gt;
+&lt;p&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet2.sh&#34;&gt;&lt;/script&gt;
+
 This will give you access to the ip 172.16.16.200 and port 3306 in the remote network.&lt;/p&gt;
 
 &lt;h5 id=&#34;the-parameters-and-their-meaning&#34;&gt;&lt;strong&gt;The parameters and their meaning&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means local port forward without a shell.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a3db371793effeb50fbc5341166c686c.js?file=snippet3.txt&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;server-configuration&#34;&gt;&lt;strong&gt;Server configuration&lt;/strong&gt;&lt;/h5&gt;
 

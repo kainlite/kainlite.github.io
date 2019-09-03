@@ -36,37 +36,45 @@
 &lt;p&gt;A module can be any folder with a &lt;code&gt;main.tf&lt;/code&gt; file in it, yes, that is the only &lt;em&gt;required&lt;/em&gt; file for a module to be usable, but the recommendation is that you also put a &lt;code&gt;README.md&lt;/code&gt; file with a description of the module if it&amp;rsquo;s intended to be used by people if it&amp;rsquo;s a sub-module it&amp;rsquo;s not necessary, also you will need a file called &lt;code&gt;variables.tf&lt;/code&gt; and other &lt;code&gt;outputs.tf&lt;/code&gt; of course if it&amp;rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module &lt;a href=&#34;https://www.terraform.io/docs/modules/index.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Before moving on let&amp;rsquo;s see the folder structure of our project:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;okay-enough-talking-show-me-the-code&#34;&gt;&lt;strong&gt;Okay enough talking, show me the code&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;h6 id=&#34;the-project&#34;&gt;&lt;strong&gt;The project&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start with the &lt;code&gt;main.tf&lt;/code&gt; that will call our module, notice that I added a few additional comments but it&amp;rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then &lt;code&gt;terraform.tfvars&lt;/code&gt; has some values to override the defaults that we defined:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h6 id=&#34;the-module&#34;&gt;&lt;strong&gt;The module&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;Now into the module itself, this module will create a GKE cluster, and while it&amp;rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the &lt;code&gt;main.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;The &lt;code&gt;variables.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And finally the &lt;code&gt;outputs.tf&lt;/code&gt; file:
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js&#34;&gt;&lt;/script&gt;
+
 Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)&lt;/p&gt;
 
 &lt;h6 id=&#34;testing-it&#34;&gt;&lt;strong&gt;Testing it&lt;/strong&gt;&lt;/h6&gt;
 
 &lt;p&gt;First we need to initialize our project so terraform can put modules, provider files, etc in place, it&amp;rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;Then we will just run it.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js&#34;&gt;&lt;/script&gt;
+
 If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
@@ -109,38 +117,46 @@ If we check the output we will see that the name of the cluster matches the one 
 &lt;h5 id=&#34;creating-a-cert-for-our-new-client&#34;&gt;&lt;strong&gt;Creating a cert for our new client&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;As we see here we need to enable kv version 1 on &lt;code&gt;/secret&lt;/code&gt; for this to work, then we just create a secret and store it as a kubernetes secret for myapp, note that the CA was created in the previous article and we rely on these certificates so we can keep building on that.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/2989cf05404896f7b65ac400068ac903.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;service-account-for-kubernetes&#34;&gt;&lt;strong&gt;Service account for kubernetes&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;In Kubernetes, a service account provides an identity for processes that run in a Pod so that the processes can contact the API server.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8440fe3654d36fb2055c7ceb894f167e.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault-policy&#34;&gt;&lt;strong&gt;Vault policy&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Then we need to set a read-only policy for our secrets, we don&amp;rsquo;t want or app to be able to write or rewrite secrets.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/aef3234eb43aa37f7cce5f20ecf7c757.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;kubernetes-configuration&#34;&gt;&lt;strong&gt;Kubernetes configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Set the environment variables to point to the running Minikube environment and enable the &lt;a href=&#34;https://www.vaultproject.io/docs/auth/kubernetes.html#configuration&#34;&gt;kubernetes authentication method&lt;/a&gt; and then validate it from a temporal Pod.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/a47d22781b177c483bfe706cc436f049.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;the-deployment-and-the-consul-template-configuration&#34;&gt;&lt;strong&gt;The deployment and the consul-template configuration&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;If you check the volume mounts and the secrets we load the certificates we created initially and use them to fetch the secret from vault
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/0cc0e90b668c2fef4d2442e1b9eed03f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;This is where the magic happens so we&amp;rsquo;re able to fetch secrets (thanks to that role and the token that then will be stored there)
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f977a689000a20c5163ce72cea0039f5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;p&gt;And last but not least we create a file based in the template provided which our nginx container will render on the screen later, this is done using Consul Template.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3dd851d97eba8222dd978a2e7ed067a9.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;test-it&#34;&gt;&lt;strong&gt;Test it!&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The last step would be to test all that, so after having deployed the files to kubernetes we should see something like this
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/269dd3f96ef2b5505a50513eef9ff94c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -184,22 +200,26 @@ If we check the output we will see that the name of the cluster matches the one 
 &lt;h5 id=&#34;preparing-the-cluster&#34;&gt;&lt;strong&gt;Preparing the cluster&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Let&amp;rsquo;s start minikube and validate that we can reach our cluster with &lt;code&gt;minikube start&lt;/code&gt; and then with &lt;code&gt;kubectl get nodes&lt;/code&gt;, also the dashboard can become handy you can invoke it like this &lt;code&gt;minikube dashboard&lt;/code&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;creating-certificates-for-consul-and-vault&#34;&gt;&lt;strong&gt;Creating certificates for Consul and Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Vault needs a backend to store data, this backend can be consul, etcd, postgres, and &lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/index.html&#34;&gt;many more&lt;/a&gt;, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;consul&#34;&gt;&lt;strong&gt;Consul&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;vault&#34;&gt;&lt;strong&gt;Vault&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;p&gt;Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-&lt;script type=&#34;application/javascript&#34; src=&#34;//gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
@@ -2347,7 +2367,7 @@ spec:
         app: wordpress
     spec:
       containers:
-      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0&lt;/span&gt;.&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+      - image: bitnami/wordpress:&lt;span style=&#34;color:#ae81ff&#34;&gt;5.0.2&lt;/span&gt;
         name: wordpress
         ports:
         - containerPort: &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;

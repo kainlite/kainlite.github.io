@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Getting started with terraform modules</title>
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_terraform_modules/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terraform.png?1563849452" />
+<meta property="og:image" content="https://techsquad.rocks/img/terraform.png?1567477295" />
 
 
 <meta property="article:tag" content="terraform" />
@@ -53,9 +53,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Getting started with terraform modules"/>
-<meta name="twitter:description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project.?1563849452"/>
+<meta name="twitter:description" content="Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project.?1567477295"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform.png?1563849452" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform.png?1567477295" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -146,37 +146,45 @@ if (!doNotTrack) {
 <p>A module can be any folder with a <code>main.tf</code> file in it, yes, that is the only <em>required</em> file for a module to be usable, but the recommendation is that you also put a <code>README.md</code> file with a description of the module if it&rsquo;s intended to be used by people if it&rsquo;s a sub-module it&rsquo;s not necessary, also you will need a file called <code>variables.tf</code> and other <code>outputs.tf</code> of course if it&rsquo;s a big module that cannot be splitted into sub-modules you can split those files for convenience or readability, variables should have descriptions so the tooling can show you what are they for, you can read more about the basics for a module <a href="https://www.terraform.io/docs/modules/index.html">here</a>.</p>
 
 <p>Before moving on let&rsquo;s see the folder structure of our project:
-<script type="application/javascript" src="//gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/4229babfdf16f9caaf16889246a5b53c.js"></script>
+</p>
 
 <h5 id="okay-enough-talking-show-me-the-code"><strong>Okay enough talking, show me the code</strong></h5>
 
 <h6 id="the-project"><strong>The project</strong></h6>
 
 <p>Let&rsquo;s start with the <code>main.tf</code> that will call our module, notice that I added a few additional comments but it&rsquo;s pretty much straight forward, we set the provider, then we define some variables, call our module and print some output (output can also be used to pass data between modules).
-<script type="application/javascript" src="//gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/63f7b16e104bd3d2c827e4d491cbd347.js"></script>
+</p>
 
 <p>Then <code>terraform.tfvars</code> has some values to override the defaults that we defined:
-<script type="application/javascript" src="//gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/2ff76f85396f70f5a5d0fd406fc91381.js"></script>
+</p>
 
 <h6 id="the-module"><strong>The module</strong></h6>
 
 <p>Now into the module itself, this module will create a GKE cluster, and while it&rsquo;s not a good practice to have a module as a wrapper but for this example we will forget about that rule for a while, this is the <code>main.tf</code> file:
-<script type="application/javascript" src="//gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/8a2db80dbcba38160e4c8f0112e55424.js"></script>
+</p>
 
 <p>The <code>variables.tf</code> file:
-<script type="application/javascript" src="//gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/183d577eef0b1967792b0e2e95e79e1e.js"></script>
+</p>
 
 <p>And finally the <code>outputs.tf</code> file:
-<script type="application/javascript" src="//gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/3b30dcc163e97103e9503be86672bd39.js"></script>
+
 Notice that we have a lot more outputs than the one we decided to print out, but you can play with that and experiment if you want :)</p>
 
 <h6 id="testing-it"><strong>Testing it</strong></h6>
 
 <p>First we need to initialize our project so terraform can put modules, provider files, etc in place, it&rsquo;s a good practice to version things and to move between versions that way everything can be tested and if something is not working as expected you can always rollback to the previous state.
-<script type="application/javascript" src="//gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js"></script></p>
+<script type="application/javascript" src="https://gist.github.com/kainlite/346e84ef3577ef708625741a508afb2c.js"></script>
+</p>
 
 <p>Then we will just run it.
-<script type="application/javascript" src="//gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js"></script>
+<script type="application/javascript" src="https://gist.github.com/kainlite/e77dbdd482eb26cd54414324761900f4.js"></script>
+
 If we check the output we will see that the name of the cluster matches the one from our variables and at the end we can see the output that the module produced.</p>
 
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>

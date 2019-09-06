@@ -44,7 +44,7 @@ Terraform In this example I used terraform 0.12, and I kind of liked the new cha
 Terraform In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serverless-cognito.png?1567479357" />
+<meta property="og:image" content="https://techsquad.rocks/img/serverless-cognito.png?1567812272" />
 
 
 <meta property="article:tag" content="go" />
@@ -60,9 +60,9 @@ Terraform In this example I used terraform 0.12, and I kind of liked the new cha
 
     <meta name="twitter:title" content="Serverless authentication with Cognito and Go"/>
 <meta name="twitter:description" content="Introduction In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found here.
-Terraform In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.?1567479357"/>
+Terraform In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.?1567812272"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/serverless-cognito.png?1567479357" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serverless-cognito.png?1567812272" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -158,17 +158,59 @@ Terraform In this example I used terraform 0.12, and I kind of liked the new cha
 
 <h5 id="terraform"><strong>Terraform</strong></h5>
 
-<p>In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.
-<script type="application/javascript" src="https://gist.github.com/kainlite/1e466c6ac28f9cfcf1513c105325e100.js"></script>
+<p>In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.</p>
 
-As we can see it&rsquo;s really simple to have a cognito user pool working, the most important part here is the <code>auto_verified_attributes</code> because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values.</p>
+<h5 id="cognito">Cognito</h5>
+
+<p><script type="application/javascript" src="https://gist.github.com/kainlite/1e466c6ac28f9cfcf1513c105325e100.js"></script>
+
+As we can see it&rsquo;s really simple to have a cognito user pool working, the most important part here is the <code>auto_verified_attributes</code> because that is what makes cognito to actually send an email or an sms with the confirmation code, the rest is self-describing, it creates a pool and a client, since what we need to be able to interact with out pool is the client that part is of considerable importance even that we have most things with default values. As you might have noticed we defined two <code>explicit_auth_flows</code> and that is to be able to interact with this user pool using user and password.</p>
+
+<h5 id="acm">ACM</h5>
+
+<p>Next let&rsquo;s see how we manage the certificate creation using ACM.
+<script type="application/javascript" src="https://gist.github.com/kainlite/21e47ec80a8c9c5cf84420a61ae44da9.js"></script>
+
+Here basically we create the certificate using <code>aws_acm_certificate</code> and validate it automatically using the <code>DNS</code> method and the resource <code>aws_acm_certificate_validation</code>, the other resources in the file are just there because they are kind of associated but not necessarily need to be there.</p>
+
+<h5 id="route53">Route53</h5>
+
+<p>Here we just create an alias record for the API Gateway and the validation record.
+<script type="application/javascript" src="https://gist.github.com/kainlite/6601b5154528547f5724e498712a8b4b.js"></script>
+</p>
+
+<h5 id="api-gateway">API Gateway</h5>
+
+<p>While this file might seem relatively simple, the API Gateway has many features and can get really complex really fast, basically what we are doing here is creating an API with a resource that accepts all method types and proxy that as it is to our lambda function.
+<script type="application/javascript" src="https://gist.github.com/kainlite/455dfd82e2a23299dc2d22650a2c1cef.js"></script>
+</p>
+
+<h5 id="lambda">Lambda</h5>
+
+<p>This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.</p>
+
+<h5 id="variables-and-locals">Variables and locals</h5>
+
+<p>First the variables file with the default values
+<script type="application/javascript" src="https://gist.github.com/kainlite/0b69599f35957612616dae4220207e37.js"></script>
+</p>
+
+<p>And last the locals file, in this small snippet we are just making a map with a computed value and the values that can come from a variable which can be quite useful in many scenarios where you don&rsquo;t know all the information in advance or something is dynamically assigned:
+<script type="application/javascript" src="https://gist.github.com/kainlite/348a4919f625452412beeed8e2a45200.js"></script>
+</p>
+
+<h5 id="deployment-scripts">Deployment scripts</h5>
+
+<p>There is a small bash script to make it easier to run the deployment, AKA as compiling the code, zipping it, and running terraform to update our function or whatever we changed.
+<script type="application/javascript" src="https://gist.github.com/kainlite/eafa48d2156b8a5bb2e5a458a928fab5.js"></script>
+</p>
 
 <h5 id="go"><strong>Go</strong></h5>
 
 <p>The good thing is that everything is code, but we don&rsquo;t have to manage any server, we just consume services from AWS completely from code, isn&rsquo;t that amazing?, I apologize for the length of the file, but you will notice that it&rsquo;s very repetitive, in most functions we load the AWS configuration, we make a request and return a response, we&rsquo;re also using Gin as a router, which is pretty straight-forward and easy to use, we have only one authenticated path (<code>/user/profile</code>), and we also have another unauthenticated path which is a health check (<code>/app/health</code>), the other two paths (<code>/user</code> and <code>/user/validate</code>) are exclusively for the user creation process with cognito.
 <script type="application/javascript" src="https://gist.github.com/kainlite/755f0c1b2381af46fb2f69f8865cabb9.js"></script>
 
-All logs go to Cloudwatch and you can also use X-Ray to diagnose issues.</p>
+All logs go to CloudWatch and you can also use X-Ray to diagnose issues.</p>
 
 <h5 id="testing-it"><strong>Testing it</strong></h5>
 
@@ -180,6 +222,8 @@ I have added most info in as comments in the snippet, note that I also used my t
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
 
 <p>This post was heavily inspired by <a href="https://a.l3x.in/2018/07/25/lambda-api-custom-domain-tutorial.html">this post</a> from Alexander, kudos to him for the great work!, this post expands on that and adds the certificate with ACM, it also handles a basic AWS Cognito configuration and the necessary go code to make it work, there are other ways to accomplish the same, but what I like about this approach is that you can have some endpoints or paths without authentication and you can use authentication, etc on-demand. This article is a bit different but I will try to re-shape it in the following weeks, and also cover more of the content displayed here, let me know if you have any comments or suggestions!</p>
+
+<p>In some near future I will build upon this article in another article adding a few cool things, for example to allow an user to upload an image to an S3 bucket and fetch that with a friendly name using Cloudfront (In a secure manner, and only able to upload/update his/her profile picture, while being able to fetch anyone profile pic), the idea is to have a fully functional small API using AWS services and serverless facilities with common tasks that you can find in any functional website.</p>
 
 <h3 id="errata">Errata</h3>
 

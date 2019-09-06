@@ -70,7 +70,9 @@ Here basically we create the certificate using &lt;code&gt;aws_acm_certificate&l
 
 &lt;h5 id=&#34;lambda&#34;&gt;Lambda&lt;/h5&gt;
 
-&lt;p&gt;This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.&lt;/p&gt;
+&lt;p&gt;This file has the lambda function definition, the policy and the roles needed, basically the policy is to be able to log to CloudWatch and to inspect with X-Ray, then the log group to store the logs will set the retention period by default 7 days.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/f8d4db31c0b353d627df97418dd5dc87.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
 
 &lt;h5 id=&#34;variables-and-locals&#34;&gt;Variables and locals&lt;/h5&gt;
 

@@ -5,10 +5,70 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 08 Sep 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>development</title>
+      <link>https://techsquad.rocks/tags/development/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/development/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>go</title>
+      <link>https://techsquad.rocks/tags/go/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/go/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>golang</title>
+      <link>https://techsquad.rocks/tags/golang/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/golang/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://techsquad.rocks/tags/linux/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/linux/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://techsquad.rocks/tags/terraform/</link>
+      <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/tags/terraform/</guid>
+      <tags>
+      
+      </tags>
+      <description></description>
+    </item>
     
     <item>
       <title>aws</title>
@@ -28,30 +88,6 @@
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/cognito/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>go</title>
-      <link>https://techsquad.rocks/tags/go/</link>
-      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/go/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>https://techsquad.rocks/tags/golang/</link>
-      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/golang/</guid>
       <tags>
       
       </tags>
@@ -119,18 +155,6 @@
     </item>
     
     <item>
-      <title>terraform</title>
-      <link>https://techsquad.rocks/tags/terraform/</link>
-      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/terraform/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>grpc</title>
       <link>https://techsquad.rocks/tags/grpc/</link>
       <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
@@ -179,18 +203,6 @@
     </item>
     
     <item>
-      <title>linux</title>
-      <link>https://techsquad.rocks/tags/linux/</link>
-      <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/linux/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
       <title>travis-ci</title>
       <link>https://techsquad.rocks/tags/travis-ci/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
@@ -208,18 +220,6 @@
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>https://techsquad.rocks/tags/vault/</guid>
-      <tags>
-      
-      </tags>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>development</title>
-      <link>https://techsquad.rocks/tags/development/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/tags/development/</guid>
       <tags>
       
       </tags>

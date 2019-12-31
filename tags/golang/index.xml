@@ -50,6 +50,20 @@
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/244d04580a8ca63e4bbecdcecd649840.js&#34;&gt;&lt;/script&gt;
 
 
+&lt;h5 id=&#34;sources&#34;&gt;&lt;strong&gt;Sources&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Some articles, pages, and files that I used and helped me to do what I wanted to do:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developers.google.com/gmail/api/quickstart/go&#34;&gt;https://developers.google.com/gmail/api/quickstart/go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/gsuitedevs/go-samples/blob/master/gmail/quickstart/quickstart.go&#34;&gt;https://github.com/gsuitedevs/go-samples/blob/master/gmail/quickstart/quickstart.go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://socketloop.com/tutorials/golang-send-email-with-attachment-rfc2822-using-gmail-api-example&#34;&gt;https://socketloop.com/tutorials/golang-send-email-with-attachment-rfc2822-using-gmail-api-example&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://raw.githubusercontent.com/googleapis/google-api-go-client/master/examples/gmail.go&#34;&gt;https://raw.githubusercontent.com/googleapis/google-api-go-client/master/examples/gmail.go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/xDinomode/Go-Gmail-Api-Example/blob/master/email.go&#34;&gt;https://github.com/xDinomode/Go-Gmail-Api-Example/blob/master/email.go&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.spamcop.net/reporter.pl&#34;&gt;https://www.spamcop.net/reporter.pl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://godoc.org/google.golang.org/api/gmail/v1#Message&#34;&gt;https://godoc.org/google.golang.org/api/gmail/v1#Message&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;h3 id=&#34;additional-notes&#34;&gt;Additional notes&lt;/h3&gt;
 
 &lt;p&gt;While this still needs some work hopefully will keep my account clean and probably help someone wondering about how to do the same.&lt;/p&gt;

@@ -4,7 +4,52 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/development/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/go/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/golang/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/linux/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/linux/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/</loc>
+    <lastmod>2019-12-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -13,42 +58,7 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/development/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/go/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/golang/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/linux/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/categories/serverless/</loc>
-    <lastmod>2019-09-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
     <lastmod>2019-09-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -118,22 +128,17 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/linux/</loc>
-    <lastmod>2019-06-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/tags/continuous-delivery/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/continuous-integration/</loc>
+    <loc>https://techsquad.rocks/categories/continuous-integration/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/continuous-integration/</loc>
+    <loc>https://techsquad.rocks/tags/continuous-integration/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
   </url>
   
@@ -298,12 +303,12 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
+    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
+    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
   </url>
   

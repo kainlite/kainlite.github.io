@@ -5,10 +5,62 @@
     <description>Recent content in go on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 08 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 31 Dec 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to report your gmail spam folder to spamcop</title>
+      <link>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</link>
+      <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</guid>
+      <tags>
+      
+        <tag>development</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>go</tag>
+      
+        <tag>linux</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This post is a bit different from the other in the sense that it&amp;rsquo;s a small &amp;ldquo;tool&amp;rdquo; I did to ease spam reporting to &lt;a href=&#34;https://www.spamcop.net/&#34;&gt;SpamCop.net&lt;/a&gt;, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &amp;ldquo;script&amp;rdquo; to make things easier. Basically what it does is list all messages in the spam folders fetches them and then forwards each one as an attachment to spamcop, then you get an email with a link to confirm the submission and that&amp;rsquo;s it.&lt;/p&gt;
+
+&lt;p&gt;There are a few pre-requisites, like enabling the GMail API for your account, you can do that &lt;a href=&#34;https://developers.google.com/gmail/api/quickstart/go#step_1_turn_on_the&#34;&gt;here&lt;/a&gt;, after that the first time you use the app you have to authorize it, you do this by pasting the URL that the app gives you in the browser, then clicking Allow, and then pasting the token that it gives you back in the terminal (this only needs to be done once), after that you just run the binary in a cronjob or maybe even as a lambda (but I haven&amp;rsquo;t gone there yet), I usually check the spam folder remove what I don&amp;rsquo;t think it&amp;rsquo;s spam or whatever and then run the script to report everything else that it is clearly spam, it takes a few seconds and then I get the link to confirm all reports (one by one, sadly), this script is not perfect as sometimes spamcop cannot read properly the forwarded email, but I have checked exporting those as a file and I do see them all right, so that will be an investigation for another day, this only took like 2-4 hours, having 0 knowledge of the GMail API, etc.&lt;/p&gt;
+
+&lt;p&gt;Also you need to setup a spamcop account which you will be using to send your reports, you can do that &lt;a href=&#34;https://www.spamcop.net/anonsignup.shtml&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The source code can be found &lt;a href=&#34;https://github.com/kainlite/spamcop&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;code&#34;&gt;&lt;strong&gt;Code&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;I have added some comments along the code to make things easy to understand
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/557731e9b398e593fc6a176cd9f705e5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;running-it&#34;&gt;&lt;strong&gt;Running it&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/244d04580a8ca63e4bbecdcecd649840.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;h3 id=&#34;additional-notes&#34;&gt;Additional notes&lt;/h3&gt;
+
+&lt;p&gt;While this still needs some work hopefully will keep my account clean and probably help someone wondering about how to do the same.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Brief introduction to terratest</title>

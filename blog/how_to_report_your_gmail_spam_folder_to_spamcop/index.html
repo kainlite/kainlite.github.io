@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>SSH Remote Port Forward</title>
+    <title>How to report your gmail spam folder to spamcop</title>
     <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,29 +36,27 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
+<meta property="description" content="Introduction This post is a bit different from the other in the sense that it&rsquo;s a small &ldquo;tool&rdquo; I did to ease spam reporting to SpamCop.net, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &ldquo;script&rdquo; to make things easier." />
 
-    <meta property="og:title" content="SSH Remote Port Forward" />
-<meta property="og:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
+    <meta property="og:title" content="How to report your gmail spam folder to spamcop" />
+<meta property="og:description" content="Introduction This post is a bit different from the other in the sense that it&rsquo;s a small &ldquo;tool&rdquo; I did to ease spam reporting to SpamCop.net, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &ldquo;script&rdquo; to make things easier." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/ssh_remote_port_forward/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1577825394" />
+<meta property="og:url" content="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/" />
+<meta property="og:image" content="https://techsquad.rocks/img/spam.jpg?1577825394" />
 
 
-<meta property="article:tag" content="openssh" />
-<meta property="article:tag" content="tips-and-tricks" />
+<meta property="article:tag" content="development" />
+<meta property="article:tag" content="golang" />
+<meta property="article:tag" content="go" />
 <meta property="article:tag" content="linux" />
 
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="SSH Remote Port Forward"/>
-<meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1577825394"/>
+    <meta name="twitter:title" content="How to report your gmail spam folder to spamcop"/>
+<meta name="twitter:description" content="Introduction This post is a bit different from the other in the sense that it&rsquo;s a small &ldquo;tool&rdquo; I did to ease spam reporting to SpamCop.net, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &ldquo;script&rdquo; to make things easier.?1577825394"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1577825394" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/spam.jpg?1577825394" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -117,19 +115,21 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/ssh_remote_port_forward/">SSH Remote Port Forward</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          March 9, 2019
+          December 31, 2019
             &nbsp;&nbsp;
             
             
-              <a href="https://techsquad.rocks/tags/openssh/" class="label label-success">
-                    openssh
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/tips-and-tricks/" class="label label-success">
-                    tips-and-tricks
+              <a href="https://techsquad.rocks/tags/development/" class="label label-success">
+                    development
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/golang/" class="label label-success">
+                    golang
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/go/" class="label label-success">
+                    go
                   </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
                     linux
                   </a>
@@ -142,36 +142,28 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
 
 <h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore <a href="https://techsquad.rocks/blog/ssh_local_port_forward/">SSH Local Port Forward</a> and <a href="https://techsquad.rocks/blog/ssh_socks_proxy/">SSH Socks Proxy</a> and how to use that functionality.</p>
+<p>This post is a bit different from the other in the sense that it&rsquo;s a small &ldquo;tool&rdquo; I did to ease spam reporting to <a href="https://www.spamcop.net/">SpamCop.net</a>, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &ldquo;script&rdquo; to make things easier. Basically what it does is list all messages in the spam folders fetches them and then forwards each one as an attachment to spamcop, then you get an email with a link to confirm the submission and that&rsquo;s it.</p>
 
-<h5 id="explanation"><strong>Explanation</strong></h5>
+<p>There are a few pre-requisites, like enabling the GMail API for your account, you can do that <a href="https://developers.google.com/gmail/api/quickstart/go#step_1_turn_on_the">here</a>, after that the first time you use the app you have to authorize it, you do this by pasting the URL that the app gives you in the browser, then clicking Allow, and then pasting the token that it gives you back in the terminal (this only needs to be done once), after that you just run the binary in a cronjob or maybe even as a lambda (but I haven&rsquo;t gone there yet), I usually check the spam folder remove what I don&rsquo;t think it&rsquo;s spam or whatever and then run the script to report everything else that it is clearly spam, it takes a few seconds and then I get the link to confirm all reports (one by one, sadly), this script is not perfect as sometimes spamcop cannot read properly the forwarded email, but I have checked exporting those as a file and I do see them all right, so that will be an investigation for another day, this only took like 2-4 hours, having 0 knowledge of the GMail API, etc.</p>
 
-<p>Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).</p>
+<p>Also you need to setup a spamcop account which you will be using to send your reports, you can do that <a href="https://www.spamcop.net/anonsignup.shtml">here</a></p>
 
-<p><strong>The command</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -Nn -R <span style="color:#ae81ff">3306</span>:localhost:3306 user@example.com</code></pre></div></p>
+<p>The source code can be found <a href="https://github.com/kainlite/spamcop">here</a></p>
 
-<p><strong>The parameters and their meaning</strong>
-I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means remote port forward without a shell.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-N Do not execute a remote command. This is useful for just forwarding ports.
--n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
--R Specifies that connections to the given TCP port or Unix socket on the remote (server) host are to be forwarded to the local side.</code></pre></div></p>
+<h5 id="code"><strong>Code</strong></h5>
 
-<h5 id="server-configuration"><strong>Server configuration</strong></h5>
+<p>I have added some comments along the code to make things easy to understand
+<script type="application/javascript" src="https://gist.github.com/kainlite/557731e9b398e593fc6a176cd9f705e5.js"></script>
+</p>
 
-<p>There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are <code>GatewayPorts</code> and <code>AllowTcpForwarding</code>.</p>
+<h5 id="running-it"><strong>Running it</strong></h5>
 
-<h5 id="gatewayports"><strong>GatewayPorts</strong></h5>
+<script type="application/javascript" src="https://gist.github.com/kainlite/244d04580a8ca63e4bbecdcecd649840.js"></script>
 
-<p>By default this option is <code>no</code> which means that only the remote computer will be able to connect to the forwarded port, you can set it to <code>yes</code> or <code>clientspecified</code> to allow other machines use that remote port-forward (handy and dangerous).</p>
 
-<h5 id="allowtcpforwarding"><strong>AllowTcpForwarding</strong></h5>
+<h3 id="additional-notes">Additional notes</h3>
 
-<p>By default this option is set to <code>yes</code>, you can restrict remote and local port forwarding by setting it to <code>no</code> or allow only local by setting it to <code>local</code>.</p>
-
-<h3 id="closing-notes"><strong>Closing notes</strong></h3>
-
-<p>As you can see this option can be really handy to bypass firewalls for example or have a temporary port forward, also if you want to make this automatic and not so temporary you can check autossh. You can use nc (netcat) if you don&rsquo;t want to install anything to test the connections and the tunnels (nc -l -p PORT) in the server side and (nc HOST PORT) in the client.</p>
+<p>While this still needs some work hopefully will keep my account clean and probably help someone wondering about how to do the same.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -183,19 +175,6 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        December 31, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                      </h6>
-                    </div>
-                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -213,12 +192,25 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
                       <h6 style="text-align: right">
-                        May 5, 2019
+                        September 2, 2019
                       </h6>
                     </div>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
-                        <strong><a href="/blog/go_continuous_delivery_with_terraform_and_kubernetes/">Go continuous delivery with Terraform and Kubernetes</a></strong>
+                        <strong><a href="/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito and Go</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        June 23, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/go_grpc_cheap_ping/">Go gRPC Cheap Ping</a></strong>
                       </h6>
                     </div>
                   </div>

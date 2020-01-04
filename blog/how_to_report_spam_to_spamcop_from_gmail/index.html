@@ -7,7 +7,7 @@
     <meta name="author" content="Gabriel" />
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>Getting started with HashiCorp Vault on Kubernetes</title>
+    <title>How to report spam to spamcop from gmail</title>
     <meta name="generator" content="Hugo 0.57.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
@@ -36,27 +36,24 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1." />
+<meta property="description" content="Introduction Easy method to report spam to SpamCop.net using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&rsquo;t need a script and it&rsquo;s really easy to do as well, same result as with the script from the previous post." />
 
-    <meta property="og:title" content="Getting started with HashiCorp Vault on Kubernetes" />
-<meta property="og:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1." />
+    <meta property="og:title" content="How to report spam to spamcop from gmail" />
+<meta property="og:description" content="Introduction Easy method to report spam to SpamCop.net using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&rsquo;t need a script and it&rsquo;s really easy to do as well, same result as with the script from the previous post." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/" />
-<meta property="og:image" content="https://techsquad.rocks/img/vault.png?1578158585" />
+<meta property="og:url" content="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" />
+<meta property="og:image" content="https://techsquad.rocks/img/spam.jpg?1578158585" />
 
 
-<meta property="article:tag" content="kubernetes" />
-<meta property="article:tag" content="vault" />
 <meta property="article:tag" content="linux" />
-<meta property="article:tag" content="security" />
 
 <meta property="og:locale" content="en" />
 
 
-    <meta name="twitter:title" content="Getting started with HashiCorp Vault on Kubernetes"/>
-<meta name="twitter:description" content="Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.?1578158585"/>
+    <meta name="twitter:title" content="How to report spam to spamcop from gmail"/>
+<meta name="twitter:description" content="Introduction Easy method to report spam to SpamCop.net using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&rsquo;t need a script and it&rsquo;s really easy to do as well, same result as with the script from the previous post.?1578158585"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/vault.png?1578158585" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/spam.jpg?1578158585" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -115,23 +112,17 @@ if (!doNotTrack) {
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a></strong>
+            <strong><a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
           </h3>
         </div>
         <div class="blog-title">
           <h4>
-          April 28, 2019
+          January 4, 2020
             &nbsp;&nbsp;
             
             
-              <a href="https://techsquad.rocks/tags/kubernetes/" class="label label-success">
-                    kubernetes
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/vault/" class="label label-success">
-                    vault
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+              <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
                     linux
-                  </a>&nbsp; <a href="https://techsquad.rocks/tags/security/" class="label label-success">
-                    security
                   </a>
           </h4>
         </div>
@@ -142,39 +133,50 @@ if (!doNotTrack) {
 
 <h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.1.1, we will be using dynamic secrets, that means that each pod will have a different secret and that secret will expire once the pod is killed.</p>
+<p>Easy method to report spam to <a href="https://www.spamcop.net/">SpamCop.net</a> using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&rsquo;t need a script and it&rsquo;s really easy to do as well, same result as with the script from <a href="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">the previous post</a>.</p>
 
-<p>Before you start you will need <a href="https://www.consul.io/docs/install/index.html">Consul</a>, <a href="https://www.vaultproject.io/docs/install/">Vault</a> client binaries and <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">Minikube</a> or any running cluster, you can find the files used here in <a href="https://github.com/kainlite/vault-consul-tls">this repo</a>.</p>
+<p>Pre-requisites:</p>
 
-<p>This is the part one of <a href="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/">two</a></p>
+<ul>
+<li>GMail account</li>
+<li>Setup a spamcop account which you will be using to send your reports, you can do that <a href="https://www.spamcop.net/anonsignup.shtml">here</a></li>
+</ul>
 
-<h5 id="preparing-the-cluster"><strong>Preparing the cluster</strong></h5>
+<h5 id="forwarding-as-attachment"><strong>Forwarding as attachment</strong></h5>
 
-<p>Let&rsquo;s start minikube and validate that we can reach our cluster with <code>minikube start</code> and then with <code>kubectl get nodes</code>, also the dashboard can become handy you can invoke it like this <code>minikube dashboard</code>
-<script type="application/javascript" src="https://gist.github.com/kainlite/750ee3b20d03fe3e999844c1c80fcf3f.js"></script>
+<p>First of all you need to select all emails and then click on the three dots and select &ldquo;Forward as attachment&rdquo;
+<figure>
+    <img src="/img/spamcop-1.png" width="100%"/> 
+</figure>
 </p>
 
-<h5 id="creating-certificates-for-consul-and-vault"><strong>Creating certificates for Consul and Vault</strong></h5>
+<h5 id="sending-it-to-your-spamcop-email"><strong>Sending it to your spamcop email</strong></h5>
 
-<p>Vault needs a backend to store data, this backend can be consul, etcd, postgres, and <a href="https://www.vaultproject.io/docs/configuration/storage/index.html">many more</a>, so the first thing that we are going to do is create a certificate so consul and vault can speak to each other securely.
-<script type="application/javascript" src="https://gist.github.com/kainlite/f46c829de562750d0fb21ec25f8fa91b.js"></script>
+<p>In this step the only thing that you need to do is put your Spamcop email (it gives you this address to report spam when you create the account and in the report spam tab), you do not need to put anything in the body or the subject, just send it as is.
+<figure>
+    <img src="/img/spamcop-2.png" width="100%"/> 
+</figure>
 </p>
 
-<h5 id="consul"><strong>Consul</strong></h5>
+<h5 id="confirming-each-one"><strong>Confirming each one</strong></h5>
 
-<p>The next steps would be to create an encryption key for the consul cluster and to create all the kubernetes resources associated with it
-<script type="application/javascript" src="https://gist.github.com/kainlite/4f787ef0e5152eb14928a73b3e2b9d91.js"></script>
+<p>Then you will get an email with a link to each spam message to submit the report.
+<figure>
+    <img src="/img/spamcop-3.png" width="100%"/> 
+</figure>
 </p>
 
-<h5 id="vault"><strong>Vault</strong></h5>
+<h5 id="sending-the-reports"><strong>Sending the reports</strong></h5>
 
-<p>Once we have Consul running starting vault should be straight forward, we need to create all kubernetes resources associated with it and then initialize and unseal the vault.
-<script type="application/javascript" src="https://gist.github.com/kainlite/dbe6cb3055b5c202bb3f65b7178e2f7c.js"></script>
+<p>This is a sample report, you can add additional notes if needed and then confirm to send it to the abuse addresses of the owners of the IPs and links found in the email.
+<figure>
+    <img src="/img/spamcop-4.png" width="100%"/> 
+</figure>
 </p>
 
-<h5 id="closing-notes"><strong>Closing notes</strong></h5>
+<h3 id="additional-notes">Additional notes</h3>
 
-<p>As you can see it takes a while to configure a Vault server but I really like the pattern that renders for the apps using it, in the next post we will see how to unlock it automatically with kubernetes and also how to mount the secrets automatically to our pods so our applications can use it :), this post was heavily inspired by <a href="https://testdriven.io/blog/running-vault-and-consul-on-kubernetes/">this one</a> and <a href="https://learn.hashicorp.com/consul/advanced/day-1-operations/certificates#configuring-agents">this one</a>.</p>
+<p>This method is pretty easy for someone who doesn&rsquo;t want to run a script or whatever and is still able to report the spam to the sources, however if you want something a bit less manual you can try with the script or just create a filter to delete everything in the spam folder.</p>
 
 <h3 id="errata">Errata</h3>
 
@@ -186,19 +188,6 @@ if (!doNotTrack) {
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
-                      </h6>
-                    </div>
-                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -222,6 +211,19 @@ if (!doNotTrack) {
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        May 5, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/go_continuous_delivery_with_terraform_and_kubernetes/">Go continuous delivery with Terraform and Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

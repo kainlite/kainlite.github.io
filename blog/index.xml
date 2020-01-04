@@ -5,10 +5,78 @@
     <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Tue, 31 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 04 Jan 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to report spam to spamcop from gmail</title>
+      <link>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</link>
+      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</guid>
+      <tags>
+      
+        <tag>linux</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Easy method to report spam to &lt;a href=&#34;https://www.spamcop.net/&#34;&gt;SpamCop.net&lt;/a&gt; using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&amp;rsquo;t need a script and it&amp;rsquo;s really easy to do as well, same result as with the script from &lt;a href=&#34;https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/&#34;&gt;the previous post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Pre-requisites:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GMail account&lt;/li&gt;
+&lt;li&gt;Setup a spamcop account which you will be using to send your reports, you can do that &lt;a href=&#34;https://www.spamcop.net/anonsignup.shtml&#34;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;forwarding-as-attachment&#34;&gt;&lt;strong&gt;Forwarding as attachment&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;First of all you need to select all emails and then click on the three dots and select &amp;ldquo;Forward as attachment&amp;rdquo;
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/spamcop-1.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;sending-it-to-your-spamcop-email&#34;&gt;&lt;strong&gt;Sending it to your spamcop email&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this step the only thing that you need to do is put your Spamcop email (it gives you this address to report spam when you create the account and in the report spam tab), you do not need to put anything in the body or the subject, just send it as is.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/spamcop-2.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;confirming-each-one&#34;&gt;&lt;strong&gt;Confirming each one&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Then you will get an email with a link to each spam message to submit the report.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/spamcop-3.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;sending-the-reports&#34;&gt;&lt;strong&gt;Sending the reports&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;This is a sample report, you can add additional notes if needed and then confirm to send it to the abuse addresses of the owners of the IPs and links found in the email.
+&lt;figure&gt;
+    &lt;img src=&#34;https://techsquad.rocks/img/spamcop-4.png&#34; width=&#34;100%&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;additional-notes&#34;&gt;Additional notes&lt;/h3&gt;
+
+&lt;p&gt;This method is pretty easy for someone who doesn&amp;rsquo;t want to run a script or whatever and is still able to report the spam to the sources, however if you want something a bit less manual you can try with the script or just create a filter to delete everything in the spam folder.&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>How to report your gmail spam folder to spamcop</title>

@@ -11,6 +11,125 @@
     
     
     <item>
+      <title>Cloud native applications with kubebuilder and kind aka kubernetes operators</title>
+      <link>https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</link>
+      <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</guid>
+      <tags>
+      
+        <tag>go</tag>
+      
+        <tag>golang</tag>
+      
+        <tag>kubernetes</tag>
+      
+        <tag>linux</tag>
+      
+        <tag>security</tag>
+      
+        <tag>docker</tag>
+      
+        <tag>kustomize</tag>
+      
+        <tag>kubebuilder</tag>
+      
+        <tag>kind</tag>
+      
+      </tags>
+      <description>
+
+&lt;h5 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;In this article we will see how to use &lt;a href=&#34;https://github.com/kubernetes-sigs/kubebuilder&#34;&gt;kubebuilder&lt;/a&gt; and &lt;a href=&#34;https://github.com/kubernetes-sigs/kind&#34;&gt;Kind&lt;/a&gt; to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here: &lt;a href=&#34;https://github.com/kainlite/forward&#34;&gt;forward&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&amp;rsquo;s what we will explore here.&lt;/p&gt;
+
+&lt;p&gt;While Kind is not actually a requirement I used that for testing and really liked it, it&amp;rsquo;s faster and simpler than minikube.&lt;/p&gt;
+
+&lt;h5 id=&#34;prerequisites&#34;&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kubebuilder&#34;&gt;kubebuilder&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kustomize&#34;&gt;kustomize&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://golang.org/dl/&#34;&gt;Go 1.13&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kind&#34;&gt;Kind&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://hub.docker.com/?overlay=onboarding&#34;&gt;Docker&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;create-the-project&#34;&gt;Create the project&lt;/h5&gt;
+
+&lt;p&gt;In this step we need to create the kubebuilder project, so in an empty folder we run:
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/fcb512051b1f9aa1abb7ee9d8fd177f5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;create-the-api&#34;&gt;Create the API&lt;/h5&gt;
+
+&lt;p&gt;Next let&amp;rsquo;s create an API, something for us to have control of (our controller).
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/99c415e6bbaf6d92b2c971acddc42221.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Right until here we only have some boilerplate and basic or empty project with defaults, if you test it now it will work, but it won&amp;rsquo;t do anything interesting, but it covers a lot of ground and we should be grateful that such a tool exists.&lt;/p&gt;
+
+&lt;h5 id=&#34;add-our-code-to-the-mix&#34;&gt;Add our code to the mix&lt;/h5&gt;
+
+&lt;p&gt;First we will add it to &lt;code&gt;api/v1beta1/map_types.go&lt;/code&gt;, which will add our fields to our type.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/6e823ba4160fb12b9414494c9b16be7b.js&#34;&gt;&lt;/script&gt;
+
+Basically we just edited the &lt;code&gt;MapSpec&lt;/code&gt; and the &lt;code&gt;MapStatus&lt;/code&gt; struct.&lt;/p&gt;
+
+&lt;p&gt;Now we need to add the code to our controller in &lt;code&gt;controllers/map_controller.go&lt;/code&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/d2e59c468a6864a96647054ac616285d.js&#34;&gt;&lt;/script&gt;
+
+In this controller we added two functions one to create a pod and modified basically the entire Reconcile function (this one takes care of checking the status and make the transitions in other words makes a controller work like a controller), also notice the kubebuilder annotations which will generate the rbac config for us, pretty handy! right?&lt;/p&gt;
+
+&lt;h5 id=&#34;starting-the-cluster&#34;&gt;Starting the cluster&lt;/h5&gt;
+
+&lt;p&gt;Now we will use &lt;a href=&#34;https://github.com/kubernetes-sigs/kind&#34;&gt;Kind&lt;/a&gt; to create a local cluster to test
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/3d5c7eb58a0ede8e34f0824d927deeca.js&#34;&gt;&lt;/script&gt;
+
+it could be that easy!?!?! yes, it is!&lt;/p&gt;
+
+&lt;h5 id=&#34;running-our-operator-locally&#34;&gt;Running our operator locally&lt;/h5&gt;
+
+&lt;p&gt;For testing you can run your operator locally like this:
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/8184c8ae455e033602b81965cacf593b.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;testing-it&#34;&gt;Testing it&lt;/h5&gt;
+
+&lt;p&gt;First we spin up a pod, and launch &lt;code&gt;nc -l -p 8000&lt;/code&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/d940b280bd2f3fdf732b9b259e9da841.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Then we edit our manifest and apply it, check that everything is in place, and do the port-forward and launch another &lt;code&gt;nc localhost 8000&lt;/code&gt; to test if everything went well.
+First the manifest
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/d609ef25c2bc621d365781e6f3d9826b.js&#34;&gt;&lt;/script&gt;
+
+Then the port-forward and test
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/d9455e6a17b2a396f486d48cf159f5f2.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&#34;making-it-publicly-ready&#34;&gt;Making it publicly ready&lt;/h5&gt;
+
+&lt;p&gt;Here we just build and push the docker image to dockerhub or our favorite public registry.
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/c45158dd378d09b82c8153dbdd122953.js&#34;&gt;&lt;/script&gt;
+
+Then you can install it with &lt;code&gt;make deploy IMG=kainlite/forward:0.0.1&lt;/code&gt; and uninstall it with &lt;code&gt;make uninstall&lt;/code&gt;&lt;/p&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Be sure to check the &lt;a href=&#34;https://book.kubebuilder.io/&#34;&gt;kubebuilder book&lt;/a&gt; if you want to learn more, I hope you enjoyed it and hope to see you on &lt;a href=&#34;https://twitter.com/kainlite&#34;&gt;twitter&lt;/a&gt; or &lt;a href=&#34;https://github.com/kainlite&#34;&gt;github&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>How to report spam to spamcop from gmail</title>
       <link>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</link>
       <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>

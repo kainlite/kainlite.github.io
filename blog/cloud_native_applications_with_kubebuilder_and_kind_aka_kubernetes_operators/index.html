@@ -36,15 +36,15 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here: forward.
+<meta property="description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here." />
 
     <meta property="og:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators" />
-<meta property="og:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here: forward.
+<meta property="og:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" />
-<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1579309173" />
+<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1579373220" />
 
 
 <meta property="article:tag" content="go" />
@@ -61,10 +61,10 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 
 
     <meta name="twitter:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators"/>
-<meta name="twitter:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here: forward.
-Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1579309173"/>
+<meta name="twitter:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
+Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1579373220"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1579309173" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1579373220" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -160,7 +160,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 
 <h5 id="introduction"><strong>Introduction</strong></h5>
 
-<p>In this article we will see how to use <a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a> and <a href="https://github.com/kubernetes-sigs/kind">Kind</a> to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here: <a href="https://github.com/kainlite/forward">forward</a>.</p>
+<p>In this article we will see how to use <a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a> and <a href="https://github.com/kubernetes-sigs/kind">Kind</a> to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: <a href="https://github.com/kainlite/forward">forward</a>.</p>
 
 <p>Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.</p>
 

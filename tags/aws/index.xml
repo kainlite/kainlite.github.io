@@ -1,8 +1,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>aws on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <title>AWS on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://techsquad.rocks/tags/aws/</link>
-    <description>Recent content in aws on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <description>Recent content in AWS on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
@@ -46,6 +46,8 @@
 &lt;p&gt;Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&amp;rsquo;s what we will explore here.&lt;/p&gt;
 
 &lt;p&gt;While Kind is not actually a requirement I used that for testing and really liked it, it&amp;rsquo;s faster and simpler than minikube.&lt;/p&gt;
+
+&lt;p&gt;Also if you are interested how I got the idea to make this operator check this &lt;a href=&#34;https://github.com/kubernetes/kubernetes/issues/72597&#34;&gt;github issue&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h5 id=&#34;prerequisites&#34;&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h5&gt;
 

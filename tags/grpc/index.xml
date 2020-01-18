@@ -47,6 +47,8 @@
 
 &lt;p&gt;While Kind is not actually a requirement I used that for testing and really liked it, it&amp;rsquo;s faster and simpler than minikube.&lt;/p&gt;
 
+&lt;p&gt;Also if you are interested how I got the idea to make this operator check this &lt;a href=&#34;https://github.com/kubernetes/kubernetes/issues/72597&#34;&gt;github issue&lt;/a&gt;.&lt;/p&gt;
+
 &lt;h5 id=&#34;prerequisites&#34;&gt;&lt;strong&gt;Prerequisites&lt;/strong&gt;&lt;/h5&gt;
 
 &lt;ul&gt;

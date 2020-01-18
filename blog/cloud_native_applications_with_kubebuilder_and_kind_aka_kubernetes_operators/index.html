@@ -44,7 +44,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" />
-<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1579373220" />
+<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1579385040" />
 
 
 <meta property="article:tag" content="go" />
@@ -62,9 +62,9 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 
     <meta name="twitter:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators"/>
 <meta name="twitter:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
-Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1579373220"/>
+Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1579385040"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1579373220" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1579385040" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -165,6 +165,8 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 <p>Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.</p>
 
 <p>While Kind is not actually a requirement I used that for testing and really liked it, it&rsquo;s faster and simpler than minikube.</p>
+
+<p>Also if you are interested how I got the idea to make this operator check this <a href="https://github.com/kubernetes/kubernetes/issues/72597">github issue</a>.</p>
 
 <h5 id="prerequisites"><strong>Prerequisites</strong></h5>
 

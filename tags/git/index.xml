@@ -119,7 +119,7 @@ Then you can install it with &lt;code&gt;make deploy IMG=kainlite/forward:0.0.1&
 
 &lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
 
-&lt;p&gt;Be sure to check the &lt;a href=&#34;https://book.kubebuilder.io/&#34;&gt;kubebuilder book&lt;/a&gt; if you want to learn more, I hope you enjoyed it and hope to see you on &lt;a href=&#34;https://twitter.com/kainlite&#34;&gt;twitter&lt;/a&gt; or &lt;a href=&#34;https://github.com/kainlite&#34;&gt;github&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;Be sure to check the &lt;a href=&#34;https://book.kubebuilder.io/&#34;&gt;kubebuilder book&lt;/a&gt; if you want to learn more and the &lt;a href=&#34;https://kind.sigs.k8s.io/docs/user/quick-start&#34;&gt;kind docs&lt;/a&gt;, I hope you enjoyed it and hope to see you on &lt;a href=&#34;https://twitter.com/kainlite&#34;&gt;twitter&lt;/a&gt; or &lt;a href=&#34;https://github.com/kainlite&#34;&gt;github&lt;/a&gt;!&lt;/p&gt;
 
 &lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
 

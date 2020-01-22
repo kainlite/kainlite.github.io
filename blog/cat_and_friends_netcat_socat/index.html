@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Cat and friends (Netcat and Socat)</title>
+    <meta name="generator" content="Hugo 0.57.2" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Introduction In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats&hellip;
+Also sorry for the awful recordings, but couldn&rsquo;t figure out why it looks so bad with tmux.
+cat Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&rsquo;s often used when it&rsquo;s not needed due to that, let&rsquo;s see some examples." />
+
+    <meta property="og:title" content="Cat and friends (Netcat and Socat)" />
+<meta property="og:description" content="Introduction In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats&hellip;
+Also sorry for the awful recordings, but couldn&rsquo;t figure out why it looks so bad with tmux.
+cat Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&rsquo;s often used when it&rsquo;s not needed due to that, let&rsquo;s see some examples." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" />
+<meta property="og:image" content="https://techsquad.rocks/img/linux.png?1579655566" />
+
+
+<meta property="article:tag" content="networking" />
+<meta property="article:tag" content="linux" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Cat and friends (Netcat and Socat)"/>
+<meta name="twitter:description" content="Introduction In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats&hellip;
+Also sorry for the awful recordings, but couldn&rsquo;t figure out why it looks so bad with tmux.
+cat Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&rsquo;s often used when it&rsquo;s not needed due to that, let&rsquo;s see some examples.?1579655566"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/linux.png?1579655566" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/">Cat and friends (Netcat and Socat)</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 20, 2020
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/networking/" class="label label-success">
+                    networking
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+                    linux
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+<h4 id="introduction"><strong>Introduction</strong></h4>
+
+<p>In this article we will see how to use <code>cat</code>, <code>netcat</code> and <code>socat</code> at least some basic examples and why do we have so many cats&hellip;</p>
+
+<p>Also sorry for the awful recordings, but couldn&rsquo;t figure out why it looks so bad with tmux.</p>
+
+<h4 id="cat"><strong>cat</strong></h4>
+
+<p>Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&rsquo;s often used when it&rsquo;s not needed due to that, let&rsquo;s see some examples.
+<script src="https://asciinema.org/a/a48k8B7cUHXPsK0aJ3QNfL1zd.js" async data-preload="true" data-speed="2" data-size="small" data-cols="120" data-rows="20" id="asciicast-a48k8B7cUHXPsK0aJ3QNfL1zd" async></script>
+So what happened there? Basically when you want to end the file or the input you send the keyword Ctrl+D, when typed at the start of a line on a terminal, signifies the end of the input. This is not a signal in the unix sense: when an application is reading from the terminal and the user presses Ctrl+D, the application is notified that the end of the file has been reached (just like if it was reading from a file and had passed the last byte). This can be used also to terminate ssh sessions or just log you out from a terminal.</p>
+
+<p>If you want to copy and paste something there you go:
+<script type="application/javascript" src="https://gist.github.com/kainlite/bb03d32945ca285572a17e974deffee9.js"></script>
+</p>
+
+<p>While cat is overly simplified here, it can do a lot of interesting things and it is usually misused <a href="http://porkmail.org/era/unix/award.html">see here</a></p>
+
+<p>More info:</p>
+
+<ul>
+<li><a href="https://www.tecmint.com/13-basic-cat-command-examples-in-linux/">Cat examples</a></li>
+<li><a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections">Bash redirections</a></li>
+<li><a href="http://zsh.sourceforge.net/Doc/Release/Redirection.html">Zsh redirections</a></li>
+</ul>
+
+<h4 id="netcat"><strong>netcat</strong></h4>
+
+<p>Netcat is a bit more interesting since it can use the network and it&rsquo;s really simple also, so it let us use network sockets without too much complication, let&rsquo;s see a couple of examples, first we spin up a server (listener), then connect from the other side and send some data, be aware that connections are bi-directional then Ctrl-C to finish the process. Then in the second example we spin up a server and wait for a compressed file to be sent from the client.
+<script src="https://asciinema.org/a//aRoZYNLIr1EwCLYBpyhY5N2iC.js" async data-preload="true" data-speed="2" data-size="small" data-cols="125" data-rows="40" data-loop="true" id="asciicast-aRoZYNLIr1EwCLYBpyhY5N2iC" async></script>
+There are many more things that you can do with netcat and is usually really helpful to debug networking issues or to do a quick copy of files over the network.</p>
+
+<p>If you want to copy and paste something there you go:
+<script type="application/javascript" src="https://gist.github.com/kainlite/0a37bfba1ae350695790b7f5c842df63.js"></script>
+</p>
+
+<p>Netcat is pretty good at it&rsquo;s job and it&rsquo;s always a good tool to have at hand, but there are other more complex tasks with sockets and for that we have socat.</p>
+
+<p>More info:</p>
+
+<ul>
+<li><a href="https://www.varonis.com/blog/netcat-commands/">Many uses for netcat (with a cheatsheet)</a></li>
+<li><a href="https://www.poftut.com/netcat-nc-command-tutorial-examples/">Several examples</a></li>
+</ul>
+
+<h4 id="socat"><strong>socat</strong></h4>
+
+<p>Socat is a command line based utility that establishes two bidirectional byte streams and transfers data between them. Because the streams can be constructed from a large set of different types of data sinks and sources (see address types), and because lots of address options may be applied to the streams, socat can be used for many different purposes. That bit was extracted from the man page, socat stands for SOcket CAT and it&rsquo;s a multipurpose relay, we will see a few examples to clarify on what that means and some cool stuff that you can use socat for, at first it might look a bit intimidating, but trust me it worth learning to use it.</p>
+
+<p>Something to have in mind when using socat it&rsquo;s that it needs two addresses, sometimes you can skip them with a <code>-</code>. While socat has a gazillion more use cases than cat or netcat, I will just show you a few, but hand you a few links in case you are interested in learning more, what I find particularly useful it&rsquo;s the ability to do a port-forward in just one line.</p>
+
+<p><script src="https://asciinema.org/a/HUuq9N8wUqZFhSKPGkpMKKzzg.js" async data-preload="true" data-speed="2" data-size="small" data-cols="125" data-rows="40" data-loop="true" id="asciicast-HUuq9N8wUqZFhSKPGkpMKKzzg" async></script>
+Basically with socat your imagination is the limit in what you can do.</p>
+
+<p>If you want to copy and paste something there you go:
+<script type="application/javascript" src="https://gist.github.com/kainlite/27d5f53a45f6da4a65f1a94fa4dfeda5.js"></script>
+</p>
+
+<p>More info:</p>
+
+<ul>
+<li><a href="https://github.com/craSH/socat/blob/master/EXAMPLES">Socat Examples (great resource)</a></li>
+<li><a href="https://www.poftut.com/linux-multipurpose-relay-socat-command-tutorial-with-examples/">More socat examples</a></li>
+<li><a href="https://www.cyberciti.biz/faq/linux-unix-tcp-port-forwarding/">Linux unix TCP Port Forwarder</a></li>
+</ul>
+
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
+
+<p>Be sure to check the links if you want to learn more about each different tool and I hope you enjoyed it, see you on <a href="https://twitter.com/kainlite">twitter</a> or <a href="https://github.com/kainlite">github</a>!</p>
+
+<h3 id="errata">Errata</h3>
+
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 17, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 4, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        December 31, 2019
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

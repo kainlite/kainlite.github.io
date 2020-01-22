@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://techsquad.rocks/tags/ksonnet/</link>
-    <description>Recent content in ksonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <title>networking on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/networking/</link>
+    <description>Recent content in networking on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 29 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://techsquad.rocks/tags/ksonnet/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://techsquad.rocks/tags/networking/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

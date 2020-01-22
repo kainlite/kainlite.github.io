@@ -5,10 +5,103 @@
     <description>Recent content in Tags on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 17 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cat and friends (Netcat and Socat)</title>
+      <link>https://techsquad.rocks/blog/cat_and_friends_netcat_socat/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/cat_and_friends_netcat_socat/</guid>
+      <tags>
+      
+        <tag>networking</tag>
+      
+        <tag>linux</tag>
+      
+      </tags>
+      <description>
+
+&lt;h4 id=&#34;introduction&#34;&gt;&lt;strong&gt;Introduction&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;In this article we will see how to use &lt;code&gt;cat&lt;/code&gt;, &lt;code&gt;netcat&lt;/code&gt; and &lt;code&gt;socat&lt;/code&gt; at least some basic examples and why do we have so many cats&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Also sorry for the awful recordings, but couldn&amp;rsquo;t figure out why it looks so bad with tmux.&lt;/p&gt;
+
+&lt;h4 id=&#34;cat&#34;&gt;&lt;strong&gt;cat&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&amp;rsquo;s often used when it&amp;rsquo;s not needed due to that, let&amp;rsquo;s see some examples.
+&lt;script src=&#34;https://asciinema.org/a/a48k8B7cUHXPsK0aJ3QNfL1zd.js&#34; async data-preload=&#34;true&#34; data-speed=&#34;2&#34; data-size=&#34;small&#34; data-cols=&#34;120&#34; data-rows=&#34;20&#34; id=&#34;asciicast-a48k8B7cUHXPsK0aJ3QNfL1zd&#34; async&gt;&lt;/script&gt;
+So what happened there? Basically when you want to end the file or the input you send the keyword Ctrl+D, when typed at the start of a line on a terminal, signifies the end of the input. This is not a signal in the unix sense: when an application is reading from the terminal and the user presses Ctrl+D, the application is notified that the end of the file has been reached (just like if it was reading from a file and had passed the last byte). This can be used also to terminate ssh sessions or just log you out from a terminal.&lt;/p&gt;
+
+&lt;p&gt;If you want to copy and paste something there you go:
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/bb03d32945ca285572a17e974deffee9.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;p&gt;While cat is overly simplified here, it can do a lot of interesting things and it is usually misused &lt;a href=&#34;http://porkmail.org/era/unix/award.html&#34;&gt;see here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;More info:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.tecmint.com/13-basic-cat-command-examples-in-linux/&#34;&gt;Cat examples&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections&#34;&gt;Bash redirections&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://zsh.sourceforge.net/Doc/Release/Redirection.html&#34;&gt;Zsh redirections&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;netcat&#34;&gt;&lt;strong&gt;netcat&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Netcat is a bit more interesting since it can use the network and it&amp;rsquo;s really simple also, so it let us use network sockets without too much complication, let&amp;rsquo;s see a couple of examples, first we spin up a server (listener), then connect from the other side and send some data, be aware that connections are bi-directional then Ctrl-C to finish the process. Then in the second example we spin up a server and wait for a compressed file to be sent from the client.
+&lt;script src=&#34;https://asciinema.org/a//aRoZYNLIr1EwCLYBpyhY5N2iC.js&#34; async data-preload=&#34;true&#34; data-speed=&#34;2&#34; data-size=&#34;small&#34; data-cols=&#34;125&#34; data-rows=&#34;40&#34; data-loop=&#34;true&#34; id=&#34;asciicast-aRoZYNLIr1EwCLYBpyhY5N2iC&#34; async&gt;&lt;/script&gt;
+There are many more things that you can do with netcat and is usually really helpful to debug networking issues or to do a quick copy of files over the network.&lt;/p&gt;
+
+&lt;p&gt;If you want to copy and paste something there you go:
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/0a37bfba1ae350695790b7f5c842df63.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Netcat is pretty good at it&amp;rsquo;s job and it&amp;rsquo;s always a good tool to have at hand, but there are other more complex tasks with sockets and for that we have socat.&lt;/p&gt;
+
+&lt;p&gt;More info:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.varonis.com/blog/netcat-commands/&#34;&gt;Many uses for netcat (with a cheatsheet)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.poftut.com/netcat-nc-command-tutorial-examples/&#34;&gt;Several examples&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;socat&#34;&gt;&lt;strong&gt;socat&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;Socat is a command line based utility that establishes two bidirectional byte streams and transfers data between them. Because the streams can be constructed from a large set of different types of data sinks and sources (see address types), and because lots of address options may be applied to the streams, socat can be used for many different purposes. That bit was extracted from the man page, socat stands for SOcket CAT and it&amp;rsquo;s a multipurpose relay, we will see a few examples to clarify on what that means and some cool stuff that you can use socat for, at first it might look a bit intimidating, but trust me it worth learning to use it.&lt;/p&gt;
+
+&lt;p&gt;Something to have in mind when using socat it&amp;rsquo;s that it needs two addresses, sometimes you can skip them with a &lt;code&gt;-&lt;/code&gt;. While socat has a gazillion more use cases than cat or netcat, I will just show you a few, but hand you a few links in case you are interested in learning more, what I find particularly useful it&amp;rsquo;s the ability to do a port-forward in just one line.&lt;/p&gt;
+
+&lt;p&gt;&lt;script src=&#34;https://asciinema.org/a/HUuq9N8wUqZFhSKPGkpMKKzzg.js&#34; async data-preload=&#34;true&#34; data-speed=&#34;2&#34; data-size=&#34;small&#34; data-cols=&#34;125&#34; data-rows=&#34;40&#34; data-loop=&#34;true&#34; id=&#34;asciicast-HUuq9N8wUqZFhSKPGkpMKKzzg&#34; async&gt;&lt;/script&gt;
+Basically with socat your imagination is the limit in what you can do.&lt;/p&gt;
+
+&lt;p&gt;If you want to copy and paste something there you go:
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/27d5f53a45f6da4a65f1a94fa4dfeda5.js&#34;&gt;&lt;/script&gt;
+&lt;/p&gt;
+
+&lt;p&gt;More info:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/craSH/socat/blob/master/EXAMPLES&#34;&gt;Socat Examples (great resource)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.poftut.com/linux-multipurpose-relay-socat-command-tutorial-with-examples/&#34;&gt;More socat examples&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cyberciti.biz/faq/linux-unix-tcp-port-forwarding/&#34;&gt;Linux unix TCP Port Forwarder&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&#34;closing-notes&#34;&gt;&lt;strong&gt;Closing notes&lt;/strong&gt;&lt;/h5&gt;
+
+&lt;p&gt;Be sure to check the links if you want to learn more about each different tool and I hope you enjoyed it, see you on &lt;a href=&#34;https://twitter.com/kainlite&#34;&gt;twitter&lt;/a&gt; or &lt;a href=&#34;https://github.com/kainlite&#34;&gt;github&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h3 id=&#34;errata&#34;&gt;Errata&lt;/h3&gt;
+
+&lt;p&gt;If you spot any error or have any suggestion, please send me a message so it gets fixed.&lt;/p&gt;
+
+&lt;p&gt;Also, you can check the source code and changes in the &lt;a href=&#34;https://github.com/kainlite/kainlite.github.io&#34;&gt;generated code&lt;/a&gt; and the &lt;a href=&#34;https://github.com/kainlite/blog&#34;&gt;sources here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Cloud native applications with kubebuilder and kind aka kubernetes operators</title>

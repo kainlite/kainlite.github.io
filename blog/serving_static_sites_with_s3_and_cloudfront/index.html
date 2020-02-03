@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Serve your static website with S3 and CloudFront</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -46,7 +46,7 @@ Part II: Sending emails with AWS Lambda and SES from a HTML form
 Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1580700689" />
 
 
 <meta property="article:tag" content="elm" />
@@ -60,9 +60,9 @@ Introduction This article will be part of a series, the idea is to get a fully s
     <meta name="twitter:title" content="Serve your static website with S3 and CloudFront"/>
 <meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).?1579816853"/>
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-s3-cloudfront.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -144,44 +144,34 @@ Introduction This article will be part of a series, the idea is to get a fully s
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="serverless-series"><strong>Serverless series</strong></h3>
-
+              <h3 id="serverless-series"><strong>Serverless series</strong></h3>
 <p>Part I: <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/">Serving static websites with s3 and cloudfront</a>, <strong>You&rsquo;re here</strong>.</p>
-
 <p>Part II: <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></p>
-
 <h5 id="introduction"><strong>Introduction</strong></h5>
-
 <p>This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using <a href="https://elm-lang.org/">elm</a> and can be <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">found here</a>.</p>
-
 <h5 id="s3"><strong>S3</strong></h5>
-
 <p><strong>First of all we need to create a bucket</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># {</span>
 <span style="color:#75715e">#     &#34;Location&#34;: &#34;/techsquad-serverless-site&#34;</span>
 <span style="color:#75715e"># }</span></code></pre></div>
-We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/website.html">enabling web hosting in the bucket</a>).</p>
-
+We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/website.html">enabling web hosting in the bucket</a>).\</p>
 <p><strong>For this setup to work we first need to create a cloud-front-origin-access-identity</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin
 {
-    <span style="color:#e6db74">&#34;Location&#34;</span>: <span style="color:#e6db74">&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
-    <span style="color:#e6db74">&#34;ETag&#34;</span>: <span style="color:#e6db74">&#34;E2XHDQQ0DDY9IJ&#34;</span>,
-    <span style="color:#e6db74">&#34;CloudFrontOriginAccessIdentity&#34;</span>: {
-        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;E3IJG9M5PO9BYE&#34;</span>,
-        <span style="color:#e6db74">&#34;S3CanonicalUserId&#34;</span>: <span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
-        <span style="color:#e6db74">&#34;CloudFrontOriginAccessIdentityConfig&#34;</span>: {
-            <span style="color:#e6db74">&#34;CallerReference&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
-            <span style="color:#e6db74">&#34;Comment&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
+    <span style="color:#66d9ef">&#34;Location&#34;: </span><span style="color:#e6db74">&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
+    <span style="color:#66d9ef">&#34;ETag&#34;: </span><span style="color:#e6db74">&#34;E2XHDQQ0DDY9IJ&#34;</span>,
+    <span style="color:#66d9ef">&#34;CloudFrontOriginAccessIdentity&#34;: </span>{
+        <span style="color:#66d9ef">&#34;Id&#34;: </span><span style="color:#e6db74">&#34;E3IJG9M5PO9BYE&#34;</span>,
+        <span style="color:#66d9ef">&#34;S3CanonicalUserId&#34;: </span><span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
+        <span style="color:#66d9ef">&#34;CloudFrontOriginAccessIdentityConfig&#34;: </span>{
+            <span style="color:#66d9ef">&#34;CallerReference&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
+            <span style="color:#66d9ef">&#34;Comment&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
         }
     }
 }</code></pre></div>
 Our origin access identity was successfully created, we need to grab the S3CanonicalUserId for our S3 bucket policy.</p>
-
 <p><strong>Limit access to your bucket with the following policy (save as bucket-policy.json)</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{
    <span style="color:#e6db74">&#34;Version&#34;</span>:<span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
@@ -197,28 +187,24 @@ Our origin access identity was successfully created, we need to grab the S3Canon
       ]
 }</code></pre></div>
 This policy will only allow CloudFront to fetch the files from the S3 bucket, because we want to avoid users or anyone actually from hitting the bucket directly.</p>
-
 <p><strong>And then just attach that policy to the bucket</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json</code></pre></div></p>
-
 <p><strong>I&rsquo;m using an old example I created and probably will continue building upon it, copy the files (the source files are in <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">this github repo</a>)</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3 sync . s3://techsquad-serverless-site/</code></pre></div>
 So far so good, We have our S3 bucket ready.</p>
-
 <h5 id="cloudfront"><strong>CloudFront</strong></h5>
-
 <p>We will use this file to create our CF distribution (save it as distconfig.json or generate it with <code>aws cloudfront create-distribution --generate-cli-skeleton &gt; /tmp/distconfig.json</code> and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">{</span>
   <span style="color:#e6db74">&#34;CallerReference&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-distribution&#34;</span>,
   <span style="color:#e6db74">&#34;Aliases&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Quantity&#34;</span>: <span style="color:#ae81ff">1</span>,
+    <span style="color:#e6db74">&#34;Quantity&#34;</span>: 1,
     <span style="color:#e6db74">&#34;Items&#34;</span>: <span style="color:#f92672">[</span>
       <span style="color:#e6db74">&#34;serverless.techsquad.rocks&#34;</span>
          <span style="color:#f92672">]</span>
    <span style="color:#f92672">}</span>,
   <span style="color:#e6db74">&#34;DefaultRootObject&#34;</span>: <span style="color:#e6db74">&#34;index.html&#34;</span>,
   <span style="color:#e6db74">&#34;Origins&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Quantity&#34;</span>: <span style="color:#ae81ff">1</span>,
+    <span style="color:#e6db74">&#34;Quantity&#34;</span>: 1,
     <span style="color:#e6db74">&#34;Items&#34;</span>: <span style="color:#f92672">[</span>
       <span style="color:#f92672">{</span>
         <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront&#34;</span>,
@@ -258,7 +244,6 @@ So far so good, We have our S3 bucket ready.</p>
   <span style="color:#e6db74">&#34;Enabled&#34;</span>: true
 <span style="color:#f92672">}</span></code></pre></div>
 We will leave most values in their defaults, but if you want to know more or customize your deployment <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-distribution.html">check here</a> or type <code>aws cloudfront create-distribution help</code>.</p>
-
 <p><strong>Let&rsquo;s finally create the CloudFront distribution for our site</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront create-distribution --distribution-config file://distconfig.json
 <span style="color:#75715e"># OUTPUT:</span>
@@ -378,15 +363,12 @@ We will leave most values in their defaults, but if you want to know more or cus
 <span style="color:#75715e">#     }</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 Woah a lot of details in there, but what we might need later is the ETAG if we want to download and update our distribution, so have that handy, also we can see our CloudFront URL in there which is: d3v3xtkl1l2ynj.cloudfront.net in this case.</p>
-
 <p><strong>It might take a few minutes to initialize the distribution, you can check the progress with</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront list-distributions | jq <span style="color:#e6db74">&#34;.DistributionList.Items[0].Status&#34;</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># &#34;InProgress&#34;</span></code></pre></div>
 Once it&rsquo;s ready the status will be: &ldquo;Deployed&rdquo;, and now if we go to the CloudFront url you should see the site :). The S3 bucket will only let CloudFront access to the files so the only way to serve the site is through CloudFront.</p>
-
 <h5 id="dns"><strong>DNS</strong></h5>
-
 <p><strong>The only thing missing is the record in the DNS (I don&rsquo;t have this domain name in Route53, shame on me but a CNAME will do for now), so let&rsquo;s add it and verify it using dig.</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dig serverless.techsquad.rocks
 <span style="color:#75715e"># OUTPUT:</span>
@@ -411,11 +393,8 @@ Once it&rsquo;s ready the status will be: &ldquo;Deployed&rdquo;, and now if we 
 <span style="color:#75715e"># ;; WHEN: Sat Feb 02 17:47:11 -03 2019</span>
 <span style="color:#75715e"># ;; MSG SIZE  rcvd: 98</span></code></pre></div>
 As we can see the record is already there so we can go to <a href="http://serverless.techsquad.rocks">http://serverless.techsquad.rocks</a> (note that this only works because we set that alias in the distribution), We could add SSL by creating a certificate using Amazon Certificate Manager, but we will leave that as an exercise or a future small article.</p>
-
 <h5 id="useful-commands"><strong>Useful commands</strong></h5>
-
-<p>In case you need to get some information some useful commands:</p>
-
+<p>In case you need to get some information some useful commands:\</p>
 <p><strong>This command will give us the Id of our distribution</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront list-distributions --output table --query <span style="color:#e6db74">&#39;DistributionList.Items[*].Id&#39;</span>
 <span style="color:#75715e"># OUTPUT:</span>
@@ -424,23 +403,16 @@ As we can see the record is already there so we can go to <a href="http://server
 <span style="color:#75715e"># +-----------------+</span>
 <span style="color:#75715e"># |  EFJVJEPWAPGU2  |</span>
 <span style="color:#75715e"># +-----------------+</span></code></pre></div></p>
-
 <p><strong>This one the ETag (needed to perform updates for example)</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style="color:#e6db74">&#39;. | .ETag&#39;</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># &#34;E2TPQRAUPJL2P3&#34;</span></code></pre></div></p>
-
 <p><strong>And this one will save the current config in /tmp so we can update it.</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style="color:#e6db74">&#39;. | .DistributionConfig&#39;</span> &gt; /tmp/curent-distribution-E2TPQRAUPJL2P</code></pre></div></p>
-
 <h5 id="upcoming-articles"><strong>Upcoming articles</strong></h5>
-
 <p>This article is the first one in this series of serverless articles, the idea is to build a fully functional website using only serverless technologies, the next post will cover the AWS Lambda function used to send the contact form, also all code from the site can be <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">found here</a>.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainjkjkjklite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>

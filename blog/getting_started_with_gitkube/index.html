@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Getting started with gitkube</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_gitkube/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="git" />
@@ -54,9 +54,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Getting started with gitkube"/>
-<meta name="twitter:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle.?1579816853"/>
+<meta name="twitter:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,19 +138,12 @@ if (!doNotTrack) {
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="gitkube"><strong>Gitkube</strong></h3>
-
+              <h3 id="gitkube"><strong>Gitkube</strong></h3>
 <p>This time we will see how to get started with <a href="https://gitkube.sh/">Gitkube</a>, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRD</a> and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more <a href="https://github.com/hasura/gitkube-example">examples here</a>, also be sure to check their page and documentation if you like it or want to learn more.</p>
-
 <p>In the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, <em>but in this post be sure to use <em>minikube tunnel</em></em> if you configure gitkube with a load balancer (or if you configure any service type as load balancer):</p>
-
-<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
-
+<h3 id="lets-get-started">Let&rsquo;s get started</h3>
 <p>We&rsquo;re going to deploy or re-deploy our echo bot one more time but this time using gitkube.
 You can find the chat bot: <a href="https://techsquad.rocks/blog/go_echobot/">article here</a>, and the repo: <a href="https://github.com/kainlite/echobot/tree/gitkube">here</a></p>
-
 <p>First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
 customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;remotes.gitkube.sh&#34;</span> created
@@ -163,11 +156,9 @@ deployment.extensions <span style="color:#e6db74">&#34;gitkube-controller&#34;</
 $ kubectl --namespace kube-system expose deployment gitkubed --type<span style="color:#f92672">=</span>LoadBalancer --name<span style="color:#f92672">=</span>gitkubed
 service <span style="color:#e6db74">&#34;gitkubed&#34;</span> exposed</code></pre></div>
 Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing <code>gitkube install</code>.</p>
-
 <p>To install the gitkube binary, the easiest way is to do:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash</code></pre></div>
 This will download and copy the binary into: <code>/usr/local/bin</code>, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of <em>the internet</em>.</p>
-
 <p>Then we need to generate (and then create it in the cluster) a file called <code>remote.yaml</code> (or any name you like), it&rsquo;s necessary in order to tell gitkube how to deploy our application once we <code>git push</code> it:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gitkube remote generate -f remote.yaml
 Remote name: minikube
@@ -183,57 +174,54 @@ Build context path: ./
 Add another container? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> Enter
 Add another deployment? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> Enter</code></pre></div>
 And this will yield the following <code>remote.yaml</code> file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.</p>
-
 <p>The actual file <code>remote.yaml</code>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: gitkube.sh/v1alpha1
-kind: Remote
-metadata:
-  creationTimestamp: <span style="color:#66d9ef">null</span>
-  name: minikube
-  namespace: default
-spec:
-  authorizedKeys:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: gitkube.sh/v1alpha1
+<span style="color:#66d9ef">kind</span>: Remote
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">creationTimestamp</span>: <span style="color:#66d9ef">null</span>
+  <span style="color:#66d9ef">name</span>: minikube
+  <span style="color:#66d9ef">namespace</span>: default
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">authorizedKeys</span>:
   - <span style="color:#e6db74">|
-</span><span style="color:#e6db74">    ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite</span>
-  deployments:
-  - containers:
-    - dockerfile: Dockerfile
-      name: echobot
-      path: ./
-    name: echobot
-  manifests:
-    helm: {}
-    path: <span style="color:#e6db74">&#34;&#34;</span>
-  registry:
-    credentials:
-      secretKeyRef:
-        key: <span style="color:#e6db74">&#34;&#34;</span>
-      secretRef: minikube-regsecret
-    url: docker.io/kainlite
-status:
-  remoteUrl: <span style="color:#e6db74">&#34;&#34;</span>
-  remoteUrlDesc: <span style="color:#e6db74">&#34;&#34;</span></code></pre></div>
+</span><span style="color:#e6db74">   </span><span style="color:#e6db74"> </span><span style="color:#e6db74">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite</span>
+  <span style="color:#66d9ef">deployments</span>:
+  - <span style="color:#66d9ef">containers</span>:
+    - <span style="color:#66d9ef">dockerfile</span>: Dockerfile
+      <span style="color:#66d9ef">name</span>: echobot
+      <span style="color:#66d9ef">path</span>: ./
+    <span style="color:#66d9ef">name</span>: echobot
+  <span style="color:#66d9ef">manifests</span>:
+    <span style="color:#66d9ef">helm</span>: {}
+    <span style="color:#66d9ef">path</span>: <span style="color:#e6db74">&#34;&#34;</span>
+  <span style="color:#66d9ef">registry</span>:
+    <span style="color:#66d9ef">credentials</span>:
+      <span style="color:#66d9ef">secretKeyRef</span>:
+        <span style="color:#66d9ef">key</span>: <span style="color:#e6db74">&#34;&#34;</span>
+      <span style="color:#66d9ef">secretRef</span>: minikube-regsecret
+    <span style="color:#66d9ef">url</span>: docker.io/kainlite
+<span style="color:#66d9ef">status</span>:
+  <span style="color:#66d9ef">remoteUrl</span>: <span style="color:#e6db74">&#34;&#34;</span>
+  <span style="color:#66d9ef">remoteUrlDesc</span>: <span style="color:#e6db74">&#34;&#34;</span></code></pre></div>
 There are a few details to have in mind here, the <em>deployment</em> name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&rsquo;m using a public image, so we don&rsquo;t need any of that. The <em>wizard</em> will let you choose and customize a few options for your deployment.</p>
-
 <p>The last step would be to finally create the resource:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gitkube remote create -f remote.yaml
-INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> remote minikube created
-INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> waiting <span style="color:#66d9ef">for</span> remote url
-INFO<span style="color:#f92672">[</span><span style="color:#ae81ff">0000</span><span style="color:#f92672">]</span> remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
+INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> remote minikube created
+INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> waiting <span style="color:#66d9ef">for</span> remote url
+INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
 
   <span style="color:#75715e"># add the remote to your git repo and push:</span>
   git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
   git push minikube master</code></pre></div></p>
-
 <p>After adding the new remote called <em>minikube</em>  we have everything ready to go, so let&rsquo;s test it and see what happens:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git push minikube master
-Enumerating objects: <span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">done</span>.
-Counting objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+Enumerating objects: 10, <span style="color:#66d9ef">done</span>.
+Counting objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
 Delta compression using up to <span style="color:#ae81ff">8</span> threads
-Compressing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
-Writing objects: <span style="color:#ae81ff">100</span>% <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>/10<span style="color:#f92672">)</span>, <span style="color:#ae81ff">1</span>.92 KiB | <span style="color:#ae81ff">1</span>.92 MiB/s, <span style="color:#66d9ef">done</span>.
-Total <span style="color:#ae81ff">10</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
-remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">23</span>:50:58 UTC <span style="color:#ae81ff">2019</span>: Initialising
+Compressing objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
+Writing objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, 1.92 KiB | 1.92 MiB/s, <span style="color:#66d9ef">done</span>.
+Total <span style="color:#ae81ff">10</span> <span style="color:#f92672">(</span>delta 2<span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta 0<span style="color:#f92672">)</span>
+remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> 23:50:58 UTC 2019: Initialising
 remote:
 remote: Creating the build directory
 remote: Checking out <span style="color:#e6db74">&#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39;</span> to <span style="color:#e6db74">&#39;/home/default-minikube/build/default-minikube&#39;</span>
@@ -244,39 +232,39 @@ remote:
 remote: Building Docker image <span style="color:#66d9ef">for</span> : echobot
 remote:
 remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
-remote: Sending build context to Docker daemon   <span style="color:#ae81ff">7</span>.68kB
-remote: Step <span style="color:#ae81ff">1</span>/12 : FROM golang:1.11.2-alpine as builder
+remote: Sending build context to Docker daemon   7.68kB
+remote: Step 1/12 : FROM golang:1.11.2-alpine as builder
 remote:  ---&gt; 57915f96905a
-remote: Step <span style="color:#ae81ff">2</span>/12 : WORKDIR /app
+remote: Step 2/12 : WORKDIR /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 997342e65c61
-remote: Step <span style="color:#ae81ff">3</span>/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app <span style="color:#f92672">&amp;&amp;</span>     apk add git <span style="color:#f92672">&amp;&amp;</span> apk add gcc musl-dev
+remote: Step 3/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app <span style="color:#f92672">&amp;&amp;</span>     apk add git <span style="color:#f92672">&amp;&amp;</span> apk add gcc musl-dev
 remote:  ---&gt; Using cache
 remote:  ---&gt; 7c6d8b9d1137
-remote: Step <span style="color:#ae81ff">4</span>/12 : ADD . /app/
+remote: Step 4/12 : ADD . /app/
 remote:  ---&gt; Using cache
 remote:  ---&gt; ca751c2678c4
-remote: Step <span style="color:#ae81ff">5</span>/12 : RUN go get -d -v ./... <span style="color:#f92672">&amp;&amp;</span> go build -o main . <span style="color:#f92672">&amp;&amp;</span> chown -R app:app /app /home/app
+remote: Step 5/12 : RUN go get -d -v ./... <span style="color:#f92672">&amp;&amp;</span> go build -o main . <span style="color:#f92672">&amp;&amp;</span> chown -R app:app /app /home/app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 16e44978b140
-remote: Step <span style="color:#ae81ff">6</span>/12 : FROM golang:1.11.2-alpine
+remote: Step 6/12 : FROM golang:1.11.2-alpine
 remote:  ---&gt; 57915f96905a
-remote: Step <span style="color:#ae81ff">7</span>/12 : WORKDIR /app
+remote: Step 7/12 : WORKDIR /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 997342e65c61
-remote: Step <span style="color:#ae81ff">8</span>/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app
+remote: Step 8/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 55f48da0f9ac
-remote: Step <span style="color:#ae81ff">9</span>/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh
+remote: Step 9/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh
 remote:  ---&gt; Using cache
 remote:  ---&gt; 139250fd6c77
-remote: Step <span style="color:#ae81ff">10</span>/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main
+remote: Step 10/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main
 remote:  ---&gt; Using cache
 remote:  ---&gt; 2f1eb9f16e9f
-remote: Step <span style="color:#ae81ff">11</span>/12 : USER app
+remote: Step 11/12 : USER app
 remote:  ---&gt; Using cache
 remote:  ---&gt; a72f27dccff2
-remote: Step <span style="color:#ae81ff">12</span>/12 : CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/app/main&#34;</span><span style="color:#f92672">]</span>
+remote: Step 12/12 : CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/app/main&#34;</span><span style="color:#f92672">]</span>
 remote:  ---&gt; Using cache
 remote:  ---&gt; 034275449e08
 remote: Successfully built 034275449e08
@@ -315,13 +303,12 @@ remote: echobot   <span style="color:#ae81ff">1</span>         <span style="colo
 remote:
 remote: Removing build directory
 remote:
-remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">23</span>:51:16 UTC <span style="color:#ae81ff">2019</span>: Finished build
+remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> 23:51:16 UTC 2019: Finished build
 remote:
 remote:
 To ssh://10.98.213.202/~/git/default-minikube
  * <span style="color:#f92672">[</span>new branch<span style="color:#f92672">]</span>      master -&gt; master</code></pre></div>
 Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to <code>/home/default-minikube/build/default-minikube</code> and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to <a href="https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot">docker hub</a> and then updated the deployment that we already had in there for the echo bot.</p>
-
 <p>The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with <code>kubectl describe pod echobot-654cdbfb99-g4bwv</code>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
@@ -329,12 +316,12 @@ Namespace:          default
 Priority:           <span style="color:#ae81ff">0</span>
 PriorityClassName:  &lt;none&gt;
 Node:               minikube/10.0.2.15
-Start Time:         Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> <span style="color:#ae81ff">20</span>:51:10 -0300
+Start Time:         Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> 20:51:10 -0300
 Labels:             app<span style="color:#f92672">=</span>echobot
                     pod-template-hash<span style="color:#f92672">=</span>654cdbfb99
 Annotations:        &lt;none&gt;
 Status:             Running
-IP:                 <span style="color:#ae81ff">172</span>.17.0.9
+IP:                 172.17.0.9
 Controlled By:      ReplicaSet/echobot-654cdbfb99
 Containers:
   echobot:
@@ -344,7 +331,7 @@ Containers:
     Port:           &lt;none&gt;
     Host Port:      &lt;none&gt;
     State:          Running
-      Started:      Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> <span style="color:#ae81ff">20</span>:51:11 -0300
+      Started:      Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> 20:51:11 -0300
     Ready:          True
     Restart Count:  <span style="color:#ae81ff">0</span>
     Liveness:       exec <span style="color:#f92672">[</span>/bin/sh -c /app/health_check.sh<span style="color:#f92672">]</span> delay<span style="color:#f92672">=</span>0s timeout<span style="color:#f92672">=</span>1s period<span style="color:#f92672">=</span>10s <span style="color:#75715e">#success=1 #failure=3</span>
@@ -375,19 +362,28 @@ Events:
   Normal  Created    39m   kubelet, minikube  Created container
   Normal  Started    39m   kubelet, minikube  Started container</code></pre></div>
 As we can see the image is the one that got built from our <code>git push</code> and everything is working as expected.</p>
-
 <p>And that&rsquo;s it for now, I think this tool has a lot of potential, it&rsquo;s simple, nice and fast.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -411,19 +407,6 @@ As we can see the image is the one that got built from our <code>git push</code>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

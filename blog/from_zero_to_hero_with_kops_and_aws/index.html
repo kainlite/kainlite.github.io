@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>From zero to hero with kops and AWS</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Basically we will have a fully functional cluster that will be able to handle pu
 Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&rsquo;s fairly easy to implement if you are using ACM." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/" />
-<meta property="og:image" content="https://techsquad.rocks/img/kubernetes-aws.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/kubernetes-aws.png?1580700689" />
 
 
 <meta property="article:tag" content="AWS" />
@@ -56,9 +56,9 @@ Basically we will have a fully functional cluster that will be able to handle pu
 
     <meta name="twitter:title" content="From zero to hero with kops and AWS"/>
 <meta name="twitter:description" content="Introduction In this article we will create a cluster from scratch with kops (K8s installation, upgrades and management) in AWS, We will configure aws-alb-ingress-controller (External traffic into our services/pods) and external dns (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
-Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&rsquo;s fairly easy to implement if you are using ACM.?1579816853"/>
+Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&rsquo;s fairly easy to implement if you are using ACM.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/kubernetes-aws.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/kubernetes-aws.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,27 +138,18 @@ Basically we will have a fully functional cluster that will be able to handle pu
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction"><strong>Introduction</strong></h3>
-
+              <h3 id="introduction"><strong>Introduction</strong></h3>
 <p>In this article we will create a cluster from scratch with <a href="https://github.com/kubernetes/kops">kops</a> (K8s installation, upgrades and management) in <a href="https://aws.amazon.com/">AWS</a>, We will configure <a href="https://github.com/kubernetes-sigs/aws-alb-ingress-controller">aws-alb-ingress-controller</a> (External traffic into our services/pods) and <a href="https://github.com/kubernetes-incubator/external-dns">external dns</a> (Update the records based in the ingress rules) and also learn a bit about awscli in the process.</p>
-
 <p>Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&rsquo;s fairly easy to implement if you are using ACM.</p>
-
 <p>Just in case you don&rsquo;t know this setup is not going to be free, cheap for sure because we will use small instances, etc, but not completely free, so before you dive in, be sure that you can spend a few bucks testing it out.</p>
-
 <h3 id="kops"><strong>Kops</strong></h3>
-
 <p>This is an awesome tool to setup and maintain your clusters, currently only compatible with AWS and GCE, other platforms are planned and some are also supported in alpha, we will be using AWS in this example, it requires kubectl so make sure you have it installed:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -LO https://github.com/kubernetes/kops/releases/download/<span style="color:#66d9ef">$(</span>curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d <span style="color:#e6db74">&#39;&#34;&#39;</span> -f <span style="color:#ae81ff">4</span><span style="color:#66d9ef">)</span>/kops-linux-amd64
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -LO https://github.com/kubernetes/kops/releases/download/<span style="color:#66d9ef">$(</span>curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d <span style="color:#e6db74">&#39;&#34;&#39;</span> -f 4<span style="color:#66d9ef">)</span>/kops-linux-amd64
 chmod +x kops-linux-amd64
 sudo mv kops-linux-amd64 /usr/local/bin/kops</code></pre></div></p>
-
 <p><strong>Export the credentials that we will be using to create the kops user and policies</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AWS_ACCESS_KEY_ID<span style="color:#f92672">=</span>XXXX <span style="color:#f92672">&amp;&amp;</span> export AWS_SECRET_ACCESS_KEY<span style="color:#f92672">=</span>XXXXX</code></pre></div>
 You can do it this way or just use <code>aws configure</code> and set a profile.</p>
-
 <p>The next thing that we need are IAM credentials for kops to work, you will need awscli configured and working with your AWS admin-like account most likely before proceeding:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Create iam group</span>
 aws iam create-group --group-name kops
@@ -205,7 +196,6 @@ aws iam create-access-key --user-name kops
 <span style="color:#75715e">#     }</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 The last command will output the access key and the secret key for the <em>kops</em> user, save that information because we will use it from now on, note that we gave kops a lot of power with that user, so be careful with the keys.</p>
-
 <p><strong>Additional permissions to be able to create ALBs</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat <span style="color:#e6db74">&lt;&lt; EOF &gt; kops-alb-policy.json
 </span><span style="color:#e6db74">{
@@ -288,12 +278,10 @@ aws iam create-policy --policy-name kops-route53-policy --policy-document file:/
 <span style="color:#75715e">#     }</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 Note that even we just created these kops policies for alb and route53 we cannot add them right now, we need to first create the cluster, you can skip them if you don&rsquo;t plan on using these resources.</p>
-
 <p><strong>Now we will also export or set the cluster name and kops state store as environment variables</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export NAME<span style="color:#f92672">=</span>k8s.techsquad.rocks
 export KOPS_STATE_STORE<span style="color:#f92672">=</span>techsquad-cluster-state-store</code></pre></div>
 We will be using these in a few places, so to not repeat ourselves let&rsquo;s better have it as variables.</p>
-
 <p><strong>Create the zone for the subdomain in Route53</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ID<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>uuidgen<span style="color:#66d9ef">)</span> <span style="color:#f92672">&amp;&amp;</span> aws route53 create-hosted-zone --name <span style="color:#e6db74">${</span>NAME<span style="color:#e6db74">}</span> --caller-reference $ID | jq .DelegationSet.NameServers
 <span style="color:#75715e"># OUTPUT:</span>
@@ -309,7 +297,6 @@ As I&rsquo;m already using this domain for the blog with github we can create a 
 </figure>
 
 So with this change and our new zone in Route53 for the subdomain, we can freely manage it like if it was another domain, this means that everything that goes to *.k8s.techsquad.rocks will be handled by our Route53 zone.</p>
-
 <p><strong>Create a bucket to store the cluster state</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api create-bucket <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    --bucket <span style="color:#e6db74">${</span>KOPS_STATE_STORE<span style="color:#e6db74">}</span> <span style="color:#ae81ff">\
@@ -319,15 +306,12 @@ So with this change and our new zone in Route53 for the subdomain, we can freely
 <span style="color:#75715e">#     &#34;Location&#34;: &#34;/techsquad-cluster-state-store&#34;</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 Note that bucket names are unique, so it&rsquo;s always a good idea to prefix them with your domain name or something like that.</p>
-
 <p><strong>Set the versioning on, in case we need to rollback at some point</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api put-bucket-versioning --bucket <span style="color:#e6db74">${</span>KOPS_STATE_STORE<span style="color:#e6db74">}</span>  --versioning-configuration Status<span style="color:#f92672">=</span>Enabled</code></pre></div></p>
-
 <p><strong>Set encryption on for the bucket</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api put-bucket-encryption --bucket <span style="color:#e6db74">${</span>KOPS_STATE_STORE<span style="color:#e6db74">}</span> --server-side-encryption-configuration <span style="color:#e6db74">&#39;{&#34;Rules&#34;:[{&#34;ApplyServerSideEncryptionByDefault&#34;:{&#34;SSEAlgorithm&#34;:&#34;AES256&#34;}}]}&#39;</span></code></pre></div></p>
-
 <p><strong>And finally let&rsquo;s create our cluster</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export KOPS_STATE_STORE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;s3://</span><span style="color:#e6db74">${</span>KOPS_STATE_STORE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export KOPS_STATE_STORE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">s3://</span><span style="color:#e6db74">${</span>KOPS_STATE_STORE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
 
 kops create cluster <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    --zones us-east-1a <span style="color:#ae81ff">\
@@ -369,7 +353,6 @@ kops create cluster <span style="color:#ae81ff">\
 <span style="color:#75715e">#  * the admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.</span>
 <span style="color:#75715e">#  * read about installing addons at: https://github.com/kubernetes/kops/blob/master/docs/addons.md.</span></code></pre></div>
 We set the KOPS_STATE_STORE to a valid S3 url for kops, and then created the cluster, this will set kubectl context to our new cluster, we might need to wait a few minutes before being able to use it, but before doing anything let&rsquo;s validate that&rsquo;s up and ready.</p>
-
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kops validate cluster <span style="color:#e6db74">${</span>NAME<span style="color:#e6db74">}</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># Using cluster from kubectl context: k8s.techsquad.rocks</span>
@@ -389,9 +372,8 @@ We set the KOPS_STATE_STORE to a valid S3 url for kops, and then created the clu
 #
 <span style="color:#75715e"># Your cluster k8s.techsquad.rocks is ready</span></code></pre></div>
 The validation passed and we can see that our cluster is ready, it can take several minutes until the cluster is up and functional, in this case it took about 3-5 minutes.</p>
-
 <p>We will create an additional subnet to satisfy our ALB:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws ec2 create-subnet --vpc-id vpc-06e2e104ad785474c --cidr-block <span style="color:#ae81ff">172</span>.20.64.0/19 --availability-zone us-east-1b
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws ec2 create-subnet --vpc-id vpc-06e2e104ad785474c --cidr-block 172.20.64.0/19 --availability-zone us-east-1b
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># {</span>
 <span style="color:#75715e">#     &#34;Subnet&#34;: {</span>
@@ -414,7 +396,6 @@ aws ec2 create-tags --resources subnet-017a5609ce6104e1b --tags Key<span style="
 aws ec2 create-tags --resources subnet-017a5609ce6104e1b --tags Key<span style="color:#f92672">=</span>kubernetes.io/cluster/k8s.techsquad.rocks,Value<span style="color:#f92672">=</span>owned
 aws ec2 create-tags --resources subnet-017a5609ce6104e1b --tags Key<span style="color:#f92672">=</span>kubernetes.io/role/elb,Value<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span></code></pre></div>
 Note that we applied some required tags for the controller, and created an extra subnet, in a HA setup this would not be necessary since kops would create it for us but this is a small testing/dev cluster, so we will need to do it manually.</p>
-
 <p>And lastly a security group for our ALB:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws ec2 create-security-group --group-name WebApps --description <span style="color:#e6db74">&#34;Default web security group&#34;</span>  --vpc-id vpc-06e2e104ad785474c
 <span style="color:#75715e"># OUTPUT:</span>
@@ -422,23 +403,18 @@ Note that we applied some required tags for the controller, and created an extra
 <span style="color:#75715e">#     &#34;GroupId&#34;: &#34;sg-09f0b1233696e65ef&#34;</span>
 <span style="color:#75715e"># }</span>
 
-aws ec2 authorize-security-group-ingress --group-id sg-09f0b1233696e65ef --protocol tcp --port <span style="color:#ae81ff">80</span> --cidr <span style="color:#ae81ff">0</span>.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id sg-09f0b1233696e65ef --protocol tcp --port <span style="color:#ae81ff">80</span> --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id sg-057d2b0f6e288aa70 --protocol all --port <span style="color:#ae81ff">0</span> --source-group sg-09f0b1233696e65ef</code></pre></div>
 Note that this rule will open the port 80 to the world, you can add your ip or your VPN ips there if you want to restrict it, the second rule will allow the traffic from the load balancer to reach the nodes where our app is running.</p>
-
 <h3 id="aws-alb-ingress-controller"><strong>Aws-alb-ingress-controller</strong></h3>
-
 <p>We will use <a href="https://aws.amazon.com/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/">Aws ALB Ingress Controller</a>, to serve our web traffic, this will create an manage an ALB based in our ingress rules.</p>
-
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/rbac-role.yaml
 
 clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;alb-ingress-controller&#34;</span> created
 clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;alb-ingress-controller&#34;</span> created
 serviceaccount <span style="color:#e6db74">&#34;alb-ingress&#34;</span> created</code></pre></div>
-
 <p>Download the manifest and then modify the cluster-name to <code>k8s.techsquad.rocks</code> and a few other parameters, you can list the vpcs with <code>aws ec2 describe-vpcs</code> it will have some kops tags, so it&rsquo;s easy to identify.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -sS <span style="color:#e6db74">&#34;https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/alb-ingress-controller.yaml&#34;</span> &gt; alb-ingress-controller.yaml</code></pre></div></p>
-
 <p>Or copy and paste the following lines:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat <span style="color:#e6db74">&lt;&lt; EOF &gt; alb-ingress-controller.yaml
 </span><span style="color:#e6db74"># Application Load Balancer (ALB) Ingress Controller Deployment Manifest.
@@ -529,27 +505,21 @@ serviceaccount <span style="color:#e6db74">&#34;alb-ingress&#34;</span> created<
 </span><span style="color:#e6db74">      serviceAccount: alb-ingress
 </span><span style="color:#e6db74">EOF</span></code></pre></div>
 Note that I only modified the args section if you want to compare it with the original.</p>
-
 <p>Then finally apply it.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f alb-ingress-controller.yaml
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># deployment.apps &#34;alb-ingress-controller&#34; created</span></code></pre></div></p>
-
 <h3 id="external-dns"><strong>External-dns</strong></h3>
-
 <p><a href="https://github.com/kubernetes-incubator/external-dns/blob/master/docs/tutorials/aws.md">External DNS</a> will update our zone in Route53 based in the ingress rules as well, so everything will be done automatically for us once we add an ingress resource.</p>
-
 <p>But first let&rsquo;s attach those policies that we created before:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-route53-policy --role-name nodes.k8s.techsquad.rocks
 aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-route53-policy --role-name masters.k8s.techsquad.rocks
 aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-alb-policy --role-name nodes.k8s.techsquad.rocks
 aws iam attach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-alb-policy --role-name masters.k8s.techsquad.rocks</code></pre></div>
 Note that we just used the policies that we created before but we needed the cluster running because kops creates the roles nodes.k8s.techsquad.rocks and masters.k8s.techsquad.rocks, and this is needed for the aws-alb-ingress-controller and external-dns so these are able to do their job.</p>
-
 <p>We need to download the manifests and modify a few parameters to match our deployment, the parameters are domain-filter and txt-owner-id, the rest is as is:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -Ss https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.0/docs/examples/external-dns.yaml &gt; external-dns.yaml</code></pre></div>
 This configuration will only update records, that&rsquo;s the default policy (upsert), and it will only look for public hosted zones.</p>
-
 <p>Or copy and paste the following lines:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat <span style="color:#e6db74">&lt;&lt; EOF &gt; external-dns.yaml
 </span><span style="color:#e6db74">apiVersion: v1
@@ -614,7 +584,6 @@ This configuration will only update records, that&rsquo;s the default policy (up
 </span><span style="color:#e6db74">        - --registry=txt
 </span><span style="color:#e6db74">        - --txt-owner-id=k8s.techsquad.rocks
 </span><span style="color:#e6db74">EOF</span></code></pre></div></p>
-
 <p>And apply it:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f external-dns.yaml
 <span style="color:#75715e"># OUTPUT:</span>
@@ -622,7 +591,6 @@ This configuration will only update records, that&rsquo;s the default policy (up
 <span style="color:#75715e"># clusterrole.rbac.authorization.k8s.io &#34;external-dns&#34; configured</span>
 <span style="color:#75715e"># clusterrolebinding.rbac.authorization.k8s.io &#34;external-dns-viewer&#34; configured</span>
 <span style="color:#75715e"># deployment.extensions &#34;external-dns&#34; created</span></code></pre></div></p>
-
 <p>Validate that we have everything that we installed up and running:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl get pods
 <span style="color:#75715e"># OUTPUT:</span>
@@ -650,9 +618,7 @@ kubectl get pods -n kube-system
 <span style="color:#75715e"># kube-proxy-ip-172-20-54-175.ec2.internal               1/1       Running   0          25m</span>
 <span style="color:#75715e"># kube-scheduler-ip-172-20-42-37.ec2.internal            1/1       Running   0          26m</span></code></pre></div>
 We can see that alb-ingress-controller is running, also external-dns, and everything looks good and healthy, time to test it with a deployment.</p>
-
 <h3 id="testing-everything"><strong>Testing everything</strong></h3>
-
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-deployment.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-service.yaml
@@ -660,10 +626,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingre
 <span style="color:#75715e"># namespace &#34;2048-game&#34; created</span>
 <span style="color:#75715e"># deployment.extensions &#34;2048-deployment&#34; created</span>
 <span style="color:#75715e"># service &#34;service-2048&#34; created</span></code></pre></div>
-
 <p>We need to download and edit the ingress resource to make it use our domain so we can then see the record pointing to the ALB.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -Ss https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-ingress.yaml &gt; <span style="color:#ae81ff">2048</span>-ingress.yaml</code></pre></div></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -Ss https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.0.0/docs/examples/2048/2048-ingress.yaml &gt; 2048-ingress.yaml</code></pre></div></p>
 <p>Or just copy and paste the next snippet.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat <span style="color:#e6db74">&lt;&lt; EOF &gt; 2048-ingress.yaml
 </span><span style="color:#e6db74">apiVersion: extensions/v1beta1
@@ -692,37 +656,30 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingre
 </span><span style="color:#e6db74">        path: /*
 </span><span style="color:#e6db74">EOF</span></code></pre></div>
 You can use <code>aws ec2 describe-subnets</code>, to find the first subnet id, this subnet already has some tags that we need in order to make it work, for example: <code>kubernetes.io/role/elb: 1</code>, and the second subnet is the one that we created manually and applied the same tags.</p>
-
 <p>And finally apply it:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f <span style="color:#ae81ff">2048</span>-ingress.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl apply -f 2048-ingress.yaml
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># ingress.extensions &#34;2048-ingress&#34; created</span></code></pre></div>
 Wait a few moments and verify.</p>
-
 <h3 id="results"><strong>Results</strong></h3>
-
 <p><strong>The ALB</strong>
 <figure class="zoom">
     <img src="/img/aws-alb-listeners.png" width="100%"/> 
 </figure>
 </p>
-
 <p><strong>The DNS records</strong>
 <figure class="zoom">
     <img src="/img/aws-alb-route53-records.png" width="100%"/> 
 </figure>
 </p>
-
 <p><strong>And the app</strong>
 <figure class="zoom">
     <img src="/img/aws-alb-result.png" width="100%"/> 
 </figure>
 </p>
-
 <h3 id="clean-up"><strong>Clean up</strong></h3>
-
 <p>Remember this is not free, and if you don&rsquo;t want to get charged after you&rsquo;re done testing just shutdown and delete everything.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl delete -f <span style="color:#ae81ff">2048</span>-ingress.yaml
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl delete -f 2048-ingress.yaml
 aws iam detach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-route53-policy --role-name nodes.k8s.techsquad.rocks
 aws iam detach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-route53-policy --role-name masters.k8s.techsquad.rocks
 aws iam detach-role-policy --policy-arn arn:aws:iam::894527626897:policy/kops-alb-policy --role-name nodes.k8s.techsquad.rocks
@@ -735,9 +692,7 @@ kops delete cluster <span style="color:#e6db74">${</span>NAME<span style="color:
 #
 <span style="color:#75715e"># Deleted cluster: &#34;k8s.techsquad.rocks&#34;</span></code></pre></div>
 This command is really verbose, so I skipped it to the end, be aware that in order to delete the cluster with kops you first need to detach the additionally attached privileges. Also be careful to delete first the ingress resources so the ALB gets removed before you delete the cluster, or you will have an ALB laying around afterwards. You can re-run it if it gets stuck and cannot delete any resource.</p>
-
 <h3 id="notes"><strong>Notes</strong></h3>
-
 <ul>
 <li>I was going to use helm and deploy a more complex application here, but the article was already too long, so I decided to go with the aws alb ingress controller example.</li>
 <li>If something doesn&rsquo;t go well or things aren&rsquo;t happening you can always check the logs for external-dns and aws-alb-ingress-controller, the messages are usually very descriptive and easy to understand.</li>
@@ -747,17 +702,27 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
 <li>I spent 3 bucks with all the instances and dns zones, etc during this tutorial in case you are interested :).</li>
 <li>Notes I also removed all $ from the code blocks and added the output of the commands with # OUTPUT:, let me know if this is clear and easy to read, or if you have any suggestion.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -781,19 +746,6 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

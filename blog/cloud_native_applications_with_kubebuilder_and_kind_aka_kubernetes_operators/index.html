@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Cloud native applications with kubebuilder and kind aka kubernetes operators</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" />
-<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg?1580700688" />
 
 
 <meta property="article:tag" content="go" />
@@ -62,9 +62,9 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 
     <meta name="twitter:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators"/>
 <meta name="twitter:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
-Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1579816853"/>
+Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.?1580700688"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/forward.jpg?1580700688" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -156,20 +156,12 @@ Basically what the code does is create an alpine/socat pod and you can specify t
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>In this article we will see how to use <a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a> and <a href="https://github.com/kubernetes-sigs/kind">Kind</a> to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: <a href="https://github.com/kainlite/forward">forward</a>.</p>
-
 <p>Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.</p>
-
 <p>While Kind is not actually a requirement I used that for testing and really liked it, it&rsquo;s faster and simpler than minikube.</p>
-
 <p>Also if you are interested how I got the idea to make this operator check this <a href="https://github.com/kubernetes/kubernetes/issues/72597">github issue</a>.</p>
-
 <h5 id="prerequisites"><strong>Prerequisites</strong></h5>
-
 <ul>
 <li><a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a></li>
 <li><a href="https://github.com/kubernetes-sigs/kustomize">kustomize</a></li>
@@ -177,52 +169,37 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 <li><a href="https://github.com/kubernetes-sigs/kind">Kind</a></li>
 <li><a href="https://hub.docker.com/?overlay=onboarding">Docker</a></li>
 </ul>
-
 <h5 id="create-the-project">Create the project</h5>
-
 <p>In this step we need to create the kubebuilder project, so in an empty folder we run:
 <script type="application/javascript" src="https://gist.github.com/kainlite/fcb512051b1f9aa1abb7ee9d8fd177f5.js"></script>
 </p>
-
 <h5 id="create-the-api">Create the API</h5>
-
 <p>Next let&rsquo;s create an API, something for us to have control of (our controller).
 <script type="application/javascript" src="https://gist.github.com/kainlite/99c415e6bbaf6d92b2c971acddc42221.js"></script>
 </p>
-
 <p>Right until here we only have some boilerplate and basic or empty project with defaults, if you test it now it will work, but it won&rsquo;t do anything interesting, but it covers a lot of ground and we should be grateful that such a tool exists.</p>
-
 <h5 id="add-our-code-to-the-mix">Add our code to the mix</h5>
-
 <p>First we will add it to <code>api/v1beta1/map_types.go</code>, which will add our fields to our type.
 <script type="application/javascript" src="https://gist.github.com/kainlite/6e823ba4160fb12b9414494c9b16be7b.js"></script>
 
 Basically we just edited the <code>MapSpec</code> and the <code>MapStatus</code> struct.</p>
-
 <p>Now we need to add the code to our controller in <code>controllers/map_controller.go</code>
 <script type="application/javascript" src="https://gist.github.com/kainlite/d2e59c468a6864a96647054ac616285d.js"></script>
 
 In this controller we added two functions one to create a pod and modified basically the entire Reconcile function (this one takes care of checking the status and make the transitions in other words makes a controller work like a controller), also notice the kubebuilder annotations which will generate the rbac config for us, pretty handy! right?</p>
-
 <h5 id="starting-the-cluster">Starting the cluster</h5>
-
 <p>Now we will use <a href="https://github.com/kubernetes-sigs/kind">Kind</a> to create a local cluster to test
 <script type="application/javascript" src="https://gist.github.com/kainlite/3d5c7eb58a0ede8e34f0824d927deeca.js"></script>
 
 it could be that easy!?!?! yes, it is!</p>
-
 <h5 id="running-our-operator-locally">Running our operator locally</h5>
-
 <p>For testing you can run your operator locally like this:
 <script type="application/javascript" src="https://gist.github.com/kainlite/8184c8ae455e033602b81965cacf593b.js"></script>
 </p>
-
 <h5 id="testing-it">Testing it</h5>
-
 <p>First we spin up a pod, and launch <code>nc -l -p 8000</code>
 <script type="application/javascript" src="https://gist.github.com/kainlite/d940b280bd2f3fdf732b9b259e9da841.js"></script>
 </p>
-
 <p>Then we edit our manifest and apply it, check that everything is in place, and do the port-forward and launch another <code>nc localhost 8000</code> to test if everything went well.
 First the manifest
 <script type="application/javascript" src="https://gist.github.com/kainlite/d609ef25c2bc621d365781e6f3d9826b.js"></script>
@@ -230,28 +207,34 @@ First the manifest
 Then the port-forward and test
 <script type="application/javascript" src="https://gist.github.com/kainlite/d9455e6a17b2a396f486d48cf159f5f2.js"></script>
 </p>
-
 <h5 id="making-it-publicly-ready">Making it publicly ready</h5>
-
 <p>Here we just build and push the docker image to dockerhub or our favorite public registry.
 <script type="application/javascript" src="https://gist.github.com/kainlite/c45158dd378d09b82c8153dbdd122953.js"></script>
 
 Then you can install it with <code>make deploy IMG=kainlite/forward:0.0.1</code> and uninstall it with <code>make uninstall</code></p>
-
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
-
 <p>Be sure to check the <a href="https://book.kubebuilder.io/">kubebuilder book</a> if you want to learn more and the <a href="https://kind.sigs.k8s.io/docs/user/quick-start">kind docs</a>, I hope you enjoyed it and hope to see you on <a href="https://twitter.com/kainlite">twitter</a> or <a href="https://github.com/kainlite">github</a>!</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -275,19 +258,6 @@ Then you can install it with <code>make deploy IMG=kainlite/forward:0.0.1</code>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        December 31, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
                       </h6>
                     </div>
                   </div>

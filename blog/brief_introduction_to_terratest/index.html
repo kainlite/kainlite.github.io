@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Brief introduction to terratest</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/brief_introduction_to_terratest/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700688" />
 
 
 <meta property="article:tag" content="go" />
@@ -55,9 +55,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Brief introduction to terratest"/>
-<meta name="twitter:description" content="Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest.?1579816853"/>
+<meta name="twitter:description" content="Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest.?1580700688"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700688" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -141,16 +141,10 @@ if (!doNotTrack) {
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article <a href="https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito</a>, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest.</p>
-
 <p><a href="https://github.com/gruntwork-io/terratest">Terratest</a> is a Go library that makes it easier to write automated tests for your infrastructure code, it supports Terraform, Docker, Packer, SSH, AWS, GCP, Kubernetes, Helm, and much more, also as it&rsquo;s written as a Go library you have access to all the existing APIs.</p>
-
 <h5 id="the-code"><strong>The code</strong></h5>
-
 <p>There are comments all over the code to explain each part, but what I want to highlight here is the pattern being used with the module <code>test-structure</code>, this module allows us to split the test in sections and skip parts that we don&rsquo;t need or want to run, so we have 3 stages here: <code>cleanup</code>, <code>deploy</code>, and <code>validate</code>, this lets you use <code>SKIP_stage</code>, for example <code>SKIP_cleanup</code> when you run your tests with <code>go test -timeout 90m .</code> (I added some extra bits, that I usually use, like timeout by default it&rsquo;s 10 minutes I believe and it&rsquo;s often too short), to only run <code>validate</code> and <code>cleanup</code>, it can be useful while developing a module to test without having to wait for everything to be re-created.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">test</span>
 
@@ -240,34 +234,27 @@ if (!doNotTrack) {
     <span style="color:#a6e22e">terraform</span>.<span style="color:#a6e22e">Destroy</span>(<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">terraformOptions</span>)
 }</code></pre></div>
 Some high level notes on each stage:</p>
-
 <p><code>deploy</code>: This stage will take care of running init and then apply.</p>
-
 <p><code>validate</code>: This stage will take care of running a probe to check if our API is up and if the return code is <code>200</code>.</p>
-
 <p><code>cleanup</code>: This stage will take care of running destroy and cleaning up everything.</p>
-
 <h5 id="dep"><strong>Dep</strong></h5>
-
 <p>Currently terratest uses dep, so you will need this file <code>Gopkg.toml</code> and <code>dep</code> installed to be able to install the dependencies with <code>dep ensure -v</code>.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[[<span style="color:#a6e22e">constraint</span>]]
   <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;github.com/gruntwork-io/terratest&#34;</span>
   <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;0.18.6&#34;</span></code></pre></div></p>
-
 <h5 id="dockerfile"><strong>Dockerfile</strong></h5>
-
 <p>Also you can use this small dockerfile that does all that for you, in this example using the code from the previously mentioned article.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">FROM golang:alpine
 MAINTAINER <span style="color:#e6db74">&#34;kainlite &lt;kainlite@gmail.com&gt;&#34;</span>
 
-ARG TERRAFORM_VERSION<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>.12.8
+ARG TERRAFORM_VERSION<span style="color:#f92672">=</span>0.12.8
 ENV TERRAFORM_VERSION<span style="color:#f92672">=</span>$TERRAFORM_VERSION
 
 RUN apk --no-cache add curl git unzip gcc g++ make ca-certificates <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 RUN mkdir tmp <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    curl <span style="color:#e6db74">&#34;https://releases.hashicorp.com/terraform/</span><span style="color:#e6db74">${</span>TERRAFORM_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">/terraform_</span><span style="color:#e6db74">${</span>TERRAFORM_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">_linux_amd64.zip&#34;</span> -o tmp/terraform.zip <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    curl <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">https://releases.hashicorp.com/terraform/</span><span style="color:#e6db74">${</span>TERRAFORM_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">/terraform_</span><span style="color:#e6db74">${</span>TERRAFORM_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">_linux_amd64.zip</span><span style="color:#e6db74">&#34;</span> -o tmp/terraform.zip <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    unzip tmp/terraform.zip -d /usr/local/bin <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    rm -rf tmp/
 
@@ -279,34 +266,39 @@ WORKDIR $GOPROJECTPATH/test
 RUN dep ensure -v
 
 CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;go&#34;</span>, <span style="color:#e6db74">&#34;test&#34;</span>, <span style="color:#e6db74">&#34; -timeout&#34;</span>, <span style="color:#e6db74">&#34;90m&#34;</span>, <span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">]</span></code></pre></div></p>
-
 <h5 id="manually-testing-it"><strong>Manually testing it</strong></h5>
-
 <p>First we check that the URL actually works, and that everything is in place.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl https://api.skynetng.pw/app/health
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># {&#34;status&#34;:&#34;healthy&#34;}</span></code></pre></div></p>
-
 <p>Next we can test it using our validate stage, using terratest:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ SKIP_deploy<span style="color:#f92672">=</span>true SKIP_cleanup<span style="color:#f92672">=</span>true go test -timeout 90m .
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># ok      github.com/kainlite/test        1.117s</span></code></pre></div>
 This works because in the terraform code we have an output called <code>URL</code> which is <code>https://api.skynetng.pw</code>, then we add at the end <code>/app/health</code> and check if it return a <code>200</code> code, otherwise we wait and retry until it does or times out.</p>
-
 <h3 id="closing-notes">Closing notes</h3>
-
 <p>And that&rsquo;s all for now, in the next piece I will cover how to automate this deployment using a CI/CD tool, so you can have truly repeatable infrastructure, which can be of big importance when working on various modules, versions and deployments.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -330,19 +322,6 @@ This works because in the terraform code we have an output called <code>URL</cod
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
                       </h6>
                     </div>
                   </div>

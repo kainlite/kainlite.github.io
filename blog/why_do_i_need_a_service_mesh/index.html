@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Why do I need a service mesh?</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -46,7 +46,7 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
 Istio So&hellip; You might be wondering some of those questions: why Istio?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="istio" />
@@ -59,9 +59,9 @@ Istio So&hellip; You might be wondering some of those questions: why Istio?" />
     <meta name="twitter:title" content="Why do I need a service mesh?"/>
 <meta name="twitter:description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
 In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
-Istio So&hellip; You might be wondering some of those questions: why Istio??1579816853"/>
+Istio So&hellip; You might be wondering some of those questions: why Istio??1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -141,32 +141,19 @@ Istio So&hellip; You might be wondering some of those questions: why Istio??1579
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction">Introduction</h3>
-
+              <h3 id="introduction">Introduction</h3>
 <p>This time we will see how to get started with <a href="https://istio.io/">Istio</a> and why do we need to use a service mesh.</p>
-
 <p>In this example I will be using <a href="https://m.do.co/c/01d040b789de">Digital Ocean</a> (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</p>
-
 <h3 id="istio">Istio</h3>
-
 <p>So&hellip; You might be wondering some of those questions: why Istio? Why do I need a service mesh?, when do I need that? And I want to help you with some answers:</p>
-
 <p>Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.</p>
-
 <p>When do I need to have one? This one can be tricky and will depend on your environment, but the moment that you start experiencing network issues between your microservices would be a good moment to do it, it could be done before of course, but it will highly depend on the project, if you can start early with it the better and easier to implement will be, always have in mind the benefits of added security, observability and likely performance improvement.</p>
-
 <p>Why Istio? This will be a small series of service meshes for kubernetes and I decided to start with Istio.</p>
-
 <p>In case you don&rsquo;t agree with my explanations that&rsquo;s ok, this is a TL;DR version and also I simplified things a lot, for a more complete overview you can check <a href="https://blog.buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/">this</a> article or <a href="https://www.oreilly.com/ideas/do-you-need-a-service-mesh">this one</a>.</p>
-
-<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
-
+<h3 id="lets-get-started">Let&rsquo;s get started</h3>
 <p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href="https://istio.io/docs/setup/kubernetes/helm-install/">more info</a>):
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -L https://git.io/getLatestIstio | sh -</code></pre></div>
 This will download and extract the latest release, in this case 1.0.5 at this moment.</p>
-
 <p>So let&rsquo;s install Istio&hellip; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled<span style="color:#f92672">=</span>true &gt; $HOME/istio.yaml
 istio-1.0.5 $ kubectl create namespace istio-system
@@ -307,37 +294,29 @@ kubernetes.config.istio.io <span style="color:#e6db74">&#34;attributes&#34;</spa
 destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
 destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created</code></pre></div>
 WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p>
-
 <p>So lets see what&rsquo;s running and what that means:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
-istio-citadel-856f994c58-l96p8            <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-cleanup-secrets-xqqj4               <span style="color:#ae81ff">0</span>/1       Completed   <span style="color:#ae81ff">0</span>          3m
-istio-egressgateway-5649fcf57-7zwkh       <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-galley-7665f65c9c-tzn7d             <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-ingressgateway-6755b9bbf6-bh84r     <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-pilot-56855d999b-c4cp5              <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
-istio-policy-6fcb6d655f-9544z             <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
-istio-sidecar-injector-768c79f7bf-th8zh   <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-telemetry-664d896cf5-jdcwv          <span style="color:#ae81ff">2</span>/2       Running     <span style="color:#ae81ff">0</span>          3m
-prometheus-76b7745b64-f8jxn               <span style="color:#ae81ff">1</span>/1       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
+istio-citadel-856f994c58-l96p8            1/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-cleanup-secrets-xqqj4               0/1       Completed   <span style="color:#ae81ff">0</span>          3m
+istio-egressgateway-5649fcf57-7zwkh       1/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-galley-7665f65c9c-tzn7d             1/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-ingressgateway-6755b9bbf6-bh84r     1/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-pilot-56855d999b-c4cp5              2/2       Running     <span style="color:#ae81ff">0</span>          3m
+istio-policy-6fcb6d655f-9544z             2/2       Running     <span style="color:#ae81ff">0</span>          3m
+istio-sidecar-injector-768c79f7bf-th8zh   1/1       Running     <span style="color:#ae81ff">0</span>          3m
+istio-telemetry-664d896cf5-jdcwv          2/2       Running     <span style="color:#ae81ff">0</span>          3m
+prometheus-76b7745b64-f8jxn               1/1       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
 A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href="https://github.com/istio/istio">github</a>.</p>
-
 <p><strong>Envoy</strong>: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
 Note: The service mesh is not an overlay network. It simplifies and enhances how microservices in an application talk to each other over the network provided by the underlying platform.</p>
-
 <p><strong>Mixer</strong>: Central component that is leveraged by the proxies and microservices to enforce policies such as authorization, rate limits, quotas, authentication, request tracing and telemetry collection.</p>
-
 <p><strong>Pilot</strong>: A component responsible for configuring the proxies at runtime.</p>
-
 <p><strong>Citadel</strong>: A centralized component responsible for certificate issuance and rotation.</p>
-
 <p><strong>Node Agent</strong>: A per-node component responsible for certificate issuance and rotation.</p>
-
 <p><strong>Galley</strong>: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.</p>
-
 <p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href="https://istio.io/docs/examples/bookinfo/">test application</a> and check it:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:~/istio-1.0.5/bin&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:~/istio-1.0.5/bin</span><span style="color:#e6db74">&#34;</span>
 istio-1.0.5/samples/bookinfo $ kubectl apply -f &lt;<span style="color:#f92672">(</span>istioctl kube-inject -f platform/kube/bookinfo.yaml<span style="color:#f92672">)</span>
 service <span style="color:#e6db74">&#34;details&#34;</span> created
 deployment.extensions <span style="color:#e6db74">&#34;details-v1&#34;</span> created
@@ -352,29 +331,26 @@ deployment.extensions <span style="color:#e6db74">&#34;productpage-v1&#34;</span
 That command not only deployed the application but injected the Istio sidecar to each pod:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
-details-v1-8bd954dbb-zhrqq        <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
-productpage-v1-849c786f96-kpfx9   <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
-ratings-v1-68d648d6fd-w68qb       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v1-b4c984bdc-9s6j5        <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v2-575446d5db-r6kwc       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v3-74458c4889-kr4wb       <span style="color:#ae81ff">2</span>/2       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
+details-v1-8bd954dbb-zhrqq        2/2       Running   <span style="color:#ae81ff">0</span>          2m
+productpage-v1-849c786f96-kpfx9   2/2       Running   <span style="color:#ae81ff">0</span>          2m
+ratings-v1-68d648d6fd-w68qb       2/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v1-b4c984bdc-9s6j5        2/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v2-575446d5db-r6kwc       2/2       Running   <span style="color:#ae81ff">0</span>          2m
+reviews-v3-74458c4889-kr4wb       2/2       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
 As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection">automatic sidecar injection</a>.</p>
-
 <p>Also all services are running:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
 NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>    AGE
-details       ClusterIP   <span style="color:#ae81ff">10</span>.245.134.179   &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
-kubernetes    ClusterIP   <span style="color:#ae81ff">10</span>.245.0.1       &lt;none&gt;        <span style="color:#ae81ff">443</span>/TCP    3d
-productpage   ClusterIP   <span style="color:#ae81ff">10</span>.245.32.221    &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
-ratings       ClusterIP   <span style="color:#ae81ff">10</span>.245.159.112   &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m
-reviews       ClusterIP   <span style="color:#ae81ff">10</span>.245.77.125    &lt;none&gt;        <span style="color:#ae81ff">9080</span>/TCP   3m</code></pre></div></p>
-
+details       ClusterIP   10.245.134.179   &lt;none&gt;        9080/TCP   3m
+kubernetes    ClusterIP   10.245.0.1       &lt;none&gt;        443/TCP    3d
+productpage   ClusterIP   10.245.32.221    &lt;none&gt;        9080/TCP   3m
+ratings       ClusterIP   10.245.159.112   &lt;none&gt;        9080/TCP   3m
+reviews       ClusterIP   10.245.77.125    &lt;none&gt;        9080/TCP   3m</code></pre></div></p>
 <p>But how do I access the app?
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
 gateway.networking.istio.io <span style="color:#e6db74">&#34;bookinfo-gateway&#34;</span> created
 virtualservice.networking.istio.io <span style="color:#e6db74">&#34;bookinfo&#34;</span> created</code></pre></div>
 In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
-
 <p>After that we need to set some environment variables to fetch the LB ip, port, etc.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export INGRESS_HOST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span style="color:#66d9ef">)</span>
 $ export INGRESS_PORT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span><span style="color:#66d9ef">)</span>
@@ -387,39 +363,43 @@ If the latest curl returns 200 then we&rsquo;re good, you can also browse the ap
     <img src="/img/productpage-example.png" width="100%"/> 
 </figure>
 </p>
-
 <p>Also you can use <a href="https://grafana.com/">Grafana</a> to check some metrics about the service usage, etc. (You don&rsquo;t have to worry about prometheus since it&rsquo;s enabled by default). Spin up the port-forward so we don&rsquo;t have to expose grafana: to the world with: <code>kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000</code>, and then <code>open http://localhost:3000</code>.</p>
-
 <p>As a general advice check all the settings that Istio offers try the ones that you think that could be useful for your project and always measure and compare.</p>
-
 <h3 id="notes">Notes</h3>
-
 <ul>
 <li>Do mind that <strong>pilot</strong> pod requires at least 4 Gbs of memory, so you will need at least one node with that amount of memory.</li>
 <li>You can check the load balancer status under: Manage -&gt; Networking -&gt; Load balancers. And if everything is okay your LB will say Healthy.</li>
 <li>Grafana is not enabled by default but we do enable it via helm with <code>--set grafana.enabled=true</code>, if you want to check all the possible options <a href="https://istio.io/docs/reference/config/installation-options/">go here</a>, if you are using more than two <code>--set</code> options I would recommend creating a <code>values.yaml</code> file and use that instead.</li>
 <li>Istio is a big beast and should be treated carefully, there is a lot more to learn and test out. We only scratched the surface here.</li>
 </ul>
-
 <h3 id="upcoming-posts">Upcoming posts</h3>
-
 <ul>
 <li>More examples using Istio.</li>
 <li>Linkerd.</li>
 <li>Maybe some Golang fun.</li>
 <li>Serverless or kubeless, that&rsquo;s the question.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -443,19 +423,6 @@ If the latest curl returns 200 then we&rsquo;re good, you can also browse the ap
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

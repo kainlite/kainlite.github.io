@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Getting started with Helm</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
 Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_helm/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="helm" />
@@ -56,9 +56,9 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
 
     <meta name="twitter:title" content="Getting started with Helm"/>
 <meta name="twitter:description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.?1579816853"/>
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,16 +138,11 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction"><strong>Introduction</strong></h3>
-
+              <h3 id="introduction"><strong>Introduction</strong></h3>
 <p>This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using <a href="https://helm.sh/">Helm</a>, in the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, you can follow with the following example:</p>
-
 <p>Create the chart:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm create hello-world</code></pre></div>
 Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
-
 <p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd hello-world
 
@@ -156,40 +151,38 @@ Chart.yaml   &lt;--- Metadata mostly, defines the version of your chart, etc.
 templates    &lt;--- Here is where the magic happens.
 values.yaml  &lt;--- Default values file <span style="color:#f92672">(</span>this is used to replace in the templates at runtime<span style="color:#f92672">)</span></code></pre></div>
 Note: the following link explains the basics of <a href="https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory">dependencies</a>, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.</p>
-
 <p>The file <code>values.yaml</code> by default will look like the following snippet:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">replicaCount: <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">replicaCount</span>: <span style="color:#ae81ff">1</span>
 
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+<span style="color:#66d9ef">image</span>:
+  <span style="color:#66d9ef">repository</span>: nginx
+  <span style="color:#66d9ef">tag</span>: stable
+  <span style="color:#66d9ef">pullPolicy</span>: IfNotPresent
 
-nameOverride: <span style="color:#e6db74">&#34;&#34;</span>
-fullnameOverride: <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#66d9ef">nameOverride</span>: <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#66d9ef">fullnameOverride</span>: <span style="color:#e6db74">&#34;&#34;</span>
 
-service:
-  type: ClusterIP
-  port: <span style="color:#ae81ff">80</span>
+<span style="color:#66d9ef">service</span>:
+  <span style="color:#66d9ef">type</span>: ClusterIP
+  <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">80</span>
 
-ingress:
-  enabled: <span style="color:#66d9ef">false</span>
-  annotations: {}
+<span style="color:#66d9ef">ingress</span>:
+  <span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">false</span>
+  <span style="color:#66d9ef">annotations</span>: {}
     <span style="color:#75715e"># kubernetes.io/ingress.class: nginx</span>
     <span style="color:#75715e"># kubernetes.io/tls-acme: &#34;true&#34;</span>
-  path: /
-  hosts:
+  <span style="color:#66d9ef">path</span>: /
+  <span style="color:#66d9ef">hosts</span>:
     - chart-example.local
-  tls: []
+  <span style="color:#66d9ef">tls</span>: []
   <span style="color:#75715e">#  - secretName: chart-example-tls</span>
   <span style="color:#75715e">#    hosts:</span>
   <span style="color:#75715e">#      - chart-example.local</span>
 
-resources: {}
-nodeSelector: {}
-tolerations: []
-affinity: {}</code></pre></div></p>
-
+<span style="color:#66d9ef">resources</span>: {}
+<span style="color:#66d9ef">nodeSelector</span>: {}
+<span style="color:#66d9ef">tolerations</span>: []
+<span style="color:#66d9ef">affinity</span>: {}</code></pre></div></p>
 <p>The next step would be to check the <code>templates</code> folder:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     &lt;--- This file defines some common variables.
@@ -197,123 +190,119 @@ ingress.yaml     &lt;--- Ingress route, etc.
 NOTES.txt        &lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
 service.yaml     &lt;--- The service that we will use internally and/or via ingress to reach our deployed service.</code></pre></div>
 Go <a href="https://blog.gopheracademy.com/advent-2017/using-go-templates/">templates</a> basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm&rsquo;s own <a href="https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md">documentation</a> and also some <a href="https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md">tips and tricks</a>.</p>
-
 <p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> file:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: apps/v1beta2
-kind: Deployment
-metadata:
-  name: {{ include <span style="color:#e6db74">&#34;hello-world.fullname&#34;</span> . }}
-  labels:
-    app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-    helm.sh/chart: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:
-      containers:
-        - name: {{ .Chart.Name }}
-          image: <span style="color:#e6db74">&#34;{{ .Values.image.repository }}:{{ .Values.image.tag }}&#34;</span>
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: <span style="color:#ae81ff">80</span>
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: apps/v1beta2
+<span style="color:#66d9ef">kind</span>: Deployment
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.fullname&#34;</span> . }}
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+    <span style="color:#66d9ef">helm.sh/chart</span>: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: {{ .Release.Service }}
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">replicas</span>: {{ .Values.replicaCount }}
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">matchLabels</span>:
+      <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+      <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}
+  <span style="color:#66d9ef">template</span>:
+    <span style="color:#66d9ef">metadata</span>:
+      <span style="color:#66d9ef">labels</span>:
+        <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+        <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}
+    <span style="color:#66d9ef">spec</span>:
+      <span style="color:#66d9ef">containers</span>:
+        - <span style="color:#66d9ef">name</span>: {{ .Chart.Name }}
+          <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;{{ .Values.image.repository }}:{{ .Values.image.tag }}&#34;</span>
+          <span style="color:#66d9ef">imagePullPolicy</span>: {{ .Values.image.pullPolicy }}
+          <span style="color:#66d9ef">ports</span>:
+            - <span style="color:#66d9ef">name</span>: http
+              <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">80</span>
+              <span style="color:#66d9ef">protocol</span>: TCP
+          <span style="color:#66d9ef">livenessProbe</span>:
+            <span style="color:#66d9ef">httpGet</span>:
+              <span style="color:#66d9ef">path</span>: /
+              <span style="color:#66d9ef">port</span>: http
+          <span style="color:#66d9ef">readinessProbe</span>:
+            <span style="color:#66d9ef">httpGet</span>:
+              <span style="color:#66d9ef">path</span>: /
+              <span style="color:#66d9ef">port</span>: http
+          <span style="color:#66d9ef">resources</span>:
 {{ toYaml .Values.resources | indent <span style="color:#ae81ff">12</span> }}
     {{- with .Values.nodeSelector }}
-      nodeSelector:
+      <span style="color:#66d9ef">nodeSelector</span>:
 {{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
     {{- end }}
     {{- with .Values.affinity }}
-      affinity:
+      <span style="color:#66d9ef">affinity</span>:
 {{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
     {{- end }}
     {{- with .Values.tolerations }}
-      tolerations:
+      <span style="color:#66d9ef">tolerations</span>:
 {{ toYaml . | indent <span style="color:#ae81ff">8</span> }}
     {{- end }}</code></pre></div>
 As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p>
-
 <p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> file:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include <span style="color:#e6db74">&#34;hello-world.fullname&#34;</span> . }}
-  labels:
-    app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-    helm.sh/chart: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}</code></pre></div></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.fullname&#34;</span> . }}
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+    <span style="color:#66d9ef">helm.sh/chart</span>: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: {{ .Release.Service }}
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">type</span>: {{ .Values.service.type }}
+  <span style="color:#66d9ef">ports</span>:
+    - <span style="color:#66d9ef">port</span>: {{ .Values.service.port }}
+      <span style="color:#66d9ef">targetPort</span>: http
+      <span style="color:#66d9ef">protocol</span>: TCP
+      <span style="color:#66d9ef">name</span>: http
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}</code></pre></div></p>
 <p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> file:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{{- if .Values.ingress.enabled -}}
 {{- $fullName := include <span style="color:#e6db74">&#34;hello-world.fullname&#34;</span> . -}}
 {{- $ingressPath := .Values.ingress.path -}}
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: {{ $fullName }}
-  labels:
-    app.kubernetes.io/name: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
-    helm.sh/chart: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+<span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
+<span style="color:#66d9ef">kind</span>: Ingress
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: {{ $fullName }}
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app.kubernetes.io/name</span>: {{ include <span style="color:#e6db74">&#34;hello-world.name&#34;</span> . }}
+    <span style="color:#66d9ef">helm.sh/chart</span>: {{ include <span style="color:#e6db74">&#34;hello-world.chart&#34;</span> . }}
+    <span style="color:#66d9ef">app.kubernetes.io/instance</span>: {{ .Release.Name }}
+    <span style="color:#66d9ef">app.kubernetes.io/managed-by</span>: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
-  annotations:
+  <span style="color:#66d9ef">annotations</span>:
 {{ toYaml . | indent <span style="color:#ae81ff">4</span> }}
 {{- end }}
-spec:
+<span style="color:#66d9ef">spec</span>:
 {{- if .Values.ingress.tls }}
-  tls:
+  <span style="color:#66d9ef">tls</span>:
   {{- range .Values.ingress.tls }}
-    - hosts:
+    - <span style="color:#66d9ef">hosts</span>:
       {{- range .hosts }}
         - {{ . | quote }}
       {{- end }}
-      secretName: {{ .secretName }}
+      <span style="color:#66d9ef">secretName</span>: {{ .secretName }}
   {{- end }}
 {{- end }}
-  rules:
+  <span style="color:#66d9ef">rules</span>:
   {{- range .Values.ingress.hosts }}
-    - host: {{ . | quote }}
-      http:
-        paths:
-          - path: {{ $ingressPath }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
+    - <span style="color:#66d9ef">host</span>: {{ . | quote }}
+      <span style="color:#66d9ef">http</span>:
+        <span style="color:#66d9ef">paths</span>:
+          - <span style="color:#66d9ef">path</span>: {{ $ingressPath }}
+            <span style="color:#66d9ef">backend</span>:
+              <span style="color:#66d9ef">serviceName</span>: {{ $fullName }}
+              <span style="color:#66d9ef">servicePort</span>: http
   {{- end }}
 {{- end }}</code></pre></div>
 The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p>
-
 <p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
@@ -325,40 +314,37 @@ To prevent this, run <span style="color:#e6db74">`</span>helm init<span style="c
 For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
 Happy Helming!</code></pre></div>
 Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
-
 <p>Deploy our chart:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:30:11 <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> 00:30:11 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-<span style="color:#f92672">==</span>&gt; v1/Service
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Service
 NAME                  AGE
 my-nginx-hello-world  0s
 
-<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  0s
 
-<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 
 NAME                                   READY  STATUS   RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">0</span>/1    Pending  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  <span style="color:#ae81ff">0</span>         0s
 
 NOTES:
-<span style="color:#ae81ff">1</span>. Get the application URL by running these commands:
+1. Get the application URL by running these commands:
   export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
   echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:80</code></pre></div>
+  kubectl port-forward $POD_NAME 8080:80</code></pre></div>
 Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
-
 <p>Let&rsquo;s check that our service is there:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>   AGE
-kubernetes             ClusterIP   <span style="color:#ae81ff">10</span>.96.0.1       &lt;none&gt;        <span style="color:#ae81ff">443</span>/TCP   1h
-my-nginx-hello-world   ClusterIP   <span style="color:#ae81ff">10</span>.111.222.70   &lt;none&gt;        <span style="color:#ae81ff">80</span>/TCP    5m</code></pre></div></p>
-
+kubernetes             ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   1h
+my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP    5m</code></pre></div></p>
 <p>And now we can test that everything is okay by running another pod in interactive mode, for example:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl run -i --tty alpine --image<span style="color:#f92672">=</span>alpine -- sh
 If you don<span style="color:#960050;background-color:#1e0010">&#39;</span>t see a command prompt, try pressing enter.
@@ -366,20 +352,20 @@ If you don<span style="color:#960050;background-color:#1e0010">&#39;</span>t see
 / <span style="color:#75715e"># apk add curl</span>
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
-<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>/5<span style="color:#f92672">)</span> Installing ca-certificates <span style="color:#f92672">(</span><span style="color:#ae81ff">20171114</span>-r3<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span>/5<span style="color:#f92672">)</span> Installing nghttp2-libs <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.32.0-r0<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>/5<span style="color:#f92672">)</span> Installing libssh2 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span>.8.0-r3<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span><span style="color:#ae81ff">4</span>/5<span style="color:#f92672">)</span> Installing libcurl <span style="color:#f92672">(</span><span style="color:#ae81ff">7</span>.61.1-r1<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span><span style="color:#ae81ff">5</span>/5<span style="color:#f92672">)</span> Installing curl <span style="color:#f92672">(</span><span style="color:#ae81ff">7</span>.61.1-r1<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span>1/5<span style="color:#f92672">)</span> Installing ca-certificates <span style="color:#f92672">(</span>20171114-r3<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span>2/5<span style="color:#f92672">)</span> Installing nghttp2-libs <span style="color:#f92672">(</span>1.32.0-r0<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span>3/5<span style="color:#f92672">)</span> Installing libssh2 <span style="color:#f92672">(</span>1.8.0-r3<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span>4/5<span style="color:#f92672">)</span> Installing libcurl <span style="color:#f92672">(</span>7.61.1-r1<span style="color:#f92672">)</span>
+<span style="color:#f92672">(</span>5/5<span style="color:#f92672">)</span> Installing curl <span style="color:#f92672">(</span>7.61.1-r1<span style="color:#f92672">)</span>
 Executing busybox-1.28.4-r2.trigger
 Executing ca-certificates-20171114-r3.trigger
 OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</span> packages
 
 / <span style="color:#75715e"># curl -v my-nginx-hello-world</span>
 * Rebuilt URL to: my-nginx-hello-world/
-*   Trying <span style="color:#ae81ff">10</span>.111.222.70...
+*   Trying 10.111.222.70...
 * TCP_NODELAY set
-* Connected to my-nginx-hello-world <span style="color:#f92672">(</span><span style="color:#ae81ff">10</span>.111.222.70<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+* Connected to my-nginx-hello-world <span style="color:#f92672">(</span>10.111.222.70<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
 &gt; GET / HTTP/1.1
 &gt; Host: my-nginx-hello-world
 &gt; User-Agent: curl/7.61.1
@@ -387,10 +373,10 @@ OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</
 &gt;
 &lt; HTTP/1.1 <span style="color:#ae81ff">200</span> OK
 &lt; Server: nginx/1.14.2
-&lt; Date: Sun, <span style="color:#ae81ff">23</span> Dec <span style="color:#ae81ff">2018</span> <span style="color:#ae81ff">03</span>:45:31 GMT
+&lt; Date: Sun, <span style="color:#ae81ff">23</span> Dec <span style="color:#ae81ff">2018</span> 03:45:31 GMT
 &lt; Content-Type: text/html
 &lt; Content-Length: <span style="color:#ae81ff">612</span>
-&lt; Last-Modified: Tue, <span style="color:#ae81ff">04</span> Dec <span style="color:#ae81ff">2018</span> <span style="color:#ae81ff">14</span>:44:49 GMT
+&lt; Last-Modified: Tue, <span style="color:#ae81ff">04</span> Dec <span style="color:#ae81ff">2018</span> 14:44:49 GMT
 &lt; Connection: keep-alive
 &lt; ETag: <span style="color:#e6db74">&#34;5c0692e1-264&#34;</span>
 &lt; Accept-Ranges: bytes
@@ -422,46 +408,42 @@ Commercial support is available at
 &lt;/html&gt;
 * Connection <span style="color:#75715e">#0 to host my-nginx-hello-world left intact</span></code></pre></div>
 And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).</p>
-
 <p>Our current deployment can be checked like this:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">1</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:30:11 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.0       <span style="color:#ae81ff">1</span>.0             default</code></pre></div></p>
-
+my-nginx        <span style="color:#ae81ff">1</span>               Sun Dec <span style="color:#ae81ff">23</span> 00:30:11 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.0       1.0             default</code></pre></div></p>
 <p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ helm upgrade my-nginx . -f values.yaml
 Release <span style="color:#e6db74">&#34;my-nginx&#34;</span> has been upgraded. Happy Helming!
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:55:22 <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> 00:55:22 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 NAME                                   READY  STATUS             RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  <span style="color:#ae81ff">1</span>/1    Running            <span style="color:#ae81ff">0</span>         25m
-my-nginx-hello-world-c5cdcc95c-shgc6   <span style="color:#ae81ff">0</span>/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  1/1    Running            <span style="color:#ae81ff">0</span>         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   0/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
 
-<span style="color:#f92672">==</span>&gt; v1/Service
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Service
 
 NAME                  AGE
 my-nginx-hello-world  25m
 
-<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  25m
 
 
 NOTES:
-<span style="color:#ae81ff">1</span>. Get the application URL by running these commands:
+1. Get the application URL by running these commands:
   export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
   echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME <span style="color:#ae81ff">8080</span>:80</code></pre></div>
+  kubectl port-forward $POD_NAME 8080:80</code></pre></div>
 Note that I always specify the -f values.yaml just for explicitness.</p>
-
 <p>It seems that our upgrade went well, let&rsquo;s see what Helm sees
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">2</span>               Sun Dec <span style="color:#ae81ff">23</span> <span style="color:#ae81ff">00</span>:55:22 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.1       <span style="color:#ae81ff">1</span>.0             default</code></pre></div></p>
-
+my-nginx        <span style="color:#ae81ff">2</span>               Sun Dec <span style="color:#ae81ff">23</span> 00:55:22 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.1       1.0             default</code></pre></div></p>
 <p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
 nginx version: nginx/1.15.7</code></pre></div>
@@ -469,15 +451,12 @@ At the moment of this writing mainline is 1.15.7, we could rollback to the previ
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm rollback my-nginx <span style="color:#ae81ff">1</span>
 Rollback was a success! Happy Helming!</code></pre></div>
 Basically this command needs a deployment name <code>my-nginx</code> and the revision number to rollback to in this case <code>1</code>.</p>
-
 <p>Let&rsquo;s check the versions again:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
 nginx version: nginx/1.14.2</code></pre></div></p>
-
 <p>Let&rsquo;s clean up:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm del --purge my-nginx
 release <span style="color:#e6db74">&#34;my-nginx&#34;</span> deleted</code></pre></div></p>
-
 <p>If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&rsquo;s really useful for debugging or to inject a sidecar using pipes):
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm template . -name my-nginx -f values.yaml
 <span style="color:#75715e"># Source: hello-world/templates/service.yaml</span>
@@ -485,34 +464,38 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ame-hello-world</code></pre></div></p>
-
 <p>And that folks is all I have for now, be sure to check own <a href="https://docs.helm.sh/">Helm Documentation</a> and <code>helm help</code> to know more about what helm can do to help you deploy your applications to any kubernetes cluster.</p>
-
-<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
-
+<h3 id="dont-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
 <p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Helm and go makes that easy and fast.</p>
-
 <h3 id="upcoming-topics">Upcoming topics</h3>
-
 <p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
-
 <ul>
 <li><a href="https://techsquad.rocks/blog/deploying_my_apps_with_helm/">Expand on helm, search and install community charts</a>.</li>
 <li><a href="https://techsquad.rocks/blog/getting_started_with_ksonnet/">Getting started with Ksonnet and friends</a></li>
 <li><a href="https://techsquad.rocks/blog/getting_started_with_skaffold/">Getting started with Skaffold</a>.</li>
 <li><a href="https://techsquad.rocks/blog/getting_started_with_gitkube/">Getting started with Gitkube</a>.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -536,19 +519,6 @@ metadata:
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

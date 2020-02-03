@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>How to create a serverless twitter bot</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Twitter So before you can start with the Twitter API you need to get a developer
 Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="go" />
@@ -56,9 +56,9 @@ Twitter So before you can start with the Twitter API you need to get a developer
 
     <meta name="twitter:title" content="How to create a serverless twitter bot"/>
 <meta name="twitter:description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
-Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.?1579816853"/>
+Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,18 +138,11 @@ Twitter So before you can start with the Twitter API you need to get a developer
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction"><strong>Introduction</strong></h3>
-
+              <h3 id="introduction"><strong>Introduction</strong></h3>
 <p>This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.</p>
-
 <h3 id="twitter"><strong>Twitter</strong></h3>
-
 <p>So before you can start with the Twitter API you need to get a developer account in <a href="https://developer.twitter.com/en/apply/user">this url</a>, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.</p>
-
 <h3 id="the-code"><strong>The code</strong></h3>
-
 <p>I added several comments over the code so it&rsquo;s easy to understand what everything is supposed to do, also it can be found <a href="https://github.com/kainlite/tbo">here</a>.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
@@ -178,20 +171,20 @@ Twitter So before you can start with the Twitter API you need to get a developer
 
 <span style="color:#75715e">// Page JSON object
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Page</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">Version</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`json:&#34;version&#34;`</span>
-	<span style="color:#a6e22e">Title</span>    <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`json:&#34;title&#34;`</span>
-	<span style="color:#a6e22e">BaseURL</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`json:&#34;home_page_url&#34;`</span>
-	<span style="color:#a6e22e">FeedURL</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`json:&#34;feed_url&#34;`</span>
-	<span style="color:#a6e22e">Articles</span> []<span style="color:#a6e22e">Article</span> <span style="color:#e6db74">`json:&#34;items&#34;`</span>
+	<span style="color:#a6e22e">Version</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;version&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">Title</span>    <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;title&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">BaseURL</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;home_page_url&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">FeedURL</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;feed_url&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">Articles</span> []<span style="color:#a6e22e">Article</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;items&#34;</span><span style="color:#e6db74">`</span>
 }
 
 <span style="color:#75715e">// Article JSON object
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Article</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">ID</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;id&#34;`</span>
-	<span style="color:#a6e22e">URL</span>       <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;url&#34;`</span>
-	<span style="color:#a6e22e">Title</span>     <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;title&#34;`</span>
-	<span style="color:#a6e22e">Content</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;content_html&#34;`</span>
-	<span style="color:#a6e22e">Published</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;date_published&#34;`</span>
+	<span style="color:#a6e22e">ID</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;id&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">URL</span>       <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;url&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">Title</span>     <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;title&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">Content</span>   <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;content_html&#34;</span><span style="color:#e6db74">`</span>
+	<span style="color:#a6e22e">Published</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">json:&#34;date_published&#34;</span><span style="color:#e6db74">`</span>
 }
 
 <span style="color:#75715e">// Twitter Access
@@ -276,8 +269,8 @@ Twitter So before you can start with the Twitter API you need to get a developer
 }
 
 <span style="color:#75715e">// Get a random article from the feed
-</span><span style="color:#75715e">// This functions checks that the same tweet is not present
-</span><span style="color:#75715e">// in the last 30 tweets
+</span><span style="color:#75715e"></span><span style="color:#75715e">// This functions checks that the same tweet is not present
+</span><span style="color:#75715e"></span><span style="color:#75715e">// in the last 30 tweets
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Twitter</span>) <span style="color:#a6e22e">PickArticle</span>(<span style="color:#a6e22e">article</span> <span style="color:#a6e22e">Article</span>) <span style="color:#66d9ef">bool</span> {
 	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Debug</span>(<span style="color:#e6db74">&#34;Checking to see if the tweet appeared in the last 30 tweets&#34;</span>)
 
@@ -304,8 +297,8 @@ Twitter So before you can start with the Twitter API you need to get a developer
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tw</span> <span style="color:#a6e22e">Twitter</span>
 
 <span style="color:#75715e">// This function is rather large, but basically grabs the a big json from
-</span><span style="color:#75715e">// the jsonfeed url and tests several tweets until it finds one that it&#39;s valid
-</span><span style="color:#75715e">// a tweet could be invalid if for example it was already tweeted in the last 30 tweets
+</span><span style="color:#75715e"></span><span style="color:#75715e">// the jsonfeed url and tests several tweets until it finds one that it&#39;s valid
+</span><span style="color:#75715e"></span><span style="color:#75715e">// a tweet could be invalid if for example it was already tweeted in the last 30 tweets
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetArticle</span>() <span style="color:#a6e22e">Article</span> {
 	<span style="color:#a6e22e">url</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;https://techsquad.rocks/index.json&#34;</span>
 
@@ -449,9 +442,7 @@ Twitter So before you can start with the Twitter API you need to get a developer
 	}
 }</code></pre></div>
 The code is fairly straigth forward, it checks for the environment to have a locally runable/debuggable app if it&rsquo;s development or if it&rsquo;s running as an AWS Function in production.</p>
-
 <h3 id="while-debugging-locally-it-can-be-ran-like-this"><strong>While debugging locally it can be ran like this</strong></h3>
-
 <p>You can save use an .env file to test debug how your tweets are going to look.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go run .
 <span style="color:#75715e"># OUTPUT:</span>
@@ -466,15 +457,11 @@ The code is fairly straigth forward, it checks for the environment to have a loc
 <span style="color:#75715e"># time=&#34;2019-01-21T22:39:16-03:00&#34; level=debug msg=&#34;Sending tweet&#34; func=&#34;main.(*Twitter).Send&#34; file=&#34;/home/kainlite/Webs/tbo/tbo/main.go:111&#34;</span>
 <span style="color:#75715e"># time=&#34;2019-01-21T22:39:16-03:00&#34; level=info msg=&#34;Non production mode, would&#39;ve tweeted: Getting started with skaffold: https://techsquad.rocks/blog/getting_started_with_skaffold/ - TBO&#34; func=&#34;main.(*Twitter).Send&#34; file=&#34;/home/kainlite/Webs/tbo/tbo/main.go:113&#34;</span></code></pre></div>
 The output is very verbose but it will show you everything that the function will do.</p>
-
 <h3 id="creating-the-project"><strong>Creating the project</strong></h3>
-
 <p>But how did you get the project skeleton?
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir tbo <span style="color:#f92672">&amp;&amp;</span> cd tbo <span style="color:#f92672">&amp;&amp;</span> serverless create -t aws-go</code></pre></div>
 By default it creates two go functions: hello and world, if you look at the files serverless.yaml and the go code, it will be easy to understand how everything is tied together in the default example.</p>
-
 <h3 id="serverless-framework"><strong>Serverless framework</strong></h3>
-
 <p>This function is managed by the <a href="https://serverless.com/">serverless framework</a>, as you can see it&rsquo;s an easy way to manage your functions, what this small block of YAML will do is compile, upload, and schedule our function (because we use an event schedule)
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Welcome to Serverless!</span>
 #
@@ -523,9 +510,7 @@ functions:
       TWITTER_ACCESS_KEY: <span style="color:#e6db74">&#34;example_key&#34;</span>
       TWITTER_ACCESS_SECRET: <span style="color:#e6db74">&#34;example_secret&#34;</span></code></pre></div>
 We provide the environment variables there that the app needs to run, under the hood what serverless will do is create an s3 bucket for this function with a cloudformation stack and a zip file with your function (for each version or deployment), then it will apply that that stack and validate that everything went ok.</p>
-
 <h3 id="deploy-the-function"><strong>Deploy the function</strong></h3>
-
 <p>Once the code is ready and you are ready to test it in production aka send a real tweet, just deploy it.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless deploy
 <span style="color:#75715e"># OUTPUT:</span>
@@ -554,17 +539,13 @@ We provide the environment variables there that the app needs to run, under the 
 <span style="color:#75715e"># layers:</span>
 <span style="color:#75715e">#   None</span></code></pre></div>
 As we described before you can see everything that the serverless framework did for us, nothing really hard to remember and everything automated.</p>
-
 <h3 id="s3"><strong>S3</strong></h3>
-
 <p>Example s3 bucket from the previous deployment.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3 ls
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># 2019-01-21 22:42:05 handler-prod-serverlessdeploymentbucket-1s5fs5igk2pwc</span></code></pre></div>
 As we can see after the deployment we see a new bucket with our function and if we take a look at the files we will find several (depending on how many deployments you do) stacks/manifests and the zip file with our function for each version/deployment.</p>
-
 <h3 id="invoke-the-function"><strong>Invoke the function</strong></h3>
-
 <p>Ok, but I don&rsquo;t want to wait 12 hours to see if everything is okay, then just invoke the function.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless invoke -f tweet
 <span style="color:#75715e"># OUTPUT:</span>
@@ -574,24 +555,32 @@ Wait, where did tweet came from?, if you look at the serverless manifest you wil
     <img src="/img/twitter-tbo.png" width="100%"/> 
 </figure>
 </p>
-
 <h3 id="notes">Notes</h3>
-
 <ul>
 <li>Why TBO, what&rsquo;s tbo? bot misspelled.</li>
 <li>The Serverless framework is really cool and works in a variety of environments, I certainly recommend taking a look and at least trying it, I use it for a few small projects and it eases my life a lot.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -615,19 +604,6 @@ Wait, where did tweet came from?, if you look at the serverless manifest you wil
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        September 8, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
                       </h6>
                     </div>
                   </div>

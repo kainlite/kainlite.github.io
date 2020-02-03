@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Serve your static website in Github</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ GitHub pages offers some great examples that are really easy to follow, but if y
 GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_github/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serve-github.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/serve-github.png?1580700689" />
 
 
 <meta property="article:tag" content="development" />
@@ -56,9 +56,9 @@ GitHub pages offers some great examples that are really easy to follow, but if y
 
     <meta name="twitter:title" content="Serve your static website in Github"/>
 <meta name="twitter:description" content="Introduction GitHub offers static web hosting for you and your apps this is called GitHub Pages, you can use markdown (jekyll or just plain html), for example for this blog I generate all the files with Hugo.io and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
-GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.?1579816853"/>
+GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-github.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serve-github.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,40 +138,29 @@ GitHub pages offers some great examples that are really easy to follow, but if y
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction"><strong>Introduction</strong></h3>
-
+              <h3 id="introduction"><strong>Introduction</strong></h3>
 <p>GitHub offers static web hosting for you and your apps this is called <a href="https://pages.github.com/">GitHub Pages</a>, you can use markdown (<a href="https://jekyllrb.com/">jekyll</a> or just plain html), for example for this blog I generate all the files with <a href="https://gohugo.io/">Hugo.io</a> and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).</p>
-
 <p>GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.</p>
-
 <h3 id="pages"><strong>Pages</strong></h3>
-
 <p>The first step in order to use GH Pages is to create a repo (assuming that you already have an account) with the following name: username.github.io in my case is kainlite.github.io, as we can see in the following screenshot:
 <figure>
     <img src="/img/github-pages-repository.png" width="100%"/> 
 </figure>
 
 This repo already has the blog files, but as with any github repo you will see the default commands to push something to it, the next step is to configure the pages itself, for that you need to go to <a href="https://github.com/username/username.github.io/settings">Settings</a> (be sure to replace username in the link), then scroll down to the GitHub Pages section. It will look something like this:</p>
-
 <p><figure>
     <img src="/img/github-pages-configuration.png" width="100%"/> 
 </figure>
 
 As you can see the configuration is fairly simple, you choose the branch that will be used to serve the site, you can even pick a theme if you are going to go with Jekyll, and you can also have a custom domain and https, in this case as I push the static html files to the master branch I selected that branch, you can have any branch you like but it&rsquo;s common to use gh-pages.</p>
-
 <h5 id="dns"><strong>DNS</strong></h5>
-
 <p>For the custom domain you need to create the following entries in your DNS <code>dig techsquad.rocks</code>, you can find these ips in <a href="https://help.github.com/articles/setting-up-an-apex-domain/">this page</a>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.110.153
-techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.111.153
-techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.108.153
-techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       <span style="color:#ae81ff">185</span>.199.109.153</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       185.199.110.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       185.199.111.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       185.199.108.153
+techsquad.rocks.        <span style="color:#ae81ff">300</span>     IN      A       185.199.109.153</code></pre></div>
 After a few minutes it should start working, and whatever you have in that repo will be served as static files, there are some limits but they are really high so you can probably start your site or blog or whatever without having to worry to much about it. If you want to know what those limits are go <a href="https://help.github.com/articles/what-is-github-pages/">here</a>, as of now the repository size limit is 1Gb, and there is a soft bandwidth limit of 100GB per month, also 10 builds per hour.</p>
-
 <h5 id="go-hugo"><strong>Go Hugo</strong></h5>
-
 <p>Now to the interesting part, <a href="https://gohugo.io">Hugo</a> let&rsquo;s you configure and customize several aspects of the generated files, first be sure to install hugo with your package manager or with go, the steps to create a blog are fairly simple:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo new site testing-hugo
 <span style="color:#75715e"># OUTPUT:</span>
@@ -188,9 +177,7 @@ After a few minutes it should start working, and whatever you have in that repo 
 #
 <span style="color:#75715e"># Visit https://gohugo.io/ for quickstart guide and full documentation.</span></code></pre></div>
 As I have shown in the tmux article, I like to have 2 panes one small pane where I can see the files being rebuilt at each save and another pane with Vim to edit the source code. You can start the hugo webserver for development with <code>hugo serve -D</code> and it will listen by default in the port 1313. It is very common to use themes, so you can go to the <a href="https://themes.gohugo.io/">themes page</a> and start your project with one of those, there are several ways to install the themes, and you can see the installation steps at the theme page, for example for the blog I started with <a href="https://themes.gohugo.io/hugo-sustain/">Sustain</a> but then modified it to match my needs.</p>
-
 <h5 id="publishing-with-git-push"><strong>Publishing with git push</strong></h5>
-
 <p>The most interesting part of this setup is the simple automation that I use to publish with <code>git push</code>, I created the following hook in the blog repo <code>.git/hooks/pre-push</code>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
 </span><span style="color:#75715e"></span>
@@ -198,27 +185,21 @@ COMMIT_MESSAGE<span style="color:#f92672">=</span><span style="color:#e6db74">`<
 
 hugo -d ~/Webs/kainlite.github.io
 ANYTHING_CHANGED<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cd ~/Webs/kainlite.github.io <span style="color:#f92672">&amp;&amp;</span> git diff --exit-code<span style="color:#e6db74">`</span>
-<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $? -gt <span style="color:#ae81ff">0</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span><span style="color:#f92672">[</span> $? -gt <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span><span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
     cd ~/Webs/kainlite.github.io <span style="color:#f92672">&amp;&amp;</span> git add . <span style="color:#f92672">&amp;&amp;</span> git commit -m <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>COMMIT_MESSAGE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span> git push origin master
 <span style="color:#66d9ef">fi</span></code></pre></div>
 What this simple hook does is check if there is any change and push the changes with the same commit message than in the original repo, we first grab the commit message from the original repo, and then check if something changed with git, if it did then we just add all files and push that to the repo, that will trigger a build in github pages and once completed our page will be updated and visible (it can take a few seconds sometimes, but in general it&rsquo;s pretty fast).</p>
-
 <p>And that&rsquo;s how this blog was configured, in the upcoming articles I will show you how to host your static website with S3 and serve it with cloudflare, after that we will use a go lambda function to send the form email, let me know any comments or anything that you might want me to write about.</p>
-
 <h5 id="pages-environment"><strong>Pages Environment</strong></h5>
-
 <p>If you paid attention at the first screenshot you probably noticed that it says <em>1 Environment</em> that means that GH Pages have been already configured and if we click it we can see something like this:
 <figure>
     <img src="/img/github-pages-environment.png" width="100%"/> 
 </figure>
 
-<br />
+<!-- raw HTML omitted -->
 For static html sites it would be unlikely to see a failure, but it can happen if you use Jekyll for example and there is any syntax error.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>

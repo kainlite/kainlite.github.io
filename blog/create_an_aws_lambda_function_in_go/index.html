@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Create an AWS lambda function in Go</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="go" />
@@ -56,9 +56,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Create an AWS lambda function in Go"/>
-<meta name="twitter:description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.?1579816853"/>
+<meta name="twitter:description" content="Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -144,14 +144,9 @@ if (!doNotTrack) {
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article <a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a>, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.</p>
-
-<h5 id="let-s-see-the-code-one-more-time"><strong>Let&rsquo;s see the code one more time</strong></h5>
-
+<h5 id="lets-see-the-code-one-more-time"><strong>Let&rsquo;s see the code one more time</strong></h5>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
@@ -164,9 +159,9 @@ if (!doNotTrack) {
 )
 
 <span style="color:#75715e">// Response is of type APIGatewayProxyResponse since we&#39;re leveraging the
-</span><span style="color:#75715e">// AWS Lambda Proxy Request functionality (default behavior)
-</span><span style="color:#75715e">//
-</span><span style="color:#75715e">// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
+</span><span style="color:#75715e"></span><span style="color:#75715e">// AWS Lambda Proxy Request functionality (default behavior)
+</span><span style="color:#75715e"></span><span style="color:#75715e">//
+</span><span style="color:#75715e"></span><span style="color:#75715e">// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
 </span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Response</span> <span style="color:#a6e22e">events</span>.<span style="color:#a6e22e">APIGatewayProxyResponse</span>
 
 <span style="color:#75715e">// Handler is our lambda handler invoked by the `lambda.Start` function call
@@ -197,22 +192,16 @@ if (!doNotTrack) {
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
     <span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">Handler</span>)
 }</code></pre></div>
-
 <p>With that code as a starting point, now we need to build, package, upload, and deploy our function:</p>
-
 <p><strong>Build</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">GOOS<span style="color:#f92672">=</span>linux go build main.go</code></pre></div></p>
-
 <p><strong>Package</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">zip main.zip ./main
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e">#   adding: main (deflated 51%)</span></code></pre></div></p>
-
 <p><strong>Create the role</strong></p>
-
 <p>Go to IAM &gt; Roles &gt; Create.
 Then select Lambda, assign a name and a description and then get the ARN for this role. Note that with the serverless framework this is done automatically for us, so we don&rsquo;t need to create a new role for each</p>
-
 <p><strong>Upload / Deploy</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws lambda create-function <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>  --region us-east-1 <span style="color:#ae81ff">\
@@ -243,7 +232,6 @@ Then select Lambda, assign a name and a description and then get the ARN for thi
 <span style="color:#75715e">#     &#34;RevisionId&#34;: &#34;7c9030e5-4a26-4f7e-968d-3a4f65dfde21&#34;</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 Note that your function-name must match the name of your Lambda handler name (Handler). Note that this role might be insecure in some scenarios if you grant too much permissions, so try to restrict it as much as possible as with any role and policy.</p>
-
 <p><strong>Test the function</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws lambda invoke --function-name helloworld --log-type Tail /dev/stdout
 <span style="color:#75715e"># OUTPUT:</span>
@@ -253,7 +241,6 @@ Note that your function-name must match the name of your Lambda handler name (Ha
 <span style="color:#75715e">#     &#34;ExecutedVersion&#34;: &#34;$LATEST&#34;</span>
 <span style="color:#75715e"># }</span></code></pre></div>
 Everything looks about right, so what&rsquo;s next? We will eventually need to communicate with this code from an external source, so let&rsquo;s see how we can do that with the API Gateway. Also the log is encoded in base64, so if you want to see what the log result was do the following.</p>
-
 <p><strong>Check the logs</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#34;U1RBUlQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQgVmVyc2lvbjogJExBVEVTVApFTkQgUmVxdWVzdElkOiBmZTRmMWE4Zi1kYzAyLTQyYWQtYjBlYy0wMjA5YjY4MDY1YWQKUkVQT1JUIFJlcXVlc3RJZDogZmU0ZjFhOGYtZGMwMi00MmFkLWIwZWMtMDIwOWI2ODA2NWFkCUR1cmF0aW9uOiAxMy4xOSBtcwlCaWxsZWQgRHVyYXRpb246IDEwMCBtcyAJTWVtb3J5IFNpemU6IDEyOCBNQglNYXggTWVtb3J5IFVzZWQ6IDQ1IE1CCQo=&#34;</span> | base64 -d
 <span style="color:#75715e"># OUTPUT:</span>
@@ -261,25 +248,19 @@ Everything looks about right, so what&rsquo;s next? We will eventually need to c
 <span style="color:#75715e"># END RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad</span>
 <span style="color:#75715e"># REPORT RequestId: fe4f1a8f-dc02-42ad-b0ec-0209b68065ad  Duration: 13.19 ms      Billed Duration: 100 ms         Memory Size: 128 MB     Max Memory Used: 45 MB</span></code></pre></div>
 You should also be able to see this same output in CloudWatch.</p>
-
 <h5 id="api-gateway"><strong>API Gateway</strong></h5>
-
 <p>To make this step simpler I decided to use the AWS Console instead of the CLI it will also cut down the size of this article substantially.</p>
-
 <p><strong>Now we need to create the API Gateway endpoint</strong></p>
-
 <p>Note that you only have to go to Lambda-&gt;Functions-&gt;helloworld-&gt;Add triggers-&gt;API Gateway. And then complete as shown in the image, when you save this new trigger you will get the resource that then can be used to test the API Gateway integration.
 <figure>
     <img src="/img/lambda-helloworld-example.png" width="100%"/> 
 </figure>
 </p>
-
 <p>The endpoint will show as follows (Click on API Gateway):
 <figure>
     <img src="/img/lambda-helloworld-example-endpoint.png" width="100%"/> 
 </figure>
 </p>
-
 <p><strong>Test the API</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v https://r8efasfb26.execute-api.us-east-1.amazonaws.com/default/helloworld
 <span style="color:#75715e"># OUTPUT:</span>
@@ -330,23 +311,30 @@ You should also be able to see this same output in CloudWatch.</p>
 <span style="color:#75715e"># &lt;</span>
 <span style="color:#75715e"># * Connection #0 to host r8efasfb26.execute-api.us-east-1.amazonaws.com left intact</span>
 <span style="color:#75715e"># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}</span></code></pre></div></p>
-
 <p>If you ask me that was a lot of effort to handle without automation, maybe AWS SAM or the serverless framework can make things easier and let you focus on your application rather than the boilerplate required for it to run.</p>
-
 <h3 id="clean-up">Clean up</h3>
-
 <p>Always remember to clean up and delete everything that you created (to avoid surprises and save money), in this article I will leave that as an exercise for the reader :)</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -370,19 +358,6 @@ You should also be able to see this same output in CloudWatch.</p>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
                       </h6>
                     </div>
                   </div>

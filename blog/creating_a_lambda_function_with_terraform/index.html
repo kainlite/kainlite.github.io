@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Creating a lambda function with terraform</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -37,14 +37,16 @@ if (!doNotTrack) {
 }
 </script>
 <meta property="description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
-Before you start make sure you already have your account configured for awscli and terraform installed." />
+Before you start make sure you already have your account configured for awscli and terraform installed.
+Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see." />
 
     <meta property="og:title" content="Creating a lambda function with terraform" />
 <meta property="og:description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
-Before you start make sure you already have your account configured for awscli and terraform installed." />
+Before you start make sure you already have your account configured for awscli and terraform installed.
+Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terraform-lambda.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/terraform-lambda.png?1580700688" />
 
 
 <meta property="article:tag" content="development" />
@@ -57,9 +59,10 @@ Before you start make sure you already have your account configured for awscli a
 
     <meta name="twitter:title" content="Creating a lambda function with terraform"/>
 <meta name="twitter:description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
-Before you start make sure you already have your account configured for awscli and terraform installed.?1579816853"/>
+Before you start make sure you already have your account configured for awscli and terraform installed.
+Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.?1580700688"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform-lambda.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terraform-lambda.png?1580700688" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -141,56 +144,36 @@ Before you start make sure you already have your account configured for awscli a
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a <a href="https://gist.github.com/smithclay/e026b10980214cbe95600b82f67b4958">gist here</a>, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with <a href="https://github.com/terraform-providers/terraform-provider-aws/tree/master/examples/lambda">python here</a>.</p>
-
 <p>Before you start make sure you already have your account configured for <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">awscli</a> and <a href="https://learn.hashicorp.com/terraform/getting-started/install.html">terraform</a> installed.</p>
-
 <h5 id="configuration-files"><strong>Configuration files</strong></h5>
-
 <p>First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.
 <script type="application/javascript" src="https://gist.github.com/kainlite/67b5e84684ae6cca6c0f0847352df55f.js"></script>
 </p>
-
 <h5 id="the-code-itself"><strong>The code itself</strong></h5>
-
 <p>Then we need the code that we need or want to run there.
 <script type="application/javascript" src="https://gist.github.com/kainlite/e52a9a9e63f7de88f11090add8668dd1.js"></script>
 </p>
-
 <h5 id="initialize-terraform"><strong>Initialize terraform</strong></h5>
-
 <p>First of all we will need to initialize terraform like in the gist below, this will download the necessary plugins that we used in the code, otherwise it won&rsquo;t be able to run.
 <script type="application/javascript" src="https://gist.github.com/kainlite/cca6fe034015ee2ce205baf6b68750c3.js"></script>
 </p>
-
 <h5 id="apply-the-changes"><strong>Apply the changes</strong></h5>
-
 <p>The next step would be to apply the changes, you can also plan to an outfile and then apply from that file, but also apply works, this command will take care of doing everything that we defined, it will archive the code, the IAM role and the function itself.
 <script type="application/javascript" src="https://gist.github.com/kainlite/128f522071e66f2a33799241a79ebd1a.js"></script>
 </p>
-
 <h5 id="running-the-function"><strong>Running the function</strong></h5>
-
 <p>Then the last step would be to run our function to see if it actually works, in this case we&rsquo;re using the awscli but you can use the AWS console as well, the result will be the same.
 <script type="application/javascript" src="https://gist.github.com/kainlite/ea98dcf28b0fe1df31c662e5051bb5b5.js"></script>
 </p>
-
 <h5 id="clean-up"><strong>Clean up</strong></h5>
-
 <p>Remember to clean up before leaving.
 <script type="application/javascript" src="https://gist.github.com/kainlite/83be5bcc8e237cc30d7aee17667a5171.js"></script>
 </p>
-
 <p>I don&rsquo;t know about you, but I&rsquo;m going to keep using the <a href="https://serverless.com/">serverless framework</a> for now, but it&rsquo;s good to see that we have alternatives and with some effort can give us the same functionality.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>

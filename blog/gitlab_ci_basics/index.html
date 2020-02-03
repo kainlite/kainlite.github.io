@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Gabriel" />
+    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
+    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
+    <title>Gitlab-CI Basics</title>
+    <meta name="generator" content="Hugo 0.63.2" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/gruvbox-dark.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8919037-7', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<meta property="description" content="Introduction In this article we will continue where we left off the forward project last time, in this article we will use gitlab-ci to test, build and push the image of our operator to dockerhub.
+Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform." />
+
+    <meta property="og:title" content="Gitlab-CI Basics" />
+<meta property="og:description" content="Introduction In this article we will continue where we left off the forward project last time, in this article we will use gitlab-ci to test, build and push the image of our operator to dockerhub.
+Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/gitlab_ci_basics/" />
+<meta property="og:image" content="https://techsquad.rocks/img/gitlab.png?1580700688" />
+
+
+<meta property="article:tag" content="go" />
+<meta property="article:tag" content="golang" />
+<meta property="article:tag" content="kubernetes" />
+<meta property="article:tag" content="linux" />
+<meta property="article:tag" content="docker" />
+<meta property="article:tag" content="kubebuilder" />
+<meta property="article:tag" content="gitlab" />
+<meta property="article:tag" content="continuous-integration" />
+<meta property="article:tag" content="continuous-delivery" />
+
+<meta property="og:locale" content="en" />
+
+
+    <meta name="twitter:title" content="Gitlab-CI Basics"/>
+<meta name="twitter:description" content="Introduction In this article we will continue where we left off the forward project last time, in this article we will use gitlab-ci to test, build and push the image of our operator to dockerhub.
+Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform.?1580700688"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/gitlab.png?1580700688" />
+
+
+<link rel="publisher" href="https://techsquad.rocks">
+<link rel="author" href="https://twitter.com/kainlite">
+<meta property="author" content="Tech Squad">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="article:publisher" content="https://techsquad.rocks">
+<meta property="article:author" content="https://twitter.com/kainlite">
+<meta name="twitter:site" content="@kainlite">
+<meta property="og:site_name" content="Tech Squad">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+
+      <div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <img src="" class="enlargeImageModalSource" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="https://techsquad.rocks/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          February 2, 2020
+            &nbsp;&nbsp;
+            
+            
+              <a href="https://techsquad.rocks/tags/go/" class="label label-success">
+                    go
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/golang/" class="label label-success">
+                    golang
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/kubernetes/" class="label label-success">
+                    kubernetes
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/linux/" class="label label-success">
+                    linux
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/docker/" class="label label-success">
+                    docker
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/kubebuilder/" class="label label-success">
+                    kubebuilder
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/gitlab/" class="label label-success">
+                    gitlab
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/continuous-integration/" class="label label-success">
+                    continuous-integration
+                  </a>&nbsp; <a href="https://techsquad.rocks/tags/continuous-delivery/" class="label label-success">
+                    continuous-delivery
+                  </a>
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              <h5 id="introduction"><strong>Introduction</strong></h5>
+<p>In this article we will continue where we left off the <a href="https://github.com/kainlite/forward">forward</a> project last time, in this article we will use <a href="https://gitlab.com">gitlab-ci</a> to test, build and push the image of our operator to <a href="https://hub.docker.com/repository/docker/kainlite/forward">dockerhub</a>.</p>
+<p>Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform. Also this article demonstrates that you can use github and gitlab in a straight forward manner using the free tier in both sides, we rely in the free shared runners to make our custom CI system.</p>
+<p>If you want to check the previous article <a href="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">go here</a>, that way you will know what the project is all about.</p>
+<h5 id="prerequisites"><strong>Prerequisites</strong></h5>
+<ul>
+<li><a href="https://github.com/kainlite/forward">A project in github in this case</a></li>
+<li><a href="https://gitlab.com/users/sign_up">A gitlab.com account</a></li>
+<li><a href="https://hub.docker.com/u/kainlite">A dockerhub account</a></li>
+</ul>
+<h5 id="create-the-project"><strong>Create the project</strong></h5>
+<p>Once you have your accounts configured, let&rsquo;s create a project, the page should look something like this
+<figure>
+    <img src="/img/gitlab-1.png" width="100%"/> 
+</figure>
+
+We want to create a repo or sync a repo in this case, so we select <code>Create a project</code> and continue</p>
+<h5 id="project-type"><strong>Project type</strong></h5>
+<p>In this step we have a few options and since we have our code in Github and we want to work there, we only want to sync it, so we need to choose <code>CI/CD for external repo</code>
+<figure>
+    <img src="/img/gitlab-2.png" width="100%"/> 
+</figure>
+
+Note that if the repo is public you can fetch/clone using the repo URL, but since I want to check also private repos I went for the github token alternative. Once you hit github it will ask you for the token then it will show you the full list of repos in your account\</p>
+<h5 id="github-token"><strong>Github Token</strong></h5>
+<p>I picked to use a personal token to fetch the repos to be able to grab private repos, etc, so you will need to go to your github account, <code>Settings-&gt;Developer settings</code> and then create a new token or <a href="https://github.com/settings/tokens">click here</a>
+<figure>
+    <img src="/img/gitlab-3.png" width="100%"/> 
+</figure>
+</p>
+<p>Now you only need to give it access to repo, and hit save or create new personal token
+<figure>
+    <img src="/img/gitlab-4.png" width="100%"/> 
+</figure>
+
+Make sure you don&rsquo;t expose or publish that token in any way, otherwise someone could gain access to your account\</p>
+<h5 id="back-to-gitlab-select-the-repository-to-sync">(Back to gitlab) <strong>Select the repository to sync</strong></h5>
+<p>Here we need to select the repo that we want to sync and hit connect, it will automatically fetch everything periodically from github.
+<figure>
+    <img src="/img/gitlab-5.png" width="100%"/> 
+</figure>
+\</p>
+<h5 id="dockerhub-token"><strong>Dockerhub token</strong></h5>
+<p>Now we will need to create a token for dockerhub so we can push our image from the build runner, go to your dockerhub account and create a token
+<figure>
+    <img src="/img/gitlab-6.png" width="100%"/> 
+</figure>
+
+Basically you have to go to <code>Account settings-&gt;Security-&gt;New Access Token</code> or <a href="https://hub.docker.com/settings/security">click here</a>.</p>
+<p>Then we need to save that token as <code>DOCKERHUB_TOKEN</code> in this case as an environment variable in the gitlab project, <code>Settings-&gt;CI/CD-&gt;Variables</code>
+<figure>
+    <img src="/img/gitlab-7.png" width="100%"/> 
+</figure>
+
+make sure masked is marked but not protected, protected is only used when you want to use that secret in specific branches\</p>
+<h5 id="gitlab-ci-config"><strong>Gitlab-CI config</strong></h5>
+<p>After that we only need to add the code to the repo and that will trigger a build, the file needs to be called <code>.gitlab-ci.yml</code>
+<script type="application/javascript" src="https://gist.github.com/kainlite/1cb1aeb54f12830f4bcef6f0df02a250.js"></script>
+
+basically we just install everything we need run the tests if everything goes well, then the build and push process. There is a lot of room for improvement in that initial config, but for now we only care in having some sort of CI system\</p>
+<p>Then we will see something like this in the <code>CI/CD-&gt;Pipelines</code> tab, after each commit it will trigger a test, build and push
+<figure>
+    <img src="/img/gitlab-8.png" width="100%"/> 
+</figure>
+\</p>
+<h5 id="checking-the-results"><strong>Checking the results</strong></h5>
+<p>And we can validate that the images are in dockerhub
+<figure>
+    <img src="/img/gitlab-9.png" width="100%"/> 
+</figure>
+\</p>
+<h5 id="useful-links"><strong>Useful links</strong></h5>
+<p>Some useful links:</p>
+<ul>
+<li><a href="https://docs.gitlab.com/ee/ci/variables/">Variables</a> and <a href="https://docs.gitlab.com/ee/ci/variables/predefined_variables.html">Predefined variables</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_images.html">Using docker images</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/docker/using_docker_build.html">Build docker images</a></li>
+</ul>
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
+<p>I hope you enjoyed it and hope to see you on <a href="https://twitter.com/kainlite">twitter</a> or <a href="https://github.com/kainlite">github</a>!</p>
+<h3 id="errata">Errata</h3>
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+              <hr>
+              
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 20, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/cat_and_friends_netcat_socat/">Cat and friends (Netcat and Socat)</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 17, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        January 4, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
+                      </h6>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = 'kainlite';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="NDx5OFh" data-description="Support me on Buy me a coffee!" data-message="Thank you for visiting. You can now buy me a coffee!" data-color="#79D6B5" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+
+
+<footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://techsquad.rocks/js/docs.min.js"></script>
+<script src="https://techsquad.rocks/js/main.js"></script>
+
+<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script><!-- Syntax highlighting -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  </body>
+</html>

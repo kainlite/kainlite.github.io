@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>SSH Remote Port Forward</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
 Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/ssh_remote_port_forward/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="openssh" />
@@ -56,9 +56,9 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
 
     <meta name="twitter:title" content="SSH Remote Port Forward"/>
 <meta name="twitter:description" content="Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1579816853"/>
+Explanation Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -138,51 +138,46 @@ Explanation Remote port forward basically let&rsquo;s you forward one port from 
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore <a href="https://techsquad.rocks/blog/ssh_local_port_forward/">SSH Local Port Forward</a> and <a href="https://techsquad.rocks/blog/ssh_socks_proxy/">SSH Socks Proxy</a> and how to use that functionality.</p>
-
 <h5 id="explanation"><strong>Explanation</strong></h5>
-
 <p>Remote port forward basically let&rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&rsquo;s say you want to connect to a mysql instance on the default port (3306).</p>
-
 <p><strong>The command</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -Nn -R <span style="color:#ae81ff">3306</span>:localhost:3306 user@example.com</code></pre></div></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -Nn -R 3306:localhost:3306 user@example.com</code></pre></div></p>
 <p><strong>The parameters and their meaning</strong>
 I extracted a portion of the meaning of parameter from the man page, but in a nutshell it means remote port forward without a shell.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-N Do not execute a remote command. This is useful for just forwarding ports.
 -n Redirects stdin from /dev/null (actually, prevents reading from stdin). This must be used when ssh is run in the background.
 -R Specifies that connections to the given TCP port or Unix socket on the remote (server) host are to be forwarded to the local side.</code></pre></div></p>
-
 <h5 id="server-configuration"><strong>Server configuration</strong></h5>
-
 <p>There are two configuration parameters that can change the behaviour of remote and local forwarded ports, those parameters are <code>GatewayPorts</code> and <code>AllowTcpForwarding</code>.</p>
-
 <h5 id="gatewayports"><strong>GatewayPorts</strong></h5>
-
 <p>By default this option is <code>no</code> which means that only the remote computer will be able to connect to the forwarded port, you can set it to <code>yes</code> or <code>clientspecified</code> to allow other machines use that remote port-forward (handy and dangerous).</p>
-
 <h5 id="allowtcpforwarding"><strong>AllowTcpForwarding</strong></h5>
-
 <p>By default this option is set to <code>yes</code>, you can restrict remote and local port forwarding by setting it to <code>no</code> or allow only local by setting it to <code>local</code>.</p>
-
 <h3 id="closing-notes"><strong>Closing notes</strong></h3>
-
 <p>As you can see this option can be really handy to bypass firewalls for example or have a temporary port forward, also if you want to make this automatic and not so temporary you can check autossh. You can use nc (netcat) if you don&rsquo;t want to install anything to test the connections and the tunnels (nc -l -p PORT) in the server side and (nc HOST PORT) in the client.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -206,19 +201,6 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
                       </h6>
                     </div>
                   </div>

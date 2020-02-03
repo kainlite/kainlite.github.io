@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>My local environment</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
 While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/my_local_environment/" />
-<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/terminal.png?1580700689" />
 
 
 <meta property="article:tag" content="urxvt" />
@@ -57,9 +57,9 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
 
     <meta name="twitter:title" content="My local environment"/>
 <meta name="twitter:description" content="Introduction This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
-While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1579816853"/>
+While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with GBT.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/terminal.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -141,23 +141,16 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction">Introduction</h3>
-
+              <h3 id="introduction">Introduction</h3>
 <p>This article is about my current configuration, but I&rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&rsquo;m currently using <strong>Arch Linux</strong> and <strong>AwesomeWM</strong> (I used Gnome Shell previously, and Gnome 2 before that), you can find my <a href="https://github.com/kainlite/dotfiles">dotfiles here</a> with all my configurations.</p>
-
 <p>While my terminal doesn&rsquo;t look exactly like the one from the picture you can get something like that with <a href="https://github.com/jtyr/gbt">GBT</a>.</p>
-
 <h3 id="terminal">Terminal</h3>
-
 <p>My current terminal is <strong>rxvt-unicode</strong> and I&rsquo;m pretty happy with it, it&rsquo;s relatively easy to configure and use, it looks like this:
 <figure class="zoom">
     <img src="/img/urxvt.png" width="100%"/> 
 </figure>
 
 And the configuration file can be <a href="https://github.com/kainlite/dotfiles/blob/master/.Xresources">found here</a>, note that even if you don&rsquo;t like Ponys by any reason, it&rsquo;s useful to test colors in the terminal.</p>
-
 <p>It&rsquo;s different than other terminals I have tried in the way it manages and uses the configuration, it uses an additional tool called <code>xrdb</code> (X server resource database utility) to manage the configuration provided in the configuration file <code>.Xresources</code>.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Loads the configuration from Xresources in xrdb</span>
 $ xrdb -merge .Xresources
@@ -167,46 +160,46 @@ $ xrdb -query
 
 <span style="color:#75715e"># Deletes the current database</span>
 $ xrdb -remove</code></pre></div></p>
-
 <h3 id="theme">Theme</h3>
-
 <p>My current theme is <a href="https://github.com/morhetz/gruvbox">gruvbox</a> in Vim and also in my <a href="https://github.com/morhetz/gruvbox-contrib/blob/master/xresources/gruvbox-dark.xresources">terminal</a>, and changing from <a href="https://ethanschoonover.com/solarized/">solazired</a> to it is what inspired this small article.</p>
-
 <h3 id="tmux">Tmux</h3>
-
 <p>I also use tmux to maintan sessions, some of it&rsquo;s nice features are tiling, tabs. The configuration can be <a href="https://github.com/kainlite/dotfiles/blob/master/.tmux.conf">found here</a>. I move between tabs with control-h and control-l, and between panes with control-a [hjkl].</p>
-
 <h3 id="vim">Vim</h3>
-
 <p>As my text editor I really like and enjoy using Vim, there is always something to learn but once you make some good habits it pays off in the way you write and move around, you can check some amazing screencasts on vim <a href="http://vimcasts.org/">here</a> and also the book Practical Vim can be really helpful to get started and/or improve your current vim-fu.</p>
-
 <p>As a plugin manager I use <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc.bundles">Plug</a> even that it&rsquo;s not really necessary with Vim 8, but that is a matter of taste I guess. You can see my full vim configuration <a href="https://github.com/kainlite/dotfiles/blob/master/.vimrc">here</a>.</p>
-
 <p>It looks something like this, as you can see I have a small tmux pane in the bottom with Hugo <em>compiling</em> the site after every save and live reloading it in my browser:
 <figure class="zoom">
     <img src="/img/vim.png" width="100%"/> 
 </figure>
 </p>
-
 <h3 id="notes">Notes</h3>
-
 <ul>
 <li>I&rsquo;m also using zsh and <a href="https://ohmyz.sh/">oh-my-zsh</a> with the theme agnoster. I really like zsh it&rsquo;s fast and has some nice features like autocomplete everywhere, but again this is a matter of taste.</li>
 <li>I like to take advantage of all the space in the screen, that&rsquo;s why AwesomeWM fits great (even that I do not use the tiling feature a lot, tabs and full screen apps), with some minor configuration I&rsquo;m able to do everything from the keyboard, I use the mouse when checking emails and things like that but otherwise the keyboard is more than enough.</li>
 <li>I used cowsay and ponysay in the first screenshot so you can have an idea of how the terminal looks like.</li>
 <li>If you are going to use unicode I recommend you to install the fonts from nerd-fonts.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -230,19 +223,6 @@ $ xrdb -remove</code></pre></div></p>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
                       </h6>
                     </div>
                   </div>

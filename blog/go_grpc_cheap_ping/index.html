@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Go gRPC Cheap Ping</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ Protobuf As you might already know gRPC serializes data using protocol buffers, 
 Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/go_grpc_cheap_ping/" />
-<meta property="og:image" content="https://techsquad.rocks/img/golang-grpc.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/golang-grpc.png?1580700688" />
 
 
 <meta property="article:tag" content="go" />
@@ -55,9 +55,9 @@ Protobuf As you might already know gRPC serializes data using protocol buffers, 
 
     <meta name="twitter:title" content="Go gRPC Cheap Ping"/>
 <meta name="twitter:description" content="Introduction In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code here.
-Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows.?1579816853"/>
+Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows.?1580700688"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/golang-grpc.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/golang-grpc.png?1580700688" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -135,72 +135,62 @@ Protobuf As you might already know gRPC serializes data using protocol buffers, 
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="introduction"><strong>Introduction</strong></h5>
-
+              <h5 id="introduction"><strong>Introduction</strong></h5>
 <p>In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code <a href="https://github.com/kainlite/grpc-ping">here</a>.</p>
-
 <h5 id="protobuf"><strong>Protobuf</strong></h5>
-
 <p>As you might already know gRPC serializes data using <a href="https://developers.google.com/protocol-buffers/">protocol buffers</a>, We are just going to create a <a href="https://grpc.io/docs/guides/concepts/">Unary RPC</a> as follows.
 <script type="application/javascript" src="https://gist.github.com/kainlite/ad4f85164730c6c6fb2257329f7fc164.js"></script>
 
 With this file in place we are defining a service that will be able to send a single <code>PingRequest</code> and get a single <code>PingResponse</code>, we have a <code>Data</code> field that goes back and forth in order to send some bytes over the wire (even that we don&rsquo;t really care about that, it could be important or crucial in a performance test).</p>
-
 <h5 id="generating-the-code"><strong>Generating the code</strong></h5>
-
 <p>In order to be able to use protobuf we need to generate the code for the app that we&rsquo;re writing in this case for golang the command would be this one:
 <script type="application/javascript" src="https://gist.github.com/kainlite/dac49c31ffaedac1d0cc1584a8cce306.js"></script>
 
 This will give us a definition of the service and the required structs to carry the data that we have defined as messages.</p>
-
 <h5 id="client"><strong>Client</strong></h5>
-
 <p>The client does most of the work here, as you can see you can supply 2 arguments one to point to another host:port and the second to send a string of your liking, then it measures the time it takes to send and receive the message back and prints it to the screen with a similar line to what the actual <code>ping</code> command looks in linux.
 <script type="application/javascript" src="https://gist.github.com/kainlite/663a25de0321b85bde37e006c1621e60.js"></script>
 </p>
-
 <h5 id="server"><strong>Server</strong></h5>
-
 <p>The server is a merely echo server since it will send back whatever you send to it and log it to the console, by default it will listen in port <code>50000</code>.
 <script type="application/javascript" src="https://gist.github.com/kainlite/7c809672a86b6454f7080a88d87da977.js"></script>
 </p>
-
 <h5 id="testing-it"><strong>Testing it</strong></h5>
-
 <h6 id="regular-ping"><strong>Regular ping</strong></h6>
-
 <script type="application/javascript" src="https://gist.github.com/kainlite/8f60f178d0e6796256647d0e5a5c4078.js"></script>
 
-
 <h6 id="client-1"><strong>Client</strong></h6>
-
 <p>This is what we would see in the terminal while testing it.
 <script type="application/javascript" src="https://gist.github.com/kainlite/3abc2ac34d1390680fc9fb5787c1da02.js"></script>
 
 As you can see the initial connection takes a bit more time but after that the roundtrip time is very consistent (of course our cheap ping doesn&rsquo;t cover errors, packet loss, etc).</p>
-
 <h6 id="server-1"><strong>Server</strong></h6>
-
 <p>The server just echoes back and logs what received over the wire.
 <script type="application/javascript" src="https://gist.github.com/kainlite/edf6fc9b5f1c71e2eab054b5dbae3a24.js"></script>
 </p>
-
 <h5 id="closing-notes"><strong>Closing notes</strong></h5>
-
 <p>As you can see gRPC is pretty fast and simplifies a lot everything that you need to do in order to have a highly efficient message system or communication between microservices for example, it&rsquo;s also easy to generate the boilerplate for whatever language you prefer and have a common interface that everyone has to agree on.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -224,19 +214,6 @@ As you can see the initial connection takes a bit more time but after that the r
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        September 8, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
                       </h6>
                     </div>
                   </div>

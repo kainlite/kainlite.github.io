@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Deploying my apps with Helm</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -42,7 +42,7 @@ if (!doNotTrack) {
 <meta property="og:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/deploying_my_apps_with_helm/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="helm" />
@@ -53,9 +53,9 @@ if (!doNotTrack) {
 
 
     <meta name="twitter:title" content="Deploying my apps with Helm"/>
-<meta name="twitter:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.?1579816853"/>
+<meta name="twitter:description" content="Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -135,106 +135,96 @@ if (!doNotTrack) {
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="deploying-my-apps-with-helm"><strong>Deploying my apps with Helm</strong></h3>
-
+              <h3 id="deploying-my-apps-with-helm"><strong>Deploying my apps with Helm</strong></h3>
 <p>If you are already familiar with <a href="https://helm.sh/">Helm</a>, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with <a href="https://github.com/helm/charts">Charts</a>, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the <a href="https://github.com/helm/charts/blob/master/CONTRIBUTING.md#technical-requirements">technical requirements</a> but probably usable and the folder stable is for <em>graduated</em> charts. This is not the only source of charts as you can imagine, You can use any source for your charts, even just the <a href="https://docs.helm.sh/using_helm/#helm-install-installing-a-package">tgz</a> files, as we will see in this post.</p>
-
 <p>How do I search for charts?:</p>
-
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-stable/wordpress        <span style="color:#ae81ff">3</span>.3.0           <span style="color:#ae81ff">4</span>.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
+stable/wordpress        3.3.0           4.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
 Note that I&rsquo;m not a fan of Wordpress or PHP itself, but it seems like the most common example everywhere. As we can see here it says stable/wordpress so we know that we&rsquo;re using the official repo in the folder stable, but what if we don&rsquo;t want that chart, but someone else provides one with more features or something that You like better. Let&rsquo;s use the one from <a href="https://bitnami.com/stack/wordpress/helm">Bitnami</a>, so if we check their page you can select different kind of deployments but for it to work we need to add another external repo:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm repo add bitnami https://charts.bitnami.com/bitnami</code></pre></div>
 So if we search again we will now see two options (at the moment of this writing, the latest version is actually 5.0.2):
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm search wordpress
 NAME                    CHART VERSION   APP VERSION     DESCRIPTION
-bitnami/wordpress       <span style="color:#ae81ff">5</span>.0.2           <span style="color:#ae81ff">5</span>.0.2           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.
-stable/wordpress        <span style="color:#ae81ff">3</span>.3.0           <span style="color:#ae81ff">4</span>.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
+bitnami/wordpress       5.0.2           5.0.2           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.
+stable/wordpress        3.3.0           4.9.8           Web publishing platform <span style="color:#66d9ef">for</span> building blogs and websites.</code></pre></div>
 Let&rsquo;s check the <a href="https://github.com/helm/charts/tree/master/stable/wordpress">documentation</a> of the chart to create our <code>values.yaml</code> file, note that in this example the stable wordpress chart it&rsquo;s also maintained by Bitnami, so they have the same configuration :), this won&rsquo;t always be the case but it simplifies things for us.</p>
-
 <p>Our example <code>values.yaml</code> will look like:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">wordpressBlogName: <span style="color:#e6db74">&#34;Testing Helm Charts&#34;</span>
-persistence:
-  size: 1Gi
-ingress:
-  enabled: <span style="color:#66d9ef">true</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">wordpressBlogName</span>: <span style="color:#e6db74">&#34;Testing Helm Charts&#34;</span>
+<span style="color:#66d9ef">persistence</span>:
+  <span style="color:#66d9ef">size</span>: 1Gi
+<span style="color:#66d9ef">ingress</span>:
+  <span style="color:#66d9ef">enabled</span>: <span style="color:#66d9ef">true</span></code></pre></div>
 We will only change the blog name by default, the persistent volume size and also enable <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> (Our app should be available through <code>wordpress.local</code> inside the cluster), if you are using minikube be sure to enable the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> addon.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ minikube addons enable ingress
 ingress was successfully enabled</code></pre></div></p>
-
 <p>We can then install <code>stable/wordpress</code> or <code>bitnami/wordpress</code>, we will follow up with the one from Bitnami repo.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm install bitnami/wordpress <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>--set image.repository<span style="color:#f92672">=</span>bitnami/wordpress <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>--set image.tag<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>.0.2 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>--set image.tag<span style="color:#f92672">=</span>5.0.2 <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>-f values.yaml</code></pre></div>
 As it&rsquo;s a common good practice to use specific versions we will do it here, it&rsquo;s better to do it this way because you can easily move between known versions and also avoid unknown states, this can happen by misunderstanding what latest means, <a href="https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375">follow the example</a>.</p>
-
 <p>You should see something like:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">NAME:   plucking-condor
-LAST DEPLOYED: Mon Dec <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">13</span>:06:38 <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Mon Dec <span style="color:#ae81ff">24</span> 13:06:38 <span style="color:#ae81ff">2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
 NAME                                        READY  STATUS             RESTARTS  AGE
-plucking-condor-wordpress-84845db8b5-hkqhc  <span style="color:#ae81ff">0</span>/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
-plucking-condor-mariadb-0                   <span style="color:#ae81ff">0</span>/1    Pending            <span style="color:#ae81ff">0</span>         0s
+plucking-condor-wordpress-84845db8b5-hkqhc  0/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
+plucking-condor-mariadb-0                   0/1    Pending            <span style="color:#ae81ff">0</span>         0s
 
-<span style="color:#f92672">==</span>&gt; v1/Secret
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Secret
 
 NAME                       AGE
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-<span style="color:#f92672">==</span>&gt; v1/ConfigMap
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/ConfigMap
 plucking-condor-mariadb        0s
 plucking-condor-mariadb-tests  0s
 
-<span style="color:#f92672">==</span>&gt; v1/PersistentVolumeClaim
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/PersistentVolumeClaim
 plucking-condor-wordpress  0s
 
-<span style="color:#f92672">==</span>&gt; v1/Service
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1/Service
 plucking-condor-mariadb    0s
 plucking-condor-wordpress  0s
 
-<span style="color:#f92672">==</span>&gt; v1beta1/Deployment
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1beta1/Deployment
 plucking-condor-wordpress  0s
 
-<span style="color:#f92672">==</span>&gt; v1beta1/StatefulSet
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1beta1/StatefulSet
 plucking-condor-mariadb  0s
 
-<span style="color:#f92672">==</span>&gt; v1beta1/Ingress
+<span style="color:#f92672">=</span><span style="color:#f92672">=</span>&gt; v1beta1/Ingress
 wordpress.local-plucking-condor  0s
 
 
 NOTES:
-<span style="color:#ae81ff">1</span>. Get the WordPress URL:
+1. Get the WordPress URL:
 
   You should be able to access your new WordPress installation through
   http://wordpress.local/admin
 
-<span style="color:#ae81ff">2</span>. Login with the following credentials to see your blog
+2. Login with the following credentials to see your blog
 
   echo Username: user
   echo Password: <span style="color:#66d9ef">$(</span>kubectl get secret --namespace default plucking-condor-wordpress -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.data.wordpress-password}&#34;</span> | base64 --decode<span style="color:#66d9ef">)</span></code></pre></div>
 Depending on the cluster provider or installation itself, you might need to replace the <code>persistence.storageClass</code> to match what your cluster has, note that in the values file is represented like JSON with dot notation but in your <code>values.yaml</code> you need to stick to YAML format and indent <code>storageClass</code> under persistence as usual, the kubernetes API parses and uses JSON but YAML seems more human friendly.</p>
-
 <p>At this point we should a working wordpress installation, also move between versions, but be aware that the application is in charge of the database schema and updating it to match what the new version needs, this can also be troublesome rolling back or when downgrading, so if you use persistent data <em>ALWAYS</em> have a working backup, because when things go south, you will want to quickly go back to a known state, also note that I said &ldquo;working backup&rdquo;, yes, test that the backup works and that You can restore it somewhere else before doing anything destructive or that can has repercussions, this will bring you peace of mind and better ways to organize yourself while upgrading, etc.</p>
-
 <p>Now let&rsquo;s check that all resources are indeed working and that we can use our recently installed app.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get all
 NAME                                             READY     STATUS        RESTARTS   AGE
-pod/plucking-condor-mariadb-0                    <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          12m
-pod/plucking-condor-wordpress-84845db8b5-hkqhc   <span style="color:#ae81ff">1</span>/1       Running       <span style="color:#ae81ff">0</span>          12m
+pod/plucking-condor-mariadb-0                    1/1       Running       <span style="color:#ae81ff">0</span>          12m
+pod/plucking-condor-wordpress-84845db8b5-hkqhc   1/1       Running       <span style="color:#ae81ff">0</span>          12m
 
 NAME                                TYPE           CLUSTER-IP       EXTERNAL-IP      PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>                      AGE
-service/kubernetes                  ClusterIP      <span style="color:#ae81ff">10</span>.96.0.1        &lt;none&gt;           <span style="color:#ae81ff">443</span>/TCP                      37h
-service/plucking-condor-mariadb     ClusterIP      <span style="color:#ae81ff">10</span>.106.219.59    &lt;none&gt;           <span style="color:#ae81ff">3306</span>/TCP                     12m
-service/plucking-condor-wordpress   LoadBalancer   <span style="color:#ae81ff">10</span>.100.239.163   <span style="color:#ae81ff">10</span>.100.239.163   <span style="color:#ae81ff">80</span>:31764/TCP,443:32308/TCP   12m
+service/kubernetes                  ClusterIP      10.96.0.1        &lt;none&gt;           443/TCP                      37h
+service/plucking-condor-mariadb     ClusterIP      10.106.219.59    &lt;none&gt;           3306/TCP                     12m
+service/plucking-condor-wordpress   LoadBalancer   10.100.239.163   10.100.239.163   80:31764/TCP,443:32308/TCP   12m
 
 NAME                                        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/plucking-condor-wordpress   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           12m
@@ -245,7 +235,6 @@ replicaset.apps/plucking-condor-wordpress-84845db8b5   <span style="color:#ae81f
 NAME                                       DESIRED   CURRENT   AGE
 statefulset.apps/plucking-condor-mariadb   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         12m</code></pre></div>
 You can deploy it to a custom namespace (In this case I deployed it to the default namespace), the only change for that would be to set the parameter <code>--namespace</code> in the <code>helm install</code> line.</p>
-
 <p>If you use minikube then ingress will expose a nodeport that we can find using <code>minikube service list</code> then using the browser or curl to navigate our freshly installed wordpress.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ minikube service list
 |-------------|---------------------------|--------------------------------|
@@ -260,48 +249,47 @@ You can deploy it to a custom namespace (In this case I deployed it to the defau
 | kube-system | kubernetes-dashboard      | No node port                   |
 | kube-system | tiller-deploy             | No node port                   |
 |-------------|---------------------------|--------------------------------|</code></pre></div>
-In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: <a href="http://192.168.99.100:31764">http://192.168.99.100:31764</a> and https at: <a href="http://192.168.99.100:32308">http://192.168.99.100:32308</a>, and <a href="http://192.168.99.100:30001">http://192.168.99.100:30001</a> is the default backend for the ingress controller), your ips can be different but the basics are the same.</p>
-
+In the cloud or on premises this will indeed be different and you should have a publicly available installation using your own domain name (In this case http is at: http://192.168.99.100:31764 and https at: http://192.168.99.100:32308, and http://192.168.99.100:30001 is the default backend for the ingress controller), your ips can be different but the basics are the same.</p>
 <p>Sample screenshot:</p>
-
 <figure class="zoom">
     <img src="/img/wordpress-example.png" width="100%"/> 
 </figure>
 
-
 <h3 id="notes">Notes</h3>
-
 <p>As long as we have the <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">persistent volume</a> our data should be preserved in this case the PV is used for tha database, but we could add another volume to preserve images, etc.</p>
-
 <p>Clean everything up:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm del --purge plucking-condor</code></pre></div></p>
-
 <p>That&rsquo;s all I have for now, I will be adding more content next week.</p>
-
-<h3 id="don-t-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
-
+<h3 id="dont-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
 <p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update or use an existing one. While helm and go helps with that, there is no perfect tool so we will explore other options in the following posts, explore what the community provides and what seems like a suitable tool for you. Happy Helming!.</p>
-
 <h3 id="upcoming-topics">Upcoming topics</h3>
-
 <p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
-
 <ul>
 <li>Getting started with Ksonnet and friends.</li>
 <li>Getting started with Skaffold.</li>
 <li>Getting started with Gitkube.</li>
 </ul>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -325,19 +313,6 @@ In the cloud or on premises this will indeed be different and you should have a 
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

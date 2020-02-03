@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Exploring some Istio features</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -44,7 +44,7 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
 In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/exploring_some_istio_features/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="istio" />
@@ -57,9 +57,9 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
 
     <meta name="twitter:title" content="Exploring some Istio features"/>
 <meta name="twitter:description" content="Introduction This article builds up on what we did in the last article, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.
-In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.?1579816853"/>
+In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -141,16 +141,10 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction">Introduction</h3>
-
+              <h3 id="introduction">Introduction</h3>
 <p>This article builds up on what we did in the <a href="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/">last article</a>, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.</p>
-
 <p>In this example I will be using <a href="https://m.do.co/c/01d040b789de">Digital Ocean</a> (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</p>
-
 <h3 id="before-starting-a-few-concepts">Before starting a few concepts</h3>
-
 <ul>
 <li>A VirtualService defines the rules that control how requests for a service are routed within an Istio service mesh.</li>
 <li>A DestinationRule configures the set of policies to be applied to a request after VirtualService routing has occurred.</li>
@@ -158,9 +152,7 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
 <li>A Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application.
 These basic concepts will help you understand the manifest that we are going to see.</li>
 </ul>
-
-<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
-
+<h3 id="lets-get-started">Let&rsquo;s get started</h3>
 <p>We already have the bookinfo project deployed and using all three versions of the service (ratings) but we will need to make some changes to test route based on user identity, you can check the configuration with:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get destinationrules -o yaml
 apiVersion: v1
@@ -170,14 +162,14 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;details&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;details&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}]}}</span>
-    creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T00:58:54Z
+        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;details&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;details&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+    creationTimestamp: 2019-01-11T00:58:54Z
     generation: <span style="color:#ae81ff">1</span>
     name: details
     namespace: default
     resourceVersion: <span style="color:#e6db74">&#34;921688&#34;</span>
     selfLink: /apis/networking.istio.io/v1alpha3/namespaces/default/destinationrules/details
-    uid: <span style="color:#ae81ff">11490656</span>-153c-11e9-9eda-6a85233ec1d5
+    uid: 11490656-153c-11e9-9eda-6a85233ec1d5
   spec:
     host: details
     subsets:
@@ -192,8 +184,8 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;productpage&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;productpage&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}]}}</span>
-    creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T00:58:53Z
+        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;productpage&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;productpage&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+    creationTimestamp: 2019-01-11T00:58:53Z
     generation: <span style="color:#ae81ff">1</span>
     name: productpage
     namespace: default
@@ -211,8 +203,8 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql-vm&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql-vm&#34;</span><span style="color:#f92672">}]}}</span>
-    creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T00:58:54Z
+        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql-vm&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2-mysql-vm&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+    creationTimestamp: 2019-01-11T00:58:54Z
     generation: <span style="color:#ae81ff">1</span>
     name: ratings
     namespace: default
@@ -239,8 +231,8 @@ items:
   metadata:
     annotations:
       kubectl.kubernetes.io/last-applied-configuration: |
-        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v3&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v3&#34;</span><span style="color:#f92672">}]}}</span>
-    creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T00:58:53Z
+        <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;DestinationRule&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subsets&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;labels&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;version&#34;</span>:<span style="color:#e6db74">&#34;v3&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;v3&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+    creationTimestamp: 2019-01-11T00:58:53Z
     generation: <span style="color:#ae81ff">1</span>
     name: reviews
     namespace: default
@@ -264,7 +256,6 @@ metadata:
   resourceVersion: <span style="color:#e6db74">&#34;&#34;</span>
   selfLink: <span style="color:#e6db74">&#34;&#34;</span></code></pre></div>
 There we have all the destination rules, and now we need to apply the new manifest that will send everything to the version 1 and the user <em>jason</em> to the version 2 of the reviews microservice.</p>
-
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/virtual-service-reviews-test-v2.yaml
 virtualservice.networking.istio.io <span style="color:#e6db74">&#34;reviews&#34;</span> created
 
@@ -274,8 +265,8 @@ kind: VirtualService
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;VirtualService&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hosts&#34;</span>:<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;reviews&#34;</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;http&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;match&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;headers&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;end-user&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;exact&#34;</span>:<span style="color:#e6db74">&#34;jason&#34;</span><span style="color:#f92672">}}}]</span>,<span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}}]}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}}]}]}}</span>
-  creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T02:30:35Z
+      <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;VirtualService&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hosts&#34;</span>:<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;reviews&#34;</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;http&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;match&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;headers&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;end-user&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;exact&#34;</span>:<span style="color:#e6db74">&#34;jason&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v2&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;reviews&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+  creationTimestamp: 2019-01-11T02:30:35Z
   generation: <span style="color:#ae81ff">1</span>
   name: reviews
   namespace: default
@@ -299,22 +290,18 @@ spec:
         host: reviews
         subset: v1</code></pre></div>
 What&rsquo;s going on here, how Istio knows what user is logged in?, well, the app adds a header called end-user and value <em>jason</em> then the route will be used, it&rsquo;s a nifty trick.</p>
-
 <p>Not jason:
 <figure class="zoom">
     <img src="/img/istio-servicev1.png" width="100%"/> 
 </figure>
 </p>
-
 <p>jason:
 <figure class="zoom">
     <img src="/img/istio-servicev2.png" width="100%"/> 
 </figure>
 
 As you can see the difference in the v1 and v2 of the app are the stars below the reviews, but that is more than enough to indicate that it works, this is really nice for beta testers you don&rsquo;t need or have to complicate your code but just add a header.</p>
-
 <h3 id="injecting-an-http-abort-fault">Injecting an HTTP abort fault:</h3>
-
 <p>This time we will inject a failure for our friend <em>jason</em>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/virtual-service-ratings-test-abort.yaml
 virtualservice.networking.istio.io <span style="color:#e6db74">&#34;ratings&#34;</span> created
@@ -325,8 +312,8 @@ kind: VirtualService
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;VirtualService&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hosts&#34;</span>:<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;ratings&#34;</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;http&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;fault&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;abort&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;httpStatus&#34;</span>:500,<span style="color:#e6db74">&#34;percent&#34;</span>:100<span style="color:#f92672">}}</span>,<span style="color:#e6db74">&#34;match&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;headers&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;end-user&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;exact&#34;</span>:<span style="color:#e6db74">&#34;jason&#34;</span><span style="color:#f92672">}}}]</span>,<span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}}]}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}}]}]}}</span>
-  creationTimestamp: <span style="color:#ae81ff">2019</span>-01-11T02:50:59Z
+      <span style="color:#f92672">{</span><span style="color:#e6db74">&#34;apiVersion&#34;</span>:<span style="color:#e6db74">&#34;networking.istio.io/v1alpha3&#34;</span>,<span style="color:#e6db74">&#34;kind&#34;</span>:<span style="color:#e6db74">&#34;VirtualService&#34;</span>,<span style="color:#e6db74">&#34;metadata&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;annotations&#34;</span>:<span style="color:#f92672">{</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;name&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;namespace&#34;</span>:<span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;spec&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;hosts&#34;</span>:<span style="color:#f92672">[</span><span style="color:#e6db74">&#34;ratings&#34;</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;http&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;fault&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;abort&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;httpStatus&#34;</span>:500,<span style="color:#e6db74">&#34;percent&#34;</span>:100<span style="color:#f92672">}</span><span style="color:#f92672">}</span>,<span style="color:#e6db74">&#34;match&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;headers&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;end-user&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;exact&#34;</span>:<span style="color:#e6db74">&#34;jason&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span>,<span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span>,<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;route&#34;</span>:<span style="color:#f92672">[</span><span style="color:#f92672">{</span><span style="color:#e6db74">&#34;destination&#34;</span>:<span style="color:#f92672">{</span><span style="color:#e6db74">&#34;host&#34;</span>:<span style="color:#e6db74">&#34;ratings&#34;</span>,<span style="color:#e6db74">&#34;subset&#34;</span>:<span style="color:#e6db74">&#34;v1&#34;</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span><span style="color:#f92672">}</span>
+  creationTimestamp: 2019-01-11T02:50:59Z
   generation: <span style="color:#ae81ff">1</span>
   name: ratings
   namespace: default
@@ -353,17 +340,13 @@ spec:
     - destination:
         host: ratings
         subset: v1</code></pre></div></p>
-
 <p>So he decided to check the book reviews again and boom, the ratings service was not available but everything else works just fine, this only applies for <em>jason</em> everyone else will see the version without stars or the error message.
 <figure class="zoom">
     <img src="/img/istio-servicev3.png" width="100%"/> 
 </figure>
 </p>
-
 <h3 id="notes">Notes</h3>
-
 <p>Istio seems an it is indeed really powerful, there many more features like:</p>
-
 <ul>
 <li>Traffic shifting.</li>
 <li>Requests timeouts.</li>
@@ -371,25 +354,31 @@ spec:
 <li>Mirroring.</li>
 <li>And a lot more.</li>
 </ul>
-
 <p>I left aside Policies, Telemetry and Security, if you want to learn more about Istio I highly recommend you to try the examples yourself and read on the <a href="https://istio.io/docs/tasks/traffic-management/#collapse24">official documentation</a>.</p>
-
 <p>I also spent some time improving the navigation of the blog and some other minor details, but I wanted to keep the articles going so that&rsquo;s why this one is so simple and similar to the documentation.</p>
-
 <h3 id="upcoming-topics-and-ideas">Upcoming topics and ideas</h3>
-
 <p>I Want to start creating series of content on different topics, brief articles that can get you started with some new technology or maybe give you an idea of how it works, let me know if you are interested in that kind of content in the comments or via twitter 🐦 (it&rsquo;s a bird, in case you cannot see unicode characters).</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -413,19 +402,6 @@ spec:
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        April 29, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
                       </h6>
                     </div>
                   </div>

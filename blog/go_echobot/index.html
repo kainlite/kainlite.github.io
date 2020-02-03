@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Go echo bot</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -46,7 +46,7 @@ To be honest, there is no other way to get the benefits of having ksonnet if you
 This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/go_echobot/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <meta property="article:tag" content="go" />
@@ -63,9 +63,9 @@ This time we will see how to use proper templates, it seems that the templates g
     <meta name="twitter:title" content="Go echo bot"/>
 <meta name="twitter:description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.?1579816853"/>
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -153,20 +153,12 @@ This time we will see how to use proper templates, it seems that the templates g
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="echo-bot"><strong>Echo bot</strong></h3>
-
+              <h3 id="echo-bot"><strong>Echo bot</strong></h3>
 <p>This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.</p>
-
 <p>To be honest, there is no other way to get the benefits of having <a href="https://ksonnet.io/">ksonnet</a> if you&rsquo;re not going to take advantage of the <em>deployments as code</em> facilities that it brings thanks to Jsonnet.</p>
-
 <p>This time we will see how to use <a href="https://github.com/cybermaggedon/ksonnet-cheat-sheet">proper templates</a>, it seems that the templates generated with <code>ks</code> are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.</p>
-
 <p>In the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:</p>
-
-<h3 id="let-s-get-started">Let&rsquo;s get started</h3>
-
+<h3 id="lets-get-started">Let&rsquo;s get started</h3>
 <p>This time I&rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
@@ -227,39 +219,36 @@ This time we will see how to use proper templates, it seems that the templates g
         }
 }</code></pre></div>
 As you can see it&rsquo;s the simplest example from the readme of the <a href="https://github.com/nlopes/slack">Go Slack API</a> project, it only connects to Slack and when it reads a message if it&rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.</p>
-
 <p>Here you can see the <code>Dockerfile</code>, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#75715e"># Build</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.11.2-alpine as builder</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    chown -R app:app /app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    apk add git <span style="color:#f92672">&amp;&amp;</span> apk add gcc musl-dev<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span><span style="color:#e6db74"> . /app/</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> . /app/<span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go get -d -v ./... <span style="color:#f92672">&amp;&amp;</span> go build -o main . <span style="color:#f92672">&amp;&amp;</span> chown -R app:app /app /home/app<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Run</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.11.2-alpine</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
 </span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>    chown -R app:app /app<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span>USER app<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span><span style="color:#e6db74"> [&#34;/app/main&#34;]</span></code></pre></div>
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> app</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/app/main&#34;</span>]</code></pre></div>
 There are a few more files in there, you can see the full sources <a href="https://github.com/kainlite/echobot">here</a>, for example <code>health_check.sh</code>, as our app doesn&rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.</p>
-
 <p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ks init echobot
 INFO Using context <span style="color:#e6db74">&#34;minikube&#34;</span> from kubeconfig file <span style="color:#e6db74">&#34;~/.kube/config&#34;</span>
 INFO Creating environment <span style="color:#e6db74">&#34;default&#34;</span> with namespace <span style="color:#e6db74">&#34;default&#34;</span>, pointing to <span style="color:#e6db74">&#34;version:v1.8.0&#34;</span> cluster at address <span style="color:#e6db74">&#34;https://192.168.99.100:8443&#34;</span>
 INFO Generating ksonnet-lib data at path <span style="color:#e6db74">&#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;</span></code></pre></div></p>
-
 <p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">// Import KSonnet library
 local params = std.extVar(<span style="color:#e6db74">&#39;__ksonnet/params&#39;</span>).components.demo;
@@ -273,14 +262,14 @@ local depl = k.extensions.v1beta1.deployment;
 // But I will leave that as an exercise for you :)
 local envs = [
   {
-    name: <span style="color:#e6db74">&#39;SLACK_API_TOKEN&#39;</span>,
-    value: <span style="color:#e6db74">&#39;really-long-token&#39;</span>,
+    <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#39;SLACK_API_TOKEN&#39;</span>,
+    <span style="color:#66d9ef">value</span>: <span style="color:#e6db74">&#39;really-long-token&#39;</span>,
   },
 ];
 
 local livenessProbe = {
-  exec: {
-    command: [
+  <span style="color:#66d9ef">exec</span>: {
+    <span style="color:#66d9ef">command</span>: [
       <span style="color:#e6db74">&#39;/bin/sh&#39;</span>,
       <span style="color:#e6db74">&#39;-c&#39;</span>,
       <span style="color:#e6db74">&#39;/app/health_check.sh&#39;</span>,
@@ -291,14 +280,14 @@ local livenessProbe = {
 // Define containers
 local containers = [
   container.new(<span style="color:#e6db74">&#39;echobot&#39;</span>, <span style="color:#e6db74">&#39;kainlite/echobot:0.0.2&#39;</span>) {
-    env: (envs),
-    livenessProbe: livenessProbe,
+    <span style="color:#66d9ef">env</span>: (envs),
+    <span style="color:#66d9ef">livenessProbe</span>: livenessProbe,
   },
 ];
 
 // Define deployment with <span style="color:#ae81ff">3</span> replicas
 local deployment =
-  depl.new(<span style="color:#e6db74">&#39;echobot&#39;</span>, <span style="color:#ae81ff">1</span>, containers, { app: <span style="color:#e6db74">&#39;echobot&#39;</span> });
+  depl.new(<span style="color:#e6db74">&#39;echobot&#39;</span>, <span style="color:#ae81ff">1</span>, containers, { <span style="color:#66d9ef">app</span>: <span style="color:#e6db74">&#39;echobot&#39;</span> });
 
 local resources = [deployment];
 
@@ -308,43 +297,47 @@ Note that I have uploaded that image to docker hub so you can use it to follow t
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ks apply default
 INFO Applying deployments echobot
 INFO Creating non-existent deployments echobot</code></pre></div></p>
-
 <p>And now if we check our deployment and pod, we should see something like this:</p>
-
 <figure class="zoom">
     <img src="/img/echobot.png" width="100%"/> 
 </figure>
 
-
 <p>And in the logs:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">0</span>          53s
+echobot-7456f7d7dd-twg4r           1/1       Running   <span style="color:#ae81ff">0</span>          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &amp;<span style="color:#f92672">{</span>wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y<span style="color:#f92672">=</span> 0xc000468000 0xc0004482a0 <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]}</span>
+Event Received: Event Received: Infos: &amp;<span style="color:#f92672">{</span>wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y<span style="color:#f92672">=</span> 0xc000468000 0xc0004482a0 <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span><span style="color:#f92672">}</span>
 Connection counter: <span style="color:#ae81ff">0</span>
-Event Received: Event Received: Current latency: <span style="color:#ae81ff">1</span>.256397423s
-Event Received: Current latency: <span style="color:#ae81ff">1</span>.25679313s
-Event Received: Current latency: <span style="color:#ae81ff">1</span>.256788737s
-Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! <span style="color:#ae81ff">1546124966</span>.002300  false <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> &lt;nil&gt;  false <span style="color:#ae81ff">0</span>  false  <span style="color:#ae81ff">1546124966</span>.002300   &lt;nil&gt;      <span style="color:#f92672">[]</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">[]</span>  <span style="color:#f92672">[]</span> false &lt;nil&gt;  <span style="color:#ae81ff">0</span> TEDJT5CTD <span style="color:#f92672">[]</span>  false false<span style="color:#f92672">}</span> &lt;nil&gt;<span style="color:#f92672">}</span></code></pre></div></p>
-
+Event Received: Event Received: Current latency: 1.256397423s
+Event Received: Current latency: 1.25679313s
+Event Received: Current latency: 1.256788737s
+Event Received: Message: &amp;<span style="color:#f92672">{</span><span style="color:#f92672">{</span>message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! 1546124966.002300  false <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span> &lt;nil&gt;  false <span style="color:#ae81ff">0</span>  false  1546124966.002300   &lt;nil&gt;      <span style="color:#f92672">[</span><span style="color:#f92672">]</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">[</span><span style="color:#f92672">]</span>  <span style="color:#f92672">[</span><span style="color:#f92672">]</span> false &lt;nil&gt;  <span style="color:#ae81ff">0</span> TEDJT5CTD <span style="color:#f92672">[</span><span style="color:#f92672">]</span>  false false<span style="color:#f92672">}</span> &lt;nil&gt;<span style="color:#f92672">}</span></code></pre></div></p>
 <p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href="https://github.com/kainlite/echobot">here</a>. In a future post I might explore <a href="https://ksonnet.io/docs/examples/helm/">ksonnet and helm charts</a>.</p>
-
 <h3 id="upcoming-topics">Upcoming topics</h3>
-
 <p>As promised I will be doing one post about <a href="https://github.com/hasura/gitkube">Gitkube</a> and <a href="https://github.com/GoogleContainerTools/skaffold">Skaffold</a>, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about <a href="https://www.docker.com/">Docker</a>, <a href="https://containerd.io/">ContainerD</a>, <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">KubeADM</a>, and Kubernetes in general.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -368,19 +361,6 @@ Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        September 8, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
                       </h6>
                     </div>
                   </div>

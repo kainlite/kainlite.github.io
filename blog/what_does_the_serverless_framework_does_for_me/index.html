@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>What does the serverless framework does for me</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -46,7 +46,7 @@ if (!doNotTrack) {
  Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serveless.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/serveless.png?1580700689" />
 
 
 <meta property="article:tag" content="development" />
@@ -60,9 +60,9 @@ if (!doNotTrack) {
     <meta name="twitter:title" content="What does the serverless framework does for me"/>
 <meta name="twitter:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.?1579816853"/>
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/serveless.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/serveless.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -144,18 +144,12 @@ if (!doNotTrack) {
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h3 id="introduction"><strong>Introduction</strong></h3>
-
+              <h3 id="introduction"><strong>Introduction</strong></h3>
 <p>The <a href="https://serverless.com/">serverless framework</a> is a nice tool to manage all your cloud functions. from their page:</p>
-
 <blockquote>
 <p>The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.</p>
 </blockquote>
-
-<h3 id="let-s-take-the-golang-example-for-a-spin"><strong>Let&rsquo;s take the golang example for a spin</strong></h3>
-
+<h3 id="lets-take-the-golang-example-for-a-spin"><strong>Let&rsquo;s take the golang example for a spin</strong></h3>
 <p>So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir foo <span style="color:#f92672">&amp;&amp;</span> cd <span style="color:#e6db74">&#34;</span>$_<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span>  serverless create -t aws-go
 <span style="color:#75715e"># OUTPUT:</span>
@@ -171,9 +165,7 @@ if (!doNotTrack) {
 <span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
 <span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div>
 Got you a bit of command line fu right there with the &ldquo;$_&rdquo; (it means the first parameter of the previous command)</p>
-
 <p>Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.</p>
-
 <p><strong>Let&rsquo;s take a look at the files</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tree .
 <span style="color:#75715e"># OUTPUT:</span>
@@ -186,7 +178,6 @@ Got you a bit of command line fu right there with the &ldquo;$_&rdquo; (it means
 #
 <span style="color:#75715e"># 2 directories, 4 files</span></code></pre></div>
 We got a manifest <code>serverless.yml</code> a <code>Makefile</code> (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)</p>
-
 <p><strong>The manifest file indicates a lot of things, I will add comments to the <em>code</em></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">frameworkVersion: <span style="color:#e6db74">&#34;&gt;=1.28.0 &lt;2.0.0&#34;</span>
 
@@ -215,7 +206,6 @@ functions:
       - http:
           path: world
           method: get</code></pre></div></p>
-
 <p><strong>Let&rsquo;s take a look at the hello function / file</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">package main
 
@@ -238,18 +228,18 @@ type Response events.APIGatewayProxyResponse
 func Handler<span style="color:#f92672">(</span>ctx context.Context<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Response, error<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     var buf bytes.Buffer
 
-    body, err :<span style="color:#f92672">=</span> json.Marshal<span style="color:#f92672">(</span>map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>interface<span style="color:#f92672">{}{</span>
+    body, err :<span style="color:#f92672">=</span> json.Marshal<span style="color:#f92672">(</span>map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>interface<span style="color:#f92672">{</span><span style="color:#f92672">}</span><span style="color:#f92672">{</span>
         <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Go Serverless v1.0! Your function executed successfully!&#34;</span>,
-    <span style="color:#f92672">})</span>
+    <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
     <span style="color:#66d9ef">if</span> err !<span style="color:#f92672">=</span> nil <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">{</span>StatusCode: <span style="color:#ae81ff">404</span><span style="color:#f92672">}</span>, err
+        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">{</span>StatusCode: 404<span style="color:#f92672">}</span>, err
     <span style="color:#f92672">}</span>
     json.HTMLEscape<span style="color:#f92672">(</span>&amp;buf, body<span style="color:#f92672">)</span>
 
     resp :<span style="color:#f92672">=</span> Response<span style="color:#f92672">{</span>
-        StatusCode:      <span style="color:#ae81ff">200</span>,
+        StatusCode:      200,
         IsBase64Encoded: false,
-        Body:            buf.String<span style="color:#f92672">()</span>,
+        Body:            buf.String<span style="color:#f92672">(</span><span style="color:#f92672">)</span>,
         Headers: map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>string<span style="color:#f92672">{</span>
             <span style="color:#e6db74">&#34;Content-Type&#34;</span>:           <span style="color:#e6db74">&#34;application/json&#34;</span>,
             <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;hello-handler&#34;</span>,
@@ -259,13 +249,11 @@ func Handler<span style="color:#f92672">(</span>ctx context.Context<span style="
     <span style="color:#66d9ef">return</span> resp, nil
 <span style="color:#f92672">}</span>
 
-func main<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+func main<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
     lambda.Start<span style="color:#f92672">(</span>Handler<span style="color:#f92672">)</span>
 <span style="color:#f92672">}</span></code></pre></div>
 This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.</p>
-
-<h5 id="let-s-deploy-it"><strong>Let&rsquo;s deploy it</strong></h5>
-
+<h5 id="lets-deploy-it"><strong>Let&rsquo;s deploy it</strong></h5>
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless deploy
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
@@ -295,7 +283,6 @@ This function only returns some text with some headers, every lambda function re
 <span style="color:#75715e"># layers:</span>
 <span style="color:#75715e">#   None</span></code></pre></div>
 So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.</p>
-
 <p><strong>And test it</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
 <span style="color:#75715e"># OUTPUT:</span>
@@ -350,9 +337,7 @@ So a lot happened here, the deploy function compiled our binary, packaged it, up
 <span style="color:#75715e"># * Connection #0 to host cfr9zyw3r1.execute-api.us-east-1.amazonaws.com left intact</span>
 <span style="color:#75715e"># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}%</span></code></pre></div>
 As expected we can see the headers x-my-company-func-reply and the json object that it created for us.</p>
-
 <h3 id="cleanup"><strong>Cleanup</strong></h3>
-
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless remove
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
@@ -363,19 +348,28 @@ As expected we can see the headers x-my-company-func-reply and the json object t
 <span style="color:#75715e"># ...............</span>
 <span style="color:#75715e"># Serverless: Stack removal finished...</span></code></pre></div>
 This will as you expect remove everything that was created with the deploy command.</p>
-
 <p>In the next article we will explore how to do create and deploy a function like this one by hand.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -399,19 +393,6 @@ This will as you expect remove everything that was created with the deploy comma
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        September 8, 2019
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
                       </h6>
                     </div>
                   </div>

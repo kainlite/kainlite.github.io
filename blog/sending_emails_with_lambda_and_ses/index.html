@@ -8,7 +8,7 @@
     <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
     <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
     <title>Sending emails with AWS Lambda and SES from a HTML form</title>
-    <meta name="generator" content="Hugo 0.57.2" />
+    <meta name="generator" content="Hugo 0.63.2" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" /><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/tomorrow.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
@@ -46,7 +46,7 @@ Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
 Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/" />
-<meta property="og:image" content="https://techsquad.rocks/img/aws-lambda-ses.png?1579816853" />
+<meta property="og:image" content="https://techsquad.rocks/img/aws-lambda-ses.png?1580700689" />
 
 
 <meta property="article:tag" content="go" />
@@ -61,9 +61,9 @@ Introduction This article is part of the serverless series, in this article we w
     <meta name="twitter:title" content="Sending emails with AWS Lambda and SES from a HTML form"/>
 <meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
-Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.?1579816853"/>
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.?1580700689"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/aws-lambda-ses.png?1579816853" />
+<meta name="twitter:image:src" content="https://techsquad.rocks/img/aws-lambda-ses.png?1580700689" />
 
 
 <link rel="publisher" href="https://techsquad.rocks">
@@ -147,20 +147,12 @@ Introduction This article is part of the serverless series, in this article we w
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="blogpost">
-              
-
-<h5 id="serverless-series"><strong>Serverless series</strong></h5>
-
+              <h5 id="serverless-series"><strong>Serverless series</strong></h5>
 <p>Part I: <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/">Serving static websites with s3 and cloudfront</a>, so refer to that one before starting this one if you want to know how did we get here.</p>
-
 <p>Part II: <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a>, <strong>You are here</strong>.</p>
-
 <h5 id="introduction"><strong>Introduction</strong></h5>
-
 <p>This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be <a href="https://github.com/kainlite/aws-serverless-go-ses-example">found here</a>, that is the go version but if you prefer node you can use <a href="https://github.com/kainlite/aws-serverless-nodejs-ses-example">this one</a>.</p>
-
 <h5 id="serverless-framework"><strong>Serverless framework</strong></h5>
-
 <p><strong>As usual I will be using the serverless framework to manage our functions, create the project</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir techsquad-functions <span style="color:#f92672">&amp;&amp;</span> cd techsquad-functions <span style="color:#f92672">&amp;&amp;</span> serverless create -t aws-go
 <span style="color:#75715e"># OUTPUT:</span>
@@ -175,7 +167,6 @@ Introduction This article is part of the serverless series, in this article we w
 #
 <span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
 <span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div></p>
-
 <p>After creating the project we can update the serverless manifest as follow:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">service: sendMail
 
@@ -211,7 +202,6 @@ functions:
           path: sendMail
           method: post</code></pre></div>
 The interesting parts here are the IAM permissions and the function send_mail, the rest is pretty much standard, we define a function and the event HTTP POST for the API Gateway, where our executable can be found and we also request permissions to send emails via SES.</p>
-
 <p><strong>Deploy the function</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">make deploy
 <span style="color:#75715e"># OUTPUT:</span>
@@ -256,9 +246,7 @@ The interesting parts here are the IAM permissions and the function send_mail, t
 <span style="color:#75715e"># ServiceEndpoint: https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod</span>
 <span style="color:#75715e"># ServerlessDeploymentBucketName: sendmail-prod-serverlessdeploymentbucket-1vbmb6gwt8559</span></code></pre></div>
 Everything looks right, so what&rsquo;s next? the source code.</p>
-
 <h5 id="lambda"><strong>Lambda</strong></h5>
-
 <p>This is basically the full source code for this function, as you will see it&rsquo;s really simple:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
@@ -391,34 +379,28 @@ Everything looks right, so what&rsquo;s next? the source code.</p>
 	<span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">Handler</span>)
 }</code></pre></div>
 The code is pretty much straight forward it only expects 2 parameters and it will send an email and return sent! if everything went well. You can debug and compile your function before uploading by issuing the command <code>make</code> (This is really useful), and if you use <code>make deploy</code> you will save lots of time by only deploying working files.</p>
-
 <h5 id="ses"><strong>SES</strong></h5>
-
 <p>For this to work you will need to verify/validate your domain in SES.</p>
-
 <p>Go to <code>SES-&gt;Domains-&gt;Verify a New Domain</code>.
 <figure>
     <img src="/img/aws-ses-validate-domain.png" width="100%"/> 
 </figure>
 </p>
-
 <p>After putting your domain in, you will see something like this:
 <figure>
     <img src="/img/aws-ses-validation-and-dkim.png" width="100%"/> 
 </figure>
 </p>
-
 <p>As I don&rsquo;t have this domain in Route53 I don&rsquo;t have a button to add the records to it (which makes everything simpler and faster), but it&rsquo;s easy enough just create a few dns records and wait a few minutes until you get something like this:
 <figure>
     <img src="/img/aws-ses-validation-ok.png" width="100%"/> 
 </figure>
 </p>
-
 <p><strong>After that just test it</strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless invoke -f send_mail -d <span style="color:#e6db74">&#39;{ &#34;Email&#34;: &#34;kainlite@gmail.com&#34;, &#34;Message&#34;: &#34;test&#34; }&#39;</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;statusCode&#34;</span>: <span style="color:#ae81ff">200</span>,
+    <span style="color:#e6db74">&#34;statusCode&#34;</span>: 200,
     <span style="color:#e6db74">&#34;headers&#34;</span>: <span style="color:#f92672">{</span>
         <span style="color:#e6db74">&#34;Content-Type&#34;</span>: <span style="color:#e6db74">&#34;application/json&#34;</span>,
         <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;send-mail-handler&#34;</span>
@@ -426,7 +408,6 @@ The code is pretty much straight forward it only expects 2 parameters and it wil
     <span style="color:#e6db74">&#34;body&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
 <span style="color:#f92672">}</span></code></pre></div>
 After hitting enter the message popped up right away in my inbox :).</p>
-
 <p><strong>Another option is to use <a href="https://devhints.io/httpie">httpie</a></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test2&#34; }&#39;</span> | http https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail
 <span style="color:#75715e"># OUTPUT:</span>
@@ -444,7 +425,6 @@ After hitting enter the message popped up right away in my inbox :).</p>
 <span style="color:#75715e"># x-amzn-RequestId: d2f45b14-275a-11e9-a8f3-47d675eed13e</span>
 #
 <span style="color:#75715e"># sent!</span></code></pre></div></p>
-
 <p><strong>OR <a href="https://devhints.io/curl">curl</a></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test3&#34; }&#39;</span>
 <span style="color:#75715e"># OUTPUT:</span>
@@ -461,19 +441,28 @@ After hitting enter the message popped up right away in my inbox :).</p>
 <span style="color:#75715e"># x-amz-cf-id: FttmBoeUaSwQ2AArTgVmI5br51zwVMfUrVpXPLGm1HacV4yS9IYMHA==</span>
 #
 <span style="color:#75715e"># sent!</span></code></pre></div></p>
-
 <p>And that&rsquo;s all for now, see you in the next article.</p>
-
 <h3 id="errata">Errata</h3>
-
 <p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-
 <p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
 
               <hr>
               
               <div class="related-posts">
                 <h5>Related Posts</h5>
+                
+                  <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                      <h6 style="text-align: right">
+                        February 2, 2020
+                      </h6>
+                    </div>
+                    <div class="col-sm-8 col-md-8 col-lg-8">
+                      <h6 style="text-align: left">
+                        <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
+                      </h6>
+                    </div>
+                  </div>
                 
                   <div class="row">
                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -497,19 +486,6 @@ After hitting enter the message popped up right away in my inbox :).</p>
                     <div class="col-sm-8 col-md-8 col-lg-8">
                       <h6 style="text-align: left">
                         <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                      </h6>
-                    </div>
-                  </div>
-                
-                  <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                      <h6 style="text-align: right">
-                        January 4, 2020
-                      </h6>
-                    </div>
-                    <div class="col-sm-8 col-md-8 col-lg-8">
-                      <h6 style="text-align: left">
-                        <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
                       </h6>
                     </div>
                   </div>

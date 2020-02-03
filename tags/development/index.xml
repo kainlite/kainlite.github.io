@@ -60,7 +60,7 @@ We want to create a repo or sync a repo in this case, so we select &lt;code&gt;C
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-2.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
-Note that if the repo is public you can fetch/clone using the repo URL, but since I want to check also private repos I went for the github token alternative. Once you hit github it will ask you for the token then it will show you the full list of repos in your account\&lt;/p&gt;
+Note that if the repo is public you can fetch/clone using the repo URL, but since I want to check also private repos I went for the github token alternative. Once you hit github it will ask you for the token then it will show you the full list of repos in your account&lt;/p&gt;
 &lt;h5 id=&#34;github-token&#34;&gt;&lt;strong&gt;Github Token&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;I picked to use a personal token to fetch the repos to be able to grab private repos, etc, so you will need to go to your github account, &lt;code&gt;Settings-&amp;gt;Developer settings&lt;/code&gt; and then create a new token or &lt;a href=&#34;https://github.com/settings/tokens&#34;&gt;click here&lt;/a&gt;
 &lt;figure&gt;
@@ -72,13 +72,13 @@ Note that if the repo is public you can fetch/clone using the repo URL, but sinc
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-4.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
-Make sure you don&amp;rsquo;t expose or publish that token in any way, otherwise someone could gain access to your account\&lt;/p&gt;
+Make sure you don&amp;rsquo;t expose or publish that token in any way, otherwise someone could gain access to your account&lt;/p&gt;
 &lt;h5 id=&#34;back-to-gitlab-select-the-repository-to-sync&#34;&gt;(Back to gitlab) &lt;strong&gt;Select the repository to sync&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;Here we need to select the repo that we want to sync and hit connect, it will automatically fetch everything periodically from github.
 &lt;figure&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-5.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
-\&lt;/p&gt;
+&lt;/p&gt;
 &lt;h5 id=&#34;dockerhub-token&#34;&gt;&lt;strong&gt;Dockerhub token&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;Now we will need to create a token for dockerhub so we can push our image from the build runner, go to your dockerhub account and create a token
 &lt;figure&gt;
@@ -91,23 +91,23 @@ Basically you have to go to &lt;code&gt;Account settings-&amp;gt;Security-&amp;g
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-7.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
 
-make sure masked is marked but not protected, protected is only used when you want to use that secret in specific branches\&lt;/p&gt;
+make sure masked is marked but not protected, protected is only used when you want to use that secret in specific branches&lt;/p&gt;
 &lt;h5 id=&#34;gitlab-ci-config&#34;&gt;&lt;strong&gt;Gitlab-CI config&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;After that we only need to add the code to the repo and that will trigger a build, the file needs to be called &lt;code&gt;.gitlab-ci.yml&lt;/code&gt;
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/kainlite/1cb1aeb54f12830f4bcef6f0df02a250.js&#34;&gt;&lt;/script&gt;
 
-basically we just install everything we need run the tests if everything goes well, then the build and push process. There is a lot of room for improvement in that initial config, but for now we only care in having some sort of CI system\&lt;/p&gt;
+basically we just install everything we need run the tests if everything goes well, then the build and push process. There is a lot of room for improvement in that initial config, but for now we only care in having some sort of CI system&lt;/p&gt;
 &lt;p&gt;Then we will see something like this in the &lt;code&gt;CI/CD-&amp;gt;Pipelines&lt;/code&gt; tab, after each commit it will trigger a test, build and push
 &lt;figure&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-8.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
-\&lt;/p&gt;
+&lt;/p&gt;
 &lt;h5 id=&#34;checking-the-results&#34;&gt;&lt;strong&gt;Checking the results&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;And we can validate that the images are in dockerhub
 &lt;figure&gt;
     &lt;img src=&#34;https://techsquad.rocks/img/gitlab-9.png&#34; width=&#34;100%&#34;/&gt; 
 &lt;/figure&gt;
-\&lt;/p&gt;
+&lt;/p&gt;
 &lt;h5 id=&#34;useful-links&#34;&gt;&lt;strong&gt;Useful links&lt;/strong&gt;&lt;/h5&gt;
 &lt;p&gt;Some useful links:&lt;/p&gt;
 &lt;ul&gt;

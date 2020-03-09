@@ -634,9 +634,7 @@ I have added most info in as comments in the snippet, note that I also used my t
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/serverless_authentication_with_cognito_and_golang\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/serverless_authentication_with_cognito_and_golang\/';

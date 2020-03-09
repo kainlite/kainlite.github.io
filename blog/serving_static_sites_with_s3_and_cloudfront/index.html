@@ -853,9 +853,7 @@ As we can see the record is already there so we can go to <a href="http://server
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';

@@ -613,9 +613,7 @@ If we check the output we will see that the name of the cluster matches the one 
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_terraform_modules\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_terraform_modules\/';

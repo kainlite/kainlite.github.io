@@ -598,9 +598,7 @@ Explanation SOCKS is an Internet protocol that exchanges network packets between
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/ssh_socks_proxy\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/ssh_socks_proxy\/';

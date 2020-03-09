@@ -753,9 +753,7 @@ Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';

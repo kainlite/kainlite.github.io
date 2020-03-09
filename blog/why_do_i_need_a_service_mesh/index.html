@@ -824,9 +824,7 @@ If the latest curl returns 200 then we&rsquo;re good, you can also browse the ap
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';

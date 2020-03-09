@@ -750,9 +750,7 @@ You should also be able to see this same output in CloudWatch.</p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/create_an_aws_lambda_function_in_go\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/create_an_aws_lambda_function_in_go\/';

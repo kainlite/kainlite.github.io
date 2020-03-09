@@ -913,9 +913,7 @@ metadata:
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';

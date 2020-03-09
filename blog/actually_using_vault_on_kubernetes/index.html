@@ -617,9 +617,7 @@ In this article we will actually create an example using mutual TLS and provisio
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/actually_using_vault_on_kubernetes\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/actually_using_vault_on_kubernetes\/';

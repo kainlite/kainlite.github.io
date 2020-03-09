@@ -662,9 +662,7 @@ basically we just install everything we need run the tests if everything goes we
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/gitlab_ci_basics\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/gitlab_ci_basics\/';

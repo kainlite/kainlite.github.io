@@ -603,9 +603,7 @@
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/how_to_report_your_gmail_spam_folder_to_spamcop\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/how_to_report_your_gmail_spam_folder_to_spamcop\/';

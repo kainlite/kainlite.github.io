@@ -638,9 +638,7 @@ The same SHA will be used to tag the image.</p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/go_continuous_integration_with_travis_ci_and_docker\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/go_continuous_integration_with_travis_ci_and_docker\/';

@@ -703,9 +703,7 @@ bind -n Home send-key C-a</code></pre></div></p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/give_super_powers_to_your_terminal_with_tmux\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/give_super_powers_to_your_terminal_with_tmux\/';

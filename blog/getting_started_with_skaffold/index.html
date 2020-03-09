@@ -822,9 +822,7 @@ Cleanup complete in 3.833219278s</code></pre></div></p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_skaffold\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_skaffold\/';

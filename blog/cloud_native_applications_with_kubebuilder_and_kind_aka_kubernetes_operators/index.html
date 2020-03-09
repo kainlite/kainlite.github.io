@@ -645,9 +645,7 @@ Then you can install it with <code>make deploy IMG=kainlite/forward:0.0.1</code>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators\/';

@@ -882,9 +882,7 @@ After hitting enter the message popped up right away in my inbox :).</p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/sending_emails_with_lambda_and_ses\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/sending_emails_with_lambda_and_ses\/';

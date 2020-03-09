@@ -716,9 +716,7 @@ This works because in the terraform code we have an output called <code>URL</cod
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/brief_introduction_to_terratest\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/brief_introduction_to_terratest\/';

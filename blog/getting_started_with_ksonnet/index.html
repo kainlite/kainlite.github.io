@@ -1009,9 +1009,7 @@ wordpre INFO     Blog Name: User<span style="color:#e6db74">&#39;s Blog!
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_ksonnet\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_ksonnet\/';

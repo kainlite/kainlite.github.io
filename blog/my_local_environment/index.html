@@ -620,9 +620,7 @@ $ xrdb -remove</code></pre></div></p>
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/my_local_environment\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/my_local_environment\/';

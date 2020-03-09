@@ -614,9 +614,7 @@ Configuration files First of all we need to get our terraform file or files (in 
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/creating_a_lambda_function_with_terraform\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/creating_a_lambda_function_with_terraform\/';

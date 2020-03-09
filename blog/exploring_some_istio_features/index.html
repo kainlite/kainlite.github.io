@@ -800,9 +800,7 @@ spec:
 </script>
 
 <script>
-    if (window.location.hostname == "localhost") {
-        return;
-    } else {
+if (window.location.hostname !== "localhost") {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/exploring_some_istio_features\/';
         this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/exploring_some_istio_features\/';

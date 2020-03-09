@@ -662,9 +662,12 @@ basically we just install everything we need run the tests if everything goes we
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/gitlab_ci_basics\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/gitlab_ci_basics\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -672,7 +675,9 @@ basically we just install everything we need run the tests if everything goes we
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

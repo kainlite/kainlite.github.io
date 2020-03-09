@@ -750,9 +750,12 @@ You should also be able to see this same output in CloudWatch.</p>
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/create_an_aws_lambda_function_in_go\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/create_an_aws_lambda_function_in_go\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -760,7 +763,9 @@ You should also be able to see this same output in CloudWatch.</p>
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

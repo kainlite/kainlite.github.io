@@ -615,9 +615,12 @@ As you can see the initial connection takes a bit more time but after that the r
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/go_grpc_cheap_ping\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/go_grpc_cheap_ping\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -625,7 +628,9 @@ As you can see the initial connection takes a bit more time but after that the r
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

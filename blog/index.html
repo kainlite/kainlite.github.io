@@ -32,14 +32,14 @@
   
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Blog" />
+  <meta property="og:title" content="Blogs" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://techsquad.rocks/blog/" />
-
-<meta itemprop="name" content="Blog">
+<meta property="og:updated_time" content="2020-02-02T00:00:00+00:00" />
+<meta itemprop="name" content="Blogs">
 <meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Blog"/>
+<meta name="twitter:title" content="Blogs"/>
 <meta name="twitter:description" content=""/>
 
   <!--[if lte IE 9]>
@@ -390,7 +390,7 @@
 <main class="main" role="main">
     <article class="content article article-archives article-type-list" itemscope="">
         <header class="article-header">
-            <h1 itemprop="title">Blog</h1>
+            <h1 itemprop="title">Blogs</h1>
             <p class="text-muted">Total 34 articles</p>
         </header>
         <div class="article-body">
@@ -653,9 +653,12 @@
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -663,7 +666,9 @@
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

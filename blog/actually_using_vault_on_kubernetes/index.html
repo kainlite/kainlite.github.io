@@ -617,9 +617,12 @@ In this article we will actually create an example using mutual TLS and provisio
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/actually_using_vault_on_kubernetes\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/actually_using_vault_on_kubernetes\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -627,7 +630,9 @@ In this article we will actually create an example using mutual TLS and provisio
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

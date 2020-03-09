@@ -791,9 +791,12 @@ This will as you expect remove everything that was created with the deploy comma
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -801,7 +804,9 @@ This will as you expect remove everything that was created with the deploy comma
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

@@ -1146,9 +1146,12 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/from_zero_to_hero_with_kops_and_aws\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/from_zero_to_hero_with_kops_and_aws\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -1156,7 +1159,9 @@ This command is really verbose, so I skipped it to the end, be aware that in ord
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

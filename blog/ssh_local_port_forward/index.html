@@ -602,9 +602,12 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/ssh_local_port_forward\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/ssh_local_port_forward\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -612,7 +615,9 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

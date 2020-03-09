@@ -634,9 +634,12 @@ I have added most info in as comments in the snippet, note that I also used my t
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/serverless_authentication_with_cognito_and_golang\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/serverless_authentication_with_cognito_and_golang\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -644,7 +647,9 @@ I have added most info in as comments in the snippet, note that I also used my t
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

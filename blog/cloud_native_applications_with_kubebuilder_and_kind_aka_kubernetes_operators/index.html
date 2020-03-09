@@ -645,9 +645,12 @@ Then you can install it with <code>make deploy IMG=kainlite/forward:0.0.1</code>
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -655,7 +658,9 @@ Then you can install it with <code>make deploy IMG=kainlite/forward:0.0.1</code>
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

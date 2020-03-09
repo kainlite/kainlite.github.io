@@ -711,9 +711,12 @@ In the cloud or on premises this will indeed be different and you should have a 
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/deploying_my_apps_with_helm\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/deploying_my_apps_with_helm\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -721,7 +724,9 @@ In the cloud or on premises this will indeed be different and you should have a 
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

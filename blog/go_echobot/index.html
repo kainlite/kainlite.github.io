@@ -753,9 +753,12 @@ Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -763,7 +766,9 @@ Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

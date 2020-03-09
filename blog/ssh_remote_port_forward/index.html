@@ -600,9 +600,12 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
 </script>
 
 <script>
+    if (window.location.hostname == "localhost") {
+        return;
+    } else {
     var disqus_config = function () {
         this.page.url = 'https:\/\/techsquad.rocks\/blog\/ssh_remote_port_forward\/';
-        this.page.identifier = 'kainlite';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/ssh_remote_port_forward\/';
     };
     (function () {
         var d = document, s = d.createElement('script');
@@ -610,7 +613,9 @@ I extracted a portion of the meaning of parameter from the man page, but in a nu
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
+}
 </script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

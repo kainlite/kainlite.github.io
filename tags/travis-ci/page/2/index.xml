@@ -159,14 +159,5 @@ The original theme for the blog can be found at: https://github.com/xiaoheiAh/hu
 Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://techsquad.rocks/blog/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/about/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

@@ -776,6 +776,9 @@ After hitting enter the message popped up right away in my inbox :).</p>
     </div>
   </article>
 <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
 </section>
 
 </div><nav class="bar bar-footer clearfix" data-stick-bottom>
@@ -878,6 +881,18 @@ After hitting enter the message popped up right away in my inbox :).</p>
     });
 </script>
 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https:\/\/techsquad.rocks\/blog\/sending_emails_with_lambda_and_ses\/';
+        this.page.identifier = 'kainlite';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
 
 <script type="application/javascript">
 var doNotTrack = false;

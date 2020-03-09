@@ -496,6 +496,9 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
     </div>
   </article>
 <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
 </section>
 
 </div><nav class="bar bar-footer clearfix" data-stick-bottom>
@@ -598,6 +601,18 @@ This will give you access to the ip 172.16.16.200 and port 3306 in the remote ne
     });
 </script>
 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https:\/\/techsquad.rocks\/blog\/ssh_local_port_forward\/';
+        this.page.identifier = 'kainlite';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
 
 <script type="application/javascript">
 var doNotTrack = false;

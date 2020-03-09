@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gitlab on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://techsquad.rocks/tags/gitlab/</link>
+    <description>Recent content in gitlab on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://techsquad.rocks/tags/gitlab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Serve your static website with S3 and CloudFront</title>
+      <link>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</guid>
+      <description>Serverless series Part I: Serving static websites with s3 and cloudfront, You&amp;rsquo;re here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).</description>
+    </item>
+    
+    <item>
+      <title>Serve your static website in Github</title>
+      <link>https://techsquad.rocks/blog/serving_static_sites_with_github/</link>
+      <pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/serving_static_sites_with_github/</guid>
+      <description>Introduction GitHub offers static web hosting for you and your apps this is called GitHub Pages, you can use markdown (jekyll or just plain html), for example for this blog I generate all the files with Hugo.io and that gets deployed to GitHub Pages, the configuration is fairly simple as we will see in the following example (this blog setup).
+GitHub pages offers some great examples that are really easy to follow, but if you want to know how I configured everything for this blog continue reading :), if you like it or have any comment use the disqus box at the bottom of the page.</description>
+    </item>
+    
+    <item>
+      <title>Give super powers to your terminal with tmux</title>
+      <link>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</link>
+      <pubDate>Wed, 23 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</guid>
+      <description>Introduction In this article I want to introduce you to tmux, you might have used screen in the past or heard about it, what tmux and screen are is terminal multiplexers, what does that mean? That you can have many windows/tabs and splits/panes in just one terminal window, this can really make things easier when using it as a development environment for example, you can detach from the terminal and leave things running indefinitely, or share your terminal with a colleague over ssh, for the examples I will be explaining bits of my configuration and how do I use it.</description>
+    </item>
+    
+    <item>
+      <title>How to create a serverless twitter bot</title>
+      <link>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</link>
+      <pubDate>Tue, 22 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</guid>
+      <description>Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
+Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.</description>
+    </item>
+    
+    <item>
+      <title>From zero to hero with kops and AWS</title>
+      <link>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</link>
+      <pubDate>Sat, 19 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</guid>
+      <description>Introduction In this article we will create a cluster from scratch with kops (K8s installation, upgrades and management) in AWS, We will configure aws-alb-ingress-controller (External traffic into our services/pods) and external dns (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
+Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&amp;rsquo;s fairly easy to implement if you are using ACM.</description>
+    </item>
+    
+    <item>
+      <title>My local environment</title>
+      <link>https://techsquad.rocks/blog/my_local_environment/</link>
+      <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/my_local_environment/</guid>
+      <description>Introduction This article is about my current configuration, but I&amp;rsquo;m going to talk only about the terminal and my text editor because those will work in any linux distribution, I&amp;rsquo;m currently using Arch Linux and AwesomeWM (I used Gnome Shell previously, and Gnome 2 before that), you can find my dotfiles here with all my configurations.
+While my terminal doesn&amp;rsquo;t look exactly like the one from the picture you can get something like that with GBT.</description>
+    </item>
+    
+    <item>
+      <title>Exploring some Istio features</title>
+      <link>https://techsquad.rocks/blog/exploring_some_istio_features/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/exploring_some_istio_features/</guid>
+      <description>Introduction This article builds up on what we did in the last article, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.
+In this example I will be using Digital Ocean (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</description>
+    </item>
+    
+    <item>
+      <title>Why do I need a service mesh?</title>
+      <link>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</guid>
+      <description>Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
+In this example I will be using Digital Ocean (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
+Istio So&amp;hellip; You might be wondering some of those questions: why Istio?</description>
+    </item>
+    
+    <item>
+      <title>Getting started with skaffold</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_skaffold/</link>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_skaffold/</guid>
+      <description>Skaffold This time we will see how to get started with Skaffold, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with gitkube</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_gitkube/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_gitkube/</guid>
+      <description>Gitkube This time we will see how to get started with Gitkube, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle.</description>
+    </item>
+    
+    <item>
+      <title>Go echo bot</title>
+      <link>https://techsquad.rocks/blog/go_echobot/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/go_echobot/</guid>
+      <description>Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+To be honest, there is no other way to get the benefits of having ksonnet if you&amp;rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with ksonnet</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_ksonnet/</link>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_ksonnet/</guid>
+      <description>Introduction This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&amp;rsquo;s review some terminology from ksonnet (extracted from the official documentation):</description>
+    </item>
+    
+    <item>
+      <title>Deploying my apps with Helm</title>
+      <link>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
+      <description>Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://techsquad.rocks/about/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/about/</guid>
+      <description>I&amp;rsquo;m Gabriel, a Software Engineer and DevOps practitioner. This blog will address some topics that are somewhat interesting to me. Ranging from software development to managing your kubertenes clusters
+You can contact me at @kainlite or by email at kainlite@gmail.com.
+The original theme for the blog can be found at: https://github.com/xiaoheiAh/hugo-theme-pure</description>
+    </item>
+    
+    <item>
+      <title>Getting started with Helm</title>
+      <link>https://techsquad.rocks/blog/getting_started_with_helm/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
+      <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://techsquad.rocks/blog/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/about/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

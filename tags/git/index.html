@@ -1,751 +1,568 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Gabriel" />
-    <meta name="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.">
-    <link rel="shortcut icon" type="image/x-icon" href="https://techsquad.rocks/img/favicon.ico">
-    <title>git</title>
-    <meta name="generator" content="Hugo 0.63.2" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://techsquad.rocks/css/main.css" />
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
-    
-    <!--[if lt IE 9]>
-                        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-                        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  
+  <meta name="generator" content="Hugo 0.66.0 with theme pure" />
+  <title>Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+  
+  <link rel="alternate" type="application/rss+xml" href="https://techsquad.rocks/tags/git/index.xml" title="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more" />
+  
+  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="git" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://techsquad.rocks/tags/git/" />
+<meta property="og:updated_time" content="2020-02-02T00:00:00+00:00" />
+<meta itemprop="name" content="git">
+<meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="git"/>
+<meta name="twitter:description" content=""/>
 
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/kainlite" target="_blank">
+            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-blog">
+                <a href="/blog/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Blog</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" class="title">Cloud native applications with kubebuilder and kind aka kubernetes operators</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-01-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-17</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/" class="title">How to report your gmail spam folder to spamcop</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2019-12-31 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-12-31</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
+                    class="tag-list-count">4</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">12</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
+                    class="tag-list-count">11</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
+                    class="tag-list-count">14</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
+                    class="tag-list-count">17</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
+                    class="tag-list-count">4</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
+                    class="tag-list-count">2</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
 
     
+    
+<main class="main" role="main">
+    <article class="content article article-tags post-type-list" itemscope="">
+        <header class="article-header">
+            <h1 itemprop="name" class="hidden-xs">git</h1>
+            <p class="text-muted hidden-xs">Total 41 tags</p>
+            <nav role="navigation" id="nav-main" class="okayNav">
+                <ul>
+                    <li><a href="https://techsquad.rocks/tags">All</a></li>
+                    <li><a href="https://techsquad.rocks/tags/aws/">aws</a></li>
+                    <li><a href="https://techsquad.rocks/tags/cognito/">cognito</a></li>
+                    <li><a href="https://techsquad.rocks/tags/continuous-delivery/">continuous-delivery</a></li>
+                    <li><a href="https://techsquad.rocks/tags/continuous-integration/">continuous-integration</a></li>
+                    <li><a href="https://techsquad.rocks/tags/deployment-tools/">deployment-tools</a></li>
+                    <li><a href="https://techsquad.rocks/tags/development/">development</a></li>
+                    <li><a href="https://techsquad.rocks/tags/docker/">docker</a></li>
+                    <li><a href="https://techsquad.rocks/tags/elm/">elm</a></li>
+                    <li><a href="https://techsquad.rocks/tags/gcp/">gcp</a></li>
+                    <li><a href="https://techsquad.rocks/tags/git/">git</a></li>
+                    <li><a href="https://techsquad.rocks/tags/gitkube/">gitkube</a></li>
+                    <li><a href="https://techsquad.rocks/tags/gitlab/">gitlab</a></li>
+                    <li><a href="https://techsquad.rocks/tags/go/">go</a></li>
+                    <li><a href="https://techsquad.rocks/tags/golang/">golang</a></li>
+                    <li><a href="https://techsquad.rocks/tags/grpc/">grpc</a></li>
+                    <li><a href="https://techsquad.rocks/tags/helm/">helm</a></li>
+                    <li><a href="https://techsquad.rocks/tags/istio/">istio</a></li>
+                    <li><a href="https://techsquad.rocks/tags/jsonnet/">jsonnet</a></li>
+                    <li><a href="https://techsquad.rocks/tags/kind/">kind</a></li>
+                    <li><a href="https://techsquad.rocks/tags/kops/">kops</a></li>
+                    <li><a href="https://techsquad.rocks/tags/ksonnet/">ksonnet</a></li>
+                    <li><a href="https://techsquad.rocks/tags/kubebuilder/">kubebuilder</a></li>
+                    <li><a href="https://techsquad.rocks/tags/kubernetes/">kubernetes</a></li>
+                    <li><a href="https://techsquad.rocks/tags/kustomize/">kustomize</a></li>
+                    <li><a href="https://techsquad.rocks/tags/lambda/">lambda</a></li>
+                    <li><a href="https://techsquad.rocks/tags/linux/">linux</a></li>
+                    <li><a href="https://techsquad.rocks/tags/networking/">networking</a></li>
+                    <li><a href="https://techsquad.rocks/tags/openssh/">openssh</a></li>
+                    <li><a href="https://techsquad.rocks/tags/routing/">routing</a></li>
+                    <li><a href="https://techsquad.rocks/tags/security/">security</a></li>
+                    <li><a href="https://techsquad.rocks/tags/serverless/">serverless</a></li>
+                    <li><a href="https://techsquad.rocks/tags/service-mesh/">service-mesh</a></li>
+                    <li><a href="https://techsquad.rocks/tags/skaffold/">skaffold</a></li>
+                    <li><a href="https://techsquad.rocks/tags/slack/">slack</a></li>
+                    <li><a href="https://techsquad.rocks/tags/terraform/">terraform</a></li>
+                    <li><a href="https://techsquad.rocks/tags/tips-and-tricks/">tips-and-tricks</a></li>
+                    <li><a href="https://techsquad.rocks/tags/tmux/">tmux</a></li>
+                    <li><a href="https://techsquad.rocks/tags/travis-ci/">travis-ci</a></li>
+                    <li><a href="https://techsquad.rocks/tags/urxvt/">urxvt</a></li>
+                    <li><a href="https://techsquad.rocks/tags/vault/">vault</a></li>
+                    <li><a href="https://techsquad.rocks/tags/vim/">vim</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="article-body">
+            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="panel-body">
+        <div class="article-meta">
+            <time datetime="2019-01-29 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished">2019-01-29</time>
+        </div>
+        <h3 class="article-title" itemprop="name">
+            <a class="article-link" href="https://techsquad.rocks/blog/serving_static_sites_with_github/">Serve your static website in Github</a>
+        </h3>
+    </div>
+    <div class="panel-footer">
+        <a href="https://techsquad.rocks/tags/development" class="label label-default mb">development</a>
+        <a href="https://techsquad.rocks/tags/serverless" class="label label-default mb">serverless</a>
+        <a href="https://techsquad.rocks/tags/git" class="label label-default mb">git</a>
+    </div>
+</article>
+            </div>
+            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="panel-body">
+        <div class="article-meta">
+            <time datetime="2019-01-01 00:00:00 &#43;0000 UTC"
+                itemprop="datePublished">2019-01-01</time>
+        </div>
+        <h3 class="article-title" itemprop="name">
+            <a class="article-link" href="https://techsquad.rocks/blog/getting_started_with_gitkube/">Getting started with gitkube</a>
+        </h3>
+    </div>
+    <div class="panel-footer">
+        <a href="https://techsquad.rocks/tags/git" class="label label-default mb">git</a>
+        <a href="https://techsquad.rocks/tags/gitkube" class="label label-default mb">gitkube</a>
+        <a href="https://techsquad.rocks/tags/kubernetes" class="label label-default mb">kubernetes</a>
+        <span class="label label-default mb">···</span>
+    </div>
+</article>
+            </div>
+        </div>
+    </article>
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+<ul class="social-links">
+    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-email"></i></a></li>
+    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-linkedin"></i></a></li>
+    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-share"></i></a></li>
+    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-stackoverflow"></i></a></li>
+    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-twitter"></i></a></li>
+</ul>
+
+  <div class="copyright">
+    <div class="publishby">
+        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
+<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/techsquad.rocks\/',
+            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-8919037-7', 'auto');
 	
 	ga('send', 'pageview');
 }
 </script>
-<meta property="description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed." />
-
-    <meta property="og:title" content="git" />
-<meta property="og:description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://techsquad.rocks/tags/git/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png?1580700969" />
-
-
-
-<meta property="og:locale" content="en" />
-
-
-    <meta name="twitter:title" content="git"/>
-<meta name="twitter:description" content="Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.?1580700969"/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image:src" content="https://techsquad.rocks/img/logo.png?1580700969" />
-
-
-<link rel="publisher" href="https://techsquad.rocks">
-<link rel="author" href="https://twitter.com/kainlite">
-<meta property="author" content="Tech Squad">
-<meta property="og:type" content="article">
-<meta name="twitter:card" content="summary_large_image">
-<meta property="article:publisher" content="https://techsquad.rocks">
-<meta property="article:author" content="https://twitter.com/kainlite">
-<meta name="twitter:site" content="@kainlite">
-<meta property="og:site_name" content="Tech Squad">
-
-  </head>
-
-  <body>
-    <div id="wrap">
-      
-      <nav class="navbar navbar-default">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="https://techsquad.rocks/"><i class="fa fa-home"></i></a>
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <div class="navbar-collapse collapse" id="navbar">
-      <ul class="nav navbar-nav navbar-right">
-      
-        
-        <li><a href="/blog/">BLOG</a></li>
-        
-      
-      </ul>
-    </div>
-  </div>
-</nav>
-
-      <div class="container">
-          <h3>Google Search</h3>
-          <script async src="https://cse.google.com/cse.js?cx=004051923861166033224:wlm8dm0xipo"></script>
-          <div class="gcse-search"></div>
-          <h3>Filter by tag</h3>
-          <ul id="all-tags">
-            
-              
-                <a href="https://techsquad.rocks/tags/aws/" class="label label-success">aws</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/cognito/" class="label label-success">cognito</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/continuous-delivery/" class="label label-success">continuous-delivery</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/continuous-integration/" class="label label-success">continuous-integration</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/deployment-tools/" class="label label-success">deployment-tools</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/development/" class="label label-success">development</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/docker/" class="label label-success">docker</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/elm/" class="label label-success">elm</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/gcp/" class="label label-success">gcp</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/git/" class="label label-success">git</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/gitkube/" class="label label-success">gitkube</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/gitlab/" class="label label-success">gitlab</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/go/" class="label label-success">go</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/golang/" class="label label-success">golang</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/grpc/" class="label label-success">grpc</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/helm/" class="label label-success">helm</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/istio/" class="label label-success">istio</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/jsonnet/" class="label label-success">jsonnet</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/kind/" class="label label-success">kind</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/kops/" class="label label-success">kops</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/ksonnet/" class="label label-success">ksonnet</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/kubebuilder/" class="label label-success">kubebuilder</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/kubernetes/" class="label label-success">kubernetes</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/kustomize/" class="label label-success">kustomize</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/lambda/" class="label label-success">lambda</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/linux/" class="label label-success">linux</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/networking/" class="label label-success">networking</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/openssh/" class="label label-success">openssh</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/routing/" class="label label-success">routing</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/security/" class="label label-success">security</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/serverless/" class="label label-success">serverless</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/service-mesh/" class="label label-success">service-mesh</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/skaffold/" class="label label-success">skaffold</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/slack/" class="label label-success">slack</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/terraform/" class="label label-success">terraform</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/tips-and-tricks/" class="label label-success">tips-and-tricks</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/tmux/" class="label label-success">tmux</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/travis-ci/" class="label label-success">travis-ci</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/urxvt/" class="label label-success">urxvt</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/vault/" class="label label-success">vault</a>
-              
-            
-              
-                <a href="https://techsquad.rocks/tags/vim/" class="label label-success">vim</a>
-              
-            
-          </ul>
-          <div class="col-sm-3 col-md-3 col-lg-3 pull-right">
-            <a href="/index.xml">
-              RSS <img height="20px" width="20px" src="/img/rss.png" />
-            </a>
-            <br/>
-            <a href="/index.json">
-              JSONFEED <img height="20px" width="20px" src="/img/jsonfeed.png" />
-            </a>
-            <br/>
-          </div>
-          <br/>
-          <br/>
-          <h3>Archive by date</h3>
-          <div class="panel panel-default">
-            <div class="panel-body">
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    February 2, 2020
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/gitlab_ci_basics/">Gitlab-CI Basics</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 20, 2020
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/cat_and_friends_netcat_socat/">Cat and friends (Netcat and Socat)</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 17, 2020
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 4, 2020
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/how_to_report_spam_to_spamcop_from_gmail/">How to report spam to spamcop from gmail</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    December 31, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/">How to report your gmail spam folder to spamcop</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    September 8, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/brief_introduction_to_terratest/">Brief introduction to terratest</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    September 2, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito and Go</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    June 24, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_terraform_modules/">Getting started with terraform modules</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    June 23, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/go_grpc_cheap_ping/">Go gRPC Cheap Ping</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    May 5, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/go_continuous_delivery_with_terraform_and_kubernetes/">Go continuous delivery with Terraform and Kubernetes</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    May 1, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/go_continuous_integration_with_travis_ci_and_docker/">Go continuous integration with Travis CI and Docker</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    April 29, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/actually_using_vault_on_kubernetes/">Actually using Vault on Kubernetes</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    April 28, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_hashicorp_vault_on_kubernetes/">Getting started with HashiCorp Vault on Kubernetes</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    April 27, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/creating_a_lambda_function_with_terraform/">Creating a lambda function with terraform</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    March 10, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/ssh_socks_proxy/">SSH Socks Proxy</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    March 9, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/ssh_remote_port_forward/">SSH Remote Port Forward</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    March 8, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/ssh_local_port_forward/">SSH Local Port Forward</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    February 16, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/create_an_aws_lambda_function_in_go/">Create an AWS lambda function in Go</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    February 15, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/what_does_the_serverless_framework_does_for_me/">What does the serverless framework does for me</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    February 3, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    February 2, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/serving_static_sites_with_s3_and_cloudfront/">Serve your static website with S3 and CloudFront</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 29, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/serving_static_sites_with_github/">Serve your static website in Github</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 23, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/give_super_powers_to_your_terminal_with_tmux/">Give super powers to your terminal with tmux</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 22, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/creating_a_serverless_twitter_bot/">How to create a serverless twitter bot</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 19, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/from_zero_to_hero_with_kops_and_aws/">From zero to hero with kops and AWS</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 12, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/my_local_environment/">My local environment</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 10, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/exploring_some_istio_features/">Exploring some Istio features</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 6, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/why_do_i_need_a_service_mesh/">Why do I need a service mesh?</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 3, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_skaffold/">Getting started with skaffold</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    January 1, 2019
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_gitkube/">Getting started with gitkube</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    December 29, 2018
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/go_echobot/">Go echo bot</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    December 27, 2018
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_ksonnet/">Getting started with ksonnet</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    December 24, 2018
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/deploying_my_apps_with_helm/">Deploying my apps with Helm</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-              <div class="row">
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <h5 style="text-align: right">
-                    December 23, 2018
-                  </h5>
-                 </div>
-                 <div class="col-sm-8 col-md-8 col-lg-8">
-                   <h5 style="text-align: left">
-                    <strong><a href="/blog/getting_started_with_helm/">Getting started with Helm</a></strong>
-                  </h5>
-                </div>
-              </div>
-            
-            </div>
-          </div>
-      </div>
-    </div>
-    
-    <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="NDx5OFh" data-description="Support me on Buy me a coffee!" data-message="Thank you for visiting. You can now buy me a coffee!" data-color="#79D6B5" data-position="right" data-x_margin="10" data-y_margin="10"></script>
-
-
-<footer>
-  <div id="footer">
-    <div class="container">
-      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
-      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
-    </div>
-  </div>
-</footer>
-<div class="footer"></div>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://techsquad.rocks/js/docs.min.js"></script>
-<script src="https://techsquad.rocks/js/main.js"></script>
-
-<script src="https://techsquad.rocks/js/ie10-viewport-bug-workaround.js"></script>
-
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
   </body>
 </html>

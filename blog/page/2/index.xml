@@ -160,3 +160,8 @@ Create the chart: helm create hello-world Always use valid DNS names if you are 
     
   </channel>
 </rss>
+ issues later on.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -709,8 +709,38 @@ Terraform In this example I used terraform 0.12, and I kind of liked the new cha
   </div>
 </nav>
 
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
-  <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="NDx5OFh" data-description="Support me on Buy me a coffee!" data-message="Thank you for visiting. You can now buy me a coffee!" data-color="#79D6B5" data-position="right" data-x_margin="10" data-y_margin="10"></script>
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
+(function buymeacoffee() {
+  var buymeacoffee = document.createElement('script');
+  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
+  buymeacoffee.async = true;
+  buymeacoffee.setAttribute('data-id','NDx5OFh');
+  buymeacoffee.setAttribute('data-name','BMC-Widget');
+  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
+  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
+  buymeacoffee.setAttribute('data-color','#79D6B5');
+  buymeacoffee.setAttribute('data-position','right');
+  buymeacoffee.setAttribute('data-x_margin','10');
+  buymeacoffee.setAttribute('data-y_margin','10');
+
+  buymeacoffee.onload = setTimeout(function() {
+    var element = document.getElementById('bmc-wbtn')
+    var sibling = element.nextSibling;
+
+    element.style.display = 'none';
+
+    setTimeout(function() {
+      sibling.style.display = 'none';
+    }, 3000, sibling);
+
+    setTimeout(function() {
+      element.style.display = 'flex';
+      sibling.style.display = 'block';
+    }, 30000, element, sibling);
+  }, 1000);
+  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
+})()
+</script>
 
 <ul class="social-links">
     <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >

@@ -38,13 +38,6 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/git/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/tags/gitlab/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -88,6 +81,13 @@
   
   <url>
     <loc>https://techsquad.rocks/categories/kubernetes/</loc>
+    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -395,6 +395,13 @@
   </url>
   
   <url>
+    <loc>https://techsquad.rocks/tags/git/</loc>
+    <lastmod>2019-01-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://techsquad.rocks/blog/serving_static_sites_with_github/</loc>
     <lastmod>2019-01-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -599,13 +606,6 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
-    <lastmod>2018-12-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
     <lastmod>2018-12-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

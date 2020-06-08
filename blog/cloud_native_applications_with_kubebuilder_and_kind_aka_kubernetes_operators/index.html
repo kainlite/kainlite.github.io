@@ -38,7 +38,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" />
-<meta property="og:image" content="https://techsquad.rocks/img/forward.jpg" />
+<meta property="og:image" content="https://techsquad.rocks/img/forward.png" />
 <meta property="article:published_time" content="2020-01-17T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-01-17T00:00:00+00:00" />
 <meta itemprop="name" content="Cloud native applications with kubebuilder and kind aka kubernetes operators">
@@ -47,12 +47,12 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 <meta itemprop="datePublished" content="2020-01-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-01-17T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="612">
-<meta itemprop="image" content="https://techsquad.rocks/img/forward.jpg">
+<meta itemprop="image" content="https://techsquad.rocks/img/forward.png">
 
 
 
 <meta itemprop="keywords" content="go,golang,kubernetes,linux,security,docker,kustomize,kubebuilder,kind," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/forward.jpg"/>
+<meta name="twitter:image" content="https://techsquad.rocks/img/forward.png"/>
 
 <meta name="twitter:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators"/>
 <meta name="twitter:description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.

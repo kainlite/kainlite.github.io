@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <title>Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://techsquad.rocks/blog/</link>
-    <description>Recent content in Blog on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <description>Recent content in Blogs on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
@@ -156,11 +157,6 @@ The original theme for the blog can be found at: https://github.com/xiaoheiAh/hu
       <guid>https://techsquad.rocks/blog/getting_started_with_helm/</guid>
       <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
 Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</description>
-    </item>
-    
-  </channel>
-</rss>
- issues later on.</description>
     </item>
     
   </channel>

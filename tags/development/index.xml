@@ -5,10 +5,19 @@
     <link>https://techsquad.rocks/tags/development/</link>
     <description>Recent content in development on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 31 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 May 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/development/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Automatic terraform linting with reviewdog and tflint</title>
+      <link>https://techsquad.rocks/blog/terraform_linter/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/terraform_linter/</guid>
+      <description>Introduction In this article we will test how to lint and get automatic checks in our github pull requests for our terraform code using reviewdog and the tflint github action, this is particularly useful to prevent unwanted changes or buggy commits to be merged into your principal branch whatever that is. In order for this to work you just need to configure a Github action in your repo and that&amp;rsquo;s it, you don&amp;rsquo;t need to generate any token or do any extra step.</description>
+    </item>
     
     <item>
       <title>Gitlab-CI Basics</title>
@@ -195,17 +204,6 @@ Explanation Local port forward basically let&amp;rsquo;s you forward one port fr
       <description>Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&amp;rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
  Let&amp;rsquo;s take the golang example for a spin So let&amp;rsquo;s generate a project with the serverless framework and see everything that it does for us.</description>
-    </item>
-    
-    <item>
-      <title>Sending emails with AWS Lambda and SES from a HTML form</title>
-      <link>https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</link>
-      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</guid>
-      <description>Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
-Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
-Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.</description>
     </item>
     
   </channel>

@@ -37,7 +37,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://techsquad.rocks/" />
 <meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="og:updated_time" content="2020-02-02T00:00:00+00:00" />
+<meta property="og:updated_time" content="2020-05-21T00:00:00+00:00" />
 <meta itemprop="name" content="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more">
 <meta itemprop="description" content=""><meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
@@ -149,6 +149,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
                     </p>
                     <p class="item-date">
@@ -186,16 +196,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/" class="title">How to report your gmail spam folder to spamcop</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2019-12-31 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-12-31</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -206,7 +206,7 @@
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">9</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
         </ul>
@@ -238,7 +238,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">8</span></li>
+                    class="tag-list-count">9</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
@@ -255,6 +255,10 @@
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
                     class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
+                    class="tag-list-count">1</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
@@ -354,7 +358,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">5</span></li>
+                    class="tag-list-count">6</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
@@ -395,6 +399,49 @@
     
     
     
+    <article
+      class="article article-type-page"
+      itemscope
+      itemtype="http://schema.org/BlogPosting"
+    >
+      <div class="article-header">
+        <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/creating_a_lambda_function_with_terraform/"
+    >Creating a lambda function with terraform</a
+  >
+</h1>
+
+      </div>
+      <div class="article-entry text-muted" itemprop="description">Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
+Before you start make sure you already have your account configured for awscli and terraform installed.
+Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.</div>
+      <p class="article-meta">
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/" class="">
+  <time datetime="2019-04-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-04-27</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/development/"> development </a>
+    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
+    <a class="article-tag-link" href="/tags/aws/"> aws </a>
+    <a class="article-tag-link" href="/tags/terraform/"> terraform </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/creating_a_lambda_function_with_terraform/#comments" class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 342 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 2 minutes </span>
+
+      </p>
+    </article>
     <article
       class="article article-type-page"
       itemscope
@@ -645,49 +692,6 @@ Introduction This article is part of the serverless series, in this article we w
         <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/sending_emails_with_lambda_and_ses/#comments" class="article-comment-link">Comments</a></span>
 		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1223 words</span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 6 minutes </span>
-
-      </p>
-    </article>
-    <article
-      class="article article-type-page"
-      itemscope
-      itemtype="http://schema.org/BlogPosting"
-    >
-      <div class="article-header">
-        <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/serving_static_sites_with_s3_and_cloudfront/"
-    >Serve your static website with S3 and CloudFront</a
-  >
-</h1>
-
-      </div>
-      <div class="article-entry text-muted" itemprop="description">Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
-Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).</div>
-      <p class="article-meta">
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" class="">
-  <time datetime="2019-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-02-02</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/elm/"> elm </a>
-    <a class="article-tag-link" href="/tags/development/"> development </a>
-    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
-    <a class="article-tag-link" href="/tags/aws/"> aws </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/serving_static_sites_with_s3_and_cloudfront/#comments" class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1332 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 7 minutes </span>
 
       </p>
     </article></div>

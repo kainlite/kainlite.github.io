@@ -43,7 +43,7 @@
 <meta itemprop="description" content="Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&rsquo;s also an interesting exercise.">
 <meta itemprop="datePublished" content="2020-11-01T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-11-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="701">
+<meta itemprop="wordCount" content="713">
 <meta itemprop="image" content="https://techsquad.rocks/img/operator-sdk.png">
 
 
@@ -445,7 +445,7 @@
 
         <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/#comments"
             class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 701 words</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 713 words</span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 4 minutes </span>
 
       </div>
@@ -511,11 +511,13 @@ We don&rsquo;t actually need to do this, but this way it&rsquo;s easy to make su
 <h5 id="our-actual-logic-this-made-me-chuckle-so-much-bootstrap-just-to-get-here-but-imagine-having-to-do-all-that-by-yourself">Our actual logic (this made me chuckle so much bootstrap just to get here, but imagine having to do all that by yourself)</h5>
 <p>This is where things actually happen, first we get our Spec updated:
 <script type="application/javascript" src="https://gist.github.com/kainlite/52c068ebde15e585c973b9e33439f971.js"></script>
-</p>
+
+You can find this file <a href="https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/api/v1/prefetch_types.go">here</a></p>
 <p>Then we can put some code, I will add more comments later in the code to explain what everything does:
 <script type="application/javascript" src="https://gist.github.com/kainlite/3f9ed270890b26c5e9d4b8b4d527cc45.js"></script>
 
-Basically what we do is set a timer to create a pod in each node to force it fetch the image that the deployments (that we filter by labels) needs or is going to use, by doing this if the node already has the image nothing happens and it will be removed in the next run, however if the image is not there it will be fetched so if anything happens and a pod needs to be actually scheduled there it won&rsquo;t need to download everything so it should be relatively faster.</p>
+Basically what we do is set a timer to create a pod in each node to force it fetch the image that the deployments (that we filter by labels) needs or is going to use, by doing this if the node already has the image nothing happens and it will be removed in the next run, however if the image is not there it will be fetched so if anything happens and a pod needs to be actually scheduled there it won&rsquo;t need to download everything so it should be relatively faster.
+You can find this file <a href="https://github.com/kainlite/kubernetes-prefetch-operator/blob/master/controllers/prefetch_controller.go">here</a></p>
 <h5 id="what-we-should-be-seeing-in-our-cluster">What we should be seeing in our cluster</h5>
 <script type="application/javascript" src="https://gist.github.com/kainlite/b4dcc0f43758e47544fc072844ae491e.js"></script>
 

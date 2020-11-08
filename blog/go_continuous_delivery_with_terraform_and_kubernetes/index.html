@@ -25,7 +25,7 @@
   
   <meta name="description" content="Introduction In this article we will continue where we left off the last time Go continuous integration with Travis CI and Docker, the files used here can be found HERE, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
 DigitalOcean We need to create a token so terraform can create resources using DO API." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Go continuous delivery with Terraform and Kubernetes - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -44,14 +44,15 @@ DigitalOcean We need to create a token so terraform can create resources using D
 <meta itemprop="name" content="Go continuous delivery with Terraform and Kubernetes">
 <meta itemprop="description" content="Introduction In this article we will continue where we left off the last time Go continuous integration with Travis CI and Docker, the files used here can be found HERE, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
 DigitalOcean We need to create a token so terraform can create resources using DO API.">
-<meta itemprop="datePublished" content="2019-05-05T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-05-05T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-05-05T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-05-05T00:00:00+00:00" />
 <meta itemprop="wordCount" content="979">
 <meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
 
 
 
-<meta itemprop="keywords" content="travis-ci,docker,golang,go,linux,continuous-integration,continuous-delivery,terraform," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="travis-ci,docker,golang,go,linux,continuous-integration,continuous-delivery,terraform," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="Go continuous delivery with Terraform and Kubernetes"/>
@@ -162,6 +163,16 @@ DigitalOcean We need to create a token so terraform can create resources using D
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -199,16 +210,6 @@ DigitalOcean We need to create a token so terraform can create resources using D
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -217,7 +218,7 @@ DigitalOcean We need to create a token so terraform can create resources using D
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -283,11 +284,11 @@ DigitalOcean We need to create a token so terraform can create resources using D
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -323,7 +324,7 @@ DigitalOcean We need to create a token so terraform can create resources using D
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span

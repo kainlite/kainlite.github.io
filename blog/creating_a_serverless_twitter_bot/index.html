@@ -25,7 +25,7 @@
   
   <meta name="description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
 Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>How to create a serverless twitter bot - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -44,14 +44,15 @@ Twitter So before you can start with the Twitter API you need to get a developer
 <meta itemprop="name" content="How to create a serverless twitter bot">
 <meta itemprop="description" content="Introduction This article explains how to create a serverless tweet-bot, basically pulls articles from this blog and post them to twitter in a nice way. It uses cron as the trigger so it should post a tweet every 12 hours, or you can invoke it manually.
 Twitter So before you can start with the Twitter API you need to get a developer account in this url, after submitted and created, you then need to create an App and generate the keys and tokens to be able to use it, it might take a while, I recommend you read everything that Twitter wants you to read while creating both the dev account and the app, so you can understand the scope and the good practices of using their services.">
-<meta itemprop="datePublished" content="2019-01-22T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-01-22T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-01-22T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-01-22T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1984">
 <meta itemprop="image" content="https://techsquad.rocks/img/logo.png">
 
 
 
-<meta itemprop="keywords" content="go,aws,serverless," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="go,aws,serverless," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="How to create a serverless twitter bot"/>
@@ -162,6 +163,16 @@ Twitter So before you can start with the Twitter API you need to get a developer
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -199,16 +210,6 @@ Twitter So before you can start with the Twitter API you need to get a developer
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -217,7 +218,7 @@ Twitter So before you can start with the Twitter API you need to get a developer
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -283,11 +284,11 @@ Twitter So before you can start with the Twitter API you need to get a developer
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -323,7 +324,7 @@ Twitter So before you can start with the Twitter API you need to get a developer
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -756,7 +757,8 @@ Twitter So before you can start with the Twitter API you need to get a developer
 		}
 		<span style="color:#a6e22e">HandleRequest</span>()
 	}
-}</code></pre></div>
+}
+</code></pre></div>
 The code is fairly straigth forward, it checks for the environment to have a locally runable/debuggable app if it&rsquo;s development or if it&rsquo;s running as an AWS Function in production.</p>
 <h3 id="while-debugging-locally-it-can-be-ran-like-this"><strong>While debugging locally it can be ran like this</strong></h3>
 <p>You can save use an .env file to test debug how your tweets are going to look.
@@ -780,16 +782,16 @@ By default it creates two go functions: hello and world, if you look at the file
 <h3 id="serverless-framework"><strong>Serverless framework</strong></h3>
 <p>This function is managed by the <a href="https://serverless.com/">serverless framework</a>, as you can see it&rsquo;s an easy way to manage your functions, what this small block of YAML will do is compile, upload, and schedule our function (because we use an event schedule)
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Welcome to Serverless!</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># This file is the main config file for your service.</span>
 <span style="color:#75715e"># It&#39;s very minimal at this point and uses default values.</span>
 <span style="color:#75715e"># You can always add more config options for more control.</span>
 <span style="color:#75715e"># We&#39;ve included some commented out config examples here.</span>
 <span style="color:#75715e"># Just uncomment any of them to get that config option.</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># For full config options, check the docs:</span>
 <span style="color:#75715e">#    docs.serverless.com</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Happy Coding!</span>
 
 service: handler

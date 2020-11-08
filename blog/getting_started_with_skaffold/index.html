@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="Skaffold This time we will see how to get started with Skaffold, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Getting started with skaffold - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -41,14 +41,15 @@
 <meta property="article:modified_time" content="2019-01-03T00:00:00+00:00" />
 <meta itemprop="name" content="Getting started with skaffold">
 <meta itemprop="description" content="Skaffold This time we will see how to get started with Skaffold, it seems a relatively mature project, and it does a lot more than some of the previous explored alternatives: Skaffold is a command line tool that facilitates continuous development for Kubernetes applications. You can iterate on your application source code locally then deploy to local or remote Kubernetes clusters. Skaffold handles the workflow for building, pushing and deploying your application.">
-<meta itemprop="datePublished" content="2019-01-03T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-01-03T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-01-03T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-01-03T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1467">
 <meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
 
 
 
-<meta itemprop="keywords" content="skaffold,kubernetes,deployment-tools," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="skaffold,kubernetes,deployment-tools," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="Getting started with skaffold"/>
@@ -158,6 +159,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -195,16 +206,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -213,7 +214,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -279,11 +280,11 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -319,7 +320,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -479,32 +480,32 @@ deploy:
       - k8s-*</code></pre></div>
 With very litle YAML we can accomplish a lot.</p>
 <p>We need a manifest file that matches that pattern so skaffold can deploy/re-deploy our application, so let&rsquo;s generate one with <code>kubectl run echobot --image=kainlite/echobot --dry-run -o yaml</code>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: extensions/v1beta1
-<span style="color:#66d9ef">kind</span>: Deployment
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">labels</span>:
-    <span style="color:#66d9ef">run</span>: echobot
-  <span style="color:#66d9ef">name</span>: echobot
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">matchLabels</span>:
-      <span style="color:#66d9ef">run</span>: echobot
-  <span style="color:#66d9ef">strategy</span>: {}
-  <span style="color:#66d9ef">template</span>:
-    <span style="color:#66d9ef">metadata</span>:
-      <span style="color:#66d9ef">labels</span>:
-        <span style="color:#66d9ef">run</span>: echobot
-    <span style="color:#66d9ef">spec</span>:
-      <span style="color:#66d9ef">containers</span>:
-      - <span style="color:#66d9ef">image</span>: kainlite/echobot
-        <span style="color:#66d9ef">name</span>: echobot
-        <span style="color:#66d9ef">env</span>:
-        - <span style="color:#66d9ef">name</span>: SLACK_API_TOKEN
-          <span style="color:#66d9ef">value</span>: really_long_token
-        <span style="color:#66d9ef">livenessProbe</span>:
-          <span style="color:#66d9ef">exec</span>:
-            <span style="color:#66d9ef">command</span>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">extensions/v1beta1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">labels</span>:
+    <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echobot</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">echobot</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">matchLabels</span>:
+      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echobot</span>
+  <span style="color:#f92672">strategy</span>: {}
+  <span style="color:#f92672">template</span>:
+    <span style="color:#f92672">metadata</span>:
+      <span style="color:#f92672">labels</span>:
+        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echobot</span>
+    <span style="color:#f92672">spec</span>:
+      <span style="color:#f92672">containers</span>:
+      - <span style="color:#f92672">image</span>: <span style="color:#ae81ff">kainlite/echobot</span>
+        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">echobot</span>
+        <span style="color:#f92672">env</span>:
+        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">SLACK_API_TOKEN</span>
+          <span style="color:#f92672">value</span>: <span style="color:#ae81ff">really_long_token</span>
+        <span style="color:#f92672">livenessProbe</span>:
+          <span style="color:#f92672">exec</span>:
+            <span style="color:#f92672">command</span>:
             - <span style="color:#e6db74">&#39;/bin/sh&#39;</span>
             - <span style="color:#e6db74">&#39;-c&#39;</span>
             - <span style="color:#e6db74">&#39;/app/health_check.sh&#39;</span></code></pre></div>

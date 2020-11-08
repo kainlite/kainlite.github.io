@@ -26,7 +26,7 @@
   <meta name="description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&amp;rsquo;s really close to the official documentation but shorter, you can see another example with python here.
 Before you start make sure you already have your account configured for awscli and terraform installed.
 Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Creating a lambda function with terraform - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -47,14 +47,15 @@ Configuration files First of all we need to get our terraform file or files (in 
 <meta itemprop="description" content="Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&rsquo;s really close to the official documentation but shorter, you can see another example with python here.
 Before you start make sure you already have your account configured for awscli and terraform installed.
 Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.">
-<meta itemprop="datePublished" content="2019-04-27T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-04-27T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-04-27T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-04-27T00:00:00+00:00" />
 <meta itemprop="wordCount" content="342">
 <meta itemprop="image" content="https://techsquad.rocks/img/terraform-lambda.png">
 
 
 
-<meta itemprop="keywords" content="development,serverless,aws,terraform," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="development,serverless,aws,terraform," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/terraform-lambda.png"/>
 
 <meta name="twitter:title" content="Creating a lambda function with terraform"/>
@@ -166,6 +167,16 @@ Configuration files First of all we need to get our terraform file or files (in 
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -203,16 +214,6 @@ Configuration files First of all we need to get our terraform file or files (in 
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -221,7 +222,7 @@ Configuration files First of all we need to get our terraform file or files (in 
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -287,11 +288,11 @@ Configuration files First of all we need to get our terraform file or files (in 
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -327,7 +328,7 @@ Configuration files First of all we need to get our terraform file or files (in 
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span

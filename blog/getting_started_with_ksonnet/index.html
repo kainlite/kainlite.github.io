@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="Introduction This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&amp;rsquo;s review some terminology from ksonnet (extracted from the official documentation):" />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Getting started with ksonnet - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -41,14 +41,15 @@
 <meta property="article:modified_time" content="2018-12-27T00:00:00+00:00" />
 <meta itemprop="name" content="Getting started with ksonnet">
 <meta itemprop="description" content="Introduction This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&rsquo;s review some terminology from ksonnet (extracted from the official documentation):">
-<meta itemprop="datePublished" content="2018-12-27T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-12-27T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2018-12-27T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2018-12-27T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1993">
 <meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
 
 
 
-<meta itemprop="keywords" content="ksonnet,jsonnet,deployment-tools,kubernetes," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="ksonnet,jsonnet,deployment-tools,kubernetes," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="Getting started with ksonnet"/>
@@ -158,6 +159,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -195,16 +206,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -213,7 +214,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -279,11 +280,11 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -319,7 +320,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -494,55 +495,55 @@ vendor          &lt;--- Here is where the installed packages/apps go, it can be 
 INFO Writing component at <span style="color:#e6db74">&#39;~/k8s-examples/wordpress/components/wordpress.jsonnet&#39;</span></code></pre></div>
 At the moment of this writing the latest version of Wordpress is 5.0.2, it&rsquo;s always recommended to use static version numbers instead of tags like latest (because latest can not be latest).</p>
 <p>Let&rsquo;s see how our component looks like:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">local env = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/environments&#34;</span>);
-local params = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/params&#34;</span>).components.wordpress;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">local env = std.extVar(&#34;__ksonnet/environments&#34;);</span>
+<span style="color:#ae81ff">local params = std.extVar(&#34;__ksonnet/params&#34;).components.wordpress;</span>
 [
   {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
-    <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
-    <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-      <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
+    <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
+    <span style="color:#f92672">&#34;metadata&#34;: </span>{
+      <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
     },
-    <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-      <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+    <span style="color:#f92672">&#34;spec&#34;: </span>{
+      <span style="color:#f92672">&#34;ports&#34;: </span>[
         {
-          <span style="color:#66d9ef">&#34;port&#34;: </span>params.servicePort,
-          <span style="color:#66d9ef">&#34;targetPort&#34;: </span>params.containerPort
+          <span style="color:#f92672">&#34;port&#34;: </span><span style="color:#ae81ff">params.servicePort,</span>
+          <span style="color:#f92672">&#34;targetPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
         }
       ],
-      <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-        <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+      <span style="color:#f92672">&#34;selector&#34;: </span>{
+        <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
       },
-      <span style="color:#66d9ef">&#34;type&#34;: </span>params.type
+      <span style="color:#f92672">&#34;type&#34;: </span><span style="color:#ae81ff">params.type</span>
     }
   },
   {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
-    <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
-    <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-      <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
+    <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
+    <span style="color:#f92672">&#34;metadata&#34;: </span>{
+      <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
     },
-    <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-      <span style="color:#66d9ef">&#34;replicas&#34;: </span>params.replicas,
-      <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-        <span style="color:#66d9ef">&#34;matchLabels&#34;: </span>{
-          <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+    <span style="color:#f92672">&#34;spec&#34;: </span>{
+      <span style="color:#f92672">&#34;replicas&#34;: </span><span style="color:#ae81ff">params.replicas,</span>
+      <span style="color:#f92672">&#34;selector&#34;: </span>{
+        <span style="color:#f92672">&#34;matchLabels&#34;: </span>{
+          <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
         },
       },
-      <span style="color:#66d9ef">&#34;template&#34;: </span>{
-        <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-          <span style="color:#66d9ef">&#34;labels&#34;: </span>{
-            <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+      <span style="color:#f92672">&#34;template&#34;: </span>{
+        <span style="color:#f92672">&#34;metadata&#34;: </span>{
+          <span style="color:#f92672">&#34;labels&#34;: </span>{
+            <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
           }
         },
-        <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-          <span style="color:#66d9ef">&#34;containers&#34;: </span>[
+        <span style="color:#f92672">&#34;spec&#34;: </span>{
+          <span style="color:#f92672">&#34;containers&#34;: </span>[
             {
-              <span style="color:#66d9ef">&#34;image&#34;: </span>params.image,
-              <span style="color:#66d9ef">&#34;name&#34;: </span>params.name,
-              <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+              <span style="color:#f92672">&#34;image&#34;: </span><span style="color:#ae81ff">params.image,</span>
+              <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name,</span>
+              <span style="color:#f92672">&#34;ports&#34;: </span>[
                 {
-                  <span style="color:#66d9ef">&#34;containerPort&#34;: </span>params.containerPort
+                  <span style="color:#f92672">&#34;containerPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
                 }
               ]
             }
@@ -555,57 +556,57 @@ local params = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/params&#34;
 It&rsquo;s just another template for some known resources, a <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> and a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> that&rsquo;s where the name came from: <em>deployed-service</em>, but where are those params coming from?</p>
 <p>If we run <code>ks show default</code>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
-<span style="color:#66d9ef">apiVersion</span>: v1
-<span style="color:#66d9ef">kind</span>: Service
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">labels</span>:
-    <span style="color:#66d9ef">ksonnet.io/component</span>: wordpress
-  <span style="color:#66d9ef">name</span>: wordpress
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">ports</span>:
-  - <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">80</span>
-    <span style="color:#66d9ef">targetPort</span>: <span style="color:#ae81ff">80</span>
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">app</span>: wordpress
-  <span style="color:#66d9ef">type</span>: ClusterIP
+<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">labels</span>:
+    <span style="color:#f92672">ksonnet.io/component</span>: <span style="color:#ae81ff">wordpress</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">wordpress</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">ports</span>:
+  - <span style="color:#f92672">port</span>: <span style="color:#ae81ff">80</span>
+    <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">80</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">app</span>: <span style="color:#ae81ff">wordpress</span>
+  <span style="color:#f92672">type</span>: <span style="color:#ae81ff">ClusterIP</span>
 ---
-<span style="color:#66d9ef">apiVersion</span>: apps/v1beta2
-<span style="color:#66d9ef">kind</span>: Deployment
-<span style="color:#66d9ef">metadata</span>:
-  <span style="color:#66d9ef">labels</span>:
-    <span style="color:#66d9ef">ksonnet.io/component</span>: wordpress
-  <span style="color:#66d9ef">name</span>: wordpress
-<span style="color:#66d9ef">spec</span>:
-  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
-  <span style="color:#66d9ef">selector</span>:
-    <span style="color:#66d9ef">matchLabels</span>:
-      <span style="color:#66d9ef">app</span>: wordpress
-  <span style="color:#66d9ef">template</span>:
-    <span style="color:#66d9ef">metadata</span>:
-      <span style="color:#66d9ef">labels</span>:
-        <span style="color:#66d9ef">app</span>: wordpress
-    <span style="color:#66d9ef">spec</span>:
-      <span style="color:#66d9ef">containers</span>:
-      - <span style="color:#66d9ef">image</span>: bitnami/wordpress:<span style="color:#ae81ff">5.0.2</span>
-        <span style="color:#66d9ef">name</span>: wordpress
-        <span style="color:#66d9ef">ports</span>:
-        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">80</span></code></pre></div>
+<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1beta2</span>
+<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
+<span style="color:#f92672">metadata</span>:
+  <span style="color:#f92672">labels</span>:
+    <span style="color:#f92672">ksonnet.io/component</span>: <span style="color:#ae81ff">wordpress</span>
+  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">wordpress</span>
+<span style="color:#f92672">spec</span>:
+  <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#f92672">selector</span>:
+    <span style="color:#f92672">matchLabels</span>:
+      <span style="color:#f92672">app</span>: <span style="color:#ae81ff">wordpress</span>
+  <span style="color:#f92672">template</span>:
+    <span style="color:#f92672">metadata</span>:
+      <span style="color:#f92672">labels</span>:
+        <span style="color:#f92672">app</span>: <span style="color:#ae81ff">wordpress</span>
+    <span style="color:#f92672">spec</span>:
+      <span style="color:#f92672">containers</span>:
+      - <span style="color:#f92672">image</span>: <span style="color:#ae81ff">bitnami/wordpress:5.0.2</span>
+        <span style="color:#f92672">name</span>: <span style="color:#ae81ff">wordpress</span>
+        <span style="color:#f92672">ports</span>:
+        - <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span></code></pre></div>
 We will see what our package will generate in <em>YAML</em> with some good defaults. And by default if you remember from the definitions a component needs a params file to fill the blanks in this case it is <code>components/params.libsonnet</code>:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{
-  <span style="color:#66d9ef">global</span>: {
-    <span style="color:#66d9ef">// User-defined global parameters; accessible to all component and environments, Ex</span>:
-    <span style="color:#66d9ef">// replicas</span>: <span style="color:#ae81ff">4</span>,
+  <span style="color:#f92672">global</span>: {
+    <span style="color:#f92672">// User-defined global parameters; accessible to all component and environments, Ex</span>:
+    <span style="color:#f92672">// replicas</span>: <span style="color:#ae81ff">4</span>,
   },
-  <span style="color:#66d9ef">components</span>: {
-    // Component-level parameters, defined initially from <span style="color:#e6db74">&#39;ks prototype use ...&#39;</span>
-    // Each object below should correspond to a component in the components/ directory
-    <span style="color:#66d9ef">wordpress</span>: {
-      <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">80</span>,
-      <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;bitnami/wordpress:5.0.2&#34;</span>,
-      <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#34;wordpress&#34;</span>,
-      <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>,
-      <span style="color:#66d9ef">servicePort</span>: <span style="color:#ae81ff">80</span>,
-      <span style="color:#66d9ef">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
+  <span style="color:#f92672">components</span>: {
+    <span style="color:#ae81ff">// Component-level parameters, defined initially from &#39;ks prototype use ...&#39;</span>
+    <span style="color:#ae81ff">// Each object below should correspond to a component in the components/ directory</span>
+    <span style="color:#f92672">wordpress</span>: {
+      <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>,
+      <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;bitnami/wordpress:5.0.2&#34;</span>,
+      <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;wordpress&#34;</span>,
+      <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>,
+      <span style="color:#f92672">servicePort</span>: <span style="color:#ae81ff">80</span>,
+      <span style="color:#f92672">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
     },
   },
 }</code></pre></div>
@@ -620,103 +621,103 @@ The latest stable version of MariaDB 10.1 GA at the moment of this writting is 1
 <p>Then we will need to add a persistent volume and also tell Wordpress to use this MariaDB instance. How do we do that, we will need to modify a few files, like this (in order to re-use things I placed the mysql variables in the global section, for this example that will simplify things, but it might not be the best approach for a production environment):
 The resulting <code>components/params.json</code> will be:
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{
-  <span style="color:#66d9ef">global</span>: {
-    <span style="color:#66d9ef">// User-defined global parameters; accessible to all component and environments, Ex</span>:
-    <span style="color:#66d9ef">// replicas</span>: <span style="color:#ae81ff">4</span>,
-    <span style="color:#66d9ef">mariadbEmptyPassword</span>: <span style="color:#e6db74">&#34;no&#34;</span>,
-    <span style="color:#66d9ef">mariadbUser</span>: <span style="color:#e6db74">&#34;mywordpressuser&#34;</span>,
-    <span style="color:#66d9ef">mariadbPassword</span>: <span style="color:#e6db74">&#34;mywordpresspassword&#34;</span>,
-    <span style="color:#66d9ef">mariadbDatabase</span>: <span style="color:#e6db74">&#34;bitnami_wordpress&#34;</span>,
+  <span style="color:#f92672">global</span>: {
+    <span style="color:#f92672">// User-defined global parameters; accessible to all component and environments, Ex</span>:
+    <span style="color:#f92672">// replicas</span>: <span style="color:#ae81ff">4</span>,
+    <span style="color:#f92672">mariadbEmptyPassword</span>: <span style="color:#e6db74">&#34;no&#34;</span>,
+    <span style="color:#f92672">mariadbUser</span>: <span style="color:#e6db74">&#34;mywordpressuser&#34;</span>,
+    <span style="color:#f92672">mariadbPassword</span>: <span style="color:#e6db74">&#34;mywordpresspassword&#34;</span>,
+    <span style="color:#f92672">mariadbDatabase</span>: <span style="color:#e6db74">&#34;bitnami_wordpress&#34;</span>,
   },
-  <span style="color:#66d9ef">components</span>: {
-    // Component-level parameters, defined initially from <span style="color:#e6db74">&#39;ks prototype use ...&#39;</span>
-    // Each object below should correspond to a component in the components/ directory
-    <span style="color:#66d9ef">wordpress</span>: {
-      <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">80</span>,
-      <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;bitnami/wordpress:5.0.2&#34;</span>,
-      <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#34;wordpress&#34;</span>,
-      <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>,
-      <span style="color:#66d9ef">servicePort</span>: <span style="color:#ae81ff">80</span>,
-      <span style="color:#66d9ef">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
+  <span style="color:#f92672">components</span>: {
+    <span style="color:#ae81ff">// Component-level parameters, defined initially from &#39;ks prototype use ...&#39;</span>
+    <span style="color:#ae81ff">// Each object below should correspond to a component in the components/ directory</span>
+    <span style="color:#f92672">wordpress</span>: {
+      <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>,
+      <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;bitnami/wordpress:5.0.2&#34;</span>,
+      <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;wordpress&#34;</span>,
+      <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>,
+      <span style="color:#f92672">servicePort</span>: <span style="color:#ae81ff">80</span>,
+      <span style="color:#f92672">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
     },
-    <span style="color:#66d9ef">mariadb</span>: {
-      <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">3306</span>,
-      <span style="color:#66d9ef">image</span>: <span style="color:#e6db74">&#34;bitnami/mariadb:10.1.37&#34;</span>,
-      <span style="color:#66d9ef">name</span>: <span style="color:#e6db74">&#34;mariadb&#34;</span>,
-      <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>,
-      <span style="color:#66d9ef">servicePort</span>: <span style="color:#ae81ff">3306</span>,
-      <span style="color:#66d9ef">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
+    <span style="color:#f92672">mariadb</span>: {
+      <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">3306</span>,
+      <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;bitnami/mariadb:10.1.37&#34;</span>,
+      <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;mariadb&#34;</span>,
+      <span style="color:#f92672">replicas</span>: <span style="color:#ae81ff">1</span>,
+      <span style="color:#f92672">servicePort</span>: <span style="color:#ae81ff">3306</span>,
+      <span style="color:#f92672">type</span>: <span style="color:#e6db74">&#34;ClusterIP&#34;</span>,
     },
   },
 }</code></pre></div></p>
 <p>The resulting <code>components/wordpress.jsonnet</code> will be:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">local env = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/environments&#34;</span>);
-local params = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/params&#34;</span>).components.wordpress;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">local env = std.extVar(&#34;__ksonnet/environments&#34;);</span>
+<span style="color:#ae81ff">local params = std.extVar(&#34;__ksonnet/params&#34;).components.wordpress;</span>
 [
   {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
-    <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
-    <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-      <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
+    <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
+    <span style="color:#f92672">&#34;metadata&#34;: </span>{
+      <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
     },
-    <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-      <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+    <span style="color:#f92672">&#34;spec&#34;: </span>{
+      <span style="color:#f92672">&#34;ports&#34;: </span>[
         {
-          <span style="color:#66d9ef">&#34;port&#34;: </span>params.servicePort,
-          <span style="color:#66d9ef">&#34;targetPort&#34;: </span>params.containerPort
+          <span style="color:#f92672">&#34;port&#34;: </span><span style="color:#ae81ff">params.servicePort,</span>
+          <span style="color:#f92672">&#34;targetPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
         }
       ],
-      <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-        <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+      <span style="color:#f92672">&#34;selector&#34;: </span>{
+        <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
       },
-      <span style="color:#66d9ef">&#34;type&#34;: </span>params.type
+      <span style="color:#f92672">&#34;type&#34;: </span><span style="color:#ae81ff">params.type</span>
     }
   },
   {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
-    <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
-    <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-      <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
+    <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
+    <span style="color:#f92672">&#34;metadata&#34;: </span>{
+      <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
     },
-    <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-      <span style="color:#66d9ef">&#34;replicas&#34;: </span>params.replicas,
-      <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-        <span style="color:#66d9ef">&#34;matchLabels&#34;: </span>{
-          <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+    <span style="color:#f92672">&#34;spec&#34;: </span>{
+      <span style="color:#f92672">&#34;replicas&#34;: </span><span style="color:#ae81ff">params.replicas,</span>
+      <span style="color:#f92672">&#34;selector&#34;: </span>{
+        <span style="color:#f92672">&#34;matchLabels&#34;: </span>{
+          <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
         },
       },
-      <span style="color:#66d9ef">&#34;template&#34;: </span>{
-        <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-          <span style="color:#66d9ef">&#34;labels&#34;: </span>{
-            <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+      <span style="color:#f92672">&#34;template&#34;: </span>{
+        <span style="color:#f92672">&#34;metadata&#34;: </span>{
+          <span style="color:#f92672">&#34;labels&#34;: </span>{
+            <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
           }
         },
-        <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-          <span style="color:#66d9ef">&#34;containers&#34;: </span>[
+        <span style="color:#f92672">&#34;spec&#34;: </span>{
+          <span style="color:#f92672">&#34;containers&#34;: </span>[
             {
-              <span style="color:#66d9ef">&#34;image&#34;: </span>params.image,
-              <span style="color:#66d9ef">&#34;name&#34;: </span>params.name,
-              <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+              <span style="color:#f92672">&#34;image&#34;: </span><span style="color:#ae81ff">params.image,</span>
+              <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name,</span>
+              <span style="color:#f92672">&#34;ports&#34;: </span>[
                 {
-                  <span style="color:#66d9ef">&#34;containerPort&#34;: </span>params.containerPort
+                  <span style="color:#f92672">&#34;containerPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
                 }
               ],
-              <span style="color:#66d9ef">&#34;env&#34;: </span>[
+              <span style="color:#f92672">&#34;env&#34;: </span>[
                 {
-                    <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_USER&#34;</span>,
-                    <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbUser,
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_USER&#34;</span>,
+                    <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbUser,</span>
                 },
                 {
-                    <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_PASSWORD&#34;</span>,
-                    <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbPassword,
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_PASSWORD&#34;</span>,
+                    <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbPassword,</span>
                 },
                 {
-                    <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_NAME&#34;</span>,
-                    <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbDatabase,
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_DATABASE_NAME&#34;</span>,
+                    <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbDatabase,</span>
                 },
                 {
-                    <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_HOST&#34;</span>,
-                    <span style="color:#66d9ef">&#34;value&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>,
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;WORDPRESS_HOST&#34;</span>,
+                    <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>,
                 }
               ]
             }
@@ -728,92 +729,92 @@ local params = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/params&#34;
 ]</code></pre></div>
 The only thing that changed here is <code>spec.containers.env</code> which wasn&rsquo;t present before.</p>
 <p>The resulting <code>components/mariadb.jsonnet</code> will be:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">local env = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/environments&#34;</span>);
-local params = std.extVar(<span style="color:#e6db74">&#34;__ksonnet/params&#34;</span>).components.mariadb;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">local env = std.extVar(&#34;__ksonnet/environments&#34;);</span>
+<span style="color:#ae81ff">local params = std.extVar(&#34;__ksonnet/params&#34;).components.mariadb;</span>
 [
 {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
-        <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
-        <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-            <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;v1&#34;</span>,
+        <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Service&#34;</span>,
+        <span style="color:#f92672">&#34;metadata&#34;: </span>{
+            <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
         },
-        <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-            <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+        <span style="color:#f92672">&#34;spec&#34;: </span>{
+            <span style="color:#f92672">&#34;ports&#34;: </span>[
             {
-                <span style="color:#66d9ef">&#34;port&#34;: </span>params.servicePort,
-                <span style="color:#66d9ef">&#34;targetPort&#34;: </span>params.containerPort
+                <span style="color:#f92672">&#34;port&#34;: </span><span style="color:#ae81ff">params.servicePort,</span>
+                <span style="color:#f92672">&#34;targetPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
             }
             ],
-            <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-                <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+            <span style="color:#f92672">&#34;selector&#34;: </span>{
+                <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
             },
-            <span style="color:#66d9ef">&#34;type&#34;: </span>params.type
+            <span style="color:#f92672">&#34;type&#34;: </span><span style="color:#ae81ff">params.type</span>
         }
 },
 {
-    <span style="color:#66d9ef">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
-    <span style="color:#66d9ef">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
-    <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-        <span style="color:#66d9ef">&#34;name&#34;: </span>params.name
+    <span style="color:#f92672">&#34;apiVersion&#34;: </span><span style="color:#e6db74">&#34;apps/v1beta2&#34;</span>,
+    <span style="color:#f92672">&#34;kind&#34;: </span><span style="color:#e6db74">&#34;Deployment&#34;</span>,
+    <span style="color:#f92672">&#34;metadata&#34;: </span>{
+        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name</span>
     },
-    <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-        <span style="color:#66d9ef">&#34;replicas&#34;: </span>params.replicas,
-        <span style="color:#66d9ef">&#34;selector&#34;: </span>{
-            <span style="color:#66d9ef">&#34;matchLabels&#34;: </span>{
-                <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+    <span style="color:#f92672">&#34;spec&#34;: </span>{
+        <span style="color:#f92672">&#34;replicas&#34;: </span><span style="color:#ae81ff">params.replicas,</span>
+        <span style="color:#f92672">&#34;selector&#34;: </span>{
+            <span style="color:#f92672">&#34;matchLabels&#34;: </span>{
+                <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
             },
         },
-        <span style="color:#66d9ef">&#34;template&#34;: </span>{
-            <span style="color:#66d9ef">&#34;metadata&#34;: </span>{
-                <span style="color:#66d9ef">&#34;labels&#34;: </span>{
-                    <span style="color:#66d9ef">&#34;app&#34;: </span>params.name
+        <span style="color:#f92672">&#34;template&#34;: </span>{
+            <span style="color:#f92672">&#34;metadata&#34;: </span>{
+                <span style="color:#f92672">&#34;labels&#34;: </span>{
+                    <span style="color:#f92672">&#34;app&#34;: </span><span style="color:#ae81ff">params.name</span>
                 }
             },
-            <span style="color:#66d9ef">&#34;spec&#34;: </span>{
-                <span style="color:#66d9ef">&#34;containers&#34;: </span>[
+            <span style="color:#f92672">&#34;spec&#34;: </span>{
+                <span style="color:#f92672">&#34;containers&#34;: </span>[
                 {
-                    <span style="color:#66d9ef">&#34;image&#34;: </span>params.image,
-                    <span style="color:#66d9ef">&#34;name&#34;: </span>params.name,
-                    <span style="color:#66d9ef">&#34;ports&#34;: </span>[
+                    <span style="color:#f92672">&#34;image&#34;: </span><span style="color:#ae81ff">params.image,</span>
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#ae81ff">params.name,</span>
+                    <span style="color:#f92672">&#34;ports&#34;: </span>[
                     {
-                        <span style="color:#66d9ef">&#34;containerPort&#34;: </span>params.containerPort
+                        <span style="color:#f92672">&#34;containerPort&#34;: </span><span style="color:#ae81ff">params.containerPort</span>
                     },
                     ],
-                    <span style="color:#66d9ef">&#34;env&#34;: </span>[
+                    <span style="color:#f92672">&#34;env&#34;: </span>[
                     {
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;ALLOW_EMPTY_PASSWORD&#34;</span>,
-                        <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbEmptyPassword,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;ALLOW_EMPTY_PASSWORD&#34;</span>,
+                        <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbEmptyPassword,</span>
                     },
                     {
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_USER&#34;</span>,
-                        <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbUser,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_USER&#34;</span>,
+                        <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbUser,</span>
                     },
                     {
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_PASSWORD&#34;</span>,
-                        <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbPassword,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_PASSWORD&#34;</span>,
+                        <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbPassword,</span>
                     },
                     {
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_ROOT_PASSWORD&#34;</span>,
-                        <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbPassword,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_ROOT_PASSWORD&#34;</span>,
+                        <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbPassword,</span>
                     },
                     {
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_DATABASE&#34;</span>,
-                        <span style="color:#66d9ef">&#34;value&#34;: </span>params.mariadbDatabase,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;MARIADB_DATABASE&#34;</span>,
+                        <span style="color:#f92672">&#34;value&#34;: </span><span style="color:#ae81ff">params.mariadbDatabase,</span>
                     },
                     ],
-                    <span style="color:#66d9ef">&#34;volumeMounts&#34;: </span>[
+                    <span style="color:#f92672">&#34;volumeMounts&#34;: </span>[
                     {
-                        <span style="color:#66d9ef">&#34;mountPath&#34;: </span><span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>,
-                        <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>
+                        <span style="color:#f92672">&#34;mountPath&#34;: </span><span style="color:#e6db74">&#34;/var/lib/mysql&#34;</span>,
+                        <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>
                     }
                     ]
                 }
                 ],
-                <span style="color:#66d9ef">&#34;volumes&#34;: </span>[
+                <span style="color:#f92672">&#34;volumes&#34;: </span>[
                 {
-                    <span style="color:#66d9ef">&#34;name&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>,
-                    <span style="color:#66d9ef">&#34;hostPath&#34;: </span>{
-                        <span style="color:#66d9ef">&#34;path&#34;: </span><span style="color:#e6db74">&#34;/home/docker/mariadb-data&#34;</span>
+                    <span style="color:#f92672">&#34;name&#34;: </span><span style="color:#e6db74">&#34;mariadb&#34;</span>,
+                    <span style="color:#f92672">&#34;hostPath&#34;: </span>{
+                        <span style="color:#f92672">&#34;path&#34;: </span><span style="color:#e6db74">&#34;/home/docker/mariadb-data&#34;</span>
                     }
                 }
                 ]

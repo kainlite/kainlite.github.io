@@ -25,7 +25,7 @@
   
   <meta name="description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&amp;rsquo;s what we will explore here." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Cloud native applications with kubebuilder and kind aka kubernetes operators - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -44,14 +44,15 @@ Basically what the code does is create an alpine/socat pod and you can specify t
 <meta itemprop="name" content="Cloud native applications with kubebuilder and kind aka kubernetes operators">
 <meta itemprop="description" content="Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&rsquo;s what we will explore here.">
-<meta itemprop="datePublished" content="2020-01-17T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-01-17T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2020-01-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-01-17T00:00:00+00:00" />
 <meta itemprop="wordCount" content="612">
 <meta itemprop="image" content="https://techsquad.rocks/img/forward.png">
 
 
 
-<meta itemprop="keywords" content="go,golang,kubernetes,linux,security,docker,kustomize,kubebuilder,kind," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="go,golang,kubernetes,linux,security,docker,kustomize,kubebuilder,kind," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/forward.png"/>
 
 <meta name="twitter:title" content="Cloud native applications with kubebuilder and kind aka kubernetes operators"/>
@@ -162,6 +163,16 @@ Basically what the code does is create an alpine/socat pod and you can specify t
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -199,16 +210,6 @@ Basically what the code does is create an alpine/socat pod and you can specify t
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -217,7 +218,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -283,11 +284,11 @@ Basically what the code does is create an alpine/socat pod and you can specify t
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -323,7 +324,7 @@ Basically what the code does is create an alpine/socat pod and you can specify t
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span

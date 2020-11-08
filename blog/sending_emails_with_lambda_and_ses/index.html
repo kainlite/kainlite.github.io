@@ -26,7 +26,7 @@
   <meta name="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
 Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Sending emails with AWS Lambda and SES from a HTML form - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -47,14 +47,15 @@ Introduction This article is part of the serverless series, in this article we w
 <meta itemprop="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
 Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.">
-<meta itemprop="datePublished" content="2019-02-03T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-02-03T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-02-03T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-02-03T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1223">
 <meta itemprop="image" content="https://techsquad.rocks/img/aws-lambda-ses.png">
 
 
 
-<meta itemprop="keywords" content="go,golang,development,serverless,linux," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="go,golang,development,serverless,linux," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/aws-lambda-ses.png"/>
 
 <meta name="twitter:title" content="Sending emails with AWS Lambda and SES from a HTML form"/>
@@ -166,6 +167,16 @@ Introduction This article is part of the serverless series, in this article we w
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -203,16 +214,6 @@ Introduction This article is part of the serverless series, in this article we w
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -221,7 +222,7 @@ Introduction This article is part of the serverless series, in this article we w
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -287,11 +288,11 @@ Introduction This article is part of the serverless series, in this article we w
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -327,7 +328,7 @@ Introduction This article is part of the serverless series, in this article we w
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -477,7 +478,7 @@ Introduction This article is part of the serverless series, in this article we w
 <span style="color:#75715e"># |   |   |             The Serverless Application Framework</span>
 <span style="color:#75715e"># |       |                           serverless.com, v1.36.1</span>
 <span style="color:#75715e">#  -------&#39;</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
 <span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div></p>
 <p>After creating the project we can update the serverless manifest as follow:
@@ -554,7 +555,7 @@ The interesting parts here are the IAM permissions and the function send_mail, t
 <span style="color:#75715e">#   send_mail: sendMail-prod-send_mail</span>
 <span style="color:#75715e"># layers:</span>
 <span style="color:#75715e">#   None</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Stack Outputs</span>
 <span style="color:#75715e"># ServiceEndpoint: https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod</span>
 <span style="color:#75715e"># ServerlessDeploymentBucketName: sendmail-prod-serverlessdeploymentbucket-1vbmb6gwt8559</span></code></pre></div>
@@ -690,7 +691,8 @@ Everything looks right, so what&rsquo;s next? the source code.</p>
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#a6e22e">lambda</span>.<span style="color:#a6e22e">Start</span>(<span style="color:#a6e22e">Handler</span>)
-}</code></pre></div>
+}
+</code></pre></div>
 The code is pretty much straight forward it only expects 2 parameters and it will send an email and return sent! if everything went well. You can debug and compile your function before uploading by issuing the command <code>make</code> (This is really useful), and if you use <code>make deploy</code> you will save lots of time by only deploying working files.</p>
 <h5 id="ses"><strong>SES</strong></h5>
 <p>For this to work you will need to verify/validate your domain in SES.</p>
@@ -736,7 +738,7 @@ After hitting enter the message popped up right away in my inbox :).</p>
 <span style="color:#75715e"># X-Cache: Miss from cloudfront</span>
 <span style="color:#75715e"># x-amz-apigw-id: UgGR7FlWIAMF75Q=</span>
 <span style="color:#75715e"># x-amzn-RequestId: d2f45b14-275a-11e9-a8f3-47d675eed13e</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># sent!</span></code></pre></div></p>
 <p><strong>OR <a href="https://devhints.io/curl">curl</a></strong>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -i -X POST https://m8ebtlirjg.execute-api.us-east-1.amazonaws.com/prod/sendMail -d <span style="color:#e6db74">&#39;{ &#34;email&#34;: &#34;kainlite@gmail.com&#34;, &#34;message&#34;: &#34;test3&#34; }&#39;</span>
@@ -752,7 +754,7 @@ After hitting enter the message popped up right away in my inbox :).</p>
 <span style="color:#75715e"># x-cache: Miss from cloudfront</span>
 <span style="color:#75715e"># via: 1.1 2167e4d6cf81822217c1ea31b3d3ba7e.cloudfront.net (CloudFront)</span>
 <span style="color:#75715e"># x-amz-cf-id: FttmBoeUaSwQ2AArTgVmI5br51zwVMfUrVpXPLGm1HacV4yS9IYMHA==</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># sent!</span></code></pre></div></p>
 <p>And that&rsquo;s all for now, see you in the next article.</p>
 <h3 id="errata">Errata</h3>

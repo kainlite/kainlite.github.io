@@ -5,10 +5,19 @@
     <link>https://techsquad.rocks/tags/go/</link>
     <description>Recent content in go on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2020 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</title>
+      <link>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</link>
+      <pubDate>Sun, 01 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</guid>
+      <description>Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&amp;rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&amp;rsquo;s also an interesting exercise.</description>
+    </item>
     
     <item>
       <title>Automatic terraform linting with reviewdog and tflint</title>
@@ -193,17 +202,6 @@ Explanation Local port forward basically let&amp;rsquo;s you forward one port fr
       
       <guid>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</guid>
       <description>Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.</description>
-    </item>
-    
-    <item>
-      <title>What does the serverless framework does for me</title>
-      <link>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</link>
-      <pubDate>Fri, 15 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</guid>
-      <description>Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
- The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&amp;rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&amp;rsquo;s take the golang example for a spin So let&amp;rsquo;s generate a project with the serverless framework and see everything that it does for us.</description>
     </item>
     
   </channel>

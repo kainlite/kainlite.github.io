@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+        Testing the Operator SDK and making a prefetch mechanism for Kubernetes - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
+      </title>
     <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,29 +23,37 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  
+  <meta name="description" content="Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&amp;rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&amp;rsquo;s also an interesting exercise." />
   <meta name="generator" content="Hugo 0.78.1 with theme pure" />
-  <title>Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+  <title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
-  <link rel="alternate" type="application/rss+xml" href="https://techsquad.rocks/tags/lambda/index.xml" title="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more" />
   
   <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
   
   <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="lambda" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://techsquad.rocks/tags/lambda/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="og:updated_time" content="2019-09-02T00:00:00+00:00" />
-<meta itemprop="name" content="lambda">
-<meta itemprop="description" content="">
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
+  <meta property="og:title" content="Testing the Operator SDK and making a prefetch mechanism for Kubernetes" />
+<meta property="og:description" content="Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&rsquo;s also an interesting exercise." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" />
+<meta property="og:image" content="https://techsquad.rocks/img/linux.png" />
+<meta property="article:published_time" content="2020-11-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-11-01T00:00:00+00:00" />
+<meta itemprop="name" content="Testing the Operator SDK and making a prefetch mechanism for Kubernetes">
+<meta itemprop="description" content="Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&rsquo;s also an interesting exercise.">
+<meta itemprop="datePublished" content="2020-11-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-11-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="701">
+<meta itemprop="image" content="https://techsquad.rocks/img/linux.png">
 
-<meta name="twitter:title" content="lambda"/>
-<meta name="twitter:description" content=""/>
+
+
+<meta itemprop="keywords" content="kubernetes,go,golang," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://techsquad.rocks/img/linux.png"/>
+
+<meta name="twitter:title" content="Testing the Operator SDK and making a prefetch mechanism for Kubernetes"/>
+<meta name="twitter:description" content="Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&rsquo;s also an interesting exercise."/>
 
   <!--[if lte IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -394,81 +403,202 @@
 
     
     
-<main class="main" role="main">
-    <article class="content article article-tags post-type-list" itemscope="">
-        <header class="article-header">
-            <h1 itemprop="name" class="hidden-xs">lambda</h1>
-            <p class="text-muted hidden-xs">Total 42 tags</p>
-            <nav role="navigation" id="nav-main" class="okayNav">
-                <ul>
-                    <li><a href="https://techsquad.rocks/tags">All</a></li>
-                    <li><a href="https://techsquad.rocks/tags/aws/">aws</a></li>
-                    <li><a href="https://techsquad.rocks/tags/cognito/">cognito</a></li>
-                    <li><a href="https://techsquad.rocks/tags/continuous-delivery/">continuous-delivery</a></li>
-                    <li><a href="https://techsquad.rocks/tags/continuous-integration/">continuous-integration</a></li>
-                    <li><a href="https://techsquad.rocks/tags/deployment-tools/">deployment-tools</a></li>
-                    <li><a href="https://techsquad.rocks/tags/development/">development</a></li>
-                    <li><a href="https://techsquad.rocks/tags/docker/">docker</a></li>
-                    <li><a href="https://techsquad.rocks/tags/elm/">elm</a></li>
-                    <li><a href="https://techsquad.rocks/tags/gcp/">gcp</a></li>
-                    <li><a href="https://techsquad.rocks/tags/git/">git</a></li>
-                    <li><a href="https://techsquad.rocks/tags/github/">github</a></li>
-                    <li><a href="https://techsquad.rocks/tags/gitkube/">gitkube</a></li>
-                    <li><a href="https://techsquad.rocks/tags/gitlab/">gitlab</a></li>
-                    <li><a href="https://techsquad.rocks/tags/go/">go</a></li>
-                    <li><a href="https://techsquad.rocks/tags/golang/">golang</a></li>
-                    <li><a href="https://techsquad.rocks/tags/grpc/">grpc</a></li>
-                    <li><a href="https://techsquad.rocks/tags/helm/">helm</a></li>
-                    <li><a href="https://techsquad.rocks/tags/istio/">istio</a></li>
-                    <li><a href="https://techsquad.rocks/tags/jsonnet/">jsonnet</a></li>
-                    <li><a href="https://techsquad.rocks/tags/kind/">kind</a></li>
-                    <li><a href="https://techsquad.rocks/tags/kops/">kops</a></li>
-                    <li><a href="https://techsquad.rocks/tags/ksonnet/">ksonnet</a></li>
-                    <li><a href="https://techsquad.rocks/tags/kubebuilder/">kubebuilder</a></li>
-                    <li><a href="https://techsquad.rocks/tags/kubernetes/">kubernetes</a></li>
-                    <li><a href="https://techsquad.rocks/tags/kustomize/">kustomize</a></li>
-                    <li><a href="https://techsquad.rocks/tags/lambda/">lambda</a></li>
-                    <li><a href="https://techsquad.rocks/tags/linux/">linux</a></li>
-                    <li><a href="https://techsquad.rocks/tags/networking/">networking</a></li>
-                    <li><a href="https://techsquad.rocks/tags/openssh/">openssh</a></li>
-                    <li><a href="https://techsquad.rocks/tags/routing/">routing</a></li>
-                    <li><a href="https://techsquad.rocks/tags/security/">security</a></li>
-                    <li><a href="https://techsquad.rocks/tags/serverless/">serverless</a></li>
-                    <li><a href="https://techsquad.rocks/tags/service-mesh/">service-mesh</a></li>
-                    <li><a href="https://techsquad.rocks/tags/skaffold/">skaffold</a></li>
-                    <li><a href="https://techsquad.rocks/tags/slack/">slack</a></li>
-                    <li><a href="https://techsquad.rocks/tags/terraform/">terraform</a></li>
-                    <li><a href="https://techsquad.rocks/tags/tips-and-tricks/">tips-and-tricks</a></li>
-                    <li><a href="https://techsquad.rocks/tags/tmux/">tmux</a></li>
-                    <li><a href="https://techsquad.rocks/tags/travis-ci/">travis-ci</a></li>
-                    <li><a href="https://techsquad.rocks/tags/urxvt/">urxvt</a></li>
-                    <li><a href="https://techsquad.rocks/tags/vault/">vault</a></li>
-                    <li><a href="https://techsquad.rocks/tags/vim/">vim</a></li>
-                </ul>
-            </nav>
-        </header>
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/"
+    >Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a
+  >
+</h1>
+
+      <div class="article-meta">
         
-        <div class="article-body">
-            <div class="col-md-6"><article class="panel panel-default hover-shadow hover-grow" itemscope itemtype="http://schema.org/BlogPosting">
-    <div class="panel-body">
-        <div class="article-meta">
-            <time datetime="2019-09-02 00:00:00 &#43;0000 UTC"
-                itemprop="datePublished">2019-09-02</time>
-        </div>
-        <h3 class="article-title" itemprop="name">
-            <a class="article-link" href="https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/">Serverless authentication with Cognito and Go</a>
-        </h3>
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="article-date">
+  <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+    <a class="article-tag-link" href="/tags/golang/"> golang </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 701 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 4 minutes </span>
+
+      </div>
     </div>
-    <div class="panel-footer">
-        <a href="https://techsquad.rocks/tags/go" class="label label-default mb">go</a>
-        <a href="https://techsquad.rocks/tags/golang" class="label label-default mb">golang</a>
-        <a href="https://techsquad.rocks/tags/serverless" class="label label-default mb">serverless</a>
-        <span class="label label-default mb">···</span>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h4 id="introduction"><strong>Introduction</strong></h4>
+<p>In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&rsquo;s also an interesting exercise.</p>
+<p>If you have read the article <a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a> you will note that the commands are really similar between each other, since now the operator-sdk uses kubebuilder, you can read more <a href="https://github.com/operator-framework/operator-sdk/issues/3558#issuecomment-664206538">here</a>.</p>
+<p>The source for this article is <a href="https://github.com/kainlite/kubernetes-prefetch-operator/">here</a></p>
+<h5 id="prerequisites"><strong>Prerequisites</strong></h5>
+<ul>
+<li><a href="https://sdk.operatorframework.io/docs/installation/install-operator-sdk/">Operator SDK</a></li>
+<li><a href="https://golang.org/dl/">Go</a></li>
+<li><a href="https://github.com/kubernetes-sigs/kind">Kind</a></li>
+<li><a href="https://hub.docker.com/?overlay=onboarding">Docker</a></li>
+<li><a href="https://github.com/kubernetes-sigs/kustomize">kustomize</a></li>
+</ul>
+<h4 id="creating-our-local-cluster">Creating our local cluster</h4>
+<h5 id="kind-config-for-multi-cluster">Kind config for multi-cluster</h5>
+<p>This is the kind config necessary to have a multi-node setup locally: <code>kind create cluster --config kind.yaml</code>
+<script type="application/javascript" src="https://gist.github.com/kainlite/6efa9269df15fd1b7eb47c16bd568268.js"></script>
+</p>
+<h5 id="creating-the-cluster">Creating the cluster</h5>
+<p>We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
+<script type="application/javascript" src="https://gist.github.com/kainlite/a15cfb1f2262f4a21f8c25d4b4e35679.js"></script>
+</p>
+<h4 id="creating-our-operator">Creating our operator</h4>
+<p>Here we bootstrap our go project aka as kubernetes operator
+<script type="application/javascript" src="https://gist.github.com/kainlite/20914ab8e9b8ecdb74be9d3ad7c671d3.js"></script>
+</p>
+<h4 id="creating-our-api">Creating our API</h4>
+<p>This will be the object that it will hold all the important information for a given image, the files that we need to modify at first hand are in: <code>controllers/*_controller.go</code> and <code>api/v1/*_types.go</code>
+<script type="application/javascript" src="https://gist.github.com/kainlite/20914ab8e9b8ecdb74be9d3ad7c671d3.js"></script>
+</p>
+<h4 id="building-and-pushing-docker-image">Building and pushing (docker image)</h4>
+<p>Basic build and push of the operator image with the projects helper
+<script type="application/javascript" src="https://gist.github.com/kainlite/c809a58f25650ca9960b1a44abd2f17b.js"></script>
+</p>
+<h4 id="deploying">Deploying</h4>
+<p>Now that we have the project built into a docker image and stored in dockerhub then we can install our CRD and then deploy the operator
+<script type="application/javascript" src="https://gist.github.com/kainlite/fba8082e152058023fdd8141b86ad3b3.js"></script>
+</p>
+<h5 id="deploy-the-operator">Deploy the operator</h5>
+<p>Then we can deploy our operator
+<script type="application/javascript" src="https://gist.github.com/kainlite/dbda7b13664467190c7c4d71469a824b.js"></script>
+</p>
+<h5 id="validate-that-our-operator-was-deployed">Validate that our operator was deployed</h5>
+<p>Check that our pods are running
+<script type="application/javascript" src="https://gist.github.com/kainlite/671d64d07acab19ff5fabeb5f1665867.js"></script>
+</p>
+<p>So far everything is peachy but our operator is kind of useless at the moment, so let&rsquo;s drop some code to make it do what we want&hellip;</p>
+<h4 id="our-code">Our code</h4>
+<p>A lot of what we use is generated however we need to give it some specific permissions and behaviour to our operator so it does what we want when we create an object in kubernetes</p>
+<h5 id="our-manifest">Our manifest</h5>
+<p>This will be the manifest that we will be using to tell our operator which deployments we want to prefetch images for
+<script type="application/javascript" src="https://gist.github.com/kainlite/483f816f36237c3e1b99f1e2391ce0f0.js"></script>
+</p>
+<h5 id="sample-nginx-deployment">Sample nginx deployment</h5>
+<p>This nginx deployment will be used to validate that the images are fetched in all nodes
+<script type="application/javascript" src="https://gist.github.com/kainlite/33387c03e2d2df059d28239f28f165d1.js"></script>
+
+We don&rsquo;t actually need to do this, but this way it&rsquo;s easy to make sure that a pod won&rsquo;t be scheduled if the label is not present: <code>kubectl label nodes kind-worker3 nginx-schedulable=&quot;true&quot;</code></p>
+<h5 id="our-actual-logic-this-made-me-chuckle-so-much-bootstrap-just-to-get-here-but-imagine-having-to-do-all-that-by-yourself">Our actual logic (this made me chuckle so much bootstrap just to get here, but imagine having to do all that by yourself)</h5>
+<p>This is where things actually happen, first we get our Spec updated:
+<script type="application/javascript" src="https://gist.github.com/kainlite/52c068ebde15e585c973b9e33439f971.js"></script>
+</p>
+<p>Then we can put some code, I will add more comments later in the code to explain what everything does:
+<script type="application/javascript" src="https://gist.github.com/kainlite/3f9ed270890b26c5e9d4b8b4d527cc45.js"></script>
+
+Basically what we do is set a timer to create a pod in each node to force it fetch the image that the deployments (that we filter by labels) needs or is going to use, by doing this if the node already has the image nothing happens and it will be removed in the next run, however if the image is not there it will be fetched so if anything happens and a pod needs to be actually scheduled there it won&rsquo;t need to download everything so it should be relatively faster.</p>
+<h5 id="what-we-should-be-seeing-in-our-cluster">What we should be seeing in our cluster</h5>
+<script type="application/javascript" src="https://gist.github.com/kainlite/b4dcc0f43758e47544fc072844ae491e.js"></script>
+
+<h4 id="cleaning-up">Cleaning up</h4>
+<p>To clean up the operator from the cluster you can do, and also remember to clean up your clusters or whatever you are using if it&rsquo;s in the cloud to avoid unexpected bills
+<script type="application/javascript" src="https://gist.github.com/kainlite/1ca0940c3b8e775db3d083bd1c7d4d42.js"></script>
+</p>
+<h5 id="closing-notes"><strong>Closing notes</strong></h5>
+<p>Be sure to check the links if you want to learn more about the project and I hope you enjoyed it, see you on <a href="https://twitter.com/kainlite">twitter</a> or <a href="https://github.com/kainlite">github</a>!</p>
+<ul>
+<li><a href="https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/">https://sdk.operatorframework.io/docs/building-operators/golang/tutorial/</a></li>
+<li><a href="https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/">https://sdk.operatorframework.io/docs/building-operators/golang/operator-scope/</a></li>
+<li><a href="https://opensource.com/article/20/3/kubernetes-operator-sdk">https://opensource.com/article/20/3/kubernetes-operator-sdk</a></li>
+</ul>
+<p>The source for this article is <a href="https://github.com/kainlite/kubernetes-prefetch-operator/">here</a></p>
+<h3 id="errata">Errata</h3>
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
     </div>
-</article>
-            </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" title="Testing the Operator SDK and making a prefetch mechanism for Kubernetes" target="_blank" rel="external">https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
+        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+<section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+
+</div><nav class="bar bar-footer clearfix" data-stick-bottom>
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://techsquad.rocks/blog/terraform_linter/" title="Automatic terraform linting with reviewdog and tflint"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
+                data-mobile-sites=""></div>
         </div>
-    </article>
+    </div>
+</nav>
+
 </main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
 (function buymeacoffee() {
   var buymeacoffee = document.createElement('script');
@@ -576,6 +706,22 @@
         hasInnerContainers: true,
     });
 </script>
+
+<script>
+if (window.location.hostname !== "localhost") {
+    var disqus_config = function () {
+        this.page.url = 'https:\/\/techsquad.rocks\/blog\/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes\/';
+        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes\/';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+}
+</script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
 
 <script type="application/javascript">
 var doNotTrack = false;

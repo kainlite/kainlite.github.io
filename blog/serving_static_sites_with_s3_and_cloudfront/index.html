@@ -26,7 +26,7 @@
   <meta name="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&amp;rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
 Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Serve your static website with S3 and CloudFront - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -47,14 +47,15 @@ Introduction This article will be part of a series, the idea is to get a fully s
 <meta itemprop="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
 Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).">
-<meta itemprop="datePublished" content="2019-02-02T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-02-02T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-02-02T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-02-02T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1332">
 <meta itemprop="image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png">
 
 
 
-<meta itemprop="keywords" content="elm,development,serverless,aws," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="elm,development,serverless,aws," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png"/>
 
 <meta name="twitter:title" content="Serve your static website with S3 and CloudFront"/>
@@ -166,6 +167,16 @@ Introduction This article will be part of a series, the idea is to get a fully s
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -203,16 +214,6 @@ Introduction This article will be part of a series, the idea is to get a fully s
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -221,7 +222,7 @@ Introduction This article will be part of a series, the idea is to get a fully s
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -287,11 +288,11 @@ Introduction This article will be part of a series, the idea is to get a fully s
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -327,7 +328,7 @@ Introduction This article will be part of a series, the idea is to get a fully s
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -473,16 +474,16 @@ Introduction This article will be part of a series, the idea is to get a fully s
 <span style="color:#75715e"># }</span></code></pre></div>
 We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/website.html">enabling web hosting in the bucket</a>).\</p>
 <p><strong>For this setup to work we first need to create a cloud-front-origin-access-identity</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin</span>
 {
-    <span style="color:#66d9ef">&#34;Location&#34;: </span><span style="color:#e6db74">&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
-    <span style="color:#66d9ef">&#34;ETag&#34;: </span><span style="color:#e6db74">&#34;E2XHDQQ0DDY9IJ&#34;</span>,
-    <span style="color:#66d9ef">&#34;CloudFrontOriginAccessIdentity&#34;: </span>{
-        <span style="color:#66d9ef">&#34;Id&#34;: </span><span style="color:#e6db74">&#34;E3IJG9M5PO9BYE&#34;</span>,
-        <span style="color:#66d9ef">&#34;S3CanonicalUserId&#34;: </span><span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
-        <span style="color:#66d9ef">&#34;CloudFrontOriginAccessIdentityConfig&#34;: </span>{
-            <span style="color:#66d9ef">&#34;CallerReference&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
-            <span style="color:#66d9ef">&#34;Comment&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
+    <span style="color:#f92672">&#34;Location&#34;: </span><span style="color:#e6db74">&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
+    <span style="color:#f92672">&#34;ETag&#34;: </span><span style="color:#e6db74">&#34;E2XHDQQ0DDY9IJ&#34;</span>,
+    <span style="color:#f92672">&#34;CloudFrontOriginAccessIdentity&#34;: </span>{
+        <span style="color:#f92672">&#34;Id&#34;: </span><span style="color:#e6db74">&#34;E3IJG9M5PO9BYE&#34;</span>,
+        <span style="color:#f92672">&#34;S3CanonicalUserId&#34;: </span><span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
+        <span style="color:#f92672">&#34;CloudFrontOriginAccessIdentityConfig&#34;: </span>{
+            <span style="color:#f92672">&#34;CallerReference&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
+            <span style="color:#f92672">&#34;Comment&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
         }
     }
 }</code></pre></div>
@@ -688,21 +689,21 @@ Once it&rsquo;s ready the status will be: &ldquo;Deployed&rdquo;, and now if we 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dig serverless.techsquad.rocks
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># dig CNAME serverless.techsquad.rocks</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># ; &lt;&lt;&gt;&gt; DiG 9.13.5 &lt;&lt;&gt;&gt; CNAME serverless.techsquad.rocks</span>
 <span style="color:#75715e"># ;; global options: +cmd</span>
 <span style="color:#75715e"># ;; Got answer:</span>
 <span style="color:#75715e"># ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 52651</span>
 <span style="color:#75715e"># ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># ;; OPT PSEUDOSECTION:</span>
 <span style="color:#75715e"># ; EDNS: version: 0, flags:; udp: 1452</span>
 <span style="color:#75715e"># ;; QUESTION SECTION:</span>
 <span style="color:#75715e"># ;serverless.techsquad.rocks.    IN      CNAME</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># ;; ANSWER SECTION:</span>
 <span style="color:#75715e"># serverless.techsquad.rocks. 292 IN      CNAME   d3v3xtkl1l2ynj.cloudfront.net.</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># ;; Query time: 20 msec</span>
 <span style="color:#75715e"># ;; SERVER: 1.1.1.1#53(1.1.1.1)</span>
 <span style="color:#75715e"># ;; WHEN: Sat Feb 02 17:47:11 -03 2019</span>

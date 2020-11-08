@@ -3,21 +3,70 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://techsquad.rocks/blog/terraform_linter/</loc>
-    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/go/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/golang/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</loc>
+    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/terraform_linter/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -38,21 +87,7 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/categories/serverless/</loc>
-    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -101,35 +136,7 @@
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/go/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/golang/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://techsquad.rocks/tags/kubebuilder/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

@@ -24,7 +24,7 @@
   
   
   <meta name="description" content="Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Brief introduction to terratest - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -41,14 +41,15 @@
 <meta property="article:modified_time" content="2019-09-08T00:00:00+00:00" />
 <meta itemprop="name" content="Brief introduction to terratest">
 <meta itemprop="description" content="Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest.">
-<meta itemprop="datePublished" content="2019-09-08T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-09-08T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-09-08T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-09-08T00:00:00+00:00" />
 <meta itemprop="wordCount" content="950">
 <meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
 
 
 
-<meta itemprop="keywords" content="go,golang,development,linux,terraform," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="go,golang,development,linux,terraform," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="Brief introduction to terratest"/>
@@ -158,6 +159,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -195,16 +206,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -213,7 +214,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -279,11 +280,11 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -319,7 +320,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -543,7 +544,8 @@
 </span><span style="color:#75715e"></span>    <span style="color:#a6e22e">terraformOptions</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">test_structure</span>.<span style="color:#a6e22e">LoadTerraformOptions</span>(<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">workingDir</span>)
 
     <span style="color:#a6e22e">terraform</span>.<span style="color:#a6e22e">Destroy</span>(<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">terraformOptions</span>)
-}</code></pre></div>
+}
+</code></pre></div>
 Some high level notes on each stage:</p>
 <p><code>deploy</code>: This stage will take care of running init and then apply.</p>
 <p><code>validate</code>: This stage will take care of running a probe to check if our API is up and if the return code is <code>200</code>.</p>

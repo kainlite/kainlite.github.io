@@ -23,7 +23,7 @@
   
   
   
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   <link rel="alternate" type="application/rss+xml" href="https://techsquad.rocks/index.xml" title="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more" />
@@ -37,9 +37,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://techsquad.rocks/" />
 <meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="og:updated_time" content="2020-05-21T00:00:00+00:00" />
+<meta property="og:updated_time" content="2020-11-01T00:00:00+00:00" />
 <meta itemprop="name" content="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more">
-<meta itemprop="description" content=""><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="description" content="">
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
 
 <meta name="twitter:title" content="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more"/>
@@ -149,6 +150,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -186,16 +197,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -204,7 +205,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -270,11 +271,11 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -310,7 +311,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -399,6 +400,50 @@
     
     
     
+    <article
+      class="article article-type-page"
+      itemscope
+      itemtype="http://schema.org/BlogPosting"
+    >
+      <div class="article-header">
+        <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/sending_emails_with_lambda_and_ses/"
+    >Sending emails with AWS Lambda and SES from a HTML form</a
+  >
+</h1>
+
+      </div>
+      <div class="article-entry text-muted" itemprop="description">Serverless series Part I: Serving static websites with s3 and cloudfront, so refer to that one before starting this one if you want to know how did we get here.
+Part II: Sending emails with AWS Lambda and SES from a HTML form, You are here.
+Introduction This article is part of the serverless series, in this article we will see how to create a serverless function in AWS Lambda to send an email coming from the HTML form in the site the source code can be found here, that is the go version but if you prefer node you can use this one.</div>
+      <p class="article-meta">
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/" class="">
+  <time datetime="2019-02-03 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-02-03</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/go/"> go </a>
+    <a class="article-tag-link" href="/tags/golang/"> golang </a>
+    <a class="article-tag-link" href="/tags/development/"> development </a>
+    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
+    <a class="article-tag-link" href="/tags/linux/"> linux </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/sending_emails_with_lambda_and_ses/#comments" class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1223 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 6 minutes </span>
+
+      </p>
+    </article>
     <article
       class="article article-type-page"
       itemscope
@@ -648,49 +693,6 @@ While my terminal doesn&rsquo;t look exactly like the one from the picture you c
 		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 3 minutes </span>
 
       </p>
-    </article>
-    <article
-      class="article article-type-page"
-      itemscope
-      itemtype="http://schema.org/BlogPosting"
-    >
-      <div class="article-header">
-        <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/exploring_some_istio_features/"
-    >Exploring some Istio features</a
-  >
-</h1>
-
-      </div>
-      <div class="article-entry text-muted" itemprop="description">Introduction This article builds up on what we did in the last article, so refer to that one before starting this one, if you are planing to follow the documentation examples you will find many similarities since I based this article on that.
-In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</div>
-      <p class="article-meta">
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/exploring_some_istio_features/" class="">
-  <time datetime="2019-01-10 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-01-10</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/service-mesh/"> service-mesh </a>
-  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/istio/"> istio </a>
-    <a class="article-tag-link" href="/tags/routing/"> routing </a>
-    <a class="article-tag-link" href="/tags/service-mesh/"> service-mesh </a>
-    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/exploring_some_istio_features/#comments" class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 924 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 5 minutes </span>
-
-      </p>
     </article></div>
   
 <nav class="bar bar-footer clearfix" data-stick-bottom>
@@ -708,7 +710,7 @@ In this example I will be using Digital Ocean (that&rsquo;s my referral link), n
       </li>
     </ul>
     <div class="total-article bar-left">
-      Page:4/5
+      Page:4/6
     </div>
   </div>
 </nav>

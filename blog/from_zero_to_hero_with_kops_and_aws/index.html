@@ -25,7 +25,7 @@
   
   <meta name="description" content="Introduction In this article we will create a cluster from scratch with kops (K8s installation, upgrades and management) in AWS, We will configure aws-alb-ingress-controller (External traffic into our services/pods) and external dns (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
 Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&amp;rsquo;s fairly easy to implement if you are using ACM." />
-  <meta name="generator" content="Hugo 0.72.0 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
   <title>From zero to hero with kops and AWS - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   
@@ -44,14 +44,15 @@ Basically we will have a fully functional cluster that will be able to handle pu
 <meta itemprop="name" content="From zero to hero with kops and AWS">
 <meta itemprop="description" content="Introduction In this article we will create a cluster from scratch with kops (K8s installation, upgrades and management) in AWS, We will configure aws-alb-ingress-controller (External traffic into our services/pods) and external dns (Update the records based in the ingress rules) and also learn a bit about awscli in the process.
 Basically we will have a fully functional cluster that will be able to handle public traffic in minutes, first we will install the cluster with kops, then we will enable the ingress controller and lastly external-dns, then we will deploy a basic app to test that everything works fine, SSL/TLS is out of the scope but it&rsquo;s fairly easy to implement if you are using ACM.">
-<meta itemprop="datePublished" content="2019-01-19T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-01-19T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-01-19T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-01-19T00:00:00+00:00" />
 <meta itemprop="wordCount" content="3334">
 <meta itemprop="image" content="https://techsquad.rocks/img/kubernetes-aws.png">
 
 
 
-<meta itemprop="keywords" content="AWS,kops,kubernetes," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="AWS,kops,kubernetes," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://techsquad.rocks/img/kubernetes-aws.png"/>
 
 <meta name="twitter:title" content="From zero to hero with kops and AWS"/>
@@ -162,6 +163,16 @@ Basically we will have a fully functional cluster that will be able to handle pu
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
                     </p>
                     <p class="item-date">
@@ -199,16 +210,6 @@ Basically we will have a fully functional cluster that will be able to handle pu
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/" class="title">How to report spam to spamcop from gmail</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-04 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-04</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -217,7 +218,7 @@ Basically we will have a fully functional cluster that will be able to handle pu
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">7</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -283,11 +284,11 @@ Basically we will have a fully functional cluster that will be able to handle pu
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">12</span></li>
+                    class="tag-list-count">13</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">11</span></li>
+                    class="tag-list-count">12</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
@@ -323,7 +324,7 @@ Basically we will have a fully functional cluster that will be able to handle pu
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">14</span></li>
+                    class="tag-list-count">15</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -660,9 +661,9 @@ kops create cluster <span style="color:#ae81ff">\
 <span style="color:#75715e"># I0117 23:14:33.297168   10314 dns.go:153] Pre-creating DNS records</span>
 <span style="color:#75715e"># I0117 23:14:34.947302   10314 update_cluster.go:291] Exporting kubecfg for cluster</span>
 <span style="color:#75715e"># kops has set your kubectl context to k8s.techsquad.rocks</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Cluster is starting.  It should be ready in a few minutes.</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Suggestions:</span>
 <span style="color:#75715e">#  * validate cluster: kops validate cluster</span>
 <span style="color:#75715e">#  * list nodes: kubectl get nodes --show-labels</span>
@@ -673,20 +674,20 @@ We set the KOPS_STATE_STORE to a valid S3 url for kops, and then created the clu
 <p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kops validate cluster <span style="color:#e6db74">${</span>NAME<span style="color:#e6db74">}</span>
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># Using cluster from kubectl context: k8s.techsquad.rocks</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Validating cluster k8s.techsquad.rocks</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># INSTANCE GROUPS</span>
 <span style="color:#75715e"># NAME                    ROLE    MACHINETYPE     MIN     MAX     SUBNETS</span>
 <span style="color:#75715e"># master-us-east-1a       Master  m3.medium       1       1       us-east-1a</span>
 <span style="color:#75715e"># nodes                   Node    t2.medium       2       2       us-east-1a</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># NODE STATUS</span>
 <span style="color:#75715e"># NAME                            ROLE    READY</span>
 <span style="color:#75715e"># ip-172-20-39-123.ec2.internal   node    True</span>
 <span style="color:#75715e"># ip-172-20-52-65.ec2.internal    node    True</span>
 <span style="color:#75715e"># ip-172-20-61-51.ec2.internal    master  True</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Your cluster k8s.techsquad.rocks is ready</span></code></pre></div>
 The validation passed and we can see that our cluster is ready, it can take several minutes until the cluster is up and functional, in this case it took about 3-5 minutes.</p>
 <p>We will create an additional subnet to satisfy our ALB:
@@ -1006,7 +1007,7 @@ kops delete cluster <span style="color:#e6db74">${</span>NAME<span style="color:
 <span style="color:#75715e"># OUTPUT:</span>
 <span style="color:#75715e"># ...</span>
 <span style="color:#75715e"># Deleted kubectl config for k8s.techsquad.rocks</span>
-#
+<span style="color:#75715e">#</span>
 <span style="color:#75715e"># Deleted cluster: &#34;k8s.techsquad.rocks&#34;</span></code></pre></div>
 This command is really verbose, so I skipped it to the end, be aware that in order to delete the cluster with kops you first need to detach the additionally attached privileges. Also be careful to delete first the ingress resources so the ALB gets removed before you delete the cluster, or you will have an ALB laying around afterwards. You can re-run it if it gets stuck and cannot delete any resource.</p>
 <h3 id="notes"><strong>Notes</strong></h3>

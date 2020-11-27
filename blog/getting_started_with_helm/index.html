@@ -1,705 +1,232 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Getting started with Helm - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on." />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>Getting started with Helm - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Getting started with Helm" />
-<meta property="og:description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_helm/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="article:published_time" content="2018-12-23T00:00:00+00:00" />
-<meta property="article:modified_time" content="2018-12-23T00:00:00+00:00" />
-<meta itemprop="name" content="Getting started with Helm">
-<meta itemprop="description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.">
-<meta itemprop="datePublished" content="2018-12-23T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2018-12-23T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1906">
-<meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
-
-
-
-<meta itemprop="keywords" content="helm,deployment-tools,kubernetes," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
-
-<meta name="twitter:title" content="Getting started with Helm"/>
-<meta name="twitter:description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
-Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on."/>
-
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
-
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/getting_started_with_helm/"
-    >Getting started with Helm</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/getting_started_with_helm/" class="article-date">
-  <time datetime="2018-12-23 00:00:00 &#43;0000 UTC" itemprop="datePublished">2018-12-23</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/deployment-tools/"> deployment-tools </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/helm/"> helm </a>
-    <a class="article-tag-link" href="/tags/deployment-tools/"> deployment-tools </a>
-    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/getting_started_with_helm/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1906 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 9 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="introduction"><strong>Introduction</strong></h3>
-<p>This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using <a href="https://helm.sh/">Helm</a>, in the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, you can follow with the following example:</p>
-<p>Create the chart:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">helm create hello-world</code></pre></div>
-Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p>
-<p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd hello-world
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Getting started with Helm - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on."><meta name=generator content="Hugo 0.75.1 with theme pure"><title>Getting started with Helm - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="Getting started with Helm"><meta property="og:description" content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on."><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_helm/"><meta property="og:image" content="https://techsquad.rocks/img/logo.png"><meta property="article:published_time" content="2018-12-23T00:00:00+00:00"><meta property="article:modified_time" content="2018-12-23T00:00:00+00:00"><meta itemprop=name content="Getting started with Helm"><meta itemprop=description content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on."><meta itemprop=datePublished content="2018-12-23T00:00:00+00:00"><meta itemprop=dateModified content="2018-12-23T00:00:00+00:00"><meta itemprop=wordCount content="1906"><meta itemprop=image content="https://techsquad.rocks/img/logo.png"><meta itemprop=keywords content="helm,deployment-tools,kubernetes,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/logo.png"><meta name=twitter:title content="Getting started with Helm"><meta name=twitter:description content="Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/getting_started_with_helm/>Getting started with Helm</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/getting_started_with_helm/ class=article-date><time datetime="2018-12-23 00:00:00 +0000 UTC" itemprop=datePublished>2018-12-23</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/deployment-tools/>deployment-tools</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/helm/>helm</a>
+<a class=article-tag-link href=/tags/deployment-tools/>deployment-tools</a>
+<a class=article-tag-link href=/tags/kubernetes/>kubernetes</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/getting_started_with_helm/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1906 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 9 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=introduction><strong>Introduction</strong></h3><p>This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using <a href=https://helm.sh/>Helm</a>, in the examples I will be using <a href=https://kubernetes.io/docs/tasks/tools/install-minikube>minikube</a> or you can <a href=https://github.com/kainlite/kainlite.github.io>check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, you can follow with the following example:</p><p>Create the chart:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>helm create hello-world</code></pre></div>Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</p><p>Inspect the contents, as you will notice every resource is just a kubernetes resource with some placeholders and basic logic to get something more reusable:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cd hello-world
 
 charts       &lt;--- Dependencies, charts that your chart depends on.
 Chart.yaml   &lt;--- Metadata mostly, defines the version of your chart, etc.
 templates    &lt;--- Here is where the magic happens.
-values.yaml  &lt;--- Default values file <span style="color:#f92672">(</span>this is used to replace in the templates at runtime<span style="color:#f92672">)</span></code></pre></div>
-Note: the following link explains the basics of <a href="https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory">dependencies</a>, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.</p>
-<p>The file <code>values.yaml</code> by default will look like the following snippet:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">replicaCount</span>: <span style="color:#ae81ff">1</span>
+values.yaml  &lt;--- Default values file <span style=color:#f92672>(</span>this is used to replace in the templates at runtime<span style=color:#f92672>)</span></code></pre></div>Note: the following link explains the basics of <a href=https://docs.helm.sh/developing_charts/#managing-dependencies-manually-via-the-charts-directory>dependencies</a>, your chart can have as many dependencies as you need, the only thing that you need to do is add or install the other charts as dependencies.</p><p>The file <code>values.yaml</code> by default will look like the following snippet:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>replicaCount</span>: <span style=color:#ae81ff>1</span>
 
-<span style="color:#f92672">image</span>:
-  <span style="color:#f92672">repository</span>: <span style="color:#ae81ff">nginx</span>
-  <span style="color:#f92672">tag</span>: <span style="color:#ae81ff">stable</span>
-  <span style="color:#f92672">pullPolicy</span>: <span style="color:#ae81ff">IfNotPresent</span>
+<span style=color:#f92672>image</span>:
+  <span style=color:#f92672>repository</span>: <span style=color:#ae81ff>nginx</span>
+  <span style=color:#f92672>tag</span>: <span style=color:#ae81ff>stable</span>
+  <span style=color:#f92672>pullPolicy</span>: <span style=color:#ae81ff>IfNotPresent</span>
 
-<span style="color:#f92672">nameOverride</span>: <span style="color:#e6db74">&#34;&#34;</span>
-<span style="color:#f92672">fullnameOverride</span>: <span style="color:#e6db74">&#34;&#34;</span>
+<span style=color:#f92672>nameOverride</span>: <span style=color:#e6db74>&#34;&#34;</span>
+<span style=color:#f92672>fullnameOverride</span>: <span style=color:#e6db74>&#34;&#34;</span>
 
-<span style="color:#f92672">service</span>:
-  <span style="color:#f92672">type</span>: <span style="color:#ae81ff">ClusterIP</span>
-  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">80</span>
+<span style=color:#f92672>service</span>:
+  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>ClusterIP</span>
+  <span style=color:#f92672>port</span>: <span style=color:#ae81ff>80</span>
 
-<span style="color:#f92672">ingress</span>:
-  <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">false</span>
-  <span style="color:#f92672">annotations</span>: {}
-    <span style="color:#75715e"># kubernetes.io/ingress.class: nginx</span>
-    <span style="color:#75715e"># kubernetes.io/tls-acme: &#34;true&#34;</span>
-  <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
-  <span style="color:#f92672">hosts</span>:
-    - <span style="color:#ae81ff">chart-example.local</span>
-  <span style="color:#f92672">tls</span>: []
-  <span style="color:#75715e">#  - secretName: chart-example-tls</span>
-  <span style="color:#75715e">#    hosts:</span>
-  <span style="color:#75715e">#      - chart-example.local</span>
+<span style=color:#f92672>ingress</span>:
+  <span style=color:#f92672>enabled</span>: <span style=color:#66d9ef>false</span>
+  <span style=color:#f92672>annotations</span>: {}
+    <span style=color:#75715e># kubernetes.io/ingress.class: nginx</span>
+    <span style=color:#75715e># kubernetes.io/tls-acme: &#34;true&#34;</span>
+  <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+  <span style=color:#f92672>hosts</span>:
+    - <span style=color:#ae81ff>chart-example.local</span>
+  <span style=color:#f92672>tls</span>: []
+  <span style=color:#75715e>#  - secretName: chart-example-tls</span>
+  <span style=color:#75715e>#    hosts:</span>
+  <span style=color:#75715e>#      - chart-example.local</span>
 
-<span style="color:#f92672">resources</span>: {}
-<span style="color:#f92672">nodeSelector</span>: {}
-<span style="color:#f92672">tolerations</span>: []
-<span style="color:#f92672">affinity</span>: {}</code></pre></div></p>
-<p>The next step would be to check the <code>templates</code> folder:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
+<span style=color:#f92672>resources</span>: {}
+<span style=color:#f92672>nodeSelector</span>: {}
+<span style=color:#f92672>tolerations</span>: []
+<span style=color:#f92672>affinity</span>: {}</code></pre></div></p><p>The next step would be to check the <code>templates</code> folder:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>deployment.yaml  &lt;--- Standard kubernetes deployment with go templates variables.
 _helpers.tpl     &lt;--- This file defines some common variables.
 ingress.yaml     &lt;--- Ingress route, etc.
 NOTES.txt        &lt;--- Once deployed this file will display the details of our deployment, usually login data, how to connect, etc.
-service.yaml     &lt;--- The service that we will use internally and/or via ingress to reach our deployed service.</code></pre></div>
-Go <a href="https://blog.gopheracademy.com/advent-2017/using-go-templates/">templates</a> basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm&rsquo;s own <a href="https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md">documentation</a> and also some <a href="https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md">tips and tricks</a>.</p>
-<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">deployment</a> file:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">apps/v1beta2</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Deployment</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.fullname&#34; . }}</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-    <span style="color:#f92672">helm.sh/chart</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.chart&#34; . }}</span>
-    <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span>
-    <span style="color:#f92672">app.kubernetes.io/managed-by</span>: {{ <span style="color:#ae81ff">.Release.Service }}</span>
-<span style="color:#f92672">spec</span>:
-  <span style="color:#f92672">replicas</span>: {{ <span style="color:#ae81ff">.Values.replicaCount }}</span>
-  <span style="color:#f92672">selector</span>:
-    <span style="color:#f92672">matchLabels</span>:
-      <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-      <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span>
-  <span style="color:#f92672">template</span>:
-    <span style="color:#f92672">metadata</span>:
-      <span style="color:#f92672">labels</span>:
-        <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-        <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span>
-    <span style="color:#f92672">spec</span>:
-      <span style="color:#f92672">containers</span>:
-        - <span style="color:#f92672">name</span>: {{ <span style="color:#ae81ff">.Chart.Name }}</span>
-          <span style="color:#f92672">image</span>: <span style="color:#e6db74">&#34;{{ .Values.image.repository }}:{{ .Values.image.tag }}&#34;</span>
-          <span style="color:#f92672">imagePullPolicy</span>: {{ <span style="color:#ae81ff">.Values.image.pullPolicy }}</span>
-          <span style="color:#f92672">ports</span>:
-            - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">http</span>
-              <span style="color:#f92672">containerPort</span>: <span style="color:#ae81ff">80</span>
-              <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
-          <span style="color:#f92672">livenessProbe</span>:
-            <span style="color:#f92672">httpGet</span>:
-              <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
-              <span style="color:#f92672">port</span>: <span style="color:#ae81ff">http</span>
-          <span style="color:#f92672">readinessProbe</span>:
-            <span style="color:#f92672">httpGet</span>:
-              <span style="color:#f92672">path</span>: <span style="color:#ae81ff">/</span>
-              <span style="color:#f92672">port</span>: <span style="color:#ae81ff">http</span>
-          <span style="color:#f92672">resources</span>:
-{{ <span style="color:#ae81ff">toYaml .Values.resources | indent 12 }}</span>
-    {{- <span style="color:#ae81ff">with .Values.nodeSelector }}</span>
-      <span style="color:#f92672">nodeSelector</span>:
-{{ <span style="color:#ae81ff">toYaml . | indent 8 }}</span>
-    {{- <span style="color:#ae81ff">end }}</span>
-    {{- <span style="color:#ae81ff">with .Values.affinity }}</span>
-      <span style="color:#f92672">affinity</span>:
-{{ <span style="color:#ae81ff">toYaml . | indent 8 }}</span>
-    {{- <span style="color:#ae81ff">end }}</span>
-    {{- <span style="color:#ae81ff">with .Values.tolerations }}</span>
-      <span style="color:#f92672">tolerations</span>:
-{{ <span style="color:#ae81ff">toYaml . | indent 8 }}</span>
-    {{- <span style="color:#ae81ff">end }}</span></code></pre></div>
-As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p>
-<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> file:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">v1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Service</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.fullname&#34; . }}</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-    <span style="color:#f92672">helm.sh/chart</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.chart&#34; . }}</span>
-    <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span>
-    <span style="color:#f92672">app.kubernetes.io/managed-by</span>: {{ <span style="color:#ae81ff">.Release.Service }}</span>
-<span style="color:#f92672">spec</span>:
-  <span style="color:#f92672">type</span>: {{ <span style="color:#ae81ff">.Values.service.type }}</span>
-  <span style="color:#f92672">ports</span>:
-    - <span style="color:#f92672">port</span>: {{ <span style="color:#ae81ff">.Values.service.port }}</span>
-      <span style="color:#f92672">targetPort</span>: <span style="color:#ae81ff">http</span>
-      <span style="color:#f92672">protocol</span>: <span style="color:#ae81ff">TCP</span>
-      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">http</span>
-  <span style="color:#f92672">selector</span>:
-    <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-    <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span></code></pre></div></p>
-<p>Let&rsquo;s check the <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">ingress</a> file:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{{- <span style="color:#ae81ff">if .Values.ingress.enabled -}}</span>
-{{- <span style="color:#ae81ff">$fullName := include &#34;hello-world.fullname&#34; . -}}</span>
-{{- <span style="color:#ae81ff">$ingressPath := .Values.ingress.path -}}</span>
-<span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">extensions/v1beta1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Ingress</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">name</span>: {{ <span style="color:#ae81ff">$fullName }}</span>
-  <span style="color:#f92672">labels</span>:
-    <span style="color:#f92672">app.kubernetes.io/name</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.name&#34; . }}</span>
-    <span style="color:#f92672">helm.sh/chart</span>: {{ <span style="color:#ae81ff">include &#34;hello-world.chart&#34; . }}</span>
-    <span style="color:#f92672">app.kubernetes.io/instance</span>: {{ <span style="color:#ae81ff">.Release.Name }}</span>
-    <span style="color:#f92672">app.kubernetes.io/managed-by</span>: {{ <span style="color:#ae81ff">.Release.Service }}</span>
-{{- <span style="color:#ae81ff">with .Values.ingress.annotations }}</span>
-  <span style="color:#f92672">annotations</span>:
-{{ <span style="color:#ae81ff">toYaml . | indent 4 }}</span>
-{{- <span style="color:#ae81ff">end }}</span>
-<span style="color:#f92672">spec</span>:
-{{- <span style="color:#ae81ff">if .Values.ingress.tls }}</span>
-  <span style="color:#f92672">tls</span>:
-  {{- <span style="color:#ae81ff">range .Values.ingress.tls }}</span>
-    - <span style="color:#f92672">hosts</span>:
-      {{- <span style="color:#ae81ff">range .hosts }}</span>
-        - {{ <span style="color:#ae81ff">. | quote }}</span>
-      {{- <span style="color:#ae81ff">end }}</span>
-      <span style="color:#f92672">secretName</span>: {{ <span style="color:#ae81ff">.secretName }}</span>
-  {{- <span style="color:#ae81ff">end }}</span>
-{{- <span style="color:#ae81ff">end }}</span>
-  <span style="color:#f92672">rules</span>:
-  {{- <span style="color:#ae81ff">range .Values.ingress.hosts }}</span>
-    - <span style="color:#f92672">host</span>: {{ <span style="color:#ae81ff">. | quote }}</span>
-      <span style="color:#f92672">http</span>:
-        <span style="color:#f92672">paths</span>:
-          - <span style="color:#f92672">path</span>: {{ <span style="color:#ae81ff">$ingressPath }}</span>
-            <span style="color:#f92672">backend</span>:
-              <span style="color:#f92672">serviceName</span>: {{ <span style="color:#ae81ff">$fullName }}</span>
-              <span style="color:#f92672">servicePort</span>: <span style="color:#ae81ff">http</span>
-  {{- <span style="color:#ae81ff">end }}</span>
-{{- <span style="color:#ae81ff">end }}</span></code></pre></div>
-The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p>
-<p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm init
+service.yaml     &lt;--- The service that we will use internally and/or via ingress to reach our deployed service.</code></pre></div>Go <a href=https://blog.gopheracademy.com/advent-2017/using-go-templates/>templates</a> basics, if you need a refresher or a crash course in go templates, also always be sure to check Helm&rsquo;s own <a href=https://github.com/helm/helm/blob/master/docs/chart_template_guide/functions_and_pipelines.md>documentation</a> and also some <a href=https://github.com/helm/helm/blob/master/docs/charts_tips_and_tricks.md>tips and tricks</a>.</p><p>Let&rsquo;s check the <a href=https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>deployment</a> file:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1beta2</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.fullname&#34; . }}</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+    <span style=color:#f92672>helm.sh/chart</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.chart&#34; . }}</span>
+    <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span>
+    <span style=color:#f92672>app.kubernetes.io/managed-by</span>: {{ <span style=color:#ae81ff>.Release.Service }}</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: {{ <span style=color:#ae81ff>.Values.replicaCount }}</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+      <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+        <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+        - <span style=color:#f92672>name</span>: {{ <span style=color:#ae81ff>.Chart.Name }}</span>
+          <span style=color:#f92672>image</span>: <span style=color:#e6db74>&#34;{{ .Values.image.repository }}:{{ .Values.image.tag }}&#34;</span>
+          <span style=color:#f92672>imagePullPolicy</span>: {{ <span style=color:#ae81ff>.Values.image.pullPolicy }}</span>
+          <span style=color:#f92672>ports</span>:
+            - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>http</span>
+              <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+              <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+          <span style=color:#f92672>livenessProbe</span>:
+            <span style=color:#f92672>httpGet</span>:
+              <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+              <span style=color:#f92672>port</span>: <span style=color:#ae81ff>http</span>
+          <span style=color:#f92672>readinessProbe</span>:
+            <span style=color:#f92672>httpGet</span>:
+              <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/</span>
+              <span style=color:#f92672>port</span>: <span style=color:#ae81ff>http</span>
+          <span style=color:#f92672>resources</span>:
+{{ <span style=color:#ae81ff>toYaml .Values.resources | indent 12 }}</span>
+    {{- <span style=color:#ae81ff>with .Values.nodeSelector }}</span>
+      <span style=color:#f92672>nodeSelector</span>:
+{{ <span style=color:#ae81ff>toYaml . | indent 8 }}</span>
+    {{- <span style=color:#ae81ff>end }}</span>
+    {{- <span style=color:#ae81ff>with .Values.affinity }}</span>
+      <span style=color:#f92672>affinity</span>:
+{{ <span style=color:#ae81ff>toYaml . | indent 8 }}</span>
+    {{- <span style=color:#ae81ff>end }}</span>
+    {{- <span style=color:#ae81ff>with .Values.tolerations }}</span>
+      <span style=color:#f92672>tolerations</span>:
+{{ <span style=color:#ae81ff>toYaml . | indent 8 }}</span>
+    {{- <span style=color:#ae81ff>end }}</span></code></pre></div>As you can see everything will get replaced by what you define in the <code>values.yaml</code> file and everything is under <code>.Values</code> unless you define a local variable or some other variable using helpers for example.</p><p>Let&rsquo;s check the <a href=https://kubernetes.io/docs/concepts/services-networking/service/>service</a> file:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Service</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.fullname&#34; . }}</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+    <span style=color:#f92672>helm.sh/chart</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.chart&#34; . }}</span>
+    <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span>
+    <span style=color:#f92672>app.kubernetes.io/managed-by</span>: {{ <span style=color:#ae81ff>.Release.Service }}</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>type</span>: {{ <span style=color:#ae81ff>.Values.service.type }}</span>
+  <span style=color:#f92672>ports</span>:
+    - <span style=color:#f92672>port</span>: {{ <span style=color:#ae81ff>.Values.service.port }}</span>
+      <span style=color:#f92672>targetPort</span>: <span style=color:#ae81ff>http</span>
+      <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>http</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+    <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span></code></pre></div></p><p>Let&rsquo;s check the <a href=https://kubernetes.io/docs/concepts/services-networking/ingress/>ingress</a> file:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml>{{- <span style=color:#ae81ff>if .Values.ingress.enabled -}}</span>
+{{- <span style=color:#ae81ff>$fullName := include &#34;hello-world.fullname&#34; . -}}</span>
+{{- <span style=color:#ae81ff>$ingressPath := .Values.ingress.path -}}</span>
+<span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>extensions/v1beta1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Ingress</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: {{ <span style=color:#ae81ff>$fullName }}</span>
+  <span style=color:#f92672>labels</span>:
+    <span style=color:#f92672>app.kubernetes.io/name</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.name&#34; . }}</span>
+    <span style=color:#f92672>helm.sh/chart</span>: {{ <span style=color:#ae81ff>include &#34;hello-world.chart&#34; . }}</span>
+    <span style=color:#f92672>app.kubernetes.io/instance</span>: {{ <span style=color:#ae81ff>.Release.Name }}</span>
+    <span style=color:#f92672>app.kubernetes.io/managed-by</span>: {{ <span style=color:#ae81ff>.Release.Service }}</span>
+{{- <span style=color:#ae81ff>with .Values.ingress.annotations }}</span>
+  <span style=color:#f92672>annotations</span>:
+{{ <span style=color:#ae81ff>toYaml . | indent 4 }}</span>
+{{- <span style=color:#ae81ff>end }}</span>
+<span style=color:#f92672>spec</span>:
+{{- <span style=color:#ae81ff>if .Values.ingress.tls }}</span>
+  <span style=color:#f92672>tls</span>:
+  {{- <span style=color:#ae81ff>range .Values.ingress.tls }}</span>
+    - <span style=color:#f92672>hosts</span>:
+      {{- <span style=color:#ae81ff>range .hosts }}</span>
+        - {{ <span style=color:#ae81ff>. | quote }}</span>
+      {{- <span style=color:#ae81ff>end }}</span>
+      <span style=color:#f92672>secretName</span>: {{ <span style=color:#ae81ff>.secretName }}</span>
+  {{- <span style=color:#ae81ff>end }}</span>
+{{- <span style=color:#ae81ff>end }}</span>
+  <span style=color:#f92672>rules</span>:
+  {{- <span style=color:#ae81ff>range .Values.ingress.hosts }}</span>
+    - <span style=color:#f92672>host</span>: {{ <span style=color:#ae81ff>. | quote }}</span>
+      <span style=color:#f92672>http</span>:
+        <span style=color:#f92672>paths</span>:
+          - <span style=color:#f92672>path</span>: {{ <span style=color:#ae81ff>$ingressPath }}</span>
+            <span style=color:#f92672>backend</span>:
+              <span style=color:#f92672>serviceName</span>: {{ <span style=color:#ae81ff>$fullName }}</span>
+              <span style=color:#f92672>servicePort</span>: <span style=color:#ae81ff>http</span>
+  {{- <span style=color:#ae81ff>end }}</span>
+{{- <span style=color:#ae81ff>end }}</span></code></pre></div>The ingress file is one of the most interesting ones in my humble opinion because it has a if else example and also local variables (<code>$fullName</code> for example), also iterates over a possible slice of dns record names (hosts), and the same if you have certs for them (a good way to get let&rsquo;s encrypt certificates automatically is using cert-manager, in the next post I will expand on this example adding a basic web app with mysql and ssl/tls).</p><p>After checking that everything is up to our needs the only thing missing is to finally deploy it to kubernetes (But first let&rsquo;s install tiller):<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm init
 $HELM_HOME has been configured at /home/gabriel/.helm.
 
-Tiller <span style="color:#f92672">(</span>the Helm server-side component<span style="color:#f92672">)</span> has been installed into your Kubernetes Cluster.
+Tiller <span style=color:#f92672>(</span>the Helm server-side component<span style=color:#f92672>)</span> has been installed into your Kubernetes Cluster.
 
-Please note: by default, Tiller is deployed with an insecure <span style="color:#e6db74">&#39;allow unauthenticated users&#39;</span> policy.
-To prevent this, run <span style="color:#e6db74">`</span>helm init<span style="color:#e6db74">`</span> with the --tiller-tls-verify flag.
+Please note: by default, Tiller is deployed with an insecure <span style=color:#e6db74>&#39;allow unauthenticated users&#39;</span> policy.
+To prevent this, run <span style=color:#e6db74>`</span>helm init<span style=color:#e6db74>`</span> with the --tiller-tls-verify flag.
 For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
-Happy Helming!</code></pre></div>
-Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the <a href="https://engineering.bitnami.com/articles/helm-security.html">Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href="https://docs.helm.sh/using_helm/#securing-your-helm-installation">Securing Helm</a></p>
-<p>Deploy our chart:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm install --name my-nginx -f values.yaml .
+Happy Helming!</code></pre></div>Note that many of the complains that Helm receives are because of the admin-y capabilities that Tiller has. A good note on the security issues that Tiller can suffer and some possible mitigation alternatives can be found on the <a href=https://engineering.bitnami.com/articles/helm-security.html>Bitnami page</a>, this mostly applies to multi-tenant clusters. And also be sure to check <a href=https://docs.helm.sh/using_helm/#securing-your-helm-installation>Securing Helm</a></p><p>Deploy our chart:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm install --name my-nginx -f values.yaml .
 NAME:   my-nginx
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> 00:30:11 <span style="color:#ae81ff">2018</span>
+LAST DEPLOYED: Sun Dec <span style=color:#ae81ff>23</span> 00:30:11 <span style=color:#ae81ff>2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-<span style="color:#f92672">==</span>&gt; v1/Service
+<span style=color:#f92672>==</span>&gt; v1/Service
 NAME                  AGE
 my-nginx-hello-world  0s
 
-<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
+<span style=color:#f92672>==</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  0s
 
-<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
+<span style=color:#f92672>==</span>&gt; v1/Pod<span style=color:#f92672>(</span>related<span style=color:#f92672>)</span>
 
 NAME                                   READY  STATUS   RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  0/1    Pending  <span style=color:#ae81ff>0</span>         0s
 
 NOTES:
 1. Get the application URL by running these commands:
-  export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
-  echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME 8080:80</code></pre></div>
-Our deployment was successful and we can see that our pod is waiting to be scheduled.</p>
-<p>Let&rsquo;s check that our service is there:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
-NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>   AGE
+  export POD_NAME<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl get pods --namespace default -l <span style=color:#e6db74>&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{.items[0].metadata.name}&#34;</span><span style=color:#66d9ef>)</span>
+  echo <span style=color:#e6db74>&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
+  kubectl port-forward $POD_NAME 8080:80</code></pre></div>Our deployment was successful and we can see that our pod is waiting to be scheduled.</p><p>Let&rsquo;s check that our service is there:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl get services
+NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span>   AGE
 kubernetes             ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP   1h
-my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP    5m</code></pre></div></p>
-<p>And now we can test that everything is okay by running another pod in interactive mode, for example:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl run -i --tty alpine --image<span style="color:#f92672">=</span>alpine -- sh
-If you don<span style="color:#960050;background-color:#1e0010">&#39;</span>t see a command prompt, try pressing enter.
+my-nginx-hello-world   ClusterIP   10.111.222.70   &lt;none&gt;        80/TCP    5m</code></pre></div></p><p>And now we can test that everything is okay by running another pod in interactive mode, for example:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl run -i --tty alpine --image<span style=color:#f92672>=</span>alpine -- sh
+If you don<span style=color:#960050;background-color:#1e0010>&#39;</span>t see a command prompt, try pressing enter.
 
-/ <span style="color:#75715e"># apk add curl</span>
+/ <span style=color:#75715e># apk add curl</span>
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/main/x86_64/APKINDEX.tar.gz
 fetch http://dl-cdn.alpinelinux.org/alpine/v3.8/community/x86_64/APKINDEX.tar.gz
-<span style="color:#f92672">(</span>1/5<span style="color:#f92672">)</span> Installing ca-certificates <span style="color:#f92672">(</span>20171114-r3<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span>2/5<span style="color:#f92672">)</span> Installing nghttp2-libs <span style="color:#f92672">(</span>1.32.0-r0<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span>3/5<span style="color:#f92672">)</span> Installing libssh2 <span style="color:#f92672">(</span>1.8.0-r3<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span>4/5<span style="color:#f92672">)</span> Installing libcurl <span style="color:#f92672">(</span>7.61.1-r1<span style="color:#f92672">)</span>
-<span style="color:#f92672">(</span>5/5<span style="color:#f92672">)</span> Installing curl <span style="color:#f92672">(</span>7.61.1-r1<span style="color:#f92672">)</span>
+<span style=color:#f92672>(</span>1/5<span style=color:#f92672>)</span> Installing ca-certificates <span style=color:#f92672>(</span>20171114-r3<span style=color:#f92672>)</span>
+<span style=color:#f92672>(</span>2/5<span style=color:#f92672>)</span> Installing nghttp2-libs <span style=color:#f92672>(</span>1.32.0-r0<span style=color:#f92672>)</span>
+<span style=color:#f92672>(</span>3/5<span style=color:#f92672>)</span> Installing libssh2 <span style=color:#f92672>(</span>1.8.0-r3<span style=color:#f92672>)</span>
+<span style=color:#f92672>(</span>4/5<span style=color:#f92672>)</span> Installing libcurl <span style=color:#f92672>(</span>7.61.1-r1<span style=color:#f92672>)</span>
+<span style=color:#f92672>(</span>5/5<span style=color:#f92672>)</span> Installing curl <span style=color:#f92672>(</span>7.61.1-r1<span style=color:#f92672>)</span>
 Executing busybox-1.28.4-r2.trigger
 Executing ca-certificates-20171114-r3.trigger
-OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</span> packages
+OK: <span style=color:#ae81ff>6</span> MiB in <span style=color:#ae81ff>18</span> packages
 
-/ <span style="color:#75715e"># curl -v my-nginx-hello-world</span>
+/ <span style=color:#75715e># curl -v my-nginx-hello-world</span>
 * Rebuilt URL to: my-nginx-hello-world/
 *   Trying 10.111.222.70...
 * TCP_NODELAY set
-* Connected to my-nginx-hello-world <span style="color:#f92672">(</span>10.111.222.70<span style="color:#f92672">)</span> port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span><span style="color:#75715e">#0)</span>
+* Connected to my-nginx-hello-world <span style=color:#f92672>(</span>10.111.222.70<span style=color:#f92672>)</span> port <span style=color:#ae81ff>80</span> <span style=color:#f92672>(</span><span style=color:#75715e>#0)</span>
 &gt; GET / HTTP/1.1
 &gt; Host: my-nginx-hello-world
 &gt; User-Agent: curl/7.61.1
 &gt; Accept: */*
 &gt;
-&lt; HTTP/1.1 <span style="color:#ae81ff">200</span> OK
+&lt; HTTP/1.1 <span style=color:#ae81ff>200</span> OK
 &lt; Server: nginx/1.14.2
-&lt; Date: Sun, <span style="color:#ae81ff">23</span> Dec <span style="color:#ae81ff">2018</span> 03:45:31 GMT
+&lt; Date: Sun, <span style=color:#ae81ff>23</span> Dec <span style=color:#ae81ff>2018</span> 03:45:31 GMT
 &lt; Content-Type: text/html
-&lt; Content-Length: <span style="color:#ae81ff">612</span>
-&lt; Last-Modified: Tue, <span style="color:#ae81ff">04</span> Dec <span style="color:#ae81ff">2018</span> 14:44:49 GMT
+&lt; Content-Length: <span style=color:#ae81ff>612</span>
+&lt; Last-Modified: Tue, <span style=color:#ae81ff>04</span> Dec <span style=color:#ae81ff>2018</span> 14:44:49 GMT
 &lt; Connection: keep-alive
-&lt; ETag: <span style="color:#e6db74">&#34;5c0692e1-264&#34;</span>
+&lt; ETag: <span style=color:#e6db74>&#34;5c0692e1-264&#34;</span>
 &lt; Accept-Ranges: bytes
 &lt;
 &lt;!DOCTYPE html&gt;
@@ -707,11 +234,11 @@ OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</
 &lt;head&gt;
 &lt;title&gt;Welcome to nginx!&lt;/title&gt;
 &lt;style&gt;
-    body <span style="color:#f92672">{</span>
+    body <span style=color:#f92672>{</span>
         width: 35em;
-        margin: <span style="color:#ae81ff">0</span> auto;
+        margin: <span style=color:#ae81ff>0</span> auto;
         font-family: Tahoma, Verdana, Arial, sans-serif;
-    <span style="color:#f92672">}</span>
+    <span style=color:#f92672>}</span>
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -720,285 +247,52 @@ OK: <span style="color:#ae81ff">6</span> MiB in <span style="color:#ae81ff">18</
 working. Further configuration is required.&lt;/p&gt;
 
 &lt;p&gt;For online documentation and support please refer to
-&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
 Commercial support is available at
-&lt;a href<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+&lt;a href<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;em&gt;Thank you <span style="color:#66d9ef">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Thank you <span style=color:#66d9ef>for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-* Connection <span style="color:#75715e">#0 to host my-nginx-hello-world left intact</span></code></pre></div>
-And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).</p>
-<p>Our current deployment can be checked like this:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
+* Connection <span style=color:#75715e>#0 to host my-nginx-hello-world left intact</span></code></pre></div>And voila we see our nginx deployed there and accessible via service name to our other pods (this is fantastic for microservices).</p><p>Our current deployment can be checked like this:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">1</span>               Sun Dec <span style="color:#ae81ff">23</span> 00:30:11 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.0       1.0             default</code></pre></div></p>
-<p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ helm upgrade my-nginx . -f values.yaml
-Release <span style="color:#e6db74">&#34;my-nginx&#34;</span> has been upgraded. Happy Helming!
-LAST DEPLOYED: Sun Dec <span style="color:#ae81ff">23</span> 00:55:22 <span style="color:#ae81ff">2018</span>
+my-nginx        <span style=color:#ae81ff>1</span>               Sun Dec <span style=color:#ae81ff>23</span> 00:30:11 <span style=color:#ae81ff>2018</span>        DEPLOYED        hello-world-0.1.0       1.0             default</code></pre></div></p><p>The last example would be to upgrade our deployment, lets change the <code>tag</code> in the <code>values.yaml</code> file from <code>stable</code> to <code>mainline</code> and update also the metadata file (<code>Chart.yaml</code>) to let Helm know that this is a new version of our chart.<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash> $ helm upgrade my-nginx . -f values.yaml
+Release <span style=color:#e6db74>&#34;my-nginx&#34;</span> has been upgraded. Happy Helming!
+LAST DEPLOYED: Sun Dec <span style=color:#ae81ff>23</span> 00:55:22 <span style=color:#ae81ff>2018</span>
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-<span style="color:#f92672">==</span>&gt; v1/Pod<span style="color:#f92672">(</span>related<span style="color:#f92672">)</span>
+<span style=color:#f92672>==</span>&gt; v1/Pod<span style=color:#f92672>(</span>related<span style=color:#f92672>)</span>
 NAME                                   READY  STATUS             RESTARTS  AGE
-my-nginx-hello-world-6f948db8d5-s76zl  1/1    Running            <span style="color:#ae81ff">0</span>         25m
-my-nginx-hello-world-c5cdcc95c-shgc6   0/1    ContainerCreating  <span style="color:#ae81ff">0</span>         0s
+my-nginx-hello-world-6f948db8d5-s76zl  1/1    Running            <span style=color:#ae81ff>0</span>         25m
+my-nginx-hello-world-c5cdcc95c-shgc6   0/1    ContainerCreating  <span style=color:#ae81ff>0</span>         0s
 
-<span style="color:#f92672">==</span>&gt; v1/Service
+<span style=color:#f92672>==</span>&gt; v1/Service
 
 NAME                  AGE
 my-nginx-hello-world  25m
 
-<span style="color:#f92672">==</span>&gt; v1beta2/Deployment
+<span style=color:#f92672>==</span>&gt; v1beta2/Deployment
 my-nginx-hello-world  25m
 
 
 NOTES:
 1. Get the application URL by running these commands:
-  export POD_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pods --namespace default -l <span style="color:#e6db74">&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{.items[0].metadata.name}&#34;</span><span style="color:#66d9ef">)</span>
-  echo <span style="color:#e6db74">&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
-  kubectl port-forward $POD_NAME 8080:80</code></pre></div>
-Note that I always specify the -f values.yaml just for explicitness.</p>
-<p>It seems that our upgrade went well, let&rsquo;s see what Helm sees
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm ls
+  export POD_NAME<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl get pods --namespace default -l <span style=color:#e6db74>&#34;app.kubernetes.io/name=hello-world,app.kubernetes.io/instance=my-nginx&#34;</span> -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{.items[0].metadata.name}&#34;</span><span style=color:#66d9ef>)</span>
+  echo <span style=color:#e6db74>&#34;Visit http://127.0.0.1:8080 to use your application&#34;</span>
+  kubectl port-forward $POD_NAME 8080:80</code></pre></div>Note that I always specify the -f values.yaml just for explicitness.</p><p>It seems that our upgrade went well, let&rsquo;s see what Helm sees<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm ls
 NAME            REVISION        UPDATED                         STATUS          CHART                   APP VERSION     NAMESPACE
-my-nginx        <span style="color:#ae81ff">2</span>               Sun Dec <span style="color:#ae81ff">23</span> 00:55:22 <span style="color:#ae81ff">2018</span>        DEPLOYED        hello-world-0.1.1       1.0             default</code></pre></div></p>
-<p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
-nginx version: nginx/1.15.7</code></pre></div>
-At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm rollback my-nginx <span style="color:#ae81ff">1</span>
-Rollback was a success! Happy Helming!</code></pre></div>
-Basically this command needs a deployment name <code>my-nginx</code> and the revision number to rollback to in this case <code>1</code>.</p>
-<p>Let&rsquo;s check the versions again:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
-nginx version: nginx/1.14.2</code></pre></div></p>
-<p>Let&rsquo;s clean up:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm del --purge my-nginx
-release <span style="color:#e6db74">&#34;my-nginx&#34;</span> deleted</code></pre></div></p>
-<p>If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&rsquo;s really useful for debugging or to inject a sidecar using pipes):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ helm template . -name my-nginx -f values.yaml
-<span style="color:#75715e"># Source: hello-world/templates/service.yaml</span>
+my-nginx        <span style=color:#ae81ff>2</span>               Sun Dec <span style=color:#ae81ff>23</span> 00:55:22 <span style=color:#ae81ff>2018</span>        DEPLOYED        hello-world-0.1.1       1.0             default</code></pre></div></p><p>But before we go let&rsquo;s validate that it did deployed the nginx version that we wanted to have:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl exec my-nginx-hello-world-c5cdcc95c-shgc6 -- /usr/sbin/nginx -v
+nginx version: nginx/1.15.7</code></pre></div>At the moment of this writing mainline is 1.15.7, we could rollback to the previous version by doing:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm rollback my-nginx <span style=color:#ae81ff>1</span>
+Rollback was a success! Happy Helming!</code></pre></div>Basically this command needs a deployment name <code>my-nginx</code> and the revision number to rollback to in this case <code>1</code>.</p><p>Let&rsquo;s check the versions again:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl exec my-nginx-hello-world-6f948db8d5-bsml2 -- /usr/sbin/nginx -v
+nginx version: nginx/1.14.2</code></pre></div></p><p>Let&rsquo;s clean up:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm del --purge my-nginx
+release <span style=color:#e6db74>&#34;my-nginx&#34;</span> deleted</code></pre></div></p><p>If you need to see what will be sent to the kubernetes API then you can use the following command (sometimes it&rsquo;s really useful for debugging or to inject a sidecar using pipes):<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ helm template . -name my-nginx -f values.yaml
+<span style=color:#75715e># Source: hello-world/templates/service.yaml</span>
 apiVersion: v1
 kind: Service
 metadata:
-  name: ame-hello-world</code></pre></div></p>
-<p>And that folks is all I have for now, be sure to check own <a href="https://docs.helm.sh/">Helm Documentation</a> and <code>helm help</code> to know more about what helm can do to help you deploy your applications to any kubernetes cluster.</p>
-<h3 id="dont-repeat-yourself">Don&rsquo;t Repeat Yourself</h3>
-<p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Helm and go makes that easy and fast.</p>
-<h3 id="upcoming-topics">Upcoming topics</h3>
-<p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p>
-<ul>
-<li><a href="https://techsquad.rocks/blog/deploying_my_apps_with_helm/">Expand on helm, search and install community charts</a>.</li>
-<li><a href="https://techsquad.rocks/blog/getting_started_with_ksonnet/">Getting started with Ksonnet and friends</a></li>
-<li><a href="https://techsquad.rocks/blog/getting_started_with_skaffold/">Getting started with Skaffold</a>.</li>
-<li><a href="https://techsquad.rocks/blog/getting_started_with_gitkube/">Getting started with Gitkube</a>.</li>
-</ul>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/getting_started_with_helm/" title="Getting started with Helm" target="_blank" rel="external">https://techsquad.rocks/blog/getting_started_with_helm/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="next">
-                <a href="https://techsquad.rocks/about/"
-                    title="About"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+  name: ame-hello-world</code></pre></div></p><p>And that folks is all I have for now, be sure to check own <a href=https://docs.helm.sh/>Helm Documentation</a> and <code>helm help</code> to know more about what helm can do to help you deploy your applications to any kubernetes cluster.</p><h3 id=dont-repeat-yourself>Don&rsquo;t Repeat Yourself</h3><p>DRY is a good design goal and part of the art of a good template is knowing when to add a new template and when to update an existing one. While you&rsquo;re figuring that out, accept that you&rsquo;ll be doing some refactoring. Helm and go makes that easy and fast.</p><h3 id=upcoming-topics>Upcoming topics</h3><p>The following posts will be about package managers, development deployment tools, etc. It&rsquo;s hard to put all the tools in a category, but they are trying to solve similar problems in different ways, and we will be exploring the ones that seem more promising to me, if you would like me to cover any other tool/project/whatever, just send me a message :)</p><ul><li><a href=https://techsquad.rocks/blog/deploying_my_apps_with_helm/>Expand on helm, search and install community charts</a>.</li><li><a href=https://techsquad.rocks/blog/getting_started_with_ksonnet/>Getting started with Ksonnet and friends</a></li><li><a href=https://techsquad.rocks/blog/getting_started_with_skaffold/>Getting started with Skaffold</a>.</li><li><a href=https://techsquad.rocks/blog/getting_started_with_gitkube/>Getting started with Gitkube</a>.</li></ul><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also you can check the source code and changes in the <a href=https://github.com/kainlite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/getting_started_with_helm/ title="Getting started with Helm" target=_blank rel=external>https://techsquad.rocks/blog/getting_started_with_helm/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=next><a href=https://techsquad.rocks/about/ title=About><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/getting_started_with_helm\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

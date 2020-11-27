@@ -1,484 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Getting started with gitkube - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Gitkube This time we will see how to get started with Gitkube, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle." />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>Getting started with gitkube - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Getting started with gitkube" />
-<meta property="og:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_gitkube/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="article:published_time" content="2019-01-01T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-01-01T00:00:00+00:00" />
-<meta itemprop="name" content="Getting started with gitkube">
-<meta itemprop="description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle.">
-<meta itemprop="datePublished" content="2019-01-01T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-01-01T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1493">
-<meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Getting started with gitkube - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Gitkube This time we will see how to get started with Gitkube, it&amp;rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&amp;rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle."><meta name=generator content="Hugo 0.75.1 with theme pure"><title>Getting started with gitkube - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="Getting started with gitkube"><meta property="og:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle."><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/getting_started_with_gitkube/"><meta property="og:image" content="https://techsquad.rocks/img/logo.png"><meta property="article:published_time" content="2019-01-01T00:00:00+00:00"><meta property="article:modified_time" content="2019-01-01T00:00:00+00:00"><meta itemprop=name content="Getting started with gitkube"><meta itemprop=description content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle."><meta itemprop=datePublished content="2019-01-01T00:00:00+00:00"><meta itemprop=dateModified content="2019-01-01T00:00:00+00:00"><meta itemprop=wordCount content="1493"><meta itemprop=image content="https://techsquad.rocks/img/logo.png"><meta itemprop=keywords content="git,gitkube,kubernetes,deployment-tools,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/logo.png"><meta name=twitter:title content="Getting started with gitkube"><meta name=twitter:description content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/getting_started_with_gitkube/>Getting started with gitkube</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/getting_started_with_gitkube/ class=article-date><time datetime="2019-01-01 00:00:00 +0000 UTC" itemprop=datePublished>2019-01-01</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/deployment-tools/>deployment-tools</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/git/>git</a>
+<a class=article-tag-link href=/tags/gitkube/>gitkube</a>
+<a class=article-tag-link href=/tags/kubernetes/>kubernetes</a>
+<a class=article-tag-link href=/tags/deployment-tools/>deployment-tools</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/getting_started_with_gitkube/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1493 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 8 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=gitkube><strong>Gitkube</strong></h3><p>This time we will see how to get started with <a href=https://gitkube.sh/>Gitkube</a>, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a <a href=https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/>CRD</a> and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more <a href=https://github.com/hasura/gitkube-example>examples here</a>, also be sure to check their page and documentation if you like it or want to learn more.</p><p>In the examples I will be using <a href=https://kubernetes.io/docs/tasks/tools/install-minikube>minikube</a> or you can <a href=https://github.com/kainlite/kainlite.github.io>check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, <em>but in this post be sure to use <em>minikube tunnel</em></em> if you configure gitkube with a load balancer (or if you configure any service type as load balancer):</p><h3 id=lets-get-started>Let&rsquo;s get started</h3><p>We&rsquo;re going to deploy or re-deploy our echo bot one more time but this time using gitkube.
+You can find the chat bot: <a href=https://techsquad.rocks/blog/go_echobot/>article here</a>, and the repo: <a href=https://github.com/kainlite/echobot/tree/gitkube>here</a></p><p>First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;remotes.gitkube.sh&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;gitkube&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;gitkube&#34;</span> created
+configmap <span style=color:#e6db74>&#34;gitkube-ci-conf&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;gitkubed&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;gitkube-controller&#34;</span> created
 
-
-
-<meta itemprop="keywords" content="git,gitkube,kubernetes,deployment-tools," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
-
-<meta name="twitter:title" content="Getting started with gitkube"/>
-<meta name="twitter:description" content="Gitkube This time we will see how to get started with Gitkube, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a CRD and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle."/>
-
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
-
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/getting_started_with_gitkube/"
-    >Getting started with gitkube</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/getting_started_with_gitkube/" class="article-date">
-  <time datetime="2019-01-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-01-01</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/deployment-tools/"> deployment-tools </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/git/"> git </a>
-    <a class="article-tag-link" href="/tags/gitkube/"> gitkube </a>
-    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
-    <a class="article-tag-link" href="/tags/deployment-tools/"> deployment-tools </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/getting_started_with_gitkube/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1493 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 8 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="gitkube"><strong>Gitkube</strong></h3>
-<p>This time we will see how to get started with <a href="https://gitkube.sh/">Gitkube</a>, it&rsquo;s a young project but it seems to work fine and it has an interesting approach compared to other alternatives, since it only relies on git and kubectl, other than that it&rsquo;s just a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRD</a> and a controller, so you end up with 2 pods in kube-system one for the controller and the other for gitkubed, gitkubed is in charge of cloning your repos and also build the docker images, it seems that the idea behind gitkube is for the daily use in a dev/test environment where you need to try your changes quickly and without hassle. You can find more <a href="https://github.com/hasura/gitkube-example">examples here</a>, also be sure to check their page and documentation if you like it or want to learn more.</p>
-<p>In the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, <em>but in this post be sure to use <em>minikube tunnel</em></em> if you configure gitkube with a load balancer (or if you configure any service type as load balancer):</p>
-<h3 id="lets-get-started">Let&rsquo;s get started</h3>
-<p>We&rsquo;re going to deploy or re-deploy our echo bot one more time but this time using gitkube.
-You can find the chat bot: <a href="https://techsquad.rocks/blog/go_echobot/">article here</a>, and the repo: <a href="https://github.com/kainlite/echobot/tree/gitkube">here</a></p>
-<p>First of all we need to install the gitkube binary in our machine and then the CRD in our kubernetes cluster:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl create -f https://storage.googleapis.com/gitkube/gitkube-setup-stable.yaml
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;remotes.gitkube.sh&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;gitkube&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;gitkube&#34;</span> created
-configmap <span style="color:#e6db74">&#34;gitkube-ci-conf&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;gitkubed&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;gitkube-controller&#34;</span> created
-
-$ kubectl --namespace kube-system expose deployment gitkubed --type<span style="color:#f92672">=</span>LoadBalancer --name<span style="color:#f92672">=</span>gitkubed
-service <span style="color:#e6db74">&#34;gitkubed&#34;</span> exposed</code></pre></div>
-Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing <code>gitkube install</code>.</p>
-<p>To install the gitkube binary, the easiest way is to do:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash</code></pre></div>
-This will download and copy the binary into: <code>/usr/local/bin</code>, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of <em>the internet</em>.</p>
-<p>Then we need to generate (and then create it in the cluster) a file called <code>remote.yaml</code> (or any name you like), it&rsquo;s necessary in order to tell gitkube how to deploy our application once we <code>git push</code> it:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gitkube remote generate -f remote.yaml
+$ kubectl --namespace kube-system expose deployment gitkubed --type<span style=color:#f92672>=</span>LoadBalancer --name<span style=color:#f92672>=</span>gitkubed
+service <span style=color:#e6db74>&#34;gitkubed&#34;</span> exposed</code></pre></div>Note that there are 2 ways to install gitkube into our cluster, using the manifests as displayed there or using the gitkube binary and doing <code>gitkube install</code>.</p><p>To install the gitkube binary, the easiest way is to do:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl https://raw.githubusercontent.com/hasura/gitkube/master/gimme.sh | sudo bash</code></pre></div>This will download and copy the binary into: <code>/usr/local/bin</code>, as a general rule I recommend reading whatever you are going to pipe into bash in your terminal to avoid potential dangers of <em>the internet</em>.</p><p>Then we need to generate (and then create it in the cluster) a file called <code>remote.yaml</code> (or any name you like), it&rsquo;s necessary in order to tell gitkube how to deploy our application once we <code>git push</code> it:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gitkube remote generate -f remote.yaml
 Remote name: minikube
 namespace: default
 SSH public key file: ~/.ssh/id_rsa.pub
@@ -489,65 +34,57 @@ Deployment name: echobot
 Container name: echobot
 Dockerfile path: Dockerfile
 Build context path: ./
-Add another container? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> Enter
-Add another deployment? <span style="color:#f92672">[</span>y/N<span style="color:#f92672">]</span> Enter</code></pre></div>
-And this will yield the following <code>remote.yaml</code> file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.</p>
-<p>The actual file <code>remote.yaml</code>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">apiVersion</span>: <span style="color:#ae81ff">gitkube.sh/v1alpha1</span>
-<span style="color:#f92672">kind</span>: <span style="color:#ae81ff">Remote</span>
-<span style="color:#f92672">metadata</span>:
-  <span style="color:#f92672">creationTimestamp</span>: <span style="color:#66d9ef">null</span>
-  <span style="color:#f92672">name</span>: <span style="color:#ae81ff">minikube</span>
-  <span style="color:#f92672">namespace</span>: <span style="color:#ae81ff">default</span>
-<span style="color:#f92672">spec</span>:
-  <span style="color:#f92672">authorizedKeys</span>:
-  - |<span style="color:#e6db74">
-</span><span style="color:#e6db74">    </span>    <span style="color:#ae81ff">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite</span>
-  <span style="color:#f92672">deployments</span>:
-  - <span style="color:#f92672">containers</span>:
-    - <span style="color:#f92672">dockerfile</span>: <span style="color:#ae81ff">Dockerfile</span>
-      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">echobot</span>
-      <span style="color:#f92672">path</span>: <span style="color:#ae81ff">./</span>
-    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">echobot</span>
-  <span style="color:#f92672">manifests</span>:
-    <span style="color:#f92672">helm</span>: {}
-    <span style="color:#f92672">path</span>: <span style="color:#e6db74">&#34;&#34;</span>
-  <span style="color:#f92672">registry</span>:
-    <span style="color:#f92672">credentials</span>:
-      <span style="color:#f92672">secretKeyRef</span>:
-        <span style="color:#f92672">key</span>: <span style="color:#e6db74">&#34;&#34;</span>
-      <span style="color:#f92672">secretRef</span>: <span style="color:#ae81ff">minikube-regsecret</span>
-    <span style="color:#f92672">url</span>: <span style="color:#ae81ff">docker.io/kainlite</span>
-<span style="color:#f92672">status</span>:
-  <span style="color:#f92672">remoteUrl</span>: <span style="color:#e6db74">&#34;&#34;</span>
-  <span style="color:#f92672">remoteUrlDesc</span>: <span style="color:#e6db74">&#34;&#34;</span></code></pre></div>
-There are a few details to have in mind here, the <em>deployment</em> name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&rsquo;m using a public image, so we don&rsquo;t need any of that. The <em>wizard</em> will let you choose and customize a few options for your deployment.</p>
-<p>The last step would be to finally create the resource:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gitkube remote create -f remote.yaml
-INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> remote minikube created
-INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> waiting <span style="color:#66d9ef">for</span> remote url
-INFO<span style="color:#f92672">[</span>0000<span style="color:#f92672">]</span> remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
+Add another container? <span style=color:#f92672>[</span>y/N<span style=color:#f92672>]</span> Enter
+Add another deployment? <span style=color:#f92672>[</span>y/N<span style=color:#f92672>]</span> Enter</code></pre></div>And this will yield the following <code>remote.yaml</code> file that we then need to create in our cluster as it is a custom resource it might look a bit different from the default kubernetes resources.</p><p>The actual file <code>remote.yaml</code>:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>gitkube.sh/v1alpha1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Remote</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>creationTimestamp</span>: <span style=color:#66d9ef>null</span>
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>minikube</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>default</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>authorizedKeys</span>:
+  - <span style=color:#e6db74>|
+</span><span style=color:#e6db74>    ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA8jvVVtDSVe25p2U2tDGQyVrnv3YcWjJc6AXTUMc0YNi+QDm6s+hMTwkf2wDRD7b6Y3kmgNSqLEE0EEgOkA69c8PgypM7AwbKZ51V9XcdPd7NyLabpomNiftpUwi01DGfBr25lJV9h2MHwsI/6w1izDvQyN7fAl+aTFgx+VGg1p4FygXWeBqm0n0DfHmBI7PDXxGbuFTJHUmRVS+HPd5Bi31S9Kq6eoodBWtV2MlVnZkpF67FWt2Xo2rFKVf4pZR4N1yjZKRsvIaI5i14LvtOoOqNQ+/tPMAFAif3AhldOW06fgnddYGi/iF+CatVttwNDWmClSOek9LO72UzR4s0xQ== gabriel@kainlite
+</span><span style=color:#e6db74>  deployments:
+</span><span style=color:#e6db74>  - containers:
+</span><span style=color:#e6db74>    - dockerfile: Dockerfile
+</span><span style=color:#e6db74>      name: echobot
+</span><span style=color:#e6db74>      path: ./
+</span><span style=color:#e6db74>    name: echobot
+</span><span style=color:#e6db74>  manifests:
+</span><span style=color:#e6db74>    helm: {}
+</span><span style=color:#e6db74>    path: &#34;&#34;
+</span><span style=color:#e6db74>  registry:
+</span><span style=color:#e6db74>    credentials:
+</span><span style=color:#e6db74>      secretKeyRef:
+</span><span style=color:#e6db74>        key: &#34;&#34;
+</span><span style=color:#e6db74>      secretRef: minikube-regsecret
+</span><span style=color:#e6db74>    url: docker.io/kainlite</span>
+<span style=color:#f92672>status</span>:
+  <span style=color:#f92672>remoteUrl</span>: <span style=color:#e6db74>&#34;&#34;</span>
+  <span style=color:#f92672>remoteUrlDesc</span>: <span style=color:#e6db74>&#34;&#34;</span></code></pre></div>There are a few details to have in mind here, the <em>deployment</em> name because gitkube expects a deployment to be already present with that name in order to update/upgrade it, the path to the Dockerfile, or helm chart, credentials for the registry if any, I&rsquo;m using a public image, so we don&rsquo;t need any of that. The <em>wizard</em> will let you choose and customize a few options for your deployment.</p><p>The last step would be to finally create the resource:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gitkube remote create -f remote.yaml
+INFO<span style=color:#f92672>[</span>0000<span style=color:#f92672>]</span> remote minikube created
+INFO<span style=color:#f92672>[</span>0000<span style=color:#f92672>]</span> waiting <span style=color:#66d9ef>for</span> remote url
+INFO<span style=color:#f92672>[</span>0000<span style=color:#f92672>]</span> remote url: ssh://default-minikube@10.98.213.202/~/git/default-minikube
 
-  <span style="color:#75715e"># add the remote to your git repo and push:</span>
+  <span style=color:#75715e># add the remote to your git repo and push:</span>
   git remote add minikube ssh://default-minikube@10.98.213.202/~/git/default-minikube
-  git push minikube master</code></pre></div></p>
-<p>After adding the new remote called <em>minikube</em>  we have everything ready to go, so let&rsquo;s test it and see what happens:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git push minikube master
-Enumerating objects: 10, <span style="color:#66d9ef">done</span>.
-Counting objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
-Delta compression using up to <span style="color:#ae81ff">8</span> threads
-Compressing objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, <span style="color:#66d9ef">done</span>.
-Writing objects: 100% <span style="color:#f92672">(</span>10/10<span style="color:#f92672">)</span>, 1.92 KiB | 1.92 MiB/s, <span style="color:#66d9ef">done</span>.
-Total <span style="color:#ae81ff">10</span> <span style="color:#f92672">(</span>delta 2<span style="color:#f92672">)</span>, reused <span style="color:#ae81ff">0</span> <span style="color:#f92672">(</span>delta 0<span style="color:#f92672">)</span>
-remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> 23:50:58 UTC 2019: Initialising
+  git push minikube master</code></pre></div></p><p>After adding the new remote called <em>minikube</em> we have everything ready to go, so let&rsquo;s test it and see what happens:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ git push minikube master
+Enumerating objects: 10, <span style=color:#66d9ef>done</span>.
+Counting objects: 100% <span style=color:#f92672>(</span>10/10<span style=color:#f92672>)</span>, <span style=color:#66d9ef>done</span>.
+Delta compression using up to <span style=color:#ae81ff>8</span> threads
+Compressing objects: 100% <span style=color:#f92672>(</span>10/10<span style=color:#f92672>)</span>, <span style=color:#66d9ef>done</span>.
+Writing objects: 100% <span style=color:#f92672>(</span>10/10<span style=color:#f92672>)</span>, 1.92 KiB | 1.92 MiB/s, <span style=color:#66d9ef>done</span>.
+Total <span style=color:#ae81ff>10</span> <span style=color:#f92672>(</span>delta 2<span style=color:#f92672>)</span>, reused <span style=color:#ae81ff>0</span> <span style=color:#f92672>(</span>delta 0<span style=color:#f92672>)</span>
+remote: Gitkube build system : Tue Jan  <span style=color:#ae81ff>1</span> 23:50:58 UTC 2019: Initialising
 remote:
 remote: Creating the build directory
-remote: Checking out <span style="color:#e6db74">&#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39;</span> to <span style="color:#e6db74">&#39;/home/default-minikube/build/default-minikube&#39;</span>
+remote: Checking out <span style=color:#e6db74>&#39;master:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#39;</span> to <span style=color:#e6db74>&#39;/home/default-minikube/build/default-minikube&#39;</span>
 remote:
-remote: <span style="color:#ae81ff">1</span> deployment<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> found in this repo
+remote: <span style=color:#ae81ff>1</span> deployment<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span> found in this repo
 remote: Trying to build them...
 remote:
-remote: Building Docker image <span style="color:#66d9ef">for</span> : echobot
+remote: Building Docker image <span style=color:#66d9ef>for</span> : echobot
 remote:
 remote: Building Docker image : docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
 remote: Sending build context to Docker daemon   7.68kB
@@ -556,13 +93,13 @@ remote:  ---&gt; 57915f96905a
 remote: Step 2/12 : WORKDIR /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 997342e65c61
-remote: Step 3/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app <span style="color:#f92672">&amp;&amp;</span>     apk add git <span style="color:#f92672">&amp;&amp;</span> apk add gcc musl-dev
+remote: Step 3/12 : RUN adduser -D -g <span style=color:#e6db74>&#39;app&#39;</span> app <span style=color:#f92672>&amp;&amp;</span>     chown -R app:app /app <span style=color:#f92672>&amp;&amp;</span>     apk add git <span style=color:#f92672>&amp;&amp;</span> apk add gcc musl-dev
 remote:  ---&gt; Using cache
 remote:  ---&gt; 7c6d8b9d1137
 remote: Step 4/12 : ADD . /app/
 remote:  ---&gt; Using cache
 remote:  ---&gt; ca751c2678c4
-remote: Step 5/12 : RUN go get -d -v ./... <span style="color:#f92672">&amp;&amp;</span> go build -o main . <span style="color:#f92672">&amp;&amp;</span> chown -R app:app /app /home/app
+remote: Step 5/12 : RUN go get -d -v ./... <span style=color:#f92672>&amp;&amp;</span> go build -o main . <span style=color:#f92672>&amp;&amp;</span> chown -R app:app /app /home/app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 16e44978b140
 remote: Step 6/12 : FROM golang:1.11.2-alpine
@@ -570,25 +107,25 @@ remote:  ---&gt; 57915f96905a
 remote: Step 7/12 : WORKDIR /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 997342e65c61
-remote: Step 8/12 : RUN adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span>     chown -R app:app /app
+remote: Step 8/12 : RUN adduser -D -g <span style=color:#e6db74>&#39;app&#39;</span> app <span style=color:#f92672>&amp;&amp;</span>     chown -R app:app /app
 remote:  ---&gt; Using cache
 remote:  ---&gt; 55f48da0f9ac
-remote: Step 9/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh
+remote: Step 9/12 : COPY --from<span style=color:#f92672>=</span>builder --chown<span style=color:#f92672>=</span>app /app/health_check.sh /app/health_check.sh
 remote:  ---&gt; Using cache
 remote:  ---&gt; 139250fd6c77
-remote: Step 10/12 : COPY --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main
+remote: Step 10/12 : COPY --from<span style=color:#f92672>=</span>builder --chown<span style=color:#f92672>=</span>app /app/main /app/main
 remote:  ---&gt; Using cache
 remote:  ---&gt; 2f1eb9f16e9f
 remote: Step 11/12 : USER app
 remote:  ---&gt; Using cache
 remote:  ---&gt; a72f27dccff2
-remote: Step 12/12 : CMD <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;/app/main&#34;</span><span style="color:#f92672">]</span>
+remote: Step 12/12 : CMD <span style=color:#f92672>[</span><span style=color:#e6db74>&#34;/app/main&#34;</span><span style=color:#f92672>]</span>
 remote:  ---&gt; Using cache
 remote:  ---&gt; 034275449e08
 remote: Successfully built 034275449e08
 remote: Successfully tagged kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95
 remote: pushing docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95 to registry
-remote: The push refers to repository <span style="color:#f92672">[</span>docker.io/kainlite/default-minikube-default.echobot-echobot<span style="color:#f92672">]</span>
+remote: The push refers to repository <span style=color:#f92672>[</span>docker.io/kainlite/default-minikube-default.echobot-echobot<span style=color:#f92672>]</span>
 remote: bba61bf193fe: Preparing
 remote: 3f0355bbea40: Preparing
 remote: 2ebcdc9e5e8f: Preparing
@@ -611,32 +148,29 @@ remote: 93448d8c2605: Layer already exists
 remote: cb9d0f9550f6: Layer already exists
 remote: df64d3292fd6: Layer already exists
 remote: c54f8a17910a: Layer already exists
-remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: <span style="color:#ae81ff">2198</span>
+remote: a0265bc5d0229dce0cffc985ca22ebe28532ee95: digest: sha256:3046c989fe1b1c4f700aaad875658c73ef571028f731546df38fb404ac22a9c9 size: <span style=color:#ae81ff>2198</span>
 remote:
 remote: Updating Kubernetes deployment: echobot
-remote: deployment <span style="color:#e6db74">&#34;echobot&#34;</span> image updated
-remote: deployment <span style="color:#e6db74">&#34;echobot&#34;</span> successfully rolled out
+remote: deployment <span style=color:#e6db74>&#34;echobot&#34;</span> image updated
+remote: deployment <span style=color:#e6db74>&#34;echobot&#34;</span> successfully rolled out
 remote: NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-remote: echobot   <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>         <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           31s
+remote: echobot   <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           31s
 remote:
 remote: Removing build directory
 remote:
-remote: Gitkube build system : Tue Jan  <span style="color:#ae81ff">1</span> 23:51:16 UTC 2019: Finished build
+remote: Gitkube build system : Tue Jan  <span style=color:#ae81ff>1</span> 23:51:16 UTC 2019: Finished build
 remote:
 remote:
 To ssh://10.98.213.202/~/git/default-minikube
- * <span style="color:#f92672">[</span>new branch<span style="color:#f92672">]</span>      master -&gt; master</code></pre></div>
-Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to <code>/home/default-minikube/build/default-minikube</code> and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to <a href="https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot">docker hub</a> and then updated the deployment that we already had in there for the echo bot.</p>
-<p>The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with <code>kubectl describe pod echobot-654cdbfb99-g4bwv</code>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl describe pod echobot-654cdbfb99-g4bwv
+ * <span style=color:#f92672>[</span>new branch<span style=color:#f92672>]</span>      master -&gt; master</code></pre></div>Quite a lot happened there, first of all gitkubed checked out the commit from the branch or HEAD that we pushed to <code>/home/default-minikube/build/default-minikube</code> and then started building and tagged the docker image with the corresponding SHA, after that it pushed the image to <a href=https://cloud.docker.com/u/kainlite/repository/docker/kainlite/default-minikube-default.echobot-echobot>docker hub</a> and then updated the deployment that we already had in there for the echo bot.</p><p>The last step would be to verify that the pod was actually updated, so we can inspect the pod configuration with <code>kubectl describe pod echobot-654cdbfb99-g4bwv</code>:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash> $ kubectl describe pod echobot-654cdbfb99-g4bwv
 Name:               echobot-654cdbfb99-g4bwv
 Namespace:          default
-Priority:           <span style="color:#ae81ff">0</span>
+Priority:           <span style=color:#ae81ff>0</span>
 PriorityClassName:  &lt;none&gt;
 Node:               minikube/10.0.2.15
-Start Time:         Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> 20:51:10 -0300
-Labels:             app<span style="color:#f92672">=</span>echobot
-                    pod-template-hash<span style="color:#f92672">=</span>654cdbfb99
+Start Time:         Tue, <span style=color:#ae81ff>01</span> Jan <span style=color:#ae81ff>2019</span> 20:51:10 -0300
+Labels:             app<span style=color:#f92672>=</span>echobot
+                    pod-template-hash<span style=color:#f92672>=</span>654cdbfb99
 Annotations:        &lt;none&gt;
 Status:             Running
 IP:                 172.17.0.9
@@ -649,14 +183,14 @@ Containers:
     Port:           &lt;none&gt;
     Host Port:      &lt;none&gt;
     State:          Running
-      Started:      Tue, <span style="color:#ae81ff">01</span> Jan <span style="color:#ae81ff">2019</span> 20:51:11 -0300
+      Started:      Tue, <span style=color:#ae81ff>01</span> Jan <span style=color:#ae81ff>2019</span> 20:51:11 -0300
     Ready:          True
-    Restart Count:  <span style="color:#ae81ff">0</span>
-    Liveness:       exec <span style="color:#f92672">[</span>/bin/sh -c /app/health_check.sh<span style="color:#f92672">]</span> delay<span style="color:#f92672">=</span>0s timeout<span style="color:#f92672">=</span>1s period<span style="color:#f92672">=</span>10s <span style="color:#75715e">#success=1 #failure=3</span>
+    Restart Count:  <span style=color:#ae81ff>0</span>
+    Liveness:       exec <span style=color:#f92672>[</span>/bin/sh -c /app/health_check.sh<span style=color:#f92672>]</span> delay<span style=color:#f92672>=</span>0s timeout<span style=color:#f92672>=</span>1s period<span style=color:#f92672>=</span>10s <span style=color:#75715e>#success=1 #failure=3</span>
     Environment:
       SLACK_API_TOKEN:  really_long_token
     Mounts:
-      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx <span style="color:#f92672">(</span>ro<span style="color:#f92672">)</span>
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ks4jx <span style=color:#f92672>(</span>ro<span style=color:#f92672>)</span>
 Conditions:
   Type              Status
   Initialized       True
@@ -665,230 +199,20 @@ Conditions:
   PodScheduled      True
 Volumes:
   default-token-ks4jx:
-    Type:        Secret <span style="color:#f92672">(</span>a volume populated by a Secret<span style="color:#f92672">)</span>
+    Type:        Secret <span style=color:#f92672>(</span>a volume populated by a Secret<span style=color:#f92672>)</span>
     SecretName:  default-token-ks4jx
     Optional:    false
 QoS Class:       BestEffort
 Node-Selectors:  &lt;none&gt;
-Tolerations:     node.kubernetes.io/not-ready:NoExecute <span style="color:#66d9ef">for</span> 300s
-                 node.kubernetes.io/unreachable:NoExecute <span style="color:#66d9ef">for</span> 300s
+Tolerations:     node.kubernetes.io/not-ready:NoExecute <span style=color:#66d9ef>for</span> 300s
+                 node.kubernetes.io/unreachable:NoExecute <span style=color:#66d9ef>for</span> 300s
 Events:
   Type    Reason     Age   From               Message
   ----    ------     ----  ----               -------
   Normal  Scheduled  39m   default-scheduler  Successfully assigned default/echobot-654cdbfb99-g4bwv to minikube
-  Normal  Pulled     39m   kubelet, minikube  Container image <span style="color:#e6db74">&#34;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#34;</span> already present on machine
+  Normal  Pulled     39m   kubelet, minikube  Container image <span style=color:#e6db74>&#34;docker.io/kainlite/default-minikube-default.echobot-echobot:a0265bc5d0229dce0cffc985ca22ebe28532ee95&#34;</span> already present on machine
   Normal  Created    39m   kubelet, minikube  Created container
-  Normal  Started    39m   kubelet, minikube  Started container</code></pre></div>
-As we can see the image is the one that got built from our <code>git push</code> and everything is working as expected.</p>
-<p>And that&rsquo;s it for now, I think this tool has a lot of potential, it&rsquo;s simple, nice and fast.</p>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/getting_started_with_gitkube/" title="Getting started with gitkube" target="_blank" rel="external">https://techsquad.rocks/blog/getting_started_with_gitkube/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="prev">
-                <a href="https://techsquad.rocks/blog/go_echobot/" title="Go echo bot"><i
-                        class="icon icon-angle-left"
-                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://techsquad.rocks/blog/getting_started_with_skaffold/"
-                    title="Getting started with skaffold"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_gitkube\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/getting_started_with_gitkube\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+  Normal  Started    39m   kubelet, minikube  Started container</code></pre></div>As we can see the image is the one that got built from our <code>git push</code> and everything is working as expected.</p><p>And that&rsquo;s it for now, I think this tool has a lot of potential, it&rsquo;s simple, nice and fast.</p><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also, you can check the source code and changes in the <a href=https://github.com/kainlite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/getting_started_with_gitkube/ title="Getting started with gitkube" target=_blank rel=external>https://techsquad.rocks/blog/getting_started_with_gitkube/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=prev><a href=https://techsquad.rocks/blog/go_echobot/ title="Go echo bot"><i class="icon icon-angle-left" aria-hidden=true></i><span>&nbsp;&nbsp;Older</span></a></li><li class=next><a href=https://techsquad.rocks/blog/getting_started_with_skaffold/ title="Getting started with skaffold"><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/getting_started_with_gitkube\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/getting_started_with_gitkube\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

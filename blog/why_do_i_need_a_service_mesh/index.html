@@ -1,915 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Why do I need a service mesh? - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Why do I need a service mesh? - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
 In this example I will be using Digital Ocean (that&amp;rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
-Istio So&amp;hellip; You might be wondering some of those questions: why Istio?" />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>Why do I need a service mesh? - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Why do I need a service mesh?" />
-<meta property="og:description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
+Istio So&amp;hellip; You might be wondering some of those questions: why Istio?"><meta name=generator content="Hugo 0.75.1 with theme pure"><title>Why do I need a service mesh? - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="Why do I need a service mesh?"><meta property="og:description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
 In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
-Istio So&hellip; You might be wondering some of those questions: why Istio?" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="article:published_time" content="2019-01-06T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-01-06T00:00:00+00:00" />
-<meta itemprop="name" content="Why do I need a service mesh?">
-<meta itemprop="description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
+Istio So&mldr; You might be wondering some of those questions: why Istio?"><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/"><meta property="og:image" content="https://techsquad.rocks/img/logo.png"><meta property="article:published_time" content="2019-01-06T00:00:00+00:00"><meta property="article:modified_time" content="2019-01-06T00:00:00+00:00"><meta itemprop=name content="Why do I need a service mesh?"><meta itemprop=description content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
 In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
-Istio So&hellip; You might be wondering some of those questions: why Istio?">
-<meta itemprop="datePublished" content="2019-01-06T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-01-06T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1678">
-<meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
-
-
-
-<meta itemprop="keywords" content="istio,service-mesh,kubernetes," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
-
-<meta name="twitter:title" content="Why do I need a service mesh?"/>
-<meta name="twitter:description" content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
+Istio So&mldr; You might be wondering some of those questions: why Istio?"><meta itemprop=datePublished content="2019-01-06T00:00:00+00:00"><meta itemprop=dateModified content="2019-01-06T00:00:00+00:00"><meta itemprop=wordCount content="1678"><meta itemprop=image content="https://techsquad.rocks/img/logo.png"><meta itemprop=keywords content="istio,service-mesh,kubernetes,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/logo.png"><meta name=twitter:title content="Why do I need a service mesh?"><meta name=twitter:description content="Introduction This time we will see how to get started with Istio and why do we need to use a service mesh.
 In this example I will be using Digital Ocean (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.
-Istio So&hellip; You might be wondering some of those questions: why Istio?"/>
-
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
-
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/why_do_i_need_a_service_mesh/"
-    >Why do I need a service mesh?</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/" class="article-date">
-  <time datetime="2019-01-06 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-01-06</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/service-mesh/"> service-mesh </a>
-  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/istio/"> istio </a>
-    <a class="article-tag-link" href="/tags/service-mesh/"> service-mesh </a>
-    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/why_do_i_need_a_service_mesh/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1678 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 8 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="introduction">Introduction</h3>
-<p>This time we will see how to get started with <a href="https://istio.io/">Istio</a> and why do we need to use a service mesh.</p>
-<p>In this example I will be using <a href="https://m.do.co/c/01d040b789de">Digital Ocean</a> (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</p>
-<h3 id="istio">Istio</h3>
-<p>So&hellip; You might be wondering some of those questions: why Istio? Why do I need a service mesh?, when do I need that? And I want to help you with some answers:</p>
-<p>Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.</p>
-<p>When do I need to have one? This one can be tricky and will depend on your environment, but the moment that you start experiencing network issues between your microservices would be a good moment to do it, it could be done before of course, but it will highly depend on the project, if you can start early with it the better and easier to implement will be, always have in mind the benefits of added security, observability and likely performance improvement.</p>
-<p>Why Istio? This will be a small series of service meshes for kubernetes and I decided to start with Istio.</p>
-<p>In case you don&rsquo;t agree with my explanations that&rsquo;s ok, this is a TL;DR version and also I simplified things a lot, for a more complete overview you can check <a href="https://blog.buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/">this</a> article or <a href="https://www.oreilly.com/ideas/do-you-need-a-service-mesh">this one</a>.</p>
-<h3 id="lets-get-started">Let&rsquo;s get started</h3>
-<p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href="https://istio.io/docs/setup/kubernetes/helm-install/">more info</a>):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -L https://git.io/getLatestIstio | sh -</code></pre></div>
-This will download and extract the latest release, in this case 1.0.5 at this moment.</p>
-<p>So let&rsquo;s install Istio&hellip; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled<span style="color:#f92672">=</span>true &gt; $HOME/istio.yaml
+Istio So&mldr; You might be wondering some of those questions: why Istio?"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/why_do_i_need_a_service_mesh/>Why do I need a service mesh?</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/ class=article-date><time datetime="2019-01-06 00:00:00 +0000 UTC" itemprop=datePublished>2019-01-06</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/service-mesh/>service-mesh</a>
+<a class=article-category-link href=/categories/kubernetes/>kubernetes</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/istio/>istio</a>
+<a class=article-tag-link href=/tags/service-mesh/>service-mesh</a>
+<a class=article-tag-link href=/tags/kubernetes/>kubernetes</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/why_do_i_need_a_service_mesh/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1678 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 8 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=introduction>Introduction</h3><p>This time we will see how to get started with <a href=https://istio.io/>Istio</a> and why do we need to use a service mesh.</p><p>In this example I will be using <a href=https://m.do.co/c/01d040b789de>Digital Ocean</a> (that&rsquo;s my referral link), note that I do not have any association with Digital Ocean but they give you $100 to test their products for 60 days, if you spend $25 I get another $25.</p><h3 id=istio>Istio</h3><p>So&mldr; You might be wondering some of those questions: why Istio? Why do I need a service mesh?, when do I need that? And I want to help you with some answers:</p><p>Why do I need a service mesh? Basically because in cloud environments you cannot trust that the network will be reliable 100% of the time, that the latency will be low, that the network is secure and the bandwidth is infinite, the service mesh is just an extra layer to help microservices communicate with each other safely and reliably.</p><p>When do I need to have one? This one can be tricky and will depend on your environment, but the moment that you start experiencing network issues between your microservices would be a good moment to do it, it could be done before of course, but it will highly depend on the project, if you can start early with it the better and easier to implement will be, always have in mind the benefits of added security, observability and likely performance improvement.</p><p>Why Istio? This will be a small series of service meshes for kubernetes and I decided to start with Istio.</p><p>In case you don&rsquo;t agree with my explanations that&rsquo;s ok, this is a TL;DR version and also I simplified things a lot, for a more complete overview you can check <a href=https://blog.buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/>this</a> article or <a href=https://www.oreilly.com/ideas/do-you-need-a-service-mesh>this one</a>.</p><h3 id=lets-get-started>Let&rsquo;s get started</h3><p>First of all we need to download and install Istio in our cluster, the recommended way of doing it is using helm (In this case I will be using the no Tiller alternative, but it could be done with helm install as well, check here for <a href=https://istio.io/docs/setup/kubernetes/helm-install/>more info</a>):<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ curl -L https://git.io/getLatestIstio | sh -</code></pre></div>This will download and extract the latest release, in this case 1.0.5 at this moment.</p><p>So let&rsquo;s install Istio&mldr; only pay attention to the first 3 commands, then you can skip until the end of the code block, I post all the output because I like full examples :)<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>istio-1.0.5 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set grafana.enabled<span style=color:#f92672>=</span>true &gt; $HOME/istio.yaml
 istio-1.0.5 $ kubectl create namespace istio-system
-namespace <span style="color:#e6db74">&#34;istio-system&#34;</span> created
+namespace <span style=color:#e6db74>&#34;istio-system&#34;</span> created
 
 istio-1.0.5 $ kubectl apply -f $HOME/istio.yaml
-configmap <span style="color:#e6db74">&#34;istio-galley-configuration&#34;</span> created
-configmap <span style="color:#e6db74">&#34;istio-statsd-prom-bridge&#34;</span> created
-configmap <span style="color:#e6db74">&#34;prometheus&#34;</span> created
-configmap <span style="color:#e6db74">&#34;istio-security-custom-resources&#34;</span> created
-configmap <span style="color:#e6db74">&#34;istio&#34;</span> created
-configmap <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-galley-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-egressgateway-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-ingressgateway-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-mixer-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-pilot-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;prometheus&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-cleanup-secrets-service-account&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-cleanup-secrets-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-cleanup-secrets-istio-system&#34;</span> created
-job.batch <span style="color:#e6db74">&#34;istio-cleanup-secrets&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-security-post-install-account&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-security-post-install-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-security-post-install-role-binding-istio-system&#34;</span> created
-job.batch <span style="color:#e6db74">&#34;istio-security-post-install&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-citadel-service-account&#34;</span> created
-serviceaccount <span style="color:#e6db74">&#34;istio-sidecar-injector-service-account&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;virtualservices.networking.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;destinationrules.networking.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;serviceentries.networking.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;gateways.networking.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;envoyfilters.networking.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;httpapispecbindings.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;httpapispecs.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotaspecbindings.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotaspecs.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rules.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;attributemanifests.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;bypasses.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;circonuses.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;deniers.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;fluentds.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;kubernetesenvs.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;listcheckers.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;memquotas.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;noops.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;opas.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;prometheuses.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rbacs.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;redisquotas.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicecontrols.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;signalfxs.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;solarwindses.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;stackdrivers.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;statsds.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;stdios.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;apikeys.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;authorizations.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;checknothings.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;kuberneteses.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;listentries.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;logentries.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;edges.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;metrics.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;quotas.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;reportnothings.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicecontrolreports.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;tracespans.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;rbacconfigs.rbac.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;serviceroles.rbac.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;servicerolebindings.rbac.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;adapters.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;instances.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;templates.config.istio.io&#34;</span> created
-customresourcedefinition.apiextensions.k8s.io <span style="color:#e6db74">&#34;handlers.config.istio.io&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-galley-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-egressgateway-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-ingressgateway-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-mixer-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-pilot-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;prometheus-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-citadel-istio-system&#34;</span> created
-clusterrole.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-galley-admin-role-binding-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-egressgateway-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-ingressgateway-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-mixer-admin-role-binding-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-pilot-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;prometheus-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-citadel-istio-system&#34;</span> created
-clusterrolebinding.rbac.authorization.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector-admin-role-binding-istio-system&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-galley&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
-service <span style="color:#e6db74">&#34;prometheus&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-citadel&#34;</span> created
-service <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-galley&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;prometheus&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-citadel&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
-gateway.networking.istio.io <span style="color:#e6db74">&#34;istio-autogenerated-k8s-ingress&#34;</span> created
-horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-egressgateway&#34;</span> created
-horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-ingressgateway&#34;</span> created
-horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
-horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created
-horizontalpodautoscaler.autoscaling <span style="color:#e6db74">&#34;istio-pilot&#34;</span> created
-mutatingwebhookconfiguration.admissionregistration.k8s.io <span style="color:#e6db74">&#34;istio-sidecar-injector&#34;</span> created
-attributemanifest.config.istio.io <span style="color:#e6db74">&#34;istioproxy&#34;</span> created
-attributemanifest.config.istio.io <span style="color:#e6db74">&#34;kubernetes&#34;</span> created
-stdio.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
-logentry.config.istio.io <span style="color:#e6db74">&#34;accesslog&#34;</span> created
-logentry.config.istio.io <span style="color:#e6db74">&#34;tcpaccesslog&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;stdio&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;stdiotcp&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;requestcount&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;requestduration&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;requestsize&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;responsesize&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;tcpbytesent&#34;</span> created
-metric.config.istio.io <span style="color:#e6db74">&#34;tcpbytereceived&#34;</span> created
-prometheus.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;promhttp&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;promtcp&#34;</span> created
-kubernetesenv.config.istio.io <span style="color:#e6db74">&#34;handler&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;kubeattrgenrulerule&#34;</span> created
-rule.config.istio.io <span style="color:#e6db74">&#34;tcpkubeattrgenrulerule&#34;</span> created
-kubernetes.config.istio.io <span style="color:#e6db74">&#34;attributes&#34;</span> created
-destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-policy&#34;</span> created
-destinationrule.networking.istio.io <span style="color:#e6db74">&#34;istio-telemetry&#34;</span> created</code></pre></div>
-WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p>
-<p>So lets see what&rsquo;s running and what that means:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods -n istio-system
+configmap <span style=color:#e6db74>&#34;istio-galley-configuration&#34;</span> created
+configmap <span style=color:#e6db74>&#34;istio-statsd-prom-bridge&#34;</span> created
+configmap <span style=color:#e6db74>&#34;prometheus&#34;</span> created
+configmap <span style=color:#e6db74>&#34;istio-security-custom-resources&#34;</span> created
+configmap <span style=color:#e6db74>&#34;istio&#34;</span> created
+configmap <span style=color:#e6db74>&#34;istio-sidecar-injector&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-galley-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-egressgateway-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-ingressgateway-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-mixer-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-pilot-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;prometheus&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-cleanup-secrets-service-account&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-cleanup-secrets-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-cleanup-secrets-istio-system&#34;</span> created
+job.batch <span style=color:#e6db74>&#34;istio-cleanup-secrets&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-security-post-install-account&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-security-post-install-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-security-post-install-role-binding-istio-system&#34;</span> created
+job.batch <span style=color:#e6db74>&#34;istio-security-post-install&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-citadel-service-account&#34;</span> created
+serviceaccount <span style=color:#e6db74>&#34;istio-sidecar-injector-service-account&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;virtualservices.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;destinationrules.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;serviceentries.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;gateways.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;envoyfilters.networking.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;httpapispecbindings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;httpapispecs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;quotaspecbindings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;quotaspecs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;rules.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;attributemanifests.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;bypasses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;circonuses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;deniers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;fluentds.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;kubernetesenvs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;listcheckers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;memquotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;noops.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;opas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;prometheuses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;rbacs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;redisquotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;servicecontrols.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;signalfxs.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;solarwindses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;stackdrivers.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;statsds.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;stdios.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;apikeys.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;authorizations.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;checknothings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;kuberneteses.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;listentries.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;logentries.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;edges.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;metrics.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;quotas.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;reportnothings.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;servicecontrolreports.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;tracespans.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;rbacconfigs.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;serviceroles.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;servicerolebindings.rbac.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;adapters.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;instances.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;templates.config.istio.io&#34;</span> created
+customresourcedefinition.apiextensions.k8s.io <span style=color:#e6db74>&#34;handlers.config.istio.io&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-galley-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-egressgateway-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-ingressgateway-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-mixer-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-pilot-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;prometheus-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-citadel-istio-system&#34;</span> created
+clusterrole.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-sidecar-injector-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-galley-admin-role-binding-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-egressgateway-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-ingressgateway-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-mixer-admin-role-binding-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-pilot-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;prometheus-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-citadel-istio-system&#34;</span> created
+clusterrolebinding.rbac.authorization.k8s.io <span style=color:#e6db74>&#34;istio-sidecar-injector-admin-role-binding-istio-system&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-galley&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-egressgateway&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-ingressgateway&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-policy&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-telemetry&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-pilot&#34;</span> created
+service <span style=color:#e6db74>&#34;prometheus&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-citadel&#34;</span> created
+service <span style=color:#e6db74>&#34;istio-sidecar-injector&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-galley&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-egressgateway&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-ingressgateway&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-policy&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-telemetry&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-pilot&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;prometheus&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-citadel&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;istio-sidecar-injector&#34;</span> created
+gateway.networking.istio.io <span style=color:#e6db74>&#34;istio-autogenerated-k8s-ingress&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style=color:#e6db74>&#34;istio-egressgateway&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style=color:#e6db74>&#34;istio-ingressgateway&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style=color:#e6db74>&#34;istio-policy&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style=color:#e6db74>&#34;istio-telemetry&#34;</span> created
+horizontalpodautoscaler.autoscaling <span style=color:#e6db74>&#34;istio-pilot&#34;</span> created
+mutatingwebhookconfiguration.admissionregistration.k8s.io <span style=color:#e6db74>&#34;istio-sidecar-injector&#34;</span> created
+attributemanifest.config.istio.io <span style=color:#e6db74>&#34;istioproxy&#34;</span> created
+attributemanifest.config.istio.io <span style=color:#e6db74>&#34;kubernetes&#34;</span> created
+stdio.config.istio.io <span style=color:#e6db74>&#34;handler&#34;</span> created
+logentry.config.istio.io <span style=color:#e6db74>&#34;accesslog&#34;</span> created
+logentry.config.istio.io <span style=color:#e6db74>&#34;tcpaccesslog&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;stdio&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;stdiotcp&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;requestcount&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;requestduration&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;requestsize&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;responsesize&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;tcpbytesent&#34;</span> created
+metric.config.istio.io <span style=color:#e6db74>&#34;tcpbytereceived&#34;</span> created
+prometheus.config.istio.io <span style=color:#e6db74>&#34;handler&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;promhttp&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;promtcp&#34;</span> created
+kubernetesenv.config.istio.io <span style=color:#e6db74>&#34;handler&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;kubeattrgenrulerule&#34;</span> created
+rule.config.istio.io <span style=color:#e6db74>&#34;tcpkubeattrgenrulerule&#34;</span> created
+kubernetes.config.istio.io <span style=color:#e6db74>&#34;attributes&#34;</span> created
+destinationrule.networking.istio.io <span style=color:#e6db74>&#34;istio-policy&#34;</span> created
+destinationrule.networking.istio.io <span style=color:#e6db74>&#34;istio-telemetry&#34;</span> created</code></pre></div>WOAH, What did just happen?, a lot of new resources were created, basically we just generated the manifest from the helm chart and applied that to our cluster.</p><p>So lets see what&rsquo;s running and what that means:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl get pods -n istio-system
 NAME                                      READY     STATUS      RESTARTS   AGE
-istio-citadel-856f994c58-l96p8            1/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-cleanup-secrets-xqqj4               0/1       Completed   <span style="color:#ae81ff">0</span>          3m
-istio-egressgateway-5649fcf57-7zwkh       1/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-galley-7665f65c9c-tzn7d             1/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-ingressgateway-6755b9bbf6-bh84r     1/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-pilot-56855d999b-c4cp5              2/2       Running     <span style="color:#ae81ff">0</span>          3m
-istio-policy-6fcb6d655f-9544z             2/2       Running     <span style="color:#ae81ff">0</span>          3m
-istio-sidecar-injector-768c79f7bf-th8zh   1/1       Running     <span style="color:#ae81ff">0</span>          3m
-istio-telemetry-664d896cf5-jdcwv          2/2       Running     <span style="color:#ae81ff">0</span>          3m
-prometheus-76b7745b64-f8jxn               1/1       Running     <span style="color:#ae81ff">0</span>          3m</code></pre></div>
-A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href="https://github.com/istio/istio">github</a>.</p>
-<p><strong>Envoy</strong>: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
-Note: The service mesh is not an overlay network. It simplifies and enhances how microservices in an application talk to each other over the network provided by the underlying platform.</p>
-<p><strong>Mixer</strong>: Central component that is leveraged by the proxies and microservices to enforce policies such as authorization, rate limits, quotas, authentication, request tracing and telemetry collection.</p>
-<p><strong>Pilot</strong>: A component responsible for configuring the proxies at runtime.</p>
-<p><strong>Citadel</strong>: A centralized component responsible for certificate issuance and rotation.</p>
-<p><strong>Node Agent</strong>: A per-node component responsible for certificate issuance and rotation.</p>
-<p><strong>Galley</strong>: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.</p>
-<p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href="https://istio.io/docs/examples/bookinfo/">test application</a> and check it:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:~/istio-1.0.5/bin&#34;</span>
-istio-1.0.5/samples/bookinfo $ kubectl apply -f &lt;<span style="color:#f92672">(</span>istioctl kube-inject -f platform/kube/bookinfo.yaml<span style="color:#f92672">)</span>
-service <span style="color:#e6db74">&#34;details&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;details-v1&#34;</span> created
-service <span style="color:#e6db74">&#34;ratings&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;ratings-v1&#34;</span> created
-service <span style="color:#e6db74">&#34;reviews&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;reviews-v1&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;reviews-v2&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;reviews-v3&#34;</span> created
-service <span style="color:#e6db74">&#34;productpage&#34;</span> created
-deployment.extensions <span style="color:#e6db74">&#34;productpage-v1&#34;</span> created</code></pre></div>
-That command not only deployed the application but injected the Istio sidecar to each pod:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get pods
+istio-citadel-856f994c58-l96p8            1/1       Running     <span style=color:#ae81ff>0</span>          3m
+istio-cleanup-secrets-xqqj4               0/1       Completed   <span style=color:#ae81ff>0</span>          3m
+istio-egressgateway-5649fcf57-7zwkh       1/1       Running     <span style=color:#ae81ff>0</span>          3m
+istio-galley-7665f65c9c-tzn7d             1/1       Running     <span style=color:#ae81ff>0</span>          3m
+istio-ingressgateway-6755b9bbf6-bh84r     1/1       Running     <span style=color:#ae81ff>0</span>          3m
+istio-pilot-56855d999b-c4cp5              2/2       Running     <span style=color:#ae81ff>0</span>          3m
+istio-policy-6fcb6d655f-9544z             2/2       Running     <span style=color:#ae81ff>0</span>          3m
+istio-sidecar-injector-768c79f7bf-th8zh   1/1       Running     <span style=color:#ae81ff>0</span>          3m
+istio-telemetry-664d896cf5-jdcwv          2/2       Running     <span style=color:#ae81ff>0</span>          3m
+prometheus-76b7745b64-f8jxn               1/1       Running     <span style=color:#ae81ff>0</span>          3m</code></pre></div>A few minutes later, almost everything is up, but what&rsquo;s all that? Istio has several components, see the following overview extracted from <a href=https://github.com/istio/istio>github</a>.</p><p><strong>Envoy</strong>: Sidecar proxies per microservice to handle ingress/egress traffic between services in the cluster and from a service to external services. The proxies form a secure microservice mesh providing a rich set of functions like discovery, rich layer-7 routing, circuit breakers, policy enforcement and telemetry recording/reporting functions.
+Note: The service mesh is not an overlay network. It simplifies and enhances how microservices in an application talk to each other over the network provided by the underlying platform.</p><p><strong>Mixer</strong>: Central component that is leveraged by the proxies and microservices to enforce policies such as authorization, rate limits, quotas, authentication, request tracing and telemetry collection.</p><p><strong>Pilot</strong>: A component responsible for configuring the proxies at runtime.</p><p><strong>Citadel</strong>: A centralized component responsible for certificate issuance and rotation.</p><p><strong>Node Agent</strong>: A per-node component responsible for certificate issuance and rotation.</p><p><strong>Galley</strong>: Central component for validating, ingesting, aggregating, transforming and distributing config within Istio.</p><p>Ok so, a lot of new things were installed but how do I know it&rsquo;s working? let&rsquo;s deploy a <a href=https://istio.io/docs/examples/bookinfo/>test application</a> and check it:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ export PATH<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span>$PATH<span style=color:#e6db74>:~/istio-1.0.5/bin&#34;</span>
+istio-1.0.5/samples/bookinfo $ kubectl apply -f &lt;<span style=color:#f92672>(</span>istioctl kube-inject -f platform/kube/bookinfo.yaml<span style=color:#f92672>)</span>
+service <span style=color:#e6db74>&#34;details&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;details-v1&#34;</span> created
+service <span style=color:#e6db74>&#34;ratings&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;ratings-v1&#34;</span> created
+service <span style=color:#e6db74>&#34;reviews&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;reviews-v1&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;reviews-v2&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;reviews-v3&#34;</span> created
+service <span style=color:#e6db74>&#34;productpage&#34;</span> created
+deployment.extensions <span style=color:#e6db74>&#34;productpage-v1&#34;</span> created</code></pre></div>That command not only deployed the application but injected the Istio sidecar to each pod:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl get pods
 NAME                              READY     STATUS    RESTARTS   AGE
-details-v1-8bd954dbb-zhrqq        2/2       Running   <span style="color:#ae81ff">0</span>          2m
-productpage-v1-849c786f96-kpfx9   2/2       Running   <span style="color:#ae81ff">0</span>          2m
-ratings-v1-68d648d6fd-w68qb       2/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v1-b4c984bdc-9s6j5        2/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v2-575446d5db-r6kwc       2/2       Running   <span style="color:#ae81ff">0</span>          2m
-reviews-v3-74458c4889-kr4wb       2/2       Running   <span style="color:#ae81ff">0</span>          2m</code></pre></div>
-As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection">automatic sidecar injection</a>.</p>
-<p>Also all services are running:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ kubectl get services
-NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>    AGE
+details-v1-8bd954dbb-zhrqq        2/2       Running   <span style=color:#ae81ff>0</span>          2m
+productpage-v1-849c786f96-kpfx9   2/2       Running   <span style=color:#ae81ff>0</span>          2m
+ratings-v1-68d648d6fd-w68qb       2/2       Running   <span style=color:#ae81ff>0</span>          2m
+reviews-v1-b4c984bdc-9s6j5        2/2       Running   <span style=color:#ae81ff>0</span>          2m
+reviews-v2-575446d5db-r6kwc       2/2       Running   <span style=color:#ae81ff>0</span>          2m
+reviews-v3-74458c4889-kr4wb       2/2       Running   <span style=color:#ae81ff>0</span>          2m</code></pre></div>As we can see each pod has 2 containers in it, the app container and istio-proxy. You can also configure <a href=https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection>automatic sidecar injection</a>.</p><p>Also all services are running:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ kubectl get services
+NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span>    AGE
 details       ClusterIP   10.245.134.179   &lt;none&gt;        9080/TCP   3m
 kubernetes    ClusterIP   10.245.0.1       &lt;none&gt;        443/TCP    3d
 productpage   ClusterIP   10.245.32.221    &lt;none&gt;        9080/TCP   3m
 ratings       ClusterIP   10.245.159.112   &lt;none&gt;        9080/TCP   3m
-reviews       ClusterIP   10.245.77.125    &lt;none&gt;        9080/TCP   3m</code></pre></div></p>
-<p>But how do I access the app?
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
-gateway.networking.istio.io <span style="color:#e6db74">&#34;bookinfo-gateway&#34;</span> created
-virtualservice.networking.istio.io <span style="color:#e6db74">&#34;bookinfo&#34;</span> created</code></pre></div>
-In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p>
-<p>After that we need to set some environment variables to fetch the LB ip, port, etc.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ export INGRESS_HOST<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span style="color:#66d9ef">)</span>
-$ export INGRESS_PORT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span><span style="color:#66d9ef">)</span>
-$ export SECURE_INGRESS_PORT<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{.spec.ports[?(@.name==&#34;https&#34;)].port}&#39;</span><span style="color:#66d9ef">)</span>
-$ export GATEWAY_URL<span style="color:#f92672">=</span>$INGRESS_HOST:$INGRESS_PORT
+reviews       ClusterIP   10.245.77.125    &lt;none&gt;        9080/TCP   3m</code></pre></div></p><p>But how do I access the app?<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>istio-1.0.5/samples/bookinfo $ kubectl apply -f networking/bookinfo-gateway.yaml
+gateway.networking.istio.io <span style=color:#e6db74>&#34;bookinfo-gateway&#34;</span> created
+virtualservice.networking.istio.io <span style=color:#e6db74>&#34;bookinfo&#34;</span> created</code></pre></div>In Istio a Gateway configures a load balancer for HTTP/TCP traffic, most commonly operating at the edge of the mesh to enable ingress traffic for an application (L4-L6).</p><p>After that we need to set some environment variables to fetch the LB ip, port, etc.<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ export INGRESS_HOST<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.status.loadBalancer.ingress[0].ip}&#39;</span><span style=color:#66d9ef>)</span>
+$ export INGRESS_PORT<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.spec.ports[?(@.name==&#34;http2&#34;)].port}&#39;</span><span style=color:#66d9ef>)</span>
+$ export SECURE_INGRESS_PORT<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n istio-system get service istio-ingressgateway -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.spec.ports[?(@.name==&#34;https&#34;)].port}&#39;</span><span style=color:#66d9ef>)</span>
+$ export GATEWAY_URL<span style=color:#f92672>=</span>$INGRESS_HOST:$INGRESS_PORT
 
-curl -o /dev/null -s -w <span style="color:#e6db74">&#34;%{http_code}\n&#34;</span> http://<span style="color:#e6db74">${</span>GATEWAY_URL<span style="color:#e6db74">}</span>/productpage</code></pre></div>
-If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:
-<figure class="zoom">
-    <img src="/img/productpage-example.png" width="100%"/> 
-</figure>
-</p>
-<p>Also you can use <a href="https://grafana.com/">Grafana</a> to check some metrics about the service usage, etc. (You don&rsquo;t have to worry about prometheus since it&rsquo;s enabled by default). Spin up the port-forward so we don&rsquo;t have to expose grafana: to the world with: <code>kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000</code>, and then <code>open http://localhost:3000</code>.</p>
-<p>As a general advice check all the settings that Istio offers try the ones that you think that could be useful for your project and always measure and compare.</p>
-<h3 id="notes">Notes</h3>
-<ul>
-<li>Do mind that <strong>pilot</strong> pod requires at least 4 Gbs of memory, so you will need at least one node with that amount of memory.</li>
-<li>You can check the load balancer status under: Manage -&gt; Networking -&gt; Load balancers. And if everything is okay your LB will say Healthy.</li>
-<li>Grafana is not enabled by default but we do enable it via helm with <code>--set grafana.enabled=true</code>, if you want to check all the possible options <a href="https://istio.io/docs/reference/config/installation-options/">go here</a>, if you are using more than two <code>--set</code> options I would recommend creating a <code>values.yaml</code> file and use that instead.</li>
-<li>Istio is a big beast and should be treated carefully, there is a lot more to learn and test out. We only scratched the surface here.</li>
-</ul>
-<h3 id="upcoming-posts">Upcoming posts</h3>
-<ul>
-<li>More examples using Istio.</li>
-<li>Linkerd.</li>
-<li>Maybe some Golang fun.</li>
-<li>Serverless or kubeless, that&rsquo;s the question.</li>
-</ul>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/" title="Why do I need a service mesh?" target="_blank" rel="external">https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="prev">
-                <a href="https://techsquad.rocks/blog/getting_started_with_skaffold/" title="Getting started with skaffold"><i
-                        class="icon icon-angle-left"
-                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://techsquad.rocks/blog/exploring_some_istio_features/"
-                    title="Exploring some Istio features"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+curl -o /dev/null -s -w <span style=color:#e6db74>&#34;%{http_code}\n&#34;</span> http://<span style=color:#e6db74>${</span>GATEWAY_URL<span style=color:#e6db74>}</span>/productpage</code></pre></div>If the latest curl returns 200 then we&rsquo;re good, you can also browse the app <code>open http://${GATEWAY_URL}/productpage</code> and you will see something like the following image:<figure class=zoom><img src=/img/productpage-example.png width=100%></figure></p><p>Also you can use <a href=https://grafana.com/>Grafana</a> to check some metrics about the service usage, etc. (You don&rsquo;t have to worry about prometheus since it&rsquo;s enabled by default). Spin up the port-forward so we don&rsquo;t have to expose grafana: to the world with: <code>kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000</code>, and then <code>open http://localhost:3000</code>.</p><p>As a general advice check all the settings that Istio offers try the ones that you think that could be useful for your project and always measure and compare.</p><h3 id=notes>Notes</h3><ul><li>Do mind that <strong>pilot</strong> pod requires at least 4 Gbs of memory, so you will need at least one node with that amount of memory.</li><li>You can check the load balancer status under: Manage -> Networking -> Load balancers. And if everything is okay your LB will say Healthy.</li><li>Grafana is not enabled by default but we do enable it via helm with <code>--set grafana.enabled=true</code>, if you want to check all the possible options <a href=https://istio.io/docs/reference/config/installation-options/>go here</a>, if you are using more than two <code>--set</code> options I would recommend creating a <code>values.yaml</code> file and use that instead.</li><li>Istio is a big beast and should be treated carefully, there is a lot more to learn and test out. We only scratched the surface here.</li></ul><h3 id=upcoming-posts>Upcoming posts</h3><ul><li>More examples using Istio.</li><li>Linkerd.</li><li>Maybe some Golang fun.</li><li>Serverless or kubeless, that&rsquo;s the question.</li></ul><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also, you can check the source code and changes in the <a href=https://github.com/kainlite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/ title="Why do I need a service mesh?" target=_blank rel=external>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=prev><a href=https://techsquad.rocks/blog/getting_started_with_skaffold/ title="Getting started with skaffold"><i class="icon icon-angle-left" aria-hidden=true></i><span>&nbsp;&nbsp;Older</span></a></li><li class=next><a href=https://techsquad.rocks/blog/exploring_some_istio_features/ title="Exploring some Istio features"><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/why_do_i_need_a_service_mesh\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

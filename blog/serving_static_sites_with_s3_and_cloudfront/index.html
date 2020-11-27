@@ -1,944 +1,250 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Serve your static website with S3 and CloudFront - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&amp;rsquo;re here.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Serve your static website with S3 and CloudFront - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&amp;rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>Serve your static website with S3 and CloudFront - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Serve your static website with S3 and CloudFront" />
-<meta property="og:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)."><meta name=generator content="Hugo 0.75.1 with theme pure"><title>Serve your static website with S3 and CloudFront - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="Serve your static website with S3 and CloudFront"><meta property="og:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png" />
-<meta property="article:published_time" content="2019-02-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-02-02T00:00:00+00:00" />
-<meta itemprop="name" content="Serve your static website with S3 and CloudFront">
-<meta itemprop="description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)."><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/"><meta property="og:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png"><meta property="article:published_time" content="2019-02-02T00:00:00+00:00"><meta property="article:modified_time" content="2019-02-02T00:00:00+00:00"><meta itemprop=name content="Serve your static website with S3 and CloudFront"><meta itemprop=description content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN).">
-<meta itemprop="datePublished" content="2019-02-02T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-02-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1332">
-<meta itemprop="image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png">
-
-
-
-<meta itemprop="keywords" content="elm,development,serverless,aws," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/serve-s3-cloudfront.png"/>
-
-<meta name="twitter:title" content="Serve your static website with S3 and CloudFront"/>
-<meta name="twitter:description" content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)."><meta itemprop=datePublished content="2019-02-02T00:00:00+00:00"><meta itemprop=dateModified content="2019-02-02T00:00:00+00:00"><meta itemprop=wordCount content="1332"><meta itemprop=image content="https://techsquad.rocks/img/serve-s3-cloudfront.png"><meta itemprop=keywords content="elm,development,serverless,aws,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/serve-s3-cloudfront.png"><meta name=twitter:title content="Serve your static website with S3 and CloudFront"><meta name=twitter:description content="Serverless series Part I: Serving static websites with s3 and cloudfront, You&rsquo;re here.
 Part II: Sending emails with AWS Lambda and SES from a HTML form
-Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)."/>
-
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
-
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/serving_static_sites_with_s3_and_cloudfront/"
-    >Serve your static website with S3 and CloudFront</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" class="article-date">
-  <time datetime="2019-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-02-02</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/elm/"> elm </a>
-    <a class="article-tag-link" href="/tags/development/"> development </a>
-    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
-    <a class="article-tag-link" href="/tags/aws/"> aws </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/serving_static_sites_with_s3_and_cloudfront/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1332 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 7 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="serverless-series"><strong>Serverless series</strong></h3>
-<p>Part I: <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/">Serving static websites with s3 and cloudfront</a>, <strong>You&rsquo;re here</strong>.</p>
-<p>Part II: <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/">Sending emails with AWS Lambda and SES from a HTML form</a></p>
-<h5 id="introduction"><strong>Introduction</strong></h5>
-<p>This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using <a href="https://elm-lang.org/">elm</a> and can be <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">found here</a>.</p>
-<h5 id="s3"><strong>S3</strong></h5>
-<p><strong>First of all we need to create a bucket</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># {</span>
-<span style="color:#75715e">#     &#34;Location&#34;: &#34;/techsquad-serverless-site&#34;</span>
-<span style="color:#75715e"># }</span></code></pre></div>
-We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/website.html">enabling web hosting in the bucket</a>).\</p>
-<p><strong>For this setup to work we first need to create a cloud-front-origin-access-identity</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin</span>
+Introduction This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN)."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/serving_static_sites_with_s3_and_cloudfront/>Serve your static website with S3 and CloudFront</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/ class=article-date><time datetime="2019-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2019-02-02</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/serverless/>serverless</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/elm/>elm</a>
+<a class=article-tag-link href=/tags/development/>development</a>
+<a class=article-tag-link href=/tags/serverless/>serverless</a>
+<a class=article-tag-link href=/tags/aws/>aws</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/serving_static_sites_with_s3_and_cloudfront/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1332 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 7 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=serverless-series><strong>Serverless series</strong></h3><p>Part I: <a href=https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/>Serving static websites with s3 and cloudfront</a>, <strong>You&rsquo;re here</strong>.</p><p>Part II: <a href=https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/>Sending emails with AWS Lambda and SES from a HTML form</a></p><h5 id=introduction><strong>Introduction</strong></h5><p>This article will be part of a series, the idea is to get a fully serverless site up and running with login functionality, maybe a profile page, and some random utility, but as we are just starting with it we will host our first draft of the page with a contact form, for the distribution of the files we will see how to configure CloudFront and for storing the files we will be using S3, S3 is an object storage service that offers industry leading scalability, data availability, security and performance, and CloudFront is a fast content delivery network (CDN). The site that we will be using were written using <a href=https://elm-lang.org/>elm</a> and can be <a href=https://github.com/kainlite/aws-serverless-s3-elm-example>found here</a>.</p><h5 id=s3><strong>S3</strong></h5><p><strong>First of all we need to create a bucket</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws s3api create-bucket --bucket techsquad-serverless-site --region us-east-1
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># {</span>
+<span style=color:#75715e>#     &#34;Location&#34;: &#34;/techsquad-serverless-site&#34;</span>
+<span style=color:#75715e># }</span></code></pre></div>We could serve directly from S3 but that can be expensive in a site with lots of traffic (You can do it by <a href=https://docs.aws.amazon.com/cli/latest/reference/s3/website.html>enabling web hosting in the bucket</a>).\</p><p><strong>For this setup to work we first need to create a cloud-front-origin-access-identity</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ae81ff>aws cloudfront create-cloud-front-origin-access-identity --cloud-front-origin-access-identity-config CallerReference=techsquad-serverless-site-cloudfront-origin,Comment=techsquad-serverless-site-cloudfront-origin</span>
 {
-    <span style="color:#f92672">&#34;Location&#34;: </span><span style="color:#e6db74">&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
-    <span style="color:#f92672">&#34;ETag&#34;: </span><span style="color:#e6db74">&#34;E2XHDQQ0DDY9IJ&#34;</span>,
-    <span style="color:#f92672">&#34;CloudFrontOriginAccessIdentity&#34;: </span>{
-        <span style="color:#f92672">&#34;Id&#34;: </span><span style="color:#e6db74">&#34;E3IJG9M5PO9BYE&#34;</span>,
-        <span style="color:#f92672">&#34;S3CanonicalUserId&#34;: </span><span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
-        <span style="color:#f92672">&#34;CloudFrontOriginAccessIdentityConfig&#34;: </span>{
-            <span style="color:#f92672">&#34;CallerReference&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
-            <span style="color:#f92672">&#34;Comment&#34;: </span><span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
+    <span style=color:#f92672>&#34;Location&#34;: </span><span style=color:#e6db74>&#34;https://cloudfront.amazonaws.com/2018-11-05/origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>,
+    <span style=color:#f92672>&#34;ETag&#34;: </span><span style=color:#e6db74>&#34;E2XHDQQ0DDY9IJ&#34;</span>,
+    <span style=color:#f92672>&#34;CloudFrontOriginAccessIdentity&#34;: </span>{
+        <span style=color:#f92672>&#34;Id&#34;: </span><span style=color:#e6db74>&#34;E3IJG9M5PO9BYE&#34;</span>,
+        <span style=color:#f92672>&#34;S3CanonicalUserId&#34;: </span><span style=color:#e6db74>&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>,
+        <span style=color:#f92672>&#34;CloudFrontOriginAccessIdentityConfig&#34;: </span>{
+            <span style=color:#f92672>&#34;CallerReference&#34;: </span><span style=color:#e6db74>&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
+            <span style=color:#f92672>&#34;Comment&#34;: </span><span style=color:#e6db74>&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>
         }
     }
-}</code></pre></div>
-Our origin access identity was successfully created, we need to grab the S3CanonicalUserId for our S3 bucket policy.</p>
-<p><strong>Limit access to your bucket with the following policy (save as bucket-policy.json)</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">{
-   <span style="color:#e6db74">&#34;Version&#34;</span>:<span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
-   <span style="color:#e6db74">&#34;Id&#34;</span>:<span style="color:#e6db74">&#34;PolicyForCloudFrontPrivateContent&#34;</span>,
-   <span style="color:#e6db74">&#34;Statement&#34;</span>:[
+}</code></pre></div>Our origin access identity was successfully created, we need to grab the S3CanonicalUserId for our S3 bucket policy.</p><p><strong>Limit access to your bucket with the following policy (save as bucket-policy.json)</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml>{
+   <span style=color:#e6db74>&#34;Version&#34;</span>:<span style=color:#e6db74>&#34;2012-10-17&#34;</span>,
+   <span style=color:#e6db74>&#34;Id&#34;</span>:<span style=color:#e6db74>&#34;PolicyForCloudFrontPrivateContent&#34;</span>,
+   <span style=color:#e6db74>&#34;Statement&#34;</span>:[
         {
-               <span style="color:#e6db74">&#34;Sid&#34;</span>:<span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
-               <span style="color:#e6db74">&#34;Effect&#34;</span>:<span style="color:#e6db74">&#34;Allow&#34;</span>,
-               <span style="color:#e6db74">&#34;Principal&#34;</span>:{<span style="color:#e6db74">&#34;CanonicalUser&#34;</span>:<span style="color:#e6db74">&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>},
-               <span style="color:#e6db74">&#34;Action&#34;</span>:<span style="color:#e6db74">&#34;s3:GetObject&#34;</span>,
-               <span style="color:#e6db74">&#34;Resource&#34;</span>:<span style="color:#e6db74">&#34;arn:aws:s3:::techsquad-serverless-site/*&#34;</span>
+               <span style=color:#e6db74>&#34;Sid&#34;</span>:<span style=color:#e6db74>&#34;techsquad-serverless-site-cloudfront-origin&#34;</span>,
+               <span style=color:#e6db74>&#34;Effect&#34;</span>:<span style=color:#e6db74>&#34;Allow&#34;</span>,
+               <span style=color:#e6db74>&#34;Principal&#34;</span>:{<span style=color:#e6db74>&#34;CanonicalUser&#34;</span>:<span style=color:#e6db74>&#34;c951e48af14afcf935c2455a6d503150c80f20df93b27af9ed0928eb48feb67d1b933aa1adb7e1bf88a7aacccccccccc&#34;</span>},
+               <span style=color:#e6db74>&#34;Action&#34;</span>:<span style=color:#e6db74>&#34;s3:GetObject&#34;</span>,
+               <span style=color:#e6db74>&#34;Resource&#34;</span>:<span style=color:#e6db74>&#34;arn:aws:s3:::techsquad-serverless-site/*&#34;</span>
              }
       ]
-}</code></pre></div>
-This policy will only allow CloudFront to fetch the files from the S3 bucket, because we want to avoid users or anyone actually from hitting the bucket directly.</p>
-<p><strong>And then just attach that policy to the bucket</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json</code></pre></div></p>
-<p><strong>I&rsquo;m using an old example I created and probably will continue building upon it, copy the files (the source files are in <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">this github repo</a>)</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws s3 sync . s3://techsquad-serverless-site/</code></pre></div>
-So far so good, We have our S3 bucket ready.</p>
-<h5 id="cloudfront"><strong>CloudFront</strong></h5>
-<p>We will use this file to create our CF distribution (save it as distconfig.json or generate it with <code>aws cloudfront create-distribution --generate-cli-skeleton &gt; /tmp/distconfig.json</code> and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">{</span>
-  <span style="color:#e6db74">&#34;CallerReference&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-distribution&#34;</span>,
-  <span style="color:#e6db74">&#34;Aliases&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Quantity&#34;</span>: 1,
-    <span style="color:#e6db74">&#34;Items&#34;</span>: <span style="color:#f92672">[</span>
-      <span style="color:#e6db74">&#34;serverless.techsquad.rocks&#34;</span>
-         <span style="color:#f92672">]</span>
-   <span style="color:#f92672">}</span>,
-  <span style="color:#e6db74">&#34;DefaultRootObject&#34;</span>: <span style="color:#e6db74">&#34;index.html&#34;</span>,
-  <span style="color:#e6db74">&#34;Origins&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Quantity&#34;</span>: 1,
-    <span style="color:#e6db74">&#34;Items&#34;</span>: <span style="color:#f92672">[</span>
-      <span style="color:#f92672">{</span>
-        <span style="color:#e6db74">&#34;Id&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront&#34;</span>,
-        <span style="color:#e6db74">&#34;DomainName&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site.s3.amazonaws.com&#34;</span>,
-        <span style="color:#e6db74">&#34;S3OriginConfig&#34;</span>: <span style="color:#f92672">{</span>
-          <span style="color:#e6db74">&#34;OriginAccessIdentity&#34;</span>: <span style="color:#e6db74">&#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>
-        <span style="color:#f92672">}</span>
-      <span style="color:#f92672">}</span>
-    <span style="color:#f92672">]</span>
-  <span style="color:#f92672">}</span>,
-  <span style="color:#e6db74">&#34;DefaultCacheBehavior&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;TargetOriginId&#34;</span>: <span style="color:#e6db74">&#34;techsquad-serverless-site-cloudfront&#34;</span>,
-    <span style="color:#e6db74">&#34;ForwardedValues&#34;</span>: <span style="color:#f92672">{</span>
-      <span style="color:#e6db74">&#34;QueryString&#34;</span>: true,
-      <span style="color:#e6db74">&#34;Cookies&#34;</span>: <span style="color:#f92672">{</span>
-        <span style="color:#e6db74">&#34;Forward&#34;</span>: <span style="color:#e6db74">&#34;none&#34;</span>
-      <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>,
-    <span style="color:#e6db74">&#34;TrustedSigners&#34;</span>: <span style="color:#f92672">{</span>
-      <span style="color:#e6db74">&#34;Enabled&#34;</span>: false,
-      <span style="color:#e6db74">&#34;Quantity&#34;</span>: <span style="color:#ae81ff">0</span>
-    <span style="color:#f92672">}</span>,
-    <span style="color:#e6db74">&#34;ViewerProtocolPolicy&#34;</span>: <span style="color:#e6db74">&#34;allow-all&#34;</span>,
-    <span style="color:#e6db74">&#34;MinTTL&#34;</span>: <span style="color:#ae81ff">3600</span>
-  <span style="color:#f92672">}</span>,
-  <span style="color:#e6db74">&#34;CacheBehaviors&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Quantity&#34;</span>: <span style="color:#ae81ff">0</span>
-  <span style="color:#f92672">}</span>,
-  <span style="color:#e6db74">&#34;Comment&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
-  <span style="color:#e6db74">&#34;Logging&#34;</span>: <span style="color:#f92672">{</span>
-    <span style="color:#e6db74">&#34;Enabled&#34;</span>: false,
-    <span style="color:#e6db74">&#34;IncludeCookies&#34;</span>: true,
-    <span style="color:#e6db74">&#34;Bucket&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
-    <span style="color:#e6db74">&#34;Prefix&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
-  <span style="color:#f92672">}</span>,
-  <span style="color:#e6db74">&#34;PriceClass&#34;</span>: <span style="color:#e6db74">&#34;PriceClass_All&#34;</span>,
-  <span style="color:#e6db74">&#34;Enabled&#34;</span>: true
-<span style="color:#f92672">}</span></code></pre></div>
-We will leave most values in their defaults, but if you want to know more or customize your deployment <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-distribution.html">check here</a> or type <code>aws cloudfront create-distribution help</code>.</p>
-<p><strong>Let&rsquo;s finally create the CloudFront distribution for our site</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront create-distribution --distribution-config file://distconfig.json
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># {</span>
-<span style="color:#75715e">#     &#34;Location&#34;: &#34;https://cloudfront.amazonaws.com/2018-11-05/distribution/E1M22XXNIJ5BLN&#34;,</span>
-<span style="color:#75715e">#     &#34;ETag&#34;: &#34;EW1AZUQ33NKQ7&#34;,</span>
-<span style="color:#75715e">#     &#34;Distribution&#34;: {</span>
-<span style="color:#75715e">#         &#34;Id&#34;: &#34;E1M22XXNIJ5BLN&#34;,</span>
-<span style="color:#75715e">#         &#34;ARN&#34;: &#34;arn:aws:cloudfront::894527626897:distribution/E1M22XXNIJ5BLN&#34;,</span>
-<span style="color:#75715e">#         &#34;Status&#34;: &#34;InProgress&#34;,</span>
-<span style="color:#75715e">#         &#34;LastModifiedTime&#34;: &#34;2019-02-02T19:35:45.729Z&#34;,</span>
-<span style="color:#75715e">#         &#34;InProgressInvalidationBatches&#34;: 0,</span>
-<span style="color:#75715e">#         &#34;DomainName&#34;: &#34;d3v3xtkl1l2ynj.cloudfront.net&#34;,</span>
-<span style="color:#75715e">#         &#34;ActiveTrustedSigners&#34;: {</span>
-<span style="color:#75715e">#             &#34;Enabled&#34;: false,</span>
-<span style="color:#75715e">#             &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#         },</span>
-<span style="color:#75715e">#         &#34;DistributionConfig&#34;: {</span>
-<span style="color:#75715e">#             &#34;CallerReference&#34;: &#34;techsquad-serverless-site-distribution&#34;,</span>
-<span style="color:#75715e">#             &#34;Aliases&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;DefaultRootObject&#34;: &#34;index.html&#34;,</span>
-<span style="color:#75715e">#             &#34;Origins&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Quantity&#34;: 1,</span>
-<span style="color:#75715e">#                 &#34;Items&#34;: [</span>
-<span style="color:#75715e">#                     {</span>
-<span style="color:#75715e">#                         &#34;Id&#34;: &#34;techsquad-serverless-site-cloudfront&#34;,</span>
-<span style="color:#75715e">#                         &#34;DomainName&#34;: &#34;techsquad-serverless-site.s3.amazonaws.com&#34;,</span>
-<span style="color:#75715e">#                         &#34;OriginPath&#34;: &#34;&#34;,</span>
-<span style="color:#75715e">#                         &#34;CustomHeaders&#34;: {</span>
-<span style="color:#75715e">#                             &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                         },</span>
-<span style="color:#75715e">#                         &#34;S3OriginConfig&#34;: {</span>
-<span style="color:#75715e">#                             &#34;OriginAccessIdentity&#34;: &#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>
-<span style="color:#75715e">#                         }</span>
-<span style="color:#75715e">#                     }</span>
-<span style="color:#75715e">#                 ]</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;OriginGroups&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Quantity&#34;: 0,</span>
-<span style="color:#75715e">#                 &#34;Items&#34;: []</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;DefaultCacheBehavior&#34;: {</span>
-<span style="color:#75715e">#                 &#34;TargetOriginId&#34;: &#34;techsquad-serverless-site-cloudfront&#34;,</span>
-<span style="color:#75715e">#                 &#34;ForwardedValues&#34;: {</span>
-<span style="color:#75715e">#                     &#34;QueryString&#34;: true,</span>
-<span style="color:#75715e">#                     &#34;Cookies&#34;: {</span>
-<span style="color:#75715e">#                         &#34;Forward&#34;: &#34;none&#34;</span>
-<span style="color:#75715e">#                     },</span>
-<span style="color:#75715e">#                     &#34;Headers&#34;: {</span>
-<span style="color:#75715e">#                         &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                     },</span>
-<span style="color:#75715e">#                     &#34;QueryStringCacheKeys&#34;: {</span>
-<span style="color:#75715e">#                         &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                     }</span>
-<span style="color:#75715e">#                 },</span>
-<span style="color:#75715e">#                 &#34;TrustedSigners&#34;: {</span>
-<span style="color:#75715e">#                     &#34;Enabled&#34;: false,</span>
-<span style="color:#75715e">#                     &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                 },</span>
-<span style="color:#75715e">#                 &#34;ViewerProtocolPolicy&#34;: &#34;allow-all&#34;,</span>
-<span style="color:#75715e">#                 &#34;MinTTL&#34;: 3600,</span>
-<span style="color:#75715e">#                 &#34;AllowedMethods&#34;: {</span>
-<span style="color:#75715e">#                     &#34;Quantity&#34;: 2,</span>
-<span style="color:#75715e">#                     &#34;Items&#34;: [</span>
-<span style="color:#75715e">#                         &#34;HEAD&#34;,</span>
-<span style="color:#75715e">#                         &#34;GET&#34;</span>
-<span style="color:#75715e">#                     ],</span>
-<span style="color:#75715e">#                     &#34;CachedMethods&#34;: {</span>
-<span style="color:#75715e">#                         &#34;Quantity&#34;: 2,</span>
-<span style="color:#75715e">#                         &#34;Items&#34;: [</span>
-<span style="color:#75715e">#                             &#34;HEAD&#34;,</span>
-<span style="color:#75715e">#                             &#34;GET&#34;</span>
-<span style="color:#75715e">#                         ]</span>
-<span style="color:#75715e">#                     }</span>
-<span style="color:#75715e">#                 },</span>
-<span style="color:#75715e">#                 &#34;SmoothStreaming&#34;: false,</span>
-<span style="color:#75715e">#                 &#34;DefaultTTL&#34;: 86400,</span>
-<span style="color:#75715e">#                 &#34;MaxTTL&#34;: 31536000,</span>
-<span style="color:#75715e">#                 &#34;Compress&#34;: false,</span>
-<span style="color:#75715e">#                 &#34;LambdaFunctionAssociations&#34;: {</span>
-<span style="color:#75715e">#                     &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                 },</span>
-<span style="color:#75715e">#                 &#34;FieldLevelEncryptionId&#34;: &#34;&#34;</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;CacheBehaviors&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;CustomErrorResponses&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;Comment&#34;: &#34;&#34;,</span>
-<span style="color:#75715e">#             &#34;Logging&#34;: {</span>
-<span style="color:#75715e">#                 &#34;Enabled&#34;: false,</span>
-<span style="color:#75715e">#                 &#34;IncludeCookies&#34;: false,</span>
-<span style="color:#75715e">#                 &#34;Bucket&#34;: &#34;&#34;,</span>
-<span style="color:#75715e">#                 &#34;Prefix&#34;: &#34;&#34;</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;PriceClass&#34;: &#34;PriceClass_All&#34;,</span>
-<span style="color:#75715e">#             &#34;Enabled&#34;: true,</span>
-<span style="color:#75715e">#             &#34;ViewerCertificate&#34;: {</span>
-<span style="color:#75715e">#                 &#34;CloudFrontDefaultCertificate&#34;: true,</span>
-<span style="color:#75715e">#                 &#34;MinimumProtocolVersion&#34;: &#34;TLSv1&#34;,</span>
-<span style="color:#75715e">#                 &#34;CertificateSource&#34;: &#34;cloudfront&#34;</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;Restrictions&#34;: {</span>
-<span style="color:#75715e">#                 &#34;GeoRestriction&#34;: {</span>
-<span style="color:#75715e">#                     &#34;RestrictionType&#34;: &#34;none&#34;,</span>
-<span style="color:#75715e">#                     &#34;Quantity&#34;: 0</span>
-<span style="color:#75715e">#                 }</span>
-<span style="color:#75715e">#             },</span>
-<span style="color:#75715e">#             &#34;WebACLId&#34;: &#34;&#34;,</span>
-<span style="color:#75715e">#             &#34;HttpVersion&#34;: &#34;http2&#34;,</span>
-<span style="color:#75715e">#             &#34;IsIPV6Enabled&#34;: true</span>
-<span style="color:#75715e">#         }</span>
-<span style="color:#75715e">#     }</span>
-<span style="color:#75715e"># }</span></code></pre></div>
-Woah a lot of details in there, but what we might need later is the ETAG if we want to download and update our distribution, so have that handy, also we can see our CloudFront URL in there which is: d3v3xtkl1l2ynj.cloudfront.net in this case.</p>
-<p><strong>It might take a few minutes to initialize the distribution, you can check the progress with</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront list-distributions | jq <span style="color:#e6db74">&#34;.DistributionList.Items[0].Status&#34;</span>
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># &#34;InProgress&#34;</span></code></pre></div>
-Once it&rsquo;s ready the status will be: &ldquo;Deployed&rdquo;, and now if we go to the CloudFront url you should see the site :). The S3 bucket will only let CloudFront access to the files so the only way to serve the site is through CloudFront.</p>
-<h5 id="dns"><strong>DNS</strong></h5>
-<p><strong>The only thing missing is the record in the DNS (I don&rsquo;t have this domain name in Route53, shame on me but a CNAME will do for now), so let&rsquo;s add it and verify it using dig.</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">dig serverless.techsquad.rocks
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># dig CNAME serverless.techsquad.rocks</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># ; &lt;&lt;&gt;&gt; DiG 9.13.5 &lt;&lt;&gt;&gt; CNAME serverless.techsquad.rocks</span>
-<span style="color:#75715e"># ;; global options: +cmd</span>
-<span style="color:#75715e"># ;; Got answer:</span>
-<span style="color:#75715e"># ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 52651</span>
-<span style="color:#75715e"># ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># ;; OPT PSEUDOSECTION:</span>
-<span style="color:#75715e"># ; EDNS: version: 0, flags:; udp: 1452</span>
-<span style="color:#75715e"># ;; QUESTION SECTION:</span>
-<span style="color:#75715e"># ;serverless.techsquad.rocks.    IN      CNAME</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># ;; ANSWER SECTION:</span>
-<span style="color:#75715e"># serverless.techsquad.rocks. 292 IN      CNAME   d3v3xtkl1l2ynj.cloudfront.net.</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># ;; Query time: 20 msec</span>
-<span style="color:#75715e"># ;; SERVER: 1.1.1.1#53(1.1.1.1)</span>
-<span style="color:#75715e"># ;; WHEN: Sat Feb 02 17:47:11 -03 2019</span>
-<span style="color:#75715e"># ;; MSG SIZE  rcvd: 98</span></code></pre></div>
-As we can see the record is already there so we can go to <a href="http://serverless.techsquad.rocks">http://serverless.techsquad.rocks</a> (note that this only works because we set that alias in the distribution), We could add SSL by creating a certificate using Amazon Certificate Manager, but we will leave that as an exercise or a future small article.</p>
-<h5 id="useful-commands"><strong>Useful commands</strong></h5>
-<p>In case you need to get some information some useful commands:\</p>
-<p><strong>This command will give us the Id of our distribution</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront list-distributions --output table --query <span style="color:#e6db74">&#39;DistributionList.Items[*].Id&#39;</span>
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># -------------------</span>
-<span style="color:#75715e"># |ListDistributions|</span>
-<span style="color:#75715e"># +-----------------+</span>
-<span style="color:#75715e"># |  EFJVJEPWAPGU2  |</span>
-<span style="color:#75715e"># +-----------------+</span></code></pre></div></p>
-<p><strong>This one the ETag (needed to perform updates for example)</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style="color:#e6db74">&#39;. | .ETag&#39;</span>
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># &#34;E2TPQRAUPJL2P3&#34;</span></code></pre></div></p>
-<p><strong>And this one will save the current config in /tmp so we can update it.</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style="color:#e6db74">&#39;. | .DistributionConfig&#39;</span> &gt; /tmp/curent-distribution-E2TPQRAUPJL2P</code></pre></div></p>
-<h5 id="upcoming-articles"><strong>Upcoming articles</strong></h5>
-<p>This article is the first one in this series of serverless articles, the idea is to build a fully functional website using only serverless technologies, the next post will cover the AWS Lambda function used to send the contact form, also all code from the site can be <a href="https://github.com/kainlite/aws-serverless-s3-elm-example">found here</a>.</p>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also, you can check the source code and changes in the <a href="https://github.com/kainjkjkjklite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/" title="Serve your static website with S3 and CloudFront" target="_blank" rel="external">https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="prev">
-                <a href="https://techsquad.rocks/blog/serving_static_sites_with_github/" title="Serve your static website in Github"><i
-                        class="icon icon-angle-left"
-                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/"
-                    title="Sending emails with AWS Lambda and SES from a HTML form"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+}</code></pre></div>This policy will only allow CloudFront to fetch the files from the S3 bucket, because we want to avoid users or anyone actually from hitting the bucket directly.</p><p><strong>And then just attach that policy to the bucket</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws s3api put-bucket-policy --bucket techsquad-serverless-site --policy file://bucket-policy.json</code></pre></div></p><p><strong>I&rsquo;m using an old example I created and probably will continue building upon it, copy the files (the source files are in <a href=https://github.com/kainlite/aws-serverless-s3-elm-example>this github repo</a>)</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws s3 sync . s3://techsquad-serverless-site/</code></pre></div>So far so good, We have our S3 bucket ready.</p><h5 id=cloudfront><strong>CloudFront</strong></h5><p>We will use this file to create our CF distribution (save it as distconfig.json or generate it with <code>aws cloudfront create-distribution --generate-cli-skeleton > /tmp/distconfig.json</code> and then replace the values: Id, DomainName, TargetOriginId, and the cname in Aliases.Items):<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#f92672>{</span>
+  <span style=color:#e6db74>&#34;CallerReference&#34;</span>: <span style=color:#e6db74>&#34;techsquad-serverless-site-distribution&#34;</span>,
+  <span style=color:#e6db74>&#34;Aliases&#34;</span>: <span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;Quantity&#34;</span>: 1,
+    <span style=color:#e6db74>&#34;Items&#34;</span>: <span style=color:#f92672>[</span>
+      <span style=color:#e6db74>&#34;serverless.techsquad.rocks&#34;</span>
+         <span style=color:#f92672>]</span>
+   <span style=color:#f92672>}</span>,
+  <span style=color:#e6db74>&#34;DefaultRootObject&#34;</span>: <span style=color:#e6db74>&#34;index.html&#34;</span>,
+  <span style=color:#e6db74>&#34;Origins&#34;</span>: <span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;Quantity&#34;</span>: 1,
+    <span style=color:#e6db74>&#34;Items&#34;</span>: <span style=color:#f92672>[</span>
+      <span style=color:#f92672>{</span>
+        <span style=color:#e6db74>&#34;Id&#34;</span>: <span style=color:#e6db74>&#34;techsquad-serverless-site-cloudfront&#34;</span>,
+        <span style=color:#e6db74>&#34;DomainName&#34;</span>: <span style=color:#e6db74>&#34;techsquad-serverless-site.s3.amazonaws.com&#34;</span>,
+        <span style=color:#e6db74>&#34;S3OriginConfig&#34;</span>: <span style=color:#f92672>{</span>
+          <span style=color:#e6db74>&#34;OriginAccessIdentity&#34;</span>: <span style=color:#e6db74>&#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>
+        <span style=color:#f92672>}</span>
+      <span style=color:#f92672>}</span>
+    <span style=color:#f92672>]</span>
+  <span style=color:#f92672>}</span>,
+  <span style=color:#e6db74>&#34;DefaultCacheBehavior&#34;</span>: <span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;TargetOriginId&#34;</span>: <span style=color:#e6db74>&#34;techsquad-serverless-site-cloudfront&#34;</span>,
+    <span style=color:#e6db74>&#34;ForwardedValues&#34;</span>: <span style=color:#f92672>{</span>
+      <span style=color:#e6db74>&#34;QueryString&#34;</span>: true,
+      <span style=color:#e6db74>&#34;Cookies&#34;</span>: <span style=color:#f92672>{</span>
+        <span style=color:#e6db74>&#34;Forward&#34;</span>: <span style=color:#e6db74>&#34;none&#34;</span>
+      <span style=color:#f92672>}</span>
+    <span style=color:#f92672>}</span>,
+    <span style=color:#e6db74>&#34;TrustedSigners&#34;</span>: <span style=color:#f92672>{</span>
+      <span style=color:#e6db74>&#34;Enabled&#34;</span>: false,
+      <span style=color:#e6db74>&#34;Quantity&#34;</span>: <span style=color:#ae81ff>0</span>
+    <span style=color:#f92672>}</span>,
+    <span style=color:#e6db74>&#34;ViewerProtocolPolicy&#34;</span>: <span style=color:#e6db74>&#34;allow-all&#34;</span>,
+    <span style=color:#e6db74>&#34;MinTTL&#34;</span>: <span style=color:#ae81ff>3600</span>
+  <span style=color:#f92672>}</span>,
+  <span style=color:#e6db74>&#34;CacheBehaviors&#34;</span>: <span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;Quantity&#34;</span>: <span style=color:#ae81ff>0</span>
+  <span style=color:#f92672>}</span>,
+  <span style=color:#e6db74>&#34;Comment&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
+  <span style=color:#e6db74>&#34;Logging&#34;</span>: <span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;Enabled&#34;</span>: false,
+    <span style=color:#e6db74>&#34;IncludeCookies&#34;</span>: true,
+    <span style=color:#e6db74>&#34;Bucket&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
+    <span style=color:#e6db74>&#34;Prefix&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>
+  <span style=color:#f92672>}</span>,
+  <span style=color:#e6db74>&#34;PriceClass&#34;</span>: <span style=color:#e6db74>&#34;PriceClass_All&#34;</span>,
+  <span style=color:#e6db74>&#34;Enabled&#34;</span>: true
+<span style=color:#f92672>}</span></code></pre></div>We will leave most values in their defaults, but if you want to know more or customize your deployment <a href=https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-distribution.html>check here</a> or type <code>aws cloudfront create-distribution help</code>.</p><p><strong>Let&rsquo;s finally create the CloudFront distribution for our site</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws cloudfront create-distribution --distribution-config file://distconfig.json
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># {</span>
+<span style=color:#75715e>#     &#34;Location&#34;: &#34;https://cloudfront.amazonaws.com/2018-11-05/distribution/E1M22XXNIJ5BLN&#34;,</span>
+<span style=color:#75715e>#     &#34;ETag&#34;: &#34;EW1AZUQ33NKQ7&#34;,</span>
+<span style=color:#75715e>#     &#34;Distribution&#34;: {</span>
+<span style=color:#75715e>#         &#34;Id&#34;: &#34;E1M22XXNIJ5BLN&#34;,</span>
+<span style=color:#75715e>#         &#34;ARN&#34;: &#34;arn:aws:cloudfront::894527626897:distribution/E1M22XXNIJ5BLN&#34;,</span>
+<span style=color:#75715e>#         &#34;Status&#34;: &#34;InProgress&#34;,</span>
+<span style=color:#75715e>#         &#34;LastModifiedTime&#34;: &#34;2019-02-02T19:35:45.729Z&#34;,</span>
+<span style=color:#75715e>#         &#34;InProgressInvalidationBatches&#34;: 0,</span>
+<span style=color:#75715e>#         &#34;DomainName&#34;: &#34;d3v3xtkl1l2ynj.cloudfront.net&#34;,</span>
+<span style=color:#75715e>#         &#34;ActiveTrustedSigners&#34;: {</span>
+<span style=color:#75715e>#             &#34;Enabled&#34;: false,</span>
+<span style=color:#75715e>#             &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#         },</span>
+<span style=color:#75715e>#         &#34;DistributionConfig&#34;: {</span>
+<span style=color:#75715e>#             &#34;CallerReference&#34;: &#34;techsquad-serverless-site-distribution&#34;,</span>
+<span style=color:#75715e>#             &#34;Aliases&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;DefaultRootObject&#34;: &#34;index.html&#34;,</span>
+<span style=color:#75715e>#             &#34;Origins&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Quantity&#34;: 1,</span>
+<span style=color:#75715e>#                 &#34;Items&#34;: [</span>
+<span style=color:#75715e>#                     {</span>
+<span style=color:#75715e>#                         &#34;Id&#34;: &#34;techsquad-serverless-site-cloudfront&#34;,</span>
+<span style=color:#75715e>#                         &#34;DomainName&#34;: &#34;techsquad-serverless-site.s3.amazonaws.com&#34;,</span>
+<span style=color:#75715e>#                         &#34;OriginPath&#34;: &#34;&#34;,</span>
+<span style=color:#75715e>#                         &#34;CustomHeaders&#34;: {</span>
+<span style=color:#75715e>#                             &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                         },</span>
+<span style=color:#75715e>#                         &#34;S3OriginConfig&#34;: {</span>
+<span style=color:#75715e>#                             &#34;OriginAccessIdentity&#34;: &#34;origin-access-identity/cloudfront/E3IJG9M5PO9BYE&#34;</span>
+<span style=color:#75715e>#                         }</span>
+<span style=color:#75715e>#                     }</span>
+<span style=color:#75715e>#                 ]</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;OriginGroups&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Quantity&#34;: 0,</span>
+<span style=color:#75715e>#                 &#34;Items&#34;: []</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;DefaultCacheBehavior&#34;: {</span>
+<span style=color:#75715e>#                 &#34;TargetOriginId&#34;: &#34;techsquad-serverless-site-cloudfront&#34;,</span>
+<span style=color:#75715e>#                 &#34;ForwardedValues&#34;: {</span>
+<span style=color:#75715e>#                     &#34;QueryString&#34;: true,</span>
+<span style=color:#75715e>#                     &#34;Cookies&#34;: {</span>
+<span style=color:#75715e>#                         &#34;Forward&#34;: &#34;none&#34;</span>
+<span style=color:#75715e>#                     },</span>
+<span style=color:#75715e>#                     &#34;Headers&#34;: {</span>
+<span style=color:#75715e>#                         &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                     },</span>
+<span style=color:#75715e>#                     &#34;QueryStringCacheKeys&#34;: {</span>
+<span style=color:#75715e>#                         &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                     }</span>
+<span style=color:#75715e>#                 },</span>
+<span style=color:#75715e>#                 &#34;TrustedSigners&#34;: {</span>
+<span style=color:#75715e>#                     &#34;Enabled&#34;: false,</span>
+<span style=color:#75715e>#                     &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                 },</span>
+<span style=color:#75715e>#                 &#34;ViewerProtocolPolicy&#34;: &#34;allow-all&#34;,</span>
+<span style=color:#75715e>#                 &#34;MinTTL&#34;: 3600,</span>
+<span style=color:#75715e>#                 &#34;AllowedMethods&#34;: {</span>
+<span style=color:#75715e>#                     &#34;Quantity&#34;: 2,</span>
+<span style=color:#75715e>#                     &#34;Items&#34;: [</span>
+<span style=color:#75715e>#                         &#34;HEAD&#34;,</span>
+<span style=color:#75715e>#                         &#34;GET&#34;</span>
+<span style=color:#75715e>#                     ],</span>
+<span style=color:#75715e>#                     &#34;CachedMethods&#34;: {</span>
+<span style=color:#75715e>#                         &#34;Quantity&#34;: 2,</span>
+<span style=color:#75715e>#                         &#34;Items&#34;: [</span>
+<span style=color:#75715e>#                             &#34;HEAD&#34;,</span>
+<span style=color:#75715e>#                             &#34;GET&#34;</span>
+<span style=color:#75715e>#                         ]</span>
+<span style=color:#75715e>#                     }</span>
+<span style=color:#75715e>#                 },</span>
+<span style=color:#75715e>#                 &#34;SmoothStreaming&#34;: false,</span>
+<span style=color:#75715e>#                 &#34;DefaultTTL&#34;: 86400,</span>
+<span style=color:#75715e>#                 &#34;MaxTTL&#34;: 31536000,</span>
+<span style=color:#75715e>#                 &#34;Compress&#34;: false,</span>
+<span style=color:#75715e>#                 &#34;LambdaFunctionAssociations&#34;: {</span>
+<span style=color:#75715e>#                     &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                 },</span>
+<span style=color:#75715e>#                 &#34;FieldLevelEncryptionId&#34;: &#34;&#34;</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;CacheBehaviors&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;CustomErrorResponses&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;Comment&#34;: &#34;&#34;,</span>
+<span style=color:#75715e>#             &#34;Logging&#34;: {</span>
+<span style=color:#75715e>#                 &#34;Enabled&#34;: false,</span>
+<span style=color:#75715e>#                 &#34;IncludeCookies&#34;: false,</span>
+<span style=color:#75715e>#                 &#34;Bucket&#34;: &#34;&#34;,</span>
+<span style=color:#75715e>#                 &#34;Prefix&#34;: &#34;&#34;</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;PriceClass&#34;: &#34;PriceClass_All&#34;,</span>
+<span style=color:#75715e>#             &#34;Enabled&#34;: true,</span>
+<span style=color:#75715e>#             &#34;ViewerCertificate&#34;: {</span>
+<span style=color:#75715e>#                 &#34;CloudFrontDefaultCertificate&#34;: true,</span>
+<span style=color:#75715e>#                 &#34;MinimumProtocolVersion&#34;: &#34;TLSv1&#34;,</span>
+<span style=color:#75715e>#                 &#34;CertificateSource&#34;: &#34;cloudfront&#34;</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;Restrictions&#34;: {</span>
+<span style=color:#75715e>#                 &#34;GeoRestriction&#34;: {</span>
+<span style=color:#75715e>#                     &#34;RestrictionType&#34;: &#34;none&#34;,</span>
+<span style=color:#75715e>#                     &#34;Quantity&#34;: 0</span>
+<span style=color:#75715e>#                 }</span>
+<span style=color:#75715e>#             },</span>
+<span style=color:#75715e>#             &#34;WebACLId&#34;: &#34;&#34;,</span>
+<span style=color:#75715e>#             &#34;HttpVersion&#34;: &#34;http2&#34;,</span>
+<span style=color:#75715e>#             &#34;IsIPV6Enabled&#34;: true</span>
+<span style=color:#75715e>#         }</span>
+<span style=color:#75715e>#     }</span>
+<span style=color:#75715e># }</span></code></pre></div>Woah a lot of details in there, but what we might need later is the ETAG if we want to download and update our distribution, so have that handy, also we can see our CloudFront URL in there which is: d3v3xtkl1l2ynj.cloudfront.net in this case.</p><p><strong>It might take a few minutes to initialize the distribution, you can check the progress with</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws cloudfront list-distributions | jq <span style=color:#e6db74>&#34;.DistributionList.Items[0].Status&#34;</span>
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># &#34;InProgress&#34;</span></code></pre></div>Once it&rsquo;s ready the status will be: &ldquo;Deployed&rdquo;, and now if we go to the CloudFront url you should see the site :). The S3 bucket will only let CloudFront access to the files so the only way to serve the site is through CloudFront.</p><h5 id=dns><strong>DNS</strong></h5><p><strong>The only thing missing is the record in the DNS (I don&rsquo;t have this domain name in Route53, shame on me but a CNAME will do for now), so let&rsquo;s add it and verify it using dig.</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>dig serverless.techsquad.rocks
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># dig CNAME serverless.techsquad.rocks</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># ; &lt;&lt;&gt;&gt; DiG 9.13.5 &lt;&lt;&gt;&gt; CNAME serverless.techsquad.rocks</span>
+<span style=color:#75715e># ;; global options: +cmd</span>
+<span style=color:#75715e># ;; Got answer:</span>
+<span style=color:#75715e># ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 52651</span>
+<span style=color:#75715e># ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># ;; OPT PSEUDOSECTION:</span>
+<span style=color:#75715e># ; EDNS: version: 0, flags:; udp: 1452</span>
+<span style=color:#75715e># ;; QUESTION SECTION:</span>
+<span style=color:#75715e># ;serverless.techsquad.rocks.    IN      CNAME</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># ;; ANSWER SECTION:</span>
+<span style=color:#75715e># serverless.techsquad.rocks. 292 IN      CNAME   d3v3xtkl1l2ynj.cloudfront.net.</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># ;; Query time: 20 msec</span>
+<span style=color:#75715e># ;; SERVER: 1.1.1.1#53(1.1.1.1)</span>
+<span style=color:#75715e># ;; WHEN: Sat Feb 02 17:47:11 -03 2019</span>
+<span style=color:#75715e># ;; MSG SIZE  rcvd: 98</span></code></pre></div>As we can see the record is already there so we can go to <a href=http://serverless.techsquad.rocks>http://serverless.techsquad.rocks</a> (note that this only works because we set that alias in the distribution), We could add SSL by creating a certificate using Amazon Certificate Manager, but we will leave that as an exercise or a future small article.</p><h5 id=useful-commands><strong>Useful commands</strong></h5><p>In case you need to get some information some useful commands:\</p><p><strong>This command will give us the Id of our distribution</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws cloudfront list-distributions --output table --query <span style=color:#e6db74>&#39;DistributionList.Items[*].Id&#39;</span>
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># -------------------</span>
+<span style=color:#75715e># |ListDistributions|</span>
+<span style=color:#75715e># +-----------------+</span>
+<span style=color:#75715e># |  EFJVJEPWAPGU2  |</span>
+<span style=color:#75715e># +-----------------+</span></code></pre></div></p><p><strong>This one the ETag (needed to perform updates for example)</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style=color:#e6db74>&#39;. | .ETag&#39;</span>
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># &#34;E2TPQRAUPJL2P3&#34;</span></code></pre></div></p><p><strong>And this one will save the current config in /tmp so we can update it.</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>aws cloudfront get-distribution-config --id EFJVJEPWAPGU2 | jq <span style=color:#e6db74>&#39;. | .DistributionConfig&#39;</span> &gt; /tmp/curent-distribution-E2TPQRAUPJL2P</code></pre></div></p><h5 id=upcoming-articles><strong>Upcoming articles</strong></h5><p>This article is the first one in this series of serverless articles, the idea is to build a fully functional website using only serverless technologies, the next post will cover the AWS Lambda function used to send the contact form, also all code from the site can be <a href=https://github.com/kainlite/aws-serverless-s3-elm-example>found here</a>.</p><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also, you can check the source code and changes in the <a href=https://github.com/kainjkjkjklite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/ title="Serve your static website with S3 and CloudFront" target=_blank rel=external>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=prev><a href=https://techsquad.rocks/blog/serving_static_sites_with_github/ title="Serve your static website in Github"><i class="icon icon-angle-left" aria-hidden=true></i><span>&nbsp;&nbsp;Older</span></a></li><li class=next><a href=https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/ title="Sending emails with AWS Lambda and SES from a HTML form"><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/serving_static_sites_with_s3_and_cloudfront\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

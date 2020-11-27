@@ -1,845 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        Go echo bot - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Go echo bot - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&amp;rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0." />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>Go echo bot - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="Go echo bot" />
-<meta property="og:description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0."><meta name=generator content="Hugo 0.75.1 with theme pure"><title>Go echo bot - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="Go echo bot"><meta property="og:description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/go_echobot/" />
-<meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="article:published_time" content="2018-12-29T00:00:00+00:00" />
-<meta property="article:modified_time" content="2018-12-29T00:00:00+00:00" />
-<meta itemprop="name" content="Go echo bot">
-<meta itemprop="description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0."><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/go_echobot/"><meta property="og:image" content="https://techsquad.rocks/img/logo.png"><meta property="article:published_time" content="2018-12-29T00:00:00+00:00"><meta property="article:modified_time" content="2018-12-29T00:00:00+00:00"><meta itemprop=name content="Go echo bot"><meta itemprop=description content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.">
-<meta itemprop="datePublished" content="2018-12-29T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2018-12-29T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1075">
-<meta itemprop="image" content="https://techsquad.rocks/img/logo.png"/>
-
-
-
-<meta itemprop="keywords" content="go,golang,slack,ksonnet,jsonnet,kubernetes,deployment-tools," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/logo.png"/>
-
-<meta name="twitter:title" content="Go echo bot"/>
-<meta name="twitter:description" content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0."><meta itemprop=datePublished content="2018-12-29T00:00:00+00:00"><meta itemprop=dateModified content="2018-12-29T00:00:00+00:00"><meta itemprop=wordCount content="1075"><meta itemprop=image content="https://techsquad.rocks/img/logo.png"><meta itemprop=keywords content="go,golang,slack,ksonnet,jsonnet,kubernetes,deployment-tools,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/logo.png"><meta name=twitter:title content="Go echo bot"><meta name=twitter:description content="Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
 To be honest, there is no other way to get the benefits of having ksonnet if you&rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
-This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0."/>
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/go_echobot/>Go echo bot</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/go_echobot/ class=article-date><time datetime="2018-12-29 00:00:00 +0000 UTC" itemprop=datePublished>2018-12-29</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/deployment-tools/>deployment-tools</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/go/>go</a>
+<a class=article-tag-link href=/tags/golang/>golang</a>
+<a class=article-tag-link href=/tags/slack/>slack</a>
+<a class=article-tag-link href=/tags/ksonnet/>ksonnet</a>
+<a class=article-tag-link href=/tags/jsonnet/>jsonnet</a>
+<a class=article-tag-link href=/tags/kubernetes/>kubernetes</a>
+<a class=article-tag-link href=/tags/deployment-tools/>deployment-tools</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/go_echobot/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1075 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 6 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=echo-bot><strong>Echo bot</strong></h3><p>This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.</p><p>To be honest, there is no other way to get the benefits of having <a href=https://ksonnet.io/>ksonnet</a> if you&rsquo;re not going to take advantage of the <em>deployments as code</em> facilities that it brings thanks to Jsonnet.</p><p>This time we will see how to use <a href=https://github.com/cybermaggedon/ksonnet-cheat-sheet>proper templates</a>, it seems that the templates generated with <code>ks</code> are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.</p><p>In the examples I will be using <a href=https://kubernetes.io/docs/tasks/tools/install-minikube>minikube</a> or you can <a href=https://github.com/kainlite/kainlite.github.io>check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:</p><h3 id=lets-get-started>Let&rsquo;s get started</h3><p>This time I&rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
 
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
+<span style=color:#f92672>import</span> (
+        <span style=color:#e6db74>&#34;fmt&#34;</span>
+        <span style=color:#e6db74>&#34;os&#34;</span>
+        <span style=color:#e6db74>&#34;strings&#34;</span>
 
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/go_echobot/"
-    >Go echo bot</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/go_echobot/" class="article-date">
-  <time datetime="2018-12-29 00:00:00 &#43;0000 UTC" itemprop="datePublished">2018-12-29</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/deployment-tools/"> deployment-tools </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/go/"> go </a>
-    <a class="article-tag-link" href="/tags/golang/"> golang </a>
-    <a class="article-tag-link" href="/tags/slack/"> slack </a>
-    <a class="article-tag-link" href="/tags/ksonnet/"> ksonnet </a>
-    <a class="article-tag-link" href="/tags/jsonnet/"> jsonnet </a>
-    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
-    <a class="article-tag-link" href="/tags/deployment-tools/"> deployment-tools </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/go_echobot/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1075 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 6 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="echo-bot"><strong>Echo bot</strong></h3>
-<p>This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.</p>
-<p>To be honest, there is no other way to get the benefits of having <a href="https://ksonnet.io/">ksonnet</a> if you&rsquo;re not going to take advantage of the <em>deployments as code</em> facilities that it brings thanks to Jsonnet.</p>
-<p>This time we will see how to use <a href="https://github.com/cybermaggedon/ksonnet-cheat-sheet">proper templates</a>, it seems that the templates generated with <code>ks</code> are outdated at the time of this writing ksonnet version is: 0.13.1, no surprise here because it&rsquo;s not a really mature tool. It does require a lot of effort in learning, hacking and reading to get things to work, but hopefully soon it will be easier, of course this is my personal opinion and I have not used it for a real project yet, but I expect it to grow and become more usable before I attempt to do something for the real world with it.</p>
-<p>In the examples I will be using <a href="https://kubernetes.io/docs/tasks/tools/install-minikube">minikube</a> or you can <a href="https://github.com/kainlite/kainlite.github.io">check out this repo</a> that has a good overview of minikube, once installed and started (<code>minikube start</code>) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working:</p>
-<h3 id="lets-get-started">Let&rsquo;s get started</h3>
-<p>This time I&rsquo;m not going to deploy another wordpress instance but a simple Slack echo bot made with go:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
-
-<span style="color:#f92672">import</span> (
-        <span style="color:#e6db74">&#34;fmt&#34;</span>
-        <span style="color:#e6db74">&#34;os&#34;</span>
-        <span style="color:#e6db74">&#34;strings&#34;</span>
-
-        <span style="color:#a6e22e">slack</span> <span style="color:#e6db74">&#34;github.com/nlopes/slack&#34;</span>
+        <span style=color:#a6e22e>slack</span> <span style=color:#e6db74>&#34;github.com/nlopes/slack&#34;</span>
 )
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-        <span style="color:#a6e22e">api</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">New</span>(
-                <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;SLACK_API_TOKEN&#34;</span>),
+<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+        <span style=color:#a6e22e>api</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>New</span>(
+                <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Getenv</span>(<span style=color:#e6db74>&#34;SLACK_API_TOKEN&#34;</span>),
         )
 
-        <span style="color:#a6e22e">rtm</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">api</span>.<span style="color:#a6e22e">NewRTM</span>()
-        <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">ManageConnection</span>()
+        <span style=color:#a6e22e>rtm</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>api</span>.<span style=color:#a6e22e>NewRTM</span>()
+        <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>rtm</span>.<span style=color:#a6e22e>ManageConnection</span>()
 
-        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">IncomingEvents</span> {
-                <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Print</span>(<span style="color:#e6db74">&#34;Event Received: &#34;</span>)
-                <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">ev</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">Data</span>.(<span style="color:#66d9ef">type</span>) {
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">HelloEvent</span>:
-                        <span style="color:#75715e">// Ignore hello
-</span><span style="color:#75715e"></span>
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">ConnectedEvent</span>:
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Infos:&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Info</span>)
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Connection counter:&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">ConnectionCount</span>)
+        <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>msg</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>rtm</span>.<span style=color:#a6e22e>IncomingEvents</span> {
+                <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Print</span>(<span style=color:#e6db74>&#34;Event Received: &#34;</span>)
+                <span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>ev</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>msg</span>.<span style=color:#a6e22e>Data</span>.(<span style=color:#66d9ef>type</span>) {
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>HelloEvent</span>:
+                        <span style=color:#75715e>// Ignore hello
+</span><span style=color:#75715e></span>
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>ConnectedEvent</span>:
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Infos:&#34;</span>, <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Info</span>)
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Connection counter:&#34;</span>, <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>ConnectionCount</span>)
 
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">MessageEvent</span>:
-                        <span style="color:#75715e">// Only echo what it said to me
-</span><span style="color:#75715e"></span>                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Message: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>)
-                        <span style="color:#a6e22e">info</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">GetInfo</span>()
-                        <span style="color:#a6e22e">prefix</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;&lt;@%s&gt; &#34;</span>, <span style="color:#a6e22e">info</span>.<span style="color:#a6e22e">User</span>.<span style="color:#a6e22e">ID</span>)
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>MessageEvent</span>:
+                        <span style=color:#75715e>// Only echo what it said to me
+</span><span style=color:#75715e></span>                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Message: %v\n&#34;</span>, <span style=color:#a6e22e>ev</span>)
+                        <span style=color:#a6e22e>info</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>rtm</span>.<span style=color:#a6e22e>GetInfo</span>()
+                        <span style=color:#a6e22e>prefix</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Sprintf</span>(<span style=color:#e6db74>&#34;&lt;@%s&gt; &#34;</span>, <span style=color:#a6e22e>info</span>.<span style=color:#a6e22e>User</span>.<span style=color:#a6e22e>ID</span>)
 
-                        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">User</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">info</span>.<span style="color:#a6e22e">User</span>.<span style="color:#a6e22e">ID</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">HasPrefix</span>(<span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Text</span>, <span style="color:#a6e22e">prefix</span>) {
-                                <span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">SendMessage</span>(<span style="color:#a6e22e">rtm</span>.<span style="color:#a6e22e">NewOutgoingMessage</span>(<span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Text</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Channel</span>))
+                        <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>User</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>info</span>.<span style=color:#a6e22e>User</span>.<span style=color:#a6e22e>ID</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>HasPrefix</span>(<span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Text</span>, <span style=color:#a6e22e>prefix</span>) {
+                                <span style=color:#a6e22e>rtm</span>.<span style=color:#a6e22e>SendMessage</span>(<span style=color:#a6e22e>rtm</span>.<span style=color:#a6e22e>NewOutgoingMessage</span>(<span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Text</span>, <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Channel</span>))
                         }
 
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">PresenceChangeEvent</span>:
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Presence Change: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>)
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>PresenceChangeEvent</span>:
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Presence Change: %v\n&#34;</span>, <span style=color:#a6e22e>ev</span>)
 
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">LatencyReport</span>:
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Current latency: %v\n&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Value</span>)
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>LatencyReport</span>:
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Current latency: %v\n&#34;</span>, <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Value</span>)
 
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">RTMError</span>:
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Error: %s\n&#34;</span>, <span style="color:#a6e22e">ev</span>.<span style="color:#a6e22e">Error</span>())
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>RTMError</span>:
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Error: %s\n&#34;</span>, <span style=color:#a6e22e>ev</span>.<span style=color:#a6e22e>Error</span>())
 
-                <span style="color:#66d9ef">case</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">slack</span>.<span style="color:#a6e22e">InvalidAuthEvent</span>:
-                        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Invalid credentials&#34;</span>)
-                        <span style="color:#66d9ef">return</span>
+                <span style=color:#66d9ef>case</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>slack</span>.<span style=color:#a6e22e>InvalidAuthEvent</span>:
+                        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Invalid credentials&#34;</span>)
+                        <span style=color:#66d9ef>return</span>
 
-                <span style="color:#66d9ef">default</span>:
+                <span style=color:#66d9ef>default</span>:
 
-                        <span style="color:#75715e">// Ignore other events..
-</span><span style="color:#75715e"></span>                        <span style="color:#75715e">// fmt.Printf(&#34;Unexpected: %v\n&#34;, msg.Data)
-</span><span style="color:#75715e"></span>                }
+                        <span style=color:#75715e>// Ignore other events..
+</span><span style=color:#75715e></span>                        <span style=color:#75715e>// fmt.Printf(&#34;Unexpected: %v\n&#34;, msg.Data)
+</span><span style=color:#75715e></span>                }
         }
 }
-</code></pre></div>
-As you can see it&rsquo;s the simplest example from the readme of the <a href="https://github.com/nlopes/slack">Go Slack API</a> project, it only connects to Slack and when it reads a message if it&rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.</p>
-<p>Here you can see the <code>Dockerfile</code>, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#75715e"># Build</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.11.2-alpine as builder</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    chown -R app:app /app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    apk add git <span style="color:#f92672">&amp;&amp;</span> apk add gcc musl-dev<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">ADD</span> . /app/<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> go get -d -v ./... <span style="color:#f92672">&amp;&amp;</span> go build -o main . <span style="color:#f92672">&amp;&amp;</span> chown -R app:app /app /home/app<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Run</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.11.2-alpine</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> adduser -D -g <span style="color:#e6db74">&#39;app&#39;</span> app <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
-</span><span style="color:#ae81ff"></span>    chown -R app:app /app<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/health_check.sh /app/health_check.sh<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>builder --chown<span style="color:#f92672">=</span>app /app/main /app/main<span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">USER</span><span style="color:#e6db74"> app</span><span style="color:#960050;background-color:#1e0010">
-</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;/app/main&#34;</span>]</code></pre></div>
-There are a few more files in there, you can see the full sources <a href="https://github.com/kainlite/echobot">here</a>, for example <code>health_check.sh</code>, as our app doesn&rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.</p>
-<p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ks init echobot
-INFO Using context <span style="color:#e6db74">&#34;minikube&#34;</span> from kubeconfig file <span style="color:#e6db74">&#34;~/.kube/config&#34;</span>
-INFO Creating environment <span style="color:#e6db74">&#34;default&#34;</span> with namespace <span style="color:#e6db74">&#34;default&#34;</span>, pointing to <span style="color:#e6db74">&#34;version:v1.8.0&#34;</span> cluster at address <span style="color:#e6db74">&#34;https://192.168.99.100:8443&#34;</span>
-INFO Generating ksonnet-lib data at path <span style="color:#e6db74">&#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;</span></code></pre></div></p>
-<p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#ae81ff">// Import KSonnet library</span>
-<span style="color:#ae81ff">local params = std.extVar(&#39;__ksonnet/params&#39;).components.demo;</span>
-<span style="color:#ae81ff">local k = import &#39;k.libsonnet&#39;;</span>
+</code></pre></div>As you can see it&rsquo;s the simplest example from the readme of the <a href=https://github.com/nlopes/slack>Go Slack API</a> project, it only connects to Slack and when it reads a message if it&rsquo;s addressed to the bot then it echoes the message back, creating a bot and everything else is out of the scope of this article but it&rsquo;s really simple, you only need to create an app in the Slack workspace, set it as a bot and grab the token (there is a lot more that you can customize but that is the most basic procedure to get started with a bot), then you just invite it to any channel that you want and start interacting with it.</p><p>Here you can see the <code>Dockerfile</code>, for security we create an app user for the build and for running it, and to save space and bandwidth we only ship what we need using a multi-stage build:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-docker data-lang=docker><span style=color:#75715e># Build</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> golang:1.11.2-alpine as builder</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> adduser -D -g <span style=color:#e6db74>&#39;app&#39;</span> app <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    chown -R app:app /app <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    apk add git <span style=color:#f92672>&amp;&amp;</span> apk add gcc musl-dev<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>ADD</span> . /app/<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> go get -d -v ./... <span style=color:#f92672>&amp;&amp;</span> go build -o main . <span style=color:#f92672>&amp;&amp;</span> chown -R app:app /app /home/app<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># Run</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> golang:1.11.2-alpine</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> adduser -D -g <span style=color:#e6db74>&#39;app&#39;</span> app <span style=color:#f92672>&amp;&amp;</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    chown -R app:app /app<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --from<span style=color:#f92672>=</span>builder --chown<span style=color:#f92672>=</span>app /app/health_check.sh /app/health_check.sh<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --from<span style=color:#f92672>=</span>builder --chown<span style=color:#f92672>=</span>app /app/main /app/main<span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>USER</span><span style=color:#e6db74> app</span><span style=color:#960050;background-color:#1e0010>
+</span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [<span style=color:#e6db74>&#34;/app/main&#34;</span>]</code></pre></div>There are a few more files in there, you can see the full sources <a href=https://github.com/kainlite/echobot>here</a>, for example <code>health_check.sh</code>, as our app doesn&rsquo;t listen on any port we need a way to tell kubernetes how to check if our app is alive.</p><p>Okay, enough boilerplate let&rsquo;s get to business, so let&rsquo;s create a new ksonnet application:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ks init echobot
+INFO Using context <span style=color:#e6db74>&#34;minikube&#34;</span> from kubeconfig file <span style=color:#e6db74>&#34;~/.kube/config&#34;</span>
+INFO Creating environment <span style=color:#e6db74>&#34;default&#34;</span> with namespace <span style=color:#e6db74>&#34;default&#34;</span>, pointing to <span style=color:#e6db74>&#34;version:v1.8.0&#34;</span> cluster at address <span style=color:#e6db74>&#34;https://192.168.99.100:8443&#34;</span>
+INFO Generating ksonnet-lib data at path <span style=color:#e6db74>&#39;~/Webs/echobot/echobot/lib/ksonnet-lib/v1.8.0&#39;</span></code></pre></div></p><p>And now let&rsquo;s grab a template and modify it accordingly to be able to create the deployment for the bot <code>components/echobot.jsonnet</code>:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ae81ff>// Import KSonnet library</span>
+<span style=color:#ae81ff>local params = std.extVar(&#39;__ksonnet/params&#39;).components.demo;</span>
+<span style=color:#ae81ff>local k = import &#39;k.libsonnet&#39;;</span>
 
-<span style="color:#ae81ff">// Specify the import objects that we need</span>
-<span style="color:#ae81ff">local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;</span>
-<span style="color:#ae81ff">local depl = k.extensions.v1beta1.deployment;</span>
+<span style=color:#ae81ff>// Specify the import objects that we need</span>
+<span style=color:#ae81ff>local container = k.extensions.v1beta1.deployment.mixin.spec.template.spec.containersType;</span>
+<span style=color:#ae81ff>local depl = k.extensions.v1beta1.deployment;</span>
 
-<span style="color:#ae81ff">// Environment variables, instead of hardcoding it here we could use a param or a secret</span>
-<span style="color:#ae81ff">// But I will leave that as an exercise for you :)</span>
-<span style="color:#ae81ff">local envs = [</span>
+<span style=color:#ae81ff>// Environment variables, instead of hardcoding it here we could use a param or a secret</span>
+<span style=color:#ae81ff>// But I will leave that as an exercise for you :)</span>
+<span style=color:#ae81ff>local envs = [</span>
   {
-    <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#39;SLACK_API_TOKEN&#39;</span>,
-    <span style="color:#f92672">value</span>: <span style="color:#e6db74">&#39;really-long-token&#39;</span>,
+    <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#39;SLACK_API_TOKEN&#39;</span>,
+    <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#39;really-long-token&#39;</span>,
   },
-]<span style="color:#ae81ff">;</span>
+]<span style=color:#ae81ff>;</span>
 
-<span style="color:#ae81ff">local livenessProbe = {</span>
-  <span style="color:#f92672">exec</span>: {
-    <span style="color:#f92672">command</span>: [
-      <span style="color:#e6db74">&#39;/bin/sh&#39;</span>,
-      <span style="color:#e6db74">&#39;-c&#39;</span>,
-      <span style="color:#e6db74">&#39;/app/health_check.sh&#39;</span>,
+<span style=color:#ae81ff>local livenessProbe = {</span>
+  <span style=color:#f92672>exec</span>: {
+    <span style=color:#f92672>command</span>: [
+      <span style=color:#e6db74>&#39;/bin/sh&#39;</span>,
+      <span style=color:#e6db74>&#39;-c&#39;</span>,
+      <span style=color:#e6db74>&#39;/app/health_check.sh&#39;</span>,
     ],
   },
-}<span style="color:#ae81ff">;</span>
+}<span style=color:#ae81ff>;</span>
 
-<span style="color:#ae81ff">// Define containers</span>
-<span style="color:#ae81ff">local containers = [</span>
-  <span style="color:#ae81ff">container.new(&#39;echobot&#39;, &#39;kainlite/echobot:0.0.2&#39;) {</span>
-    <span style="color:#f92672">env</span>: <span style="color:#ae81ff">(envs),</span>
-    <span style="color:#f92672">livenessProbe</span>: <span style="color:#ae81ff">livenessProbe,</span>
+<span style=color:#ae81ff>// Define containers</span>
+<span style=color:#ae81ff>local containers = [</span>
+  <span style=color:#ae81ff>container.new(&#39;echobot&#39;, &#39;kainlite/echobot:0.0.2&#39;) {</span>
+    <span style=color:#f92672>env</span>: <span style=color:#ae81ff>(envs),</span>
+    <span style=color:#f92672>livenessProbe</span>: <span style=color:#ae81ff>livenessProbe,</span>
   },
-]<span style="color:#ae81ff">;</span>
+]<span style=color:#ae81ff>;</span>
 
-<span style="color:#ae81ff">// Define deployment with 3 replicas</span>
-<span style="color:#ae81ff">local deployment =</span>
-  <span style="color:#ae81ff">depl.new(&#39;echobot&#39;, 1, containers, { app: &#39;echobot&#39; });</span>
+<span style=color:#ae81ff>// Define deployment with 3 replicas</span>
+<span style=color:#ae81ff>local deployment =</span>
+  <span style=color:#ae81ff>depl.new(&#39;echobot&#39;, 1, containers, { app: &#39;echobot&#39; });</span>
 
-<span style="color:#ae81ff">local resources = [deployment];</span>
+<span style=color:#ae81ff>local resources = [deployment];</span>
 
-<span style="color:#ae81ff">// Return list of resources.</span>
-<span style="color:#ae81ff">k.core.v1.list.new(resources)</span></code></pre></div>
-Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace <code>really-long-token</code> with your token, and then do:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ks apply default
+<span style=color:#ae81ff>// Return list of resources.</span>
+<span style=color:#ae81ff>k.core.v1.list.new(resources)</span></code></pre></div>Note that I have uploaded that image to docker hub so you can use it to follow the example if you want, after that just replace <code>really-long-token</code> with your token, and then do:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ks apply default
 INFO Applying deployments echobot
-INFO Creating non-existent deployments echobot</code></pre></div></p>
-<p>And now if we check our deployment and pod, we should see something like this:</p>
-<figure class="zoom">
-    <img src="/img/echobot.png" width="100%"/> 
-</figure>
-
-<p>And in the logs:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl get pods
+INFO Creating non-existent deployments echobot</code></pre></div></p><p>And now if we check our deployment and pod, we should see something like this:</p><figure class=zoom><img src=/img/echobot.png width=100%></figure><p>And in the logs:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash> $ kubectl get pods
 NAME                               READY     STATUS    RESTARTS   AGE
-echobot-7456f7d7dd-twg4r           1/1       Running   <span style="color:#ae81ff">0</span>          53s
+echobot-7456f7d7dd-twg4r           1/1       Running   <span style=color:#ae81ff>0</span>          53s
 
 $ kubectl logs -f echobot-7456f7d7dd-twg4r
-Event Received: Event Received: Infos: &amp;<span style="color:#f92672">{</span>wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y<span style="color:#f92672">=</span> 0xc000468000 0xc0004482a0 <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> <span style="color:#f92672">[]}</span>
-Connection counter: <span style="color:#ae81ff">0</span>
+Event Received: Event Received: Infos: &amp;<span style=color:#f92672>{</span>wss://cerberus-xxxx.lb.slack-msgs.com/websocket/1gvXP_yQCFE-Y<span style=color:#f92672>=</span> 0xc000468000 0xc0004482a0 <span style=color:#f92672>[]</span> <span style=color:#f92672>[]</span> <span style=color:#f92672>[]</span> <span style=color:#f92672>[]</span> <span style=color:#f92672>[]}</span>
+Connection counter: <span style=color:#ae81ff>0</span>
 Event Received: Event Received: Current latency: 1.256397423s
 Event Received: Current latency: 1.25679313s
 Event Received: Current latency: 1.256788737s
-Event Received: Message: &amp;<span style="color:#f92672">{{</span>message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! 1546124966.002300  false <span style="color:#f92672">[]</span> <span style="color:#f92672">[]</span> &lt;nil&gt;  false <span style="color:#ae81ff">0</span>  false  1546124966.002300   &lt;nil&gt;      <span style="color:#f92672">[]</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">[]</span>  <span style="color:#f92672">[]</span> false &lt;nil&gt;  <span style="color:#ae81ff">0</span> TEDJT5CTD <span style="color:#f92672">[]</span>  false false<span style="color:#f92672">}</span> &lt;nil&gt;<span style="color:#f92672">}</span></code></pre></div></p>
-<p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href="https://github.com/kainlite/echobot">here</a>. In a future post I might explore <a href="https://ksonnet.io/docs/examples/helm/">ksonnet and helm charts</a>.</p>
-<h3 id="upcoming-topics">Upcoming topics</h3>
-<p>As promised I will be doing one post about <a href="https://github.com/hasura/gitkube">Gitkube</a> and <a href="https://github.com/GoogleContainerTools/skaffold">Skaffold</a>, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about <a href="https://www.docker.com/">Docker</a>, <a href="https://containerd.io/">ContainerD</a>, <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">KubeADM</a>, and Kubernetes in general.</p>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/go_echobot/" title="Go echo bot" target="_blank" rel="external">https://techsquad.rocks/blog/go_echobot/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="prev">
-                <a href="https://techsquad.rocks/blog/getting_started_with_ksonnet/" title="Getting started with ksonnet"><i
-                        class="icon icon-angle-left"
-                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://techsquad.rocks/blog/getting_started_with_gitkube/"
-                    title="Getting started with gitkube"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/go_echobot\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+Event Received: Message: &amp;<span style=color:#f92672>{{</span>message CEDGU6EA0 UEDJT5DDH &lt;@UED48HD33&gt; echo! 1546124966.002300  false <span style=color:#f92672>[]</span> <span style=color:#f92672>[]</span> &lt;nil&gt;  false <span style=color:#ae81ff>0</span>  false  1546124966.002300   &lt;nil&gt;      <span style=color:#f92672>[]</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>[]</span>  <span style=color:#f92672>[]</span> false &lt;nil&gt;  <span style=color:#ae81ff>0</span> TEDJT5CTD <span style=color:#f92672>[]</span>  false false<span style=color:#f92672>}</span> &lt;nil&gt;<span style=color:#f92672>}</span></code></pre></div></p><p>And that folks is all I have for now, I hope you enjoyed this small tour of ksonnet. The source code for the bot can be found <a href=https://github.com/kainlite/echobot>here</a>. In a future post I might explore <a href=https://ksonnet.io/docs/examples/helm/>ksonnet and helm charts</a>.</p><h3 id=upcoming-topics>Upcoming topics</h3><p>As promised I will be doing one post about <a href=https://github.com/hasura/gitkube>Gitkube</a> and <a href=https://github.com/GoogleContainerTools/skaffold>Skaffold</a>, there are a lot of deployment tools for kubernetes but those are the most promising ones to me, also after that I will start covering more topics about <a href=https://www.docker.com/>Docker</a>, <a href=https://containerd.io/>ContainerD</a>, <a href=https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/>KubeADM</a>, and Kubernetes in general.</p><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also, you can check the source code and changes in the <a href=https://github.com/kainlite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/go_echobot/ title="Go echo bot" target=_blank rel=external>https://techsquad.rocks/blog/go_echobot/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=prev><a href=https://techsquad.rocks/blog/getting_started_with_ksonnet/ title="Getting started with ksonnet"><i class="icon icon-angle-left" aria-hidden=true></i><span>&nbsp;&nbsp;Older</span></a></li><li class=next><a href=https://techsquad.rocks/blog/getting_started_with_gitkube/ title="Getting started with gitkube"><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/go_echobot\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/go_echobot\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

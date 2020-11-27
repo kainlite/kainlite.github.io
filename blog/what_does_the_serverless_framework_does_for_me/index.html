@@ -1,518 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>
-        What does the serverless framework does for me - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
-      </title>
-    <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-transform" />
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no,email=no,adress=no">
-  
-  <meta name="theme-color" content="#000000" />
-  
-  <meta http-equiv="window-target" content="_top" />
-  
-  
-  <meta name="description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>What does the serverless framework does for me - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui"><meta name=renderer content="webkit"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta name=format-detection content="telephone=no,email=no,adress=no"><meta name=theme-color content="#000000"><meta http-equiv=window-target content="_top"><meta name=description content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&amp;rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&amp;rsquo;s take the golang example for a spin So let&amp;rsquo;s generate a project with the serverless framework and see everything that it does for us." />
-  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
-  <title>What does the serverless framework does for me - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-  
-  
-  <link rel="stylesheet" href="https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css">
-  
-  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-  <meta property="og:title" content="What does the serverless framework does for me" />
-<meta property="og:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ Let&amp;rsquo;s take the golang example for a spin So let&amp;rsquo;s generate a project with the serverless framework and see everything that it does for us."><meta name=generator content="Hugo 0.75.1 with theme pure"><title>What does the serverless framework does for me - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title><link rel=stylesheet href=https://techsquad.rocks/css/style.min.7dc20efbc53647d41aa9ddea0c48e59300223d084e66ea0cbe7c30bd88903acc.css><link rel=stylesheet href=https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css async><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css async><meta property="og:title" content="What does the serverless framework does for me"><meta property="og:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" />
-<meta property="og:image" content="https://techsquad.rocks/img/serveless.png" />
-<meta property="article:published_time" content="2019-02-15T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-02-15T00:00:00+00:00" />
-<meta itemprop="name" content="What does the serverless framework does for me">
-<meta itemprop="description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us."><meta property="og:type" content="article"><meta property="og:url" content="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/"><meta property="og:image" content="https://techsquad.rocks/img/serveless.png"><meta property="article:published_time" content="2019-02-15T00:00:00+00:00"><meta property="article:modified_time" content="2019-02-15T00:00:00+00:00"><meta itemprop=name content="What does the serverless framework does for me"><meta itemprop=description content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.">
-<meta itemprop="datePublished" content="2019-02-15T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2019-02-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1258">
-<meta itemprop="image" content="https://techsquad.rocks/img/serveless.png">
-
-
-
-<meta itemprop="keywords" content="development,serverless,go,golang," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://techsquad.rocks/img/serveless.png"/>
-
-<meta name="twitter:title" content="What does the serverless framework does for me"/>
-<meta name="twitter:description" content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us."><meta itemprop=datePublished content="2019-02-15T00:00:00+00:00"><meta itemprop=dateModified content="2019-02-15T00:00:00+00:00"><meta itemprop=wordCount content="1258"><meta itemprop=image content="https://techsquad.rocks/img/serveless.png"><meta itemprop=keywords content="development,serverless,go,golang,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://techsquad.rocks/img/serveless.png"><meta name=twitter:title content="What does the serverless framework does for me"><meta name=twitter:description content="Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
  The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us."/>
-
-  <!--[if lte IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-    <![endif]-->
-
-  <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-  </head>
-
-  
-  
-
-  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
-    <div class="slimContent">
-      <div class="navbar-header">
-        <div class="profile-block text-center">
-          <a id="avatar" href="https://github.com/kainlite" target="_blank">
-            <img class="img-circle img-rotate" src="https://techsquad.rocks/img/logo-glider.png" width="200" height="200">
-          </a>
-          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
-          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
-          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
-        </div><div class="search" id="search-form-wrap">
-    <form class="search-form sidebar-form">
-        <div class="input-group">
-            <input type="text" class="search-form-input form-control" placeholder="Search" />
-            <span class="input-group-btn">
-                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
-                        class="icon icon-search"></i></button>
-            </span>
-        </div>
-        <div class="ins-search">
-            <div class="ins-search-mask"></div>
-            <div class="ins-search-container">
-                <div class="ins-input-wrapper">
-                    <input type="text" class="ins-search-input" placeholder="Type something..."
-                        x-webkit-speech />
-                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
-                        aria-label="Close"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="ins-section-wrapper">
-                    <div class="ins-section-container"></div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
-        <ul class="nav navbar-nav main-nav">
-            <li class="menu-item menu-item-home">
-                <a href="/">
-                    <i class="icon icon-home-fill"></i>
-                  <span class="menu-title">Home</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-blog">
-                <a href="/blog/">
-                    <i class="icon icon-archives-fill"></i>
-                  <span class="menu-title">Blog</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-categories">
-                <a href="/categories/">
-                    <i class="icon icon-folder"></i>
-                  <span class="menu-title">Categories</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-tags">
-                <a href="/tags/">
-                    <i class="icon icon-tags"></i>
-                  <span class="menu-title">Tags</span>
-                </a>
-            </li>
-            <li class="menu-item menu-item-about">
-                <a href="/about/">
-                    <i class="icon icon-cup-fill"></i>
-                  <span class="menu-title">About</span>
-                </a>
-            </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    
-<div class="widget">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget-body">
-        <ul class="recent-post-list list-unstyled no-thumbnail">
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-11-01 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-01</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/terraform_linter/" class="title">Automatic terraform linting with reviewdog and tflint</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-05-21 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-05-21</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/gitlab_ci_basics/" class="title">Gitlab-CI Basics</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-02-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-02-02</time>
-                    </p>
-                </div>
-            </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cat_and_friends_netcat_socat/" class="title">Cat and friends (Netcat and Socat)</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-20 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-20</time>
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Categories</h3>
-    <div class="widget-body">
-        <ul class="category-list">
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
-        </ul>
-    </div>
-</div><div class="widget">
-    <h3 class="widget-title"> Tags</h3>
-    <div class="widget-body">
-        <ul class="tag-list">
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
-                    class="tag-list-count">5</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
-                    class="tag-list-count">9</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
-                    class="tag-list-count">13</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
-                    class="tag-list-count">12</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">16</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">18</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
-                    class="tag-list-count">4</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
-                    class="tag-list-count">8</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
-                    class="tag-list-count">6</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
-                    class="tag-list-count">3</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
-                    class="tag-list-count">1</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
-                    class="tag-list-count">2</span></li>
-            
-            
-            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
-                    class="tag-list-count">2</span></li>
-            
-        </ul>
-
-    </div>
-</div>
-  </div>
-</aside>
-
-    
-    
-<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
-  <div class="slimContent">
-    <h4 class="toc-title">Catalogue</h4>
-    <nav id="toc" class="js-toc toc">
-
-    </nav>
-  </div>
-</aside>
-<main class="main" role="main"><div class="content">
-  <article id="-" class="article article-type-" itemscope
-    itemtype="http://schema.org/BlogPosting">
-    
-    <div class="article-header">
-      <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/what_does_the_serverless_framework_does_for_me/"
-    >What does the serverless framework does for me</a
-  >
-</h1>
-
-      <div class="article-meta">
-        
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" class="article-date">
-  <time datetime="2019-02-15 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-02-15</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/development/"> development </a>
-    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
-    <a class="article-tag-link" href="/tags/go/"> go </a>
-    <a class="article-tag-link" href="/tags/golang/"> golang </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/what_does_the_serverless_framework_does_for_me/#comments"
-            class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1258 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 6 minutes </span>
-
-      </div>
-    </div>
-    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h3 id="introduction"><strong>Introduction</strong></h3>
-<p>The <a href="https://serverless.com/">serverless framework</a> is a nice tool to manage all your cloud functions. from their page:</p>
-<blockquote>
-<p>The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.</p>
-</blockquote>
-<h3 id="lets-take-the-golang-example-for-a-spin"><strong>Let&rsquo;s take the golang example for a spin</strong></h3>
-<p>So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir foo <span style="color:#f92672">&amp;&amp;</span> cd <span style="color:#e6db74">&#34;</span>$_<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&amp;&amp;</span>  serverless create -t aws-go
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># Serverless: Generating boilerplate...</span>
-<span style="color:#75715e">#  _______                             __</span>
-<span style="color:#75715e"># |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.</span>
-<span style="color:#75715e"># |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|</span>
-<span style="color:#75715e"># |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|</span>
-<span style="color:#75715e"># |   |   |             The Serverless Application Framework</span>
-<span style="color:#75715e"># |       |                           serverless.com, v1.36.1</span>
-<span style="color:#75715e">#  -------&#39;</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
-<span style="color:#75715e"># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div>
-Got you a bit of command line fu right there with the &ldquo;$_&rdquo; (it means the first parameter of the previous command)</p>
-<p>Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.</p>
-<p><strong>Let&rsquo;s take a look at the files</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tree .
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># ├── hello</span>
-<span style="color:#75715e"># │   └── main.go</span>
-<span style="color:#75715e"># ├── Makefile</span>
-<span style="color:#75715e"># ├── serverless.yml</span>
-<span style="color:#75715e"># └── world</span>
-<span style="color:#75715e">#     └── main.go</span>
-<span style="color:#75715e">#</span>
-<span style="color:#75715e"># 2 directories, 4 files</span></code></pre></div>
-We got a manifest <code>serverless.yml</code> a <code>Makefile</code> (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)</p>
-<p><strong>The manifest file indicates a lot of things, I will add comments to the <em>code</em></strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">frameworkVersion: <span style="color:#e6db74">&#34;&gt;=1.28.0 &lt;2.0.0&#34;</span>
+ Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us."><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head></head><body class="main-center theme-black" itemscope itemtype=http://schema.org/WebPage><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=slimContent><div class=navbar-header><div class="profile-block text-center"><a id=avatar href=https://github.com/kainlite target=_blank><img class="img-circle img-rotate" src=https://techsquad.rocks/img/logo-glider.png width=200 height=200></a><h2 id=name class="hidden-xs hidden-sm">kainlite</h2><h3 id=title class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3><small id=location class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small></div><div class=search id=search-form-wrap><form class="search-form sidebar-form"><div class=input-group><input type=text class="search-form-input form-control" placeholder=Search>
+<span class=input-group-btn><button type=submit class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button></span></div><div class=ins-search><div class=ins-search-mask></div><div class=ins-search-container><div class=ins-input-wrapper><input type=text class=ins-search-input placeholder="Type something..." x-webkit-speech>
+<button type=button class="close ins-close ins-selectable" data-dismiss=modal aria-label=Close><span aria-hidden=true>×</span></button></div><div class=ins-section-wrapper><div class=ins-section-container></div></div></div></div></form></div><button class="navbar-toggle collapsed" type=button data-toggle=collapse data-target=#main-navbar aria-controls=main-navbar aria-expanded=false>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><nav id=main-navbar class="collapse navbar-collapse" itemscope itemtype=http://schema.org/SiteNavigationElement role=navigation><ul class="nav navbar-nav main-nav"><li class="menu-item menu-item-home"><a href=/><i class="icon icon-home-fill"></i><span class=menu-title>Home</span></a></li><li class="menu-item menu-item-blog"><a href=/blog/><i class="icon icon-archives-fill"></i><span class=menu-title>Blog</span></a></li><li class="menu-item menu-item-categories"><a href=/categories/><i class="icon icon-folder"></i><span class=menu-title>Categories</span></a></li><li class="menu-item menu-item-tags"><a href=/tags/><i class="icon icon-tags"></i><span class=menu-title>Tags</span></a></li><li class="menu-item menu-item-about"><a href=/about/><i class="icon icon-cup-fill"></i><span class=menu-title>About</span></a></li></ul></nav></div></header><aside class=sidebar itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><div class=widget><h3 class=widget-title>Recent Posts</h3><div class=widget-body><ul class="recent-post-list list-unstyled no-thumbnail"><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/ class=title>Kubernetes local playground alternatives</a></p><p class=item-date><time datetime="2020-11-27 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-27</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/ class=title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a></p><p class=item-date><time datetime="2020-11-01 00:00:00 +0000 UTC" itemprop=datePublished>2020-11-01</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/terraform_linter/ class=title>Automatic terraform linting with reviewdog and tflint</a></p><p class=item-date><time datetime="2020-05-21 00:00:00 +0000 UTC" itemprop=datePublished>2020-05-21</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/gitlab_ci_basics/ class=title>Gitlab-CI Basics</a></p><p class=item-date><time datetime="2020-02-02 00:00:00 +0000 UTC" itemprop=datePublished>2020-02-02</time></p></div></li><li><div class=item-inner><p class=item-title><a href=https://techsquad.rocks/blog/cat_and_friends_netcat_socat/ class=title>Cat and friends (Netcat and Socat)</a></p><p class=item-date><time datetime="2020-01-20 00:00:00 +0000 UTC" itemprop=datePublished>2020-01-20</time></p></div></li></ul></div></div><div class=widget><h3 class=widget-title>Categories</h3><div class=widget-body><ul class=category-list><li class=category-list-item><a href=https://techsquad.rocks/categories/continuous-integration/ class=category-list-link>continuous-integration</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/deployment-tools/ class=category-list-link>deployment-tools</a><span class=category-list-count>6</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/kubernetes/ class=category-list-link>kubernetes</a><span class=category-list-count>9</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/linux/ class=category-list-link>linux</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/serverless/ class=category-list-link>serverless</a><span class=category-list-count>10</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/service-mesh/ class=category-list-link>service-mesh</a><span class=category-list-count>2</span></li><li class=category-list-item><a href=https://techsquad.rocks/categories/terraform/ class=category-list-link>terraform</a><span class=category-list-count>1</span></li></ul></div></div><div class=widget><h3 class=widget-title>Tags</h3><div class=widget-body><ul class=tag-list><li class=tag-list-item><a href=https://techsquad.rocks/tags/aws/ class=tag-list-link>aws</a><span class=tag-list-count>5</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/cognito/ class=tag-list-link>cognito</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-delivery/ class=tag-list-link>continuous-delivery</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/continuous-integration/ class=tag-list-link>continuous-integration</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/deployment-tools/ class=tag-list-link>deployment-tools</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/development/ class=tag-list-link>development</a><span class=tag-list-count>9</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/docker/ class=tag-list-link>docker</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/elm/ class=tag-list-link>elm</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gcp/ class=tag-list-link>gcp</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/git/ class=tag-list-link>git</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/github/ class=tag-list-link>github</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitkube/ class=tag-list-link>gitkube</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/gitlab/ class=tag-list-link>gitlab</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/go/ class=tag-list-link>go</a><span class=tag-list-count>13</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/golang/ class=tag-list-link>golang</a><span class=tag-list-count>12</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/grpc/ class=tag-list-link>grpc</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/helm/ class=tag-list-link>helm</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/istio/ class=tag-list-link>istio</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/jsonnet/ class=tag-list-link>jsonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kind/ class=tag-list-link>kind</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kops/ class=tag-list-link>kops</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/ksonnet/ class=tag-list-link>ksonnet</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubebuilder/ class=tag-list-link>kubebuilder</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kubernetes/ class=tag-list-link>kubernetes</a><span class=tag-list-count>16</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/kustomize/ class=tag-list-link>kustomize</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/lambda/ class=tag-list-link>lambda</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/linux/ class=tag-list-link>linux</a><span class=tag-list-count>18</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/networking/ class=tag-list-link>networking</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/openssh/ class=tag-list-link>openssh</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/routing/ class=tag-list-link>routing</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/security/ class=tag-list-link>security</a><span class=tag-list-count>4</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/serverless/ class=tag-list-link>serverless</a><span class=tag-list-count>8</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/service-mesh/ class=tag-list-link>service-mesh</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/skaffold/ class=tag-list-link>skaffold</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/slack/ class=tag-list-link>slack</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/terraform/ class=tag-list-link>terraform</a><span class=tag-list-count>6</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tips-and-tricks/ class=tag-list-link>tips-and-tricks</a><span class=tag-list-count>3</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/tmux/ class=tag-list-link>tmux</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/travis-ci/ class=tag-list-link>travis-ci</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/urxvt/ class=tag-list-link>urxvt</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vagrant/ class=tag-list-link>vagrant</a><span class=tag-list-count>1</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vault/ class=tag-list-link>vault</a><span class=tag-list-count>2</span></li><li class=tag-list-item><a href=https://techsquad.rocks/tags/vim/ class=tag-list-link>vim</a><span class=tag-list-count>2</span></li></ul></div></div></div></aside><aside class="sidebar sidebar-toc collapse" id=collapseToc itemscope itemtype=http://schema.org/WPSideBar><div class=slimContent><h4 class=toc-title>Catalogue</h4><nav id=toc class="js-toc toc"></nav></div></aside><main class=main role=main><div class=content><article id=- class="article article-type-" itemscope itemtype=http://schema.org/BlogPosting><div class=article-header><h1 itemprop=name><a class=article-title href=/blog/what_does_the_serverless_framework_does_for_me/>What does the serverless framework does for me</a></h1><div class=article-meta><span class=article-date><i class="icon icon-calendar-check"></i>&nbsp;
+<a href=https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/ class=article-date><time datetime="2019-02-15 00:00:00 +0000 UTC" itemprop=datePublished>2019-02-15</time></a></span>
+<span class=article-category><i class="icon icon-folder"></i>&nbsp;
+<a class=article-category-link href=/categories/serverless/>serverless</a></span>
+<span class=article-tag><i class="icon icon-tags"></i>&nbsp;
+<a class=article-tag-link href=/tags/development/>development</a>
+<a class=article-tag-link href=/tags/serverless/>serverless</a>
+<a class=article-tag-link href=/tags/go/>go</a>
+<a class=article-tag-link href=/tags/golang/>golang</a></span>
+<span class=post-comment><i class="icon icon-comment"></i>&nbsp;<a href=/blog/what_does_the_serverless_framework_does_for_me/#comments class=article-comment-link>Comments</a></span>
+<span class="post-wordcount hidden-xs" itemprop=wordCount>Word Count: 1258 words</span>
+<span class="post-readcount hidden-xs" itemprop=timeRequired>Read Count: 6 minutes</span></div></div><div class="article-entry marked-body js-toc-content" itemprop=articleBody><h3 id=introduction><strong>Introduction</strong></h3><p>The <a href=https://serverless.com/>serverless framework</a> is a nice tool to manage all your cloud functions. from their page:</p><blockquote><p>The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.</p></blockquote><h3 id=lets-take-the-golang-example-for-a-spin><strong>Let&rsquo;s take the golang example for a spin</strong></h3><p>So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>mkdir foo <span style=color:#f92672>&amp;&amp;</span> cd <span style=color:#e6db74>&#34;</span>$_<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>&amp;&amp;</span>  serverless create -t aws-go
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># Serverless: Generating boilerplate...</span>
+<span style=color:#75715e>#  _______                             __</span>
+<span style=color:#75715e># |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.</span>
+<span style=color:#75715e># |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|</span>
+<span style=color:#75715e># |____   |_____|__|  \___/|_____|__| |__|_____|_____|_____|</span>
+<span style=color:#75715e># |   |   |             The Serverless Application Framework</span>
+<span style=color:#75715e># |       |                           serverless.com, v1.36.1</span>
+<span style=color:#75715e>#  -------&#39;</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># Serverless: Successfully generated boilerplate for template: &#34;aws-go&#34;</span>
+<span style=color:#75715e># Serverless: NOTE: Please update the &#34;service&#34; property in serverless.yml with your service name</span></code></pre></div>Got you a bit of command line fu right there with the &ldquo;$_&rdquo; (it means the first parameter of the previous command)</p><p>Okay all peachy but what just happened? We initialized a serverless framework project with the template aws-go (as you probably figured by now) the serverless framework can handle different languages and cloud providers, in this example we picked aws and go (there is another template for go called aws-go-dep which as the name indicates uses dep to manage dependencies), enough talking.</p><p><strong>Let&rsquo;s take a look at the files</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>tree .
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># ├── hello</span>
+<span style=color:#75715e># │   └── main.go</span>
+<span style=color:#75715e># ├── Makefile</span>
+<span style=color:#75715e># ├── serverless.yml</span>
+<span style=color:#75715e># └── world</span>
+<span style=color:#75715e>#     └── main.go</span>
+<span style=color:#75715e>#</span>
+<span style=color:#75715e># 2 directories, 4 files</span></code></pre></div>We got a manifest <code>serverless.yml</code> a <code>Makefile</code> (which you can use to build your functions (to validate syntax errors for instance or run in test mode before pushing them to AWS, it will also be used to build them while deploying)</p><p><strong>The manifest file indicates a lot of things, I will add comments to the <em>code</em></strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>frameworkVersion: <span style=color:#e6db74>&#34;&gt;=1.28.0 &lt;2.0.0&#34;</span>
 
 provider:
   name: aws
   runtime: go1.x
 
-<span style="color:#75715e"># Which files needs to be included and which to be ignored</span>
+<span style=color:#75715e># Which files needs to be included and which to be ignored</span>
 package:
  exclude:
    - ./**
  include:
    - ./bin/**
 
-<span style="color:#75715e"># The functions and the handlers (the actual function definition in the code), and events which then will be translated into API Gateway endpoints for your functions</span>
+<span style=color:#75715e># The functions and the handlers (the actual function definition in the code), and events which then will be translated into API Gateway endpoints for your functions</span>
 functions:
   hello:
     handler: bin/hello
@@ -525,358 +68,137 @@ functions:
     events:
       - http:
           path: world
-          method: get</code></pre></div></p>
-<p><strong>Let&rsquo;s take a look at the hello function / file</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">package main
+          method: get</code></pre></div></p><p><strong>Let&rsquo;s take a look at the hello function / file</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>package main
 
-import <span style="color:#f92672">(</span>
-    <span style="color:#e6db74">&#34;bytes&#34;</span>
-    <span style="color:#e6db74">&#34;context&#34;</span>
-    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
+import <span style=color:#f92672>(</span>
+    <span style=color:#e6db74>&#34;bytes&#34;</span>
+    <span style=color:#e6db74>&#34;context&#34;</span>
+    <span style=color:#e6db74>&#34;encoding/json&#34;</span>
 
-    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/events&#34;</span>
-    <span style="color:#e6db74">&#34;github.com/aws/aws-lambda-go/lambda&#34;</span>
-<span style="color:#f92672">)</span>
+    <span style=color:#e6db74>&#34;github.com/aws/aws-lambda-go/events&#34;</span>
+    <span style=color:#e6db74>&#34;github.com/aws/aws-lambda-go/lambda&#34;</span>
+<span style=color:#f92672>)</span>
 
-// Response is of type APIGatewayProxyResponse since we<span style="color:#960050;background-color:#1e0010">&#39;</span>re leveraging the
-// AWS Lambda Proxy Request functionality <span style="color:#f92672">(</span>default behavior<span style="color:#f92672">)</span>
+// Response is of type APIGatewayProxyResponse since we<span style=color:#960050;background-color:#1e0010>&#39;</span>re leveraging the
+// AWS Lambda Proxy Request functionality <span style=color:#f92672>(</span>default behavior<span style=color:#f92672>)</span>
 //
 // https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
 type Response events.APIGatewayProxyResponse
 
-// Handler is our lambda handler invoked by the <span style="color:#e6db74">`</span>lambda.Start<span style="color:#e6db74">`</span> <span style="color:#66d9ef">function</span> call
-func Handler<span style="color:#f92672">(</span>ctx context.Context<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>Response, error<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+// Handler is our lambda handler invoked by the <span style=color:#e6db74>`</span>lambda.Start<span style=color:#e6db74>`</span> <span style=color:#66d9ef>function</span> call
+func Handler<span style=color:#f92672>(</span>ctx context.Context<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>Response, error<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
     var buf bytes.Buffer
 
-    body, err :<span style="color:#f92672">=</span> json.Marshal<span style="color:#f92672">(</span>map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>interface<span style="color:#f92672">{}{</span>
-        <span style="color:#e6db74">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Go Serverless v1.0! Your function executed successfully!&#34;</span>,
-    <span style="color:#f92672">})</span>
-    <span style="color:#66d9ef">if</span> err !<span style="color:#f92672">=</span> nil <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">{</span>StatusCode: 404<span style="color:#f92672">}</span>, err
-    <span style="color:#f92672">}</span>
-    json.HTMLEscape<span style="color:#f92672">(</span>&amp;buf, body<span style="color:#f92672">)</span>
+    body, err :<span style=color:#f92672>=</span> json.Marshal<span style=color:#f92672>(</span>map<span style=color:#f92672>[</span>string<span style=color:#f92672>]</span>interface<span style=color:#f92672>{}{</span>
+        <span style=color:#e6db74>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;Go Serverless v1.0! Your function executed successfully!&#34;</span>,
+    <span style=color:#f92672>})</span>
+    <span style=color:#66d9ef>if</span> err !<span style=color:#f92672>=</span> nil <span style=color:#f92672>{</span>
+        <span style=color:#66d9ef>return</span> Response<span style=color:#f92672>{</span>StatusCode: 404<span style=color:#f92672>}</span>, err
+    <span style=color:#f92672>}</span>
+    json.HTMLEscape<span style=color:#f92672>(</span>&amp;buf, body<span style=color:#f92672>)</span>
 
-    resp :<span style="color:#f92672">=</span> Response<span style="color:#f92672">{</span>
+    resp :<span style=color:#f92672>=</span> Response<span style=color:#f92672>{</span>
         StatusCode:      200,
         IsBase64Encoded: false,
-        Body:            buf.String<span style="color:#f92672">()</span>,
-        Headers: map<span style="color:#f92672">[</span>string<span style="color:#f92672">]</span>string<span style="color:#f92672">{</span>
-            <span style="color:#e6db74">&#34;Content-Type&#34;</span>:           <span style="color:#e6db74">&#34;application/json&#34;</span>,
-            <span style="color:#e6db74">&#34;X-MyCompany-Func-Reply&#34;</span>: <span style="color:#e6db74">&#34;hello-handler&#34;</span>,
-        <span style="color:#f92672">}</span>,
-    <span style="color:#f92672">}</span>
+        Body:            buf.String<span style=color:#f92672>()</span>,
+        Headers: map<span style=color:#f92672>[</span>string<span style=color:#f92672>]</span>string<span style=color:#f92672>{</span>
+            <span style=color:#e6db74>&#34;Content-Type&#34;</span>:           <span style=color:#e6db74>&#34;application/json&#34;</span>,
+            <span style=color:#e6db74>&#34;X-MyCompany-Func-Reply&#34;</span>: <span style=color:#e6db74>&#34;hello-handler&#34;</span>,
+        <span style=color:#f92672>}</span>,
+    <span style=color:#f92672>}</span>
 
-    <span style="color:#66d9ef">return</span> resp, nil
-<span style="color:#f92672">}</span>
+    <span style=color:#66d9ef>return</span> resp, nil
+<span style=color:#f92672>}</span>
 
-func main<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    lambda.Start<span style="color:#f92672">(</span>Handler<span style="color:#f92672">)</span>
-<span style="color:#f92672">}</span></code></pre></div>
-This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.</p>
-<h5 id="lets-deploy-it"><strong>Let&rsquo;s deploy it</strong></h5>
-<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless deploy
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
-<span style="color:#75715e"># Serverless: Packaging service...</span>
-<span style="color:#75715e"># Serverless: Excluding development dependencies...</span>
-<span style="color:#75715e"># Serverless: Uploading CloudFormation file to S3...</span>
-<span style="color:#75715e"># Serverless: Uploading artifacts...</span>
-<span style="color:#75715e"># Serverless: Uploading service .zip file to S3 (10.88 MB)...</span>
-<span style="color:#75715e"># Serverless: Validating template...</span>
-<span style="color:#75715e"># Serverless: Updating Stack...</span>
-<span style="color:#75715e"># Serverless: Checking Stack update progress...</span>
-<span style="color:#75715e"># ............</span>
-<span style="color:#75715e"># Serverless: Stack update finished...</span>
-<span style="color:#75715e"># Service Information</span>
-<span style="color:#75715e"># service: aws-go</span>
-<span style="color:#75715e"># stage: dev</span>
-<span style="color:#75715e"># region: us-east-1</span>
-<span style="color:#75715e"># stack: aws-go-dev</span>
-<span style="color:#75715e"># api keys:</span>
-<span style="color:#75715e">#   None</span>
-<span style="color:#75715e"># endpoints:</span>
-<span style="color:#75715e">#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello</span>
-<span style="color:#75715e">#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/world</span>
-<span style="color:#75715e"># functions:</span>
-<span style="color:#75715e">#   hello: aws-go-dev-hello</span>
-<span style="color:#75715e">#   world: aws-go-dev-world</span>
-<span style="color:#75715e"># layers:</span>
-<span style="color:#75715e">#   None</span></code></pre></div>
-So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.</p>
-<p><strong>And test it</strong>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># *   Trying 99.84.27.2...</span>
-<span style="color:#75715e"># * TCP_NODELAY set</span>
-<span style="color:#75715e"># * Connected to cfr9zyw3r1.execute-api.us-east-1.amazonaws.com (99.84.27.2) port 443 (#0)</span>
-<span style="color:#75715e"># * ALPN, offering h2</span>
-<span style="color:#75715e"># * ALPN, offering http/1.1</span>
-<span style="color:#75715e"># * successfully set certificate verify locations:</span>
-<span style="color:#75715e"># *   CAfile: /etc/ssl/certs/ca-certificates.crt</span>
-<span style="color:#75715e">#   CApath: none</span>
-<span style="color:#75715e"># * TLSv1.3 (OUT), TLS handshake, Client hello (1):</span>
-<span style="color:#75715e"># * TLSv1.3 (IN), TLS handshake, Server hello (2):</span>
-<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Certificate (11):</span>
-<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span>
-<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Server finished (14):</span>
-<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span>
-<span style="color:#75715e"># * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):</span>
-<span style="color:#75715e"># * TLSv1.2 (OUT), TLS handshake, Finished (20):</span>
-<span style="color:#75715e"># * TLSv1.2 (IN), TLS handshake, Finished (20):</span>
-<span style="color:#75715e"># * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256</span>
-<span style="color:#75715e"># * ALPN, server accepted to use h2</span>
-<span style="color:#75715e"># * Server certificate:</span>
-<span style="color:#75715e"># *  subject: CN=*.execute-api.us-east-1.amazonaws.com</span>
-<span style="color:#75715e"># *  start date: Oct  9 00:00:00 2018 GMT</span>
-<span style="color:#75715e"># *  expire date: Oct  9 12:00:00 2019 GMT</span>
-<span style="color:#75715e"># *  subjectAltName: host &#34;cfr9zyw3r1.execute-api.us-east-1.amazonaws.com&#34; matched cert&#39;s &#34;*.execute-api.us-east-1.amazonaws.com&#34;</span>
-<span style="color:#75715e"># *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon</span>
-<span style="color:#75715e"># *  SSL certificate verify ok.</span>
-<span style="color:#75715e"># * Using HTTP2, server supports multi-use</span>
-<span style="color:#75715e"># * Connection state changed (HTTP/2 confirmed)</span>
-<span style="color:#75715e"># * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0</span>
-<span style="color:#75715e"># * Using Stream ID: 1 (easy handle 0x55944b9d7db0)</span>
-<span style="color:#75715e"># &gt; GET /dev/hello HTTP/2</span>
-<span style="color:#75715e"># &gt; Host: cfr9zyw3r1.execute-api.us-east-1.amazonaws.com</span>
-<span style="color:#75715e"># &gt; User-Agent: curl/7.63.0</span>
-<span style="color:#75715e"># &gt; Accept: */*</span>
-<span style="color:#75715e"># &gt;</span>
-<span style="color:#75715e"># * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!</span>
-<span style="color:#75715e"># &lt; HTTP/2 200</span>
-<span style="color:#75715e"># &lt; content-type: application/json</span>
-<span style="color:#75715e"># &lt; content-length: 70</span>
-<span style="color:#75715e"># &lt; date: Sat, 16 Feb 2019 04:32:04 GMT</span>
-<span style="color:#75715e"># &lt; x-amzn-requestid: cf4c6094-31a3-11e9-b61e-bb2138b2f390</span>
-<span style="color:#75715e"># &lt; x-amz-apigw-id: VLPKmHj4oAMFbbw=</span>
-<span style="color:#75715e"># &lt; x-mycompany-func-reply: hello-handler</span>
-<span style="color:#75715e"># &lt; x-amzn-trace-id: Root=1-5c679243-d4f945debb1a2b675c41675f;Sampled=0</span>
-<span style="color:#75715e"># &lt; x-cache: Miss from cloudfront</span>
-<span style="color:#75715e"># &lt; via: 1.1 655473215401ef909f449b92f216caa1.cloudfront.net (CloudFront)</span>
-<span style="color:#75715e"># &lt; x-amz-cf-id: LOHG0oG-WbGKpTnlGz-VDVqb9DxXQX-kgJJEUkchh1v_zLfUqNCpEQ==</span>
-<span style="color:#75715e"># &lt;</span>
-<span style="color:#75715e"># * Connection #0 to host cfr9zyw3r1.execute-api.us-east-1.amazonaws.com left intact</span>
-<span style="color:#75715e"># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}%</span></code></pre></div>
-As expected we can see the headers x-my-company-func-reply and the json object that it created for us.</p>
-<h3 id="cleanup"><strong>Cleanup</strong></h3>
-<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">serverless remove
-<span style="color:#75715e"># OUTPUT:</span>
-<span style="color:#75715e"># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
-<span style="color:#75715e"># Serverless: Getting all objects in S3 bucket...</span>
-<span style="color:#75715e"># Serverless: Removing objects in S3 bucket...</span>
-<span style="color:#75715e"># Serverless: Removing Stack...</span>
-<span style="color:#75715e"># Serverless: Checking Stack removal progress...</span>
-<span style="color:#75715e"># ...............</span>
-<span style="color:#75715e"># Serverless: Stack removal finished...</span></code></pre></div>
-This will as you expect remove everything that was created with the deploy command.</p>
-<p>In the next article we will explore how to do create and deploy a function like this one by hand.</p>
-<h3 id="errata">Errata</h3>
-<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
-<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
-
-    </div>
-    <div class="article-footer">
-<blockquote class="mt-2x">
-  <ul class="post-copyright list-unstyled">
-    <li class="post-copyright-link hidden-xs">
-      <strong>Permalink: </strong>
-      <a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" title="What does the serverless framework does for me" target="_blank" rel="external">https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
-    </li>
-  </ul>
-</blockquote>
-
-<div class="panel panel-default panel-badger">
-  <div class="panel-body">
-    <figure class="media">
-      <div class="media-left">
-        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
-          <img src="https://techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
-        </a>
-      </div>
-      <div class="media-body">
-        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
-        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
-      </div>
-    </figure>
-  </div>
-</div>
-
-    </div>
-  </article>
-<section id="comments">
-    <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-</section>
-
-</div><nav class="bar bar-footer clearfix" data-stick-bottom>
-    <div class="bar-inner">
-        <ul class="pager pull-left">
-            <li class="prev">
-                <a href="https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/" title="Sending emails with AWS Lambda and SES from a HTML form"><i
-                        class="icon icon-angle-left"
-                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
-            </li>
-            <li class="next">
-                <a href="https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/"
-                    title="Create an AWS lambda function in Go"><span>Newer&nbsp;&nbsp;</span><i
-                        class="icon icon-angle-right" aria-hidden="true"></i></a>
-            </li>
-            
-            <li class="toggle-toc">
-                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
-                    title="Catalogue" role="button">
-                    <span>[&nbsp;</span><span>Catalogue</span>
-                    <i class="text-collapsed icon icon-anchor"></i>
-                    <i class="text-in icon icon-close"></i>
-                    <span>]</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bar-right">
-            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
-                data-mobile-sites=""></div>
-        </div>
-    </div>
-</nav>
-
-</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
-(function buymeacoffee() {
-  var buymeacoffee = document.createElement('script');
-  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
-  buymeacoffee.async = true;
-  buymeacoffee.setAttribute('data-id','NDx5OFh');
-  buymeacoffee.setAttribute('data-name','BMC-Widget');
-  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
-  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
-  buymeacoffee.setAttribute('data-color','#79D6B5');
-  buymeacoffee.setAttribute('data-position','right');
-  buymeacoffee.setAttribute('data-x_margin','10');
-  buymeacoffee.setAttribute('data-y_margin','10');
-
-  
-  
-  
-
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-  
-  document.getElementsByTagName('head')[0].appendChild(buymeacoffee);
-})()
-</script>
-
-<ul class="social-links">
-    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-email"></i></a></li>
-    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-github"></i></a></li>
-    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-linkedin"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-rss"></i></a></li>
-    <li><a href="https://techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-share"></i></a></li>
-    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-stackoverflow"></i></a></li>
-    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
-            <i class="icon icon-twitter"></i></a></li>
-</ul>
-
-  <div class="copyright">
-    <div class="publishby">
-        © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-<script>
-    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
-</script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
-<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
-    hljs.configure({
-        tabReplace: '    ', 
-        classPrefix: ''     
-        
-    })
-    hljs.initHighlightingOnLoad();
-</script>
-<script src="https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js"></script>
-<script src="https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js"></script>
-
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
-            },
-            ROOT_URL: 'https:\/\/techsquad.rocks\/',
-            CONTENT_URL: 'https:\/\/techsquad.rocks\/\/searchindex.json ',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script type="text/javascript" src="https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
-<script>
-    tocbot.init({
-        
-        tocSelector: '.js-toc',
-        
-        contentSelector: '.js-toc-content',
-        
-        headingSelector: 'h1, h2, h3',
-        
-        hasInnerContainers: true,
-    });
-</script>
-
-<script>
-if (window.location.hostname !== "localhost") {
-    var disqus_config = function () {
-        this.page.url = 'https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';
-        this.page.identifier = 'https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';
-    };
-    (function () {
-        var d = document, s = d.createElement('script');
-        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-}
-</script>
-<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-8919037-7', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <script src="//instant.page/5.1.0" type="module" integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
-  </body>
-</html>
+func main<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    lambda.Start<span style=color:#f92672>(</span>Handler<span style=color:#f92672>)</span>
+<span style=color:#f92672>}</span></code></pre></div>This function only returns some text with some headers, every lambda function requires the lambda.Start with your function name as an entrypoint, in this case Handler, the context is usually used to pass data between calls or functions. The rest of the code is pretty straight forward go code, it builds a json object and returns it along with some headers.</p><h5 id=lets-deploy-it><strong>Let&rsquo;s deploy it</strong></h5><p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>serverless deploy
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
+<span style=color:#75715e># Serverless: Packaging service...</span>
+<span style=color:#75715e># Serverless: Excluding development dependencies...</span>
+<span style=color:#75715e># Serverless: Uploading CloudFormation file to S3...</span>
+<span style=color:#75715e># Serverless: Uploading artifacts...</span>
+<span style=color:#75715e># Serverless: Uploading service .zip file to S3 (10.88 MB)...</span>
+<span style=color:#75715e># Serverless: Validating template...</span>
+<span style=color:#75715e># Serverless: Updating Stack...</span>
+<span style=color:#75715e># Serverless: Checking Stack update progress...</span>
+<span style=color:#75715e># ............</span>
+<span style=color:#75715e># Serverless: Stack update finished...</span>
+<span style=color:#75715e># Service Information</span>
+<span style=color:#75715e># service: aws-go</span>
+<span style=color:#75715e># stage: dev</span>
+<span style=color:#75715e># region: us-east-1</span>
+<span style=color:#75715e># stack: aws-go-dev</span>
+<span style=color:#75715e># api keys:</span>
+<span style=color:#75715e>#   None</span>
+<span style=color:#75715e># endpoints:</span>
+<span style=color:#75715e>#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello</span>
+<span style=color:#75715e>#   GET - https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/world</span>
+<span style=color:#75715e># functions:</span>
+<span style=color:#75715e>#   hello: aws-go-dev-hello</span>
+<span style=color:#75715e>#   world: aws-go-dev-world</span>
+<span style=color:#75715e># layers:</span>
+<span style=color:#75715e>#   None</span></code></pre></div>So a lot happened here, the deploy function compiled our binary, packaged it, uploaded that package to s3, created a cloudformation stack and after everything was completed, returned the endpoints that were defined, as you can see the framework enabled us to create and deploy a function (two actually) really easily which totally simplifies the process of managing functions and events.</p><p><strong>And test it</strong><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl -v https://cfr9zyw3r1.execute-api.us-east-1.amazonaws.com/dev/hello
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># *   Trying 99.84.27.2...</span>
+<span style=color:#75715e># * TCP_NODELAY set</span>
+<span style=color:#75715e># * Connected to cfr9zyw3r1.execute-api.us-east-1.amazonaws.com (99.84.27.2) port 443 (#0)</span>
+<span style=color:#75715e># * ALPN, offering h2</span>
+<span style=color:#75715e># * ALPN, offering http/1.1</span>
+<span style=color:#75715e># * successfully set certificate verify locations:</span>
+<span style=color:#75715e># *   CAfile: /etc/ssl/certs/ca-certificates.crt</span>
+<span style=color:#75715e>#   CApath: none</span>
+<span style=color:#75715e># * TLSv1.3 (OUT), TLS handshake, Client hello (1):</span>
+<span style=color:#75715e># * TLSv1.3 (IN), TLS handshake, Server hello (2):</span>
+<span style=color:#75715e># * TLSv1.2 (IN), TLS handshake, Certificate (11):</span>
+<span style=color:#75715e># * TLSv1.2 (IN), TLS handshake, Server key exchange (12):</span>
+<span style=color:#75715e># * TLSv1.2 (IN), TLS handshake, Server finished (14):</span>
+<span style=color:#75715e># * TLSv1.2 (OUT), TLS handshake, Client key exchange (16):</span>
+<span style=color:#75715e># * TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):</span>
+<span style=color:#75715e># * TLSv1.2 (OUT), TLS handshake, Finished (20):</span>
+<span style=color:#75715e># * TLSv1.2 (IN), TLS handshake, Finished (20):</span>
+<span style=color:#75715e># * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256</span>
+<span style=color:#75715e># * ALPN, server accepted to use h2</span>
+<span style=color:#75715e># * Server certificate:</span>
+<span style=color:#75715e># *  subject: CN=*.execute-api.us-east-1.amazonaws.com</span>
+<span style=color:#75715e># *  start date: Oct  9 00:00:00 2018 GMT</span>
+<span style=color:#75715e># *  expire date: Oct  9 12:00:00 2019 GMT</span>
+<span style=color:#75715e># *  subjectAltName: host &#34;cfr9zyw3r1.execute-api.us-east-1.amazonaws.com&#34; matched cert&#39;s &#34;*.execute-api.us-east-1.amazonaws.com&#34;</span>
+<span style=color:#75715e># *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon</span>
+<span style=color:#75715e># *  SSL certificate verify ok.</span>
+<span style=color:#75715e># * Using HTTP2, server supports multi-use</span>
+<span style=color:#75715e># * Connection state changed (HTTP/2 confirmed)</span>
+<span style=color:#75715e># * Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0</span>
+<span style=color:#75715e># * Using Stream ID: 1 (easy handle 0x55944b9d7db0)</span>
+<span style=color:#75715e># &gt; GET /dev/hello HTTP/2</span>
+<span style=color:#75715e># &gt; Host: cfr9zyw3r1.execute-api.us-east-1.amazonaws.com</span>
+<span style=color:#75715e># &gt; User-Agent: curl/7.63.0</span>
+<span style=color:#75715e># &gt; Accept: */*</span>
+<span style=color:#75715e># &gt;</span>
+<span style=color:#75715e># * Connection state changed (MAX_CONCURRENT_STREAMS == 128)!</span>
+<span style=color:#75715e># &lt; HTTP/2 200</span>
+<span style=color:#75715e># &lt; content-type: application/json</span>
+<span style=color:#75715e># &lt; content-length: 70</span>
+<span style=color:#75715e># &lt; date: Sat, 16 Feb 2019 04:32:04 GMT</span>
+<span style=color:#75715e># &lt; x-amzn-requestid: cf4c6094-31a3-11e9-b61e-bb2138b2f390</span>
+<span style=color:#75715e># &lt; x-amz-apigw-id: VLPKmHj4oAMFbbw=</span>
+<span style=color:#75715e># &lt; x-mycompany-func-reply: hello-handler</span>
+<span style=color:#75715e># &lt; x-amzn-trace-id: Root=1-5c679243-d4f945debb1a2b675c41675f;Sampled=0</span>
+<span style=color:#75715e># &lt; x-cache: Miss from cloudfront</span>
+<span style=color:#75715e># &lt; via: 1.1 655473215401ef909f449b92f216caa1.cloudfront.net (CloudFront)</span>
+<span style=color:#75715e># &lt; x-amz-cf-id: LOHG0oG-WbGKpTnlGz-VDVqb9DxXQX-kgJJEUkchh1v_zLfUqNCpEQ==</span>
+<span style=color:#75715e># &lt;</span>
+<span style=color:#75715e># * Connection #0 to host cfr9zyw3r1.execute-api.us-east-1.amazonaws.com left intact</span>
+<span style=color:#75715e># {&#34;message&#34;:&#34;Go Serverless v1.0! Your function executed successfully!&#34;}%</span></code></pre></div>As expected we can see the headers x-my-company-func-reply and the json object that it created for us.</p><h3 id=cleanup><strong>Cleanup</strong></h3><p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>serverless remove
+<span style=color:#75715e># OUTPUT:</span>
+<span style=color:#75715e># Serverless: WARNING: Missing &#34;tenant&#34; and &#34;app&#34; properties in serverless.yml. Without these properties, you can not publish the service to the Serverless Platform.</span>
+<span style=color:#75715e># Serverless: Getting all objects in S3 bucket...</span>
+<span style=color:#75715e># Serverless: Removing objects in S3 bucket...</span>
+<span style=color:#75715e># Serverless: Removing Stack...</span>
+<span style=color:#75715e># Serverless: Checking Stack removal progress...</span>
+<span style=color:#75715e># ...............</span>
+<span style=color:#75715e># Serverless: Stack removal finished...</span></code></pre></div>This will as you expect remove everything that was created with the deploy command.</p><p>In the next article we will explore how to do create and deploy a function like this one by hand.</p><h3 id=errata>Errata</h3><p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p><p>Also, you can check the source code and changes in the <a href=https://github.com/kainlite/kainlite.github.io>generated code</a> and the <a href=https://github.com/kainlite/blog>sources here</a></p></div><div class=article-footer><blockquote class=mt-2x><ul class="post-copyright list-unstyled"><li class="post-copyright-link hidden-xs"><strong>Permalink:</strong>
+<a href=https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/ title="What does the serverless framework does for me" target=_blank rel=external>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</a></li><li class=post-copyright-license><strong>License：</strong><a href=https://github.com/kainlite/blog/blob/master/LICENSE.md target=_blank rel=external>MIT License</a></li></ul></blockquote><div class="panel panel-default panel-badger"><div class=panel-body><figure class=media><div class=media-left><a href=https://github.com/kainlite target=_blank class="img-burn thumb-sm visible-lg"><img src=https://techsquad.rocks/img/logo-glider.png class="img-rounded w-full" alt></a></div><div class=media-body><h3 class=media-heading><a href=https://github.com/kainlite target=_blank><span class=text-dark>kainlite</span><small class=ml-1x>DevOps Practitioner</small></a></h3><div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div></div></figure></div></div></div></article><section id=comments><div id=disqus_thread><noscript>Please enable JavaScript to view the <a href=//disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript></div></section></div><nav class="bar bar-footer clearfix" data-stick-bottom><div class=bar-inner><ul class="pager pull-left"><li class=prev><a href=https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/ title="Sending emails with AWS Lambda and SES from a HTML form"><i class="icon icon-angle-left" aria-hidden=true></i><span>&nbsp;&nbsp;Older</span></a></li><li class=next><a href=https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/ title="Create an AWS lambda function in Go"><span>Newer&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden=true></i></a></li><li class=toggle-toc><a class="toggle-btn collapsed" data-toggle=collapse href=#collapseToc aria-expanded=false title=Catalogue role=button><span>[&nbsp;</span><span>Catalogue</span>
+<i class="text-collapsed icon icon-anchor"></i><i class="text-in icon icon-close"></i><span>]</span></a></li></ul><div class=bar-right><div class=share-component data-sites=facebook,twitter,google,linkedin data-mobile-sites></div></div></div></nav></main><footer class=footer itemscope itemtype=http://schema.org/WPFooter><script>(function buymeacoffee(){var buymeacoffee=document.createElement('script');buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');buymeacoffee.async=true;buymeacoffee.setAttribute('data-id','NDx5OFh');buymeacoffee.setAttribute('data-name','BMC-Widget');buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');buymeacoffee.setAttribute('data-color','#79D6B5');buymeacoffee.setAttribute('data-position','right');buymeacoffee.setAttribute('data-x_margin','10');buymeacoffee.setAttribute('data-y_margin','10');document.getElementsByTagName('head')[0].appendChild(buymeacoffee);})()</script><ul class=social-links><li><a href=mailto:kainlite@gmail.com target=_blank title=email data-toggle=tooltip data-placement=top><i class="icon icon-email"></i></a></li><li><a href=https://github.com/kainlite target=_blank title=github data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li><li><a href=https://www.linkedin.com/in/gabrielgarrido/ target=_blank title=linkedin data-toggle=tooltip data-placement=top><i class="icon icon-linkedin"></i></a></li><li><a href=https://techsquad.rocks/index.xml target=_blank title=rss data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li><li><a href=https://techsquad.rocks/index.json target=_blank title=share data-toggle=tooltip data-placement=top><i class="icon icon-share"></i></a></li><li><a href=https://stackoverflow.com/users/313941/kainlite target=_blank title=stackoverflow data-toggle=tooltip data-placement=top><i class="icon icon-stackoverflow"></i></a></li><li><a href=https://twitter.com/kainlite target=_blank title=twitter data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li></ul><div class=copyright><div class=publishby>© All rights reserved. Powered by <a href=https://gohugo.io/ target=_blank>Hugo</a> and <a href=https://github.com/xiaoheiAh/hugo-theme-pure target=_blank>Pure</a> with ♥</div></div></footer><script src=https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js></script><script>window.jQuery||document.write('<script src="js/jquery.min.js"><\/script>')</script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js defer></script><script type=text/javascript src=https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js defer></script><script>hljs.configure({tabReplace:'    ',classPrefix:''})
+hljs.initHighlightingOnLoad();</script><script src=https://techsquad.rocks/js/application.min.bdeb64b910570b6c41badc6a05b7afb0c8ad9efd8525de3c7257d59e786326a3.js></script><script src=https://techsquad.rocks/js/plugin.min.51ff8c7317566f82259170fa36e09c4493adc9b9378b427a01ad3f017ebac7dd.js></script><script>(function(window){var INSIGHT_CONFIG={TRANSLATION:{POSTS:'Posts',PAGES:'Pages',CATEGORIES:'Categories',TAGS:'Tags',UNTITLED:'(Untitled)',},ROOT_URL:'https:\/\/techsquad.rocks\/',CONTENT_URL:'https:\/\/techsquad.rocks\/\/searchindex.json ',};window.INSIGHT_CONFIG=INSIGHT_CONFIG;})(window);</script><script type=text/javascript src=https://techsquad.rocks/js/insight.min.a343cd9a5a7698336b28ef3a7c16a3a1b1d2d5fb17dc8ed04022bbe08cc5459073a15bdafa3a8a58cdd56080784bdd69fa70b1ae8597565c799c57ed00f0e120.js defer></script><script src=https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js></script><script>tocbot.init({tocSelector:'.js-toc',contentSelector:'.js-toc-content',headingSelector:'h1, h2, h3',hasInnerContainers:true,});</script><script>if(window.location.hostname!=="localhost"){var disqus_config=function(){this.page.url='https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';this.page.identifier='https:\/\/techsquad.rocks\/blog\/what_does_the_serverless_framework_does_for_me\/';};(function(){var d=document,s=d.createElement('script');s.src='//'+'kainlite'+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();}</script><script id=dsq-count-scr src=//kainlite.disqus.com/count.js async></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-8919037-7','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script><script src=//instant.page/5.1.0 type=module integrity=sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw></script></body></html>

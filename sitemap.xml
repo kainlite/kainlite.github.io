@@ -4,14 +4,63 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://techsquad.rocks/categories/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/linux/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/tags/vagrant/</loc>
+    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -25,34 +74,6 @@
   
   <url>
     <loc>https://techsquad.rocks/tags/golang/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2020-11-01T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
     <lastmod>2020-11-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -137,13 +158,6 @@
   
   <url>
     <loc>https://techsquad.rocks/tags/kubebuilder/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/linux/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -319,6 +333,13 @@
   
   <url>
     <loc>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://techsquad.rocks/blog/</loc>
     <lastmod>2019-04-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -628,12 +649,6 @@
   <url>
     <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
     <lastmod>2018-12-23T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -11,6 +11,15 @@
     
     
     <item>
+      <title>Create an AWS lambda function in Go</title>
+      <link>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</guid>
+      <description>Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.</description>
+    </item>
+    
+    <item>
       <title>What does the serverless framework does for me</title>
       <link>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</link>
       <pubDate>Fri, 15 Feb 2019 00:00:00 +0000</pubDate>

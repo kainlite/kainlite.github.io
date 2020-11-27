@@ -23,7 +23,7 @@
   
   
   
-  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
   <title>Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   <link rel="alternate" type="application/rss+xml" href="https://techsquad.rocks/index.xml" title="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more" />
@@ -37,7 +37,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://techsquad.rocks/" />
 <meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="og:updated_time" content="2020-11-01T00:00:00+00:00" />
+<meta property="og:updated_time" content="2020-11-27T00:00:00+00:00" />
 <meta itemprop="name" content="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more">
 <meta itemprop="description" content="">
 <meta name="twitter:card" content="summary_large_image"/>
@@ -150,6 +150,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
                     </p>
                     <p class="item-date">
@@ -187,16 +197,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" class="title">Cloud native applications with kubebuilder and kind aka kubernetes operators</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-17</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -205,7 +205,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -311,7 +311,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">15</span></li>
+                    class="tag-list-count">16</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -323,7 +323,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">17</span></li>
+                    class="tag-list-count">18</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
@@ -378,6 +378,10 @@
                     class="tag-list-count">2</span></li>
             
             
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
                     class="tag-list-count">2</span></li>
             
@@ -400,6 +404,48 @@
     
     
     
+    <article
+      class="article article-type-page"
+      itemscope
+      itemtype="http://schema.org/BlogPosting"
+    >
+      <div class="article-header">
+        <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/actually_using_vault_on_kubernetes/"
+    >Actually using Vault on Kubernetes</a
+  >
+</h1>
+
+      </div>
+      <div class="article-entry text-muted" itemprop="description">Introduction In the previous article we configured Vault with Consul on our cluster, now it&rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&rsquo;t remember about it or don&rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
+In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.</div>
+      <p class="article-meta">
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/" class="">
+  <time datetime="2019-04-29 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-04-29</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
+    <a class="article-tag-link" href="/tags/vault/"> vault </a>
+    <a class="article-tag-link" href="/tags/linux/"> linux </a>
+    <a class="article-tag-link" href="/tags/security/"> security </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/actually_using_vault_on_kubernetes/#comments" class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 419 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 2 minutes </span>
+
+      </p>
+    </article>
     <article
       class="article article-type-page"
       itemscope
@@ -647,49 +693,6 @@ Explanation Local port forward basically let&rsquo;s you forward one port from a
         <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/create_an_aws_lambda_function_in_go/#comments" class="article-comment-link">Comments</a></span>
 		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1065 words</span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 5 minutes </span>
-
-      </p>
-    </article>
-    <article
-      class="article article-type-page"
-      itemscope
-      itemtype="http://schema.org/BlogPosting"
-    >
-      <div class="article-header">
-        <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/what_does_the_serverless_framework_does_for_me/"
-    >What does the serverless framework does for me</a
-  >
-</h1>
-
-      </div>
-      <div class="article-entry text-muted" itemprop="description">Introduction The serverless framework is a nice tool to manage all your cloud functions. from their page:
- The Serverless Framework helps you develop and deploy your AWS Lambda functions, along with the AWS infrastructure resources they require. It&rsquo;s a CLI that offers structure, automation and best practices out-of-the-box, allowing you to focus on building sophisticated, event-driven, serverless architectures, comprised of Functions and Events.
- Let&rsquo;s take the golang example for a spin So let&rsquo;s generate a project with the serverless framework and see everything that it does for us.</div>
-      <p class="article-meta">
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/" class="">
-  <time datetime="2019-02-15 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-02-15</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/serverless/"> serverless </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/development/"> development </a>
-    <a class="article-tag-link" href="/tags/serverless/"> serverless </a>
-    <a class="article-tag-link" href="/tags/go/"> go </a>
-    <a class="article-tag-link" href="/tags/golang/"> golang </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/what_does_the_serverless_framework_does_for_me/#comments" class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 1258 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 6 minutes </span>
 
       </p>
     </article></div>

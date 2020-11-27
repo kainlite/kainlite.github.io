@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <title>Blog Index on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
     <link>https://techsquad.rocks/blog/</link>
-    <description>Recent content in Blog on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <description>Recent content in Blog Index on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://techsquad.rocks/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes local playground alternatives</title>
+      <link>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</link>
+      <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</guid>
+      <description>Introduction In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
+The source code and/or documentation of the projects that we will be testing are listed here:
+ minikube kind Kubernetes the hard way using vagrant Kubernetes with kubeadm using vagrant  There are more alternatives like Microk8s but I will leave that as an exercise for the reader.</description>
+    </item>
     
     <item>
       <title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</title>
@@ -192,15 +204,6 @@ Explanation Remote port forward basically let&amp;rsquo;s you forward one port f
       <guid>https://techsquad.rocks/blog/ssh_local_port_forward/</guid>
       <description>Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore SSH Remote Port Forward and SSH Socks Proxy and how to use that functionality.
 Explanation Local port forward basically let&amp;rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&amp;rsquo;t let you do it, let&amp;rsquo;s say you want to connect to a mysql instance on the default port (3306).</description>
-    </item>
-    
-    <item>
-      <title>Create an AWS lambda function in Go</title>
-      <link>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</link>
-      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</guid>
-      <description>Introduction In this article we will create a lambda function and an API Gateway route like we did with the serverless framework but only using AWS tools, we will be using the same generated code for our function from the last article What does the serverless framework does for me, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with lambda without any additional tool.</description>
     </item>
     
   </channel>

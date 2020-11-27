@@ -23,7 +23,7 @@
   
   
   
-  <meta name="generator" content="Hugo 0.78.1 with theme pure" />
+  <meta name="generator" content="Hugo 0.78.2 with theme pure" />
   <title>Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
   
   <link rel="alternate" type="application/rss+xml" href="https://techsquad.rocks/index.xml" title="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more" />
@@ -37,7 +37,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://techsquad.rocks/" />
 <meta property="og:image" content="https://techsquad.rocks/img/logo.png"/>
-<meta property="og:updated_time" content="2020-11-01T00:00:00+00:00" />
+<meta property="og:updated_time" content="2020-11-27T00:00:00+00:00" />
 <meta itemprop="name" content="Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more">
 <meta itemprop="description" content="">
 <meta name="twitter:card" content="summary_large_image"/>
@@ -150,6 +150,16 @@
             <li>
                 <div class="item-inner">
                     <p class="item-title">
+                        <a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="title">Kubernetes local playground alternatives</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
                         <a href="https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/" class="title">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>
                     </p>
                     <p class="item-date">
@@ -187,16 +197,6 @@
                     </p>
                 </div>
             </li>
-            <li>
-                <div class="item-inner">
-                    <p class="item-title">
-                        <a href="https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/" class="title">Cloud native applications with kubebuilder and kind aka kubernetes operators</a>
-                    </p>
-                    <p class="item-date">
-                        <time datetime="2020-01-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-01-17</time>
-                    </p>
-                </div>
-            </li>
         </ul>
     </div>
 </div><div class="widget">
@@ -205,7 +205,7 @@
         <ul class="category-list">
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
-            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">8</span></li>
+            <li class="category-list-item"><a href="https://techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">9</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
             <li class="category-list-item"><a href="https://techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
@@ -311,7 +311,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
-                    class="tag-list-count">15</span></li>
+                    class="tag-list-count">16</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
@@ -323,7 +323,7 @@
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
-                    class="tag-list-count">17</span></li>
+                    class="tag-list-count">18</span></li>
             
             
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
@@ -378,6 +378,10 @@
                     class="tag-list-count">2</span></li>
             
             
+            <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
             <li class="tag-list-item"><a href="https://techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
                     class="tag-list-count">2</span></li>
             
@@ -400,6 +404,48 @@
     
     
     
+    <article
+      class="article article-type-page"
+      itemscope
+      itemtype="http://schema.org/BlogPosting"
+    >
+      <div class="article-header">
+        <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/kubernetes_local_playground_alternatives/"
+    >Kubernetes local playground alternatives</a
+  >
+</h1>
+
+      </div>
+      <div class="article-entry text-muted" itemprop="description">Introduction In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
+The source code and/or documentation of the projects that we will be testing are listed here:
+ minikube kind Kubernetes the hard way using vagrant Kubernetes with kubeadm using vagrant  There are more alternatives like Microk8s but I will leave that as an exercise for the reader.</div>
+      <p class="article-meta">
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/" class="">
+  <time datetime="2020-11-27 00:00:00 &#43;0000 UTC" itemprop="datePublished">2020-11-27</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
+    <a class="article-tag-link" href="/tags/vagrant/"> vagrant </a>
+    <a class="article-tag-link" href="/tags/linux/"> linux </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/kubernetes_local_playground_alternatives/#comments" class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 750 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 4 minutes </span>
+
+      </p>
+    </article>
     <article
       class="article article-type-page"
       itemscope
@@ -650,47 +696,6 @@ Basically what the code does is create an alpine/socat pod and you can specify t
         <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/how_to_report_spam_to_spamcop_from_gmail/#comments" class="article-comment-link">Comments</a></span>
 		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 328 words</span>
 		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 2 minutes </span>
-
-      </p>
-    </article>
-    <article
-      class="article article-type-page"
-      itemscope
-      itemtype="http://schema.org/BlogPosting"
-    >
-      <div class="article-header">
-        <h1 itemprop="name">
-  <a
-    class="article-title"
-    href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/"
-    >How to report your gmail spam folder to spamcop</a
-  >
-</h1>
-
-      </div>
-      <div class="article-entry text-muted" itemprop="description">Introduction This post is a bit different from the others in the sense that it&rsquo;s a small &ldquo;tool&rdquo; I did to ease spam reporting to SpamCop.net, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &ldquo;script&rdquo; to make things easier.</div>
-      <p class="article-meta">
-<span class="article-date">
-  <i class="icon icon-calendar-check"></i>&nbsp;
-<a href="https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/" class="">
-  <time datetime="2019-12-31 00:00:00 &#43;0000 UTC" itemprop="datePublished">2019-12-31</time>
-</a>
-</span>
-<span class="article-category">
-  <i class="icon icon-folder"></i>&nbsp;
-  <a class="article-category-link" href="/categories/linux/"> linux </a>
-</span>  
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>&nbsp;
-    <a class="article-tag-link" href="/tags/development/"> development </a>
-    <a class="article-tag-link" href="/tags/golang/"> golang </a>
-    <a class="article-tag-link" href="/tags/go/"> go </a>
-    <a class="article-tag-link" href="/tags/linux/"> linux </a>
-  </span>
-
-        <span class="post-comment"><i class="icon icon-comment"></i> &nbsp;<a href="/blog/how_to_report_your_gmail_spam_folder_to_spamcop/#comments" class="article-comment-link">Comments</a></span>
-		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 454 words</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 3 minutes </span>
 
       </p>
     </article></div>

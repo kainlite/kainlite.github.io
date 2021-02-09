@@ -1,6 +1,7 @@
 {
   "id": "4",
   "name": "Cheers!",
-  "image_url": "/img/coffee/4.jpg"
+  "description": "Cheers to that!",
+  "image": "/img/coffee/4.jpg"
 }
 

@@ -1,5 +1,6 @@
 {
   "id": "1",
-  "name": "The first coffee of the morning...",
-  "image_url": "/img/coffee/1.jpg"
+  "name": "Morning coffee",
+  "description": "The first coffee of the morning...",
+  "image": "/img/coffee/1.jpg"
 }

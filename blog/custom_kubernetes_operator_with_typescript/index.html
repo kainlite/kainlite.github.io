@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Custom Kubernetes Operator With TypeScript (JavaScript). - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="Introduction In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of Go and kubebuilder." />
+  <meta name="generator" content="Hugo 0.84.0 with theme pure" />
+  <title>Custom Kubernetes Operator With TypeScript (JavaScript). - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+  
+  
+  <link rel="stylesheet" href="https://legacy.techsquad.rocks/css/style.min.5dd115eb0ac99aa9a5ec8394b011dba5c115d34c8efcb0b0fa21aba86c4e4a62.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="Custom Kubernetes Operator With TypeScript (JavaScript)." />
+<meta property="og:description" content="Introduction In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of Go and kubebuilder." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/" /><meta property="og:image" content="https://legacy.techsquad.rocks/img/operator-ts-js.png" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2021-07-22T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-07-22T00:00:00&#43;00:00" />
+
+<meta itemprop="name" content="Custom Kubernetes Operator With TypeScript (JavaScript).">
+<meta itemprop="description" content="Introduction In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of Go and kubebuilder."><meta itemprop="datePublished" content="2021-07-22T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-07-22T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="675"><meta itemprop="image" content="https://legacy.techsquad.rocks/img/operator-ts-js.png">
+<meta itemprop="keywords" content="kubernetes,javascript,typescript,operators," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://legacy.techsquad.rocks/img/operator-ts-js.png"/>
+
+<meta name="twitter:title" content="Custom Kubernetes Operator With TypeScript (JavaScript)."/>
+<meta name="twitter:description" content="Introduction In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of Go and kubebuilder."/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/kainlite" target="_blank">
+            <img class="img-circle img-rotate" src="https://legacy.techsquad.rocks/img/logo-glider.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-blog">
+                <a href="/blog/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Blog</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-preferences">
+                <a href="/preferences/">
+                    <i class="icon icon-list"></i>
+                  <span class="menu-title">Preferences</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/legacy/" class="title">Legacy</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2024-03-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">2024-03-17</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/testing_tekton_to_build_and_push_images_for_my_k3s_arm_oracle_cluster/" class="title">Testing tekton to build and push images for my K3S ARM Oracle cluster</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-10-25 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/rust_on_arm32v7_via_qemu/" class="title">Running Rust on ARM32v7 via QEMU.</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-09-03 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-09-03</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/rust_on_arm32v7/" class="title">Running Rust on ARM32v7 K3S Oracle cluster.</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-09-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-09-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/" class="title">Custom Kubernetes Operator With TypeScript (JavaScript).</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2021-07-22 00:00:00 &#43;0000 UTC" itemprop="datePublished">2021-07-22</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/arm/" class="category-list-link">arm</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">14</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/arm/" class="tag-list-link">arm</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/cicd/" class="tag-list-link">cicd</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
+                    class="tag-list-count">9</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">13</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
+                    class="tag-list-count">12</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/javascript/" class="tag-list-link">javascript</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
+                    class="tag-list-count">21</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
+                    class="tag-list-count">21</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/operators/" class="tag-list-link">operators</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/rust/" class="tag-list-link">rust</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tekton/" class="tag-list-link">tekton</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/typescript/" class="tag-list-link">typescript</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
+                    class="tag-list-count">2</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/custom_kubernetes_operator_with_typescript/"
+    >Custom Kubernetes Operator With TypeScript (JavaScript).</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/" class="article-date">
+  <time datetime="2021-07-22 00:00:00 &#43;0000 UTC" itemprop="datePublished">2021-07-22</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
+    <a class="article-tag-link" href="/tags/javascript/"> javascript </a>
+    <a class="article-tag-link" href="/tags/typescript/"> typescript </a>
+    <a class="article-tag-link" href="/tags/operators/"> operators </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/custom_kubernetes_operator_with_typescript/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 675 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 4 minutes </span>
+
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h4 id="introduction"><strong>Introduction</strong></h4>
+<p>In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of <a href="https://golang.org/">Go</a> and <a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a>.</p>
+<p>If you want to check past articles that explore other alternative frameworks and languages go to:</p>
+<ul>
+<li><a href="/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/">Cloud native applications with kubebuilder and kind aka kubernetes operators</a>.</li>
+<li><a href="/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/">Testing the Operator SDK and making a prefetch mechanism for Kubernetes</a>.</li>
+</ul>
+<p>You will notice that both are very similar and it is because the operator-sdk uses kubebuilder.</p>
+<p>The source for this article is here <a href="https://github.com/kainlite/ts-operator/">TypeScript Operator</a> and the docker image is <a href="https://github.com/kainlite/ts-operator/pkgs/container/ts-operator">here</a>, also this article is based in this example from Nodeshift&rsquo;s <a href="https://github.com/nodeshift-blog-examples/operator-in-JavaScript">Operator in JavaScript</a>.</p>
+<h5 id="prerequisites"><strong>Prerequisites</strong></h5>
+<ul>
+<li><a href="https://github.com/kubernetes-sigs/kind">Kind</a></li>
+<li><a href="https://hub.docker.com/?overlay=onboarding">Docker</a></li>
+<li><a href="https://github.com/kubernetes-sigs/kustomize">kustomize</a></li>
+<li><a href="https://nodejs.org/">Node.js</a></li>
+<li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+</ul>
+<h3 id="lets-jump-to-the-example">Let&rsquo;s jump to the example</h3>
+<h4 id="creating-the-cluster">Creating the cluster</h4>
+<p>We will need a cluster to run and test our operator, so kind is pretty straight forward and lightweight enough to run anywhere.
+<script type="application/javascript" src="https://gist.github.com/kainlite/53f54d81934666457a46cb667f8cea58.js"></script>
+</p>
+<h4 id="creating-our-operator">Creating our operator</h4>
+<p>Creating all necessary resources for our operator to work
+<script type="application/javascript" src="https://gist.github.com/kainlite/b11dd1e9dddb4e60a32961a911cbd9d3.js"></script>
+</p>
+<h4 id="deploying-our-operator">Deploying our operator</h4>
+<p>Creating our custom resource to see the operator in action
+<script type="application/javascript" src="https://gist.github.com/kainlite/374b311fd746a81a2d67a9e4c75e73b4.js"></script>
+</p>
+<h4 id="logs-from-the-operator">Logs from the operator</h4>
+<p>Example logs based in the creation, update and deletion of our custom resource
+<script type="application/javascript" src="https://gist.github.com/kainlite/eb9862192efa7a08ad964713b688a6e0.js"></script>
+</p>
+<h4 id="brief-comparison-operator-sdk-vs-custom-operator">Brief comparison operator-sdk vs custom operator?</h4>
+<p>There are some main differences to have in mind, in Go you:</p>
+<ul>
+<li>Have code generation from the framework for RBAC, controllers, etc.</li>
+<li>Out of the box tooling to build, deploy and manage your operator.</li>
+</ul>
+<p>In TypeScript or JavaScript you have to handle more things which can be easily done from a CI system, In this example I used github actions to build the image and the example already had everything else configured to make typescript usable with kubernetes as an example.</p>
+<h4 id="building-and-pushing-docker-image">Building and pushing (docker image)</h4>
+<p>In this case we don&rsquo;t have to do that it will be managed by actions using the free container registry that they provide, it will build and push the image matching the branch name, notice that it is fully transparent, you don&rsquo;t need to configure anything on the repo, you can see the result <a href="https://github.com/kainlite/ts-operator/pkgs/container/ts-operator">here</a>.
+<script type="application/javascript" src="https://gist.github.com/kainlite/75c8ed737de39be95573942604ce3d21.js"></script>
+</p>
+<h4 id="local-development">Local development</h4>
+<p>Bonus: if you want to run the operator locally when developing or debugging you can do so easily with <code>ts-node</code>, like this:
+<script type="application/javascript" src="https://gist.github.com/kainlite/f9bd40bfa9b3157dbd072e03bbc2200a.js"></script>
+
+The reason I used it like this was mostly to assume zero configuration, and it is possible because ts-node is listed as a development dependency, also the docker image could have been used with a bit of configuration.</p>
+<p>Note that I did not add all the code from the resources folder or the setup for the typescript project, I recommend you to check that directly in the repo to understand all the missing pieces.</p>
+<h3 id="now-lets-see-the-code">Now let&rsquo;s see the code</h3>
+<p>Enough words, let&rsquo;s see code, I have added comments and changed the original code a bit
+<script type="application/javascript" src="https://gist.github.com/kainlite/672d2aabb44d1a988ce77e3df5da7495.js"></script>
+</p>
+<h4 id="the-deploymentjson-file">The <code>deployment.json</code> file</h4>
+<p>This file basically is what gets deployed when we create our custom resource
+<script type="application/javascript" src="https://gist.github.com/kainlite/d143f7fc382ae5db3fc3ea89bfdb142a.js"></script>
+</p>
+<h4 id="and-finally-our-custom-resource">And finally our custom resource</h4>
+<p>This is how we tell our operator that we need our operator to create some resources for a given task
+<script type="application/javascript" src="https://gist.github.com/kainlite/7121ff367b6ea7c997f40eaa12c21dae.js"></script>
+</p>
+<h4 id="extra">Extra</h4>
+<p>For more details and to see how everything fits together I encourage you to clone the repo, test it, and modify it yourself.</p>
+<h3 id="cleaning-up">Cleaning up</h3>
+<p>To clean up the operator from the cluster you can do this
+<script type="application/javascript" src="https://gist.github.com/kainlite/59aada5bfbaab0309b1e6108a4de2298.js"></script>
+</p>
+<h4 id="closing-notes"><strong>Closing notes</strong></h4>
+<p>Be sure to check the links if you want to learn more about the examples from Nodeshift and I hope you enjoyed it, see you on <a href="https://twitter.com/kainlite">twitter</a> or <a href="https://github.com/kainlite">github</a>!</p>
+<ul>
+<li><a href="https://github.com/nodeshift/nodeshift">https://github.com/nodeshift/nodeshift</a></li>
+</ul>
+<p>The source for this article is <a href="https://github.com/kainlite/ts-operator/">here</a></p>
+<p>DISCLAIMER: I&rsquo;m not using OpenShift, but all examples are easily translatables to a vanilla cluster.</p>
+<h3 id="errata">Errata</h3>
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/" title="Custom Kubernetes Operator With TypeScript (JavaScript)." target="_blank" rel="external">https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://legacy.techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
+        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+<section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+
+</div><nav class="bar bar-footer clearfix">
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/" title="Kubernetes image policy webhook explained"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://legacy.techsquad.rocks/blog/rust_on_arm32v7/"
+                    title="Running Rust on ARM32v7 K3S Oracle cluster."><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
+                data-mobile-sites=""></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
+(function buymeacoffee() {
+  var buymeacoffee = document.createElement('script');
+  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
+  buymeacoffee.async = true;
+  buymeacoffee.setAttribute('data-id','NDx5OFh');
+  buymeacoffee.setAttribute('data-name','BMC-Widget');
+  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
+  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
+  buymeacoffee.setAttribute('data-color','#79D6B5');
+  buymeacoffee.setAttribute('data-position','right');
+  buymeacoffee.setAttribute('data-x_margin','10');
+  buymeacoffee.setAttribute('data-y_margin','10');
+
+  
+  
+})()
+</script>
+
+<ul class="social-links">
+    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-email"></i></a></li>
+    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-linkedin"></i></a></li>
+    <li><a href="https://legacy.techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+    <li><a href="https://legacy.techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-share"></i></a></li>
+    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-stackoverflow"></i></a></li>
+    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-twitter"></i></a></li>
+</ul>
+
+  <div class="copyright">
+    <div class="publishby">
+      By using this site you agree to the usage of third party cookies from Disqus and Google analytics 
+      © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://legacy.techsquad.rocks/js/application.min.a94ab19cb63a95c8d7fbd7b85cab3ddeea8c369bdf75b9cab6708787ead123af.js"></script>
+<script src="https://legacy.techsquad.rocks/js/plugin.min.19c5bcb2fb0789ab4f2b7834e5ceb5e92635645605bab902c1024b25f1502364.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/legacy.techsquad.rocks\/',
+            CONTENT_URL: 'https:\/\/legacy.techsquad.rocks\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://legacy.techsquad.rocks/js/insight.min.4a2d52de4bfff73e0c688404fe3d17c9a3ae12d9888e1e1ac9c690e4890de2ded50fe55f2b819c2ba55435a76f396f3ea6805765f0b0af5635cdf74ea459eab0.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+<script>
+if (window.location.hostname !== "localhost") {
+    var disqus_config = function () {
+        this.page.url = 'https:\/\/legacy.techsquad.rocks\/blog\/custom_kubernetes_operator_with_typescript\/';
+        this.page.identifier = 'https:\/\/legacy.techsquad.rocks\/blog\/custom_kubernetes_operator_with_typescript\/';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+}
+</script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-502GDPBW28"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-502GDPBW28');
+  </script>
+
+  </body>
+</html>

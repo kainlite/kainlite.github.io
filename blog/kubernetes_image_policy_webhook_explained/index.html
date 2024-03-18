@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Kubernetes image policy webhook explained - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more
+      </title>
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  
+  <meta name="theme-color" content="#000000" />
+  
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <meta name="description" content="Introduction In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in OPA Gatekeeper, I&amp;rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this repo, see more." />
+  <meta name="generator" content="Hugo 0.84.0 with theme pure" />
+  <title>Kubernetes image policy webhook explained - Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+  
+  
+  <link rel="stylesheet" href="https://legacy.techsquad.rocks/css/style.min.5dd115eb0ac99aa9a5ec8394b011dba5c115d34c8efcb0b0fa21aba86c4e4a62.css">
+  
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
+  <meta property="og:title" content="Kubernetes image policy webhook explained" />
+<meta property="og:description" content="Introduction In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in OPA Gatekeeper, I&rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this repo, see more." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/" /><meta property="og:image" content="https://legacy.techsquad.rocks/img/kubernetes-admission-phases.png" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2021-01-07T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2021-01-07T00:00:00&#43;00:00" />
+
+<meta itemprop="name" content="Kubernetes image policy webhook explained">
+<meta itemprop="description" content="Introduction In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in OPA Gatekeeper, I&rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this repo, see more."><meta itemprop="datePublished" content="2021-01-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2115"><meta itemprop="image" content="https://legacy.techsquad.rocks/img/kubernetes-admission-phases.png">
+<meta itemprop="keywords" content="kubernetes,linux,security,docker," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://legacy.techsquad.rocks/img/kubernetes-admission-phases.png"/>
+
+<meta name="twitter:title" content="Kubernetes image policy webhook explained"/>
+<meta name="twitter:description" content="Introduction In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in OPA Gatekeeper, I&rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this repo, see more."/>
+
+  <!--[if lte IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+    <![endif]-->
+
+  <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+  </head>
+
+  
+  
+
+  <body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage"><header class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="slimContent">
+      <div class="navbar-header">
+        <div class="profile-block text-center">
+          <a id="avatar" href="https://github.com/kainlite" target="_blank">
+            <img class="img-circle img-rotate" src="https://legacy.techsquad.rocks/img/logo-glider.png" width="200" height="200">
+          </a>
+          <h2 id="name" class="hidden-xs hidden-sm">kainlite</h2>
+          <h3 id="title" class="hidden-xs hidden-sm hidden-md">DevOps Practitioner</h3>
+          <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i>Mendoza, Argentina</small>
+        </div><div class="search" id="search-form-wrap">
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i
+                        class="icon icon-search"></i></button>
+            </span>
+        </div>
+        <div class="ins-search">
+            <div class="ins-search-mask"></div>
+            <div class="ins-search-container">
+                <div class="ins-input-wrapper">
+                    <input type="text" class="ins-search-input" placeholder="Type something..."
+                        x-webkit-speech />
+                    <button type="button" class="close ins-close ins-selectable" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="ins-section-wrapper">
+                    <div class="ins-section-container"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+        <ul class="nav navbar-nav main-nav">
+            <li class="menu-item menu-item-home">
+                <a href="/">
+                    <i class="icon icon-home-fill"></i>
+                  <span class="menu-title">Home</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-blog">
+                <a href="/blog/">
+                    <i class="icon icon-archives-fill"></i>
+                  <span class="menu-title">Blog</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-categories">
+                <a href="/categories/">
+                    <i class="icon icon-folder"></i>
+                  <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-tags">
+                <a href="/tags/">
+                    <i class="icon icon-tags"></i>
+                  <span class="menu-title">Tags</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-about">
+                <a href="/about/">
+                    <i class="icon icon-cup-fill"></i>
+                  <span class="menu-title">About</span>
+                </a>
+            </li>
+            <li class="menu-item menu-item-preferences">
+                <a href="/preferences/">
+                    <i class="icon icon-list"></i>
+                  <span class="menu-title">Preferences</span>
+                </a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+<div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+        <ul class="recent-post-list list-unstyled no-thumbnail">
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/legacy/" class="title">Legacy</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2024-03-17 00:00:00 &#43;0000 UTC" itemprop="datePublished">2024-03-17</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/testing_tekton_to_build_and_push_images_for_my_k3s_arm_oracle_cluster/" class="title">Testing tekton to build and push images for my K3S ARM Oracle cluster</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-10-25 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-10-25</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/rust_on_arm32v7_via_qemu/" class="title">Running Rust on ARM32v7 via QEMU.</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-09-03 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-09-03</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/rust_on_arm32v7/" class="title">Running Rust on ARM32v7 K3S Oracle cluster.</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2022-09-02 00:00:00 &#43;0000 UTC" itemprop="datePublished">2022-09-02</time>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <div class="item-inner">
+                    <p class="item-title">
+                        <a href="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/" class="title">Custom Kubernetes Operator With TypeScript (JavaScript).</a>
+                    </p>
+                    <p class="item-date">
+                        <time datetime="2021-07-22 00:00:00 &#43;0000 UTC" itemprop="datePublished">2021-07-22</time>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Categories</h3>
+    <div class="widget-body">
+        <ul class="category-list">
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/arm/" class="category-list-link">arm</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/continuous-integration/" class="category-list-link">continuous-integration</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/deployment-tools/" class="category-list-link">deployment-tools</a><span class="category-list-count">6</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/kubernetes/" class="category-list-link">kubernetes</a><span class="category-list-count">14</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/linux/" class="category-list-link">linux</a><span class="category-list-count">10</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/serverless/" class="category-list-link">serverless</a><span class="category-list-count">10</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/service-mesh/" class="category-list-link">service-mesh</a><span class="category-list-count">2</span></li>
+            <li class="category-list-item"><a href="https://legacy.techsquad.rocks/categories/terraform/" class="category-list-link">terraform</a><span class="category-list-count">1</span></li>
+        </ul>
+    </div>
+</div><div class="widget">
+    <h3 class="widget-title"> Tags</h3>
+    <div class="widget-body">
+        <ul class="tag-list">
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/arm/" class="tag-list-link">arm</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/aws/" class="tag-list-link">aws</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/cicd/" class="tag-list-link">cicd</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/cognito/" class="tag-list-link">cognito</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/continuous-delivery/" class="tag-list-link">continuous-delivery</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/continuous-integration/" class="tag-list-link">continuous-integration</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/deployment-tools/" class="tag-list-link">deployment-tools</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/development/" class="tag-list-link">development</a><span
+                    class="tag-list-count">9</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/docker/" class="tag-list-link">docker</a><span
+                    class="tag-list-count">5</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/elm/" class="tag-list-link">elm</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gcp/" class="tag-list-link">gcp</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/git/" class="tag-list-link">git</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/github/" class="tag-list-link">github</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gitkube/" class="tag-list-link">gitkube</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/gitlab/" class="tag-list-link">gitlab</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/go/" class="tag-list-link">go</a><span
+                    class="tag-list-count">13</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/golang/" class="tag-list-link">golang</a><span
+                    class="tag-list-count">12</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/grpc/" class="tag-list-link">grpc</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/helm/" class="tag-list-link">helm</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/istio/" class="tag-list-link">istio</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/javascript/" class="tag-list-link">javascript</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/jsonnet/" class="tag-list-link">jsonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kind/" class="tag-list-link">kind</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kops/" class="tag-list-link">kops</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/ksonnet/" class="tag-list-link">ksonnet</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kubebuilder/" class="tag-list-link">kubebuilder</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kubernetes/" class="tag-list-link">kubernetes</a><span
+                    class="tag-list-count">21</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/kustomize/" class="tag-list-link">kustomize</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/lambda/" class="tag-list-link">lambda</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/linux/" class="tag-list-link">linux</a><span
+                    class="tag-list-count">21</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/networking/" class="tag-list-link">networking</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/openssh/" class="tag-list-link">openssh</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/operators/" class="tag-list-link">operators</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/routing/" class="tag-list-link">routing</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/rust/" class="tag-list-link">rust</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/security/" class="tag-list-link">security</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/serverless/" class="tag-list-link">serverless</a><span
+                    class="tag-list-count">8</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/service-mesh/" class="tag-list-link">service-mesh</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/skaffold/" class="tag-list-link">skaffold</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/slack/" class="tag-list-link">slack</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tekton/" class="tag-list-link">tekton</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/terraform/" class="tag-list-link">terraform</a><span
+                    class="tag-list-count">6</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tips-and-tricks/" class="tag-list-link">tips-and-tricks</a><span
+                    class="tag-list-count">3</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/tmux/" class="tag-list-link">tmux</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/travis-ci/" class="tag-list-link">travis-ci</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/typescript/" class="tag-list-link">typescript</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/urxvt/" class="tag-list-link">urxvt</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vagrant/" class="tag-list-link">vagrant</a><span
+                    class="tag-list-count">1</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vault/" class="tag-list-link">vault</a><span
+                    class="tag-list-count">2</span></li>
+            
+            
+            <li class="tag-list-item"><a href="https://legacy.techsquad.rocks/tags/vim/" class="tag-list-link">vim</a><span
+                    class="tag-list-count">2</span></li>
+            
+        </ul>
+
+    </div>
+</div>
+  </div>
+</aside>
+
+    
+    
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <h4 class="toc-title">Catalogue</h4>
+    <nav id="toc" class="js-toc toc">
+
+    </nav>
+  </div>
+</aside>
+<main class="main" role="main"><div class="content">
+  <article id="-" class="article article-type-" itemscope
+    itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      <h1 itemprop="name">
+  <a
+    class="article-title"
+    href="/blog/kubernetes_image_policy_webhook_explained/"
+    >Kubernetes image policy webhook explained</a
+  >
+</h1>
+
+      <div class="article-meta">
+        
+<span class="article-date">
+  <i class="icon icon-calendar-check"></i>&nbsp;
+<a href="https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/" class="article-date">
+  <time datetime="2021-01-07 00:00:00 &#43;0000 UTC" itemprop="datePublished">2021-01-07</time>
+</a>
+</span>
+<span class="article-category">
+  <i class="icon icon-folder"></i>&nbsp;
+  <a class="article-category-link" href="/categories/kubernetes/"> kubernetes </a>
+</span>  
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>&nbsp;
+    <a class="article-tag-link" href="/tags/kubernetes/"> kubernetes </a>
+    <a class="article-tag-link" href="/tags/linux/"> linux </a>
+    <a class="article-tag-link" href="/tags/security/"> security </a>
+    <a class="article-tag-link" href="/tags/docker/"> docker </a>
+  </span>
+
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/blog/kubernetes_image_policy_webhook_explained/#comments"
+            class="article-comment-link">Comments</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount"> Word Count: 2115 words</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired"> Read Count: 10 minutes </span>
+
+      </div>
+    </div>
+    <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
+      <h4 id="introduction">Introduction</h4>
+<p>In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in <a href="https://github.com/open-policy-agent/gatekeeper">OPA Gatekeeper</a>, I&rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this <a href="https://github.com/kainlite/kube-image-bouncer">repo</a>, <a href="#closing-words">see more</a>.</p>
+<p>There are two ways to make this work each one has a slightly different behavior, one way is using the <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#imagepolicywebhook">ImagePolicyWebhook</a> and the other is using an <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/">Admission Controllers</a> either works validating or mutating, here I used the validating webhook, you can learn more <a href="https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/">here</a>.</p>
+<p>This admission controller will reject all the pods that are using images with the <code>latest</code> tag and in the future we will see if all pods that are not able to meet the required security levels.</p>
+<h4 id="comparison">Comparison</h4>
+<p>The <a href="https://kubernetes.io/docs/admin/admission-controllers/#imagepolicywebhook">ImagePolicyWebhook</a> is an admission controller that evaluates only images, you need to parse the requests do the logic and the response in order to allow or deny images in the cluster.</p>
+<p>The good parts about the <code>ImagePolicyWebhook</code>:</p>
+<ul>
+<li>The API server can be instructed to reject the images if the webhook endpoint is not reachable, this is quite handy but it can also bring issues, like core pods won&rsquo;t be able to schedule for example.</li>
+</ul>
+<p>The bad parts about the <code>ImagePolicyWebhook</code>:</p>
+<ul>
+<li>The configuration is a bit more involved and requires access to the master nodes or to the apiserver configuration, the documentation is not clear and it can be hard to make changes, update, etc.</li>
+<li>The deployment is not so trivial as you need to deploy it with systemd or run it as a docker container in the host, update the dns, etc.</li>
+</ul>
+<p>On the other hand the <a href="https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers">ValidatingAdmissionWebhook</a> can be used for way more things that just images (if you use the mutating one, well, you can inject or change things on the fly).</p>
+<p>The good parts about the <code>ValidatingAdmissionWebhook</code>:</p>
+<ul>
+<li>Easier deployment since the service runs as a pod.</li>
+<li>Everything can be a kubernetes resource.</li>
+<li>Less manual intervention and access to the master is not required.</li>
+<li>If the pod or service is unavailable then all images are going to be allowed which can be a security risk in some cases, so if you are going this path be sure to make it highly available, this can actually be configured by specifying the <code>failurePolicy</code> to <code>Fail</code> instead of <code>Ignore</code> (<code>Fail</code> is the default).</li>
+</ul>
+<p>The bad parts about the <code>ValidatingAdmissionWebhook</code>:</p>
+<ul>
+<li>Anyone with enough RBAC permissions can update/change the configuration since it&rsquo;s just another kubernetes resource.</li>
+</ul>
+<h4 id="building">Building</h4>
+<p>If you intend to use it as a plain service:</p>
+<pre><code>$ go get github.com/kainlite/kube-image-bouncer
+</code></pre>
+<p>You can also use this <a href="https://hub.docker.com/r/kainlite/kube-image-bouncer/">Docker image</a>:</p>
+<pre><code>$ docker pull kainlite/kube-image-bouncer
+</code></pre>
+<h4 id="certificates">Certificates</h4>
+<p>We can rely in the kubernetes CA to generate the certificate that we need, if you want to learn more go <a href="https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/">here</a>:</p>
+<p>Create a CSR:</p>
+<pre><code>$ cat &lt;&lt;EOF | cfssl genkey - | cfssljson -bare server
+{
+  &quot;hosts&quot;: [
+    &quot;image-bouncer-webhook.default.svc&quot;,
+    &quot;image-bouncer-webhook.default.svc.cluster.local&quot;,
+    &quot;image-bouncer-webhook.default.pod.cluster.local&quot;,
+    &quot;192.0.2.24&quot;,
+    &quot;10.0.34.2&quot;
+  ],
+  &quot;CN&quot;: &quot;system:node:image-bouncer-webhook.default.pod.cluster.local&quot;,
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;ecdsa&quot;,
+    &quot;size&quot;: 256
+  },
+  &quot;names&quot;: [
+    {
+      &quot;O&quot;: &quot;system:nodes&quot;
+    }
+  ]
+}
+EOF
+</code></pre>
+<p>Then apply it to the cluster</p>
+<pre><code>$ cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: image-bouncer-webhook.default
+spec:
+  request: $(cat server.csr | base64 | tr -d '\n')
+  signerName: kubernetes.io/kubelet-serving
+  usages:
+  - digital signature
+  - key encipherment
+  - server auth
+EOF
+</code></pre>
+<p>Approve and get your certificate for later use</p>
+<pre><code>$ kubectl get csr image-bouncer-webhook.default -o jsonpath='{.status.certificate}' | base64 --decode &gt; server.crt
+</code></pre>
+<h4 id="imagepolicywebhook-path">ImagePolicyWebhook path</h4>
+<p>There are two possible ways to deploy this controller (webhook), for this to work you will need to create the certificates as explained below, but first
+we need to take care of other details add this to your hosts file in the master or where the bouncer will run:</p>
+<p>We use this name because it has to match with the names from the certificate, since this will run outside kuberntes and it could even be externally available, we just fake it with a hosts entry</p>
+<pre><code>$ echo &quot;127.0.0.1 image-bouncer-webhook.default.svc&quot; &gt;&gt; /etc/hosts
+</code></pre>
+<p>Also in the apiserver you need to update it with these settings:</p>
+<pre><code>--admission-control-config-file=/etc/kubernetes/kube-image-bouncer/admission_configuration.json
+--enable-admission-plugins=ImagePolicyWebhook
+</code></pre>
+<p>If you did this method you don&rsquo;t need to create the <code>validating-webhook-configuration.yaml</code> resource nor apply the kubernetes deployment to run in the cluster.</p>
+<p>Create an admission control configuration file named <code>/etc/kubernetes/kube-image-bouncer/admission_configuration.json</code> file with the following contents:</p>
+<pre><code class="language-json">{
+  &quot;imagePolicy&quot;: {
+     &quot;kubeConfigFile&quot;: &quot;/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml&quot;,
+     &quot;allowTTL&quot;: 50,
+     &quot;denyTTL&quot;: 50,
+     &quot;retryBackoff&quot;: 500,
+     &quot;defaultAllow&quot;: false
+  }
+}
+</code></pre>
+<p>Adjust the defaults if you want to allow images by default.</p>
+<p>Create a kubeconfig file <code>/etc/kubernetes/kube-image-bouncer/kube-image-bouncer.yml</code> with the following contents:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: /etc/kubernetes/kube-image-bouncer/pki/server.crt
+    server: https://image-bouncer-webhook.default.svc:1323/image_policy
+  name: bouncer_webhook
+contexts:
+- context:
+    cluster: bouncer_webhook
+    user: api-server
+  name: bouncer_validator
+current-context: bouncer_validator
+preferences: {}
+users:
+- name: api-server
+  user:
+    client-certificate: /etc/kubernetes/pki/apiserver.crt
+    client-key:  /etc/kubernetes/pki/apiserver.key
+</code></pre>
+<p>This configuration file instructs the API server to reach the webhook server at <code>https://image-bouncer-webhook.default.svc:1323</code> and use its <code>/image_policy</code> endpoint, we&rsquo;re reusing the certificates from the apiserver and the one for kube-image-bouncer that we already generated.</p>
+<p>Be aware that you need to be sitting in the folder with the certs for that to work:</p>
+<pre><code>$ docker run --rm -v `pwd`/server-key.pem:/certs/server-key.pem:ro -v `pwd`/server.crt:/certs/server.crt:ro -p 1323:1323 --network host kainlite/kube-image-bouncer -k /certs/server-key.pem -c /certs/server.crt
+</code></pre>
+<h4 id="validatingadmissionwebhook-path">ValidatingAdmissionWebhook path</h4>
+<p>If you are going this path, all you need to do is generate the certificates, everything else can be done with kubectl, first of all you have to create a tls secret holding the webhook certificate and key (we just generated this in the previous step):</p>
+<pre><code>$ kubectl create secret tls tls-image-bouncer-webhook \
+  --key server-key.pem \
+  --cert server.pem
+</code></pre>
+<p>Then create a kubernetes deployment for the <code>image-bouncer-webhook</code>:</p>
+<pre><code>$ kubectl apply -f kubernetes/image-bouncer-webhook.yaml
+</code></pre>
+<p>Finally create <code>ValidatingWebhookConfiguration</code> that makes use of our webhook endpoint, you can use this but be sure to update the caBundle with the <code>server.crt</code> content in base64:</p>
+<pre><code>$ kubectl apply -f kubernetes/validating-webhook-configuration.yaml
+</code></pre>
+<p>Or you can can simply generate the <code>validating-webhook-configuration.yaml</code> file like this and apply it in one go:</p>
+<pre><code>$ cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: image-bouncer-webook
+webhooks:
+  - name: image-bouncer-webhook.default.svc
+    rules:
+      - apiGroups:
+          - &quot;&quot;
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+        resources:
+          - pods
+    failurePolicy: Ignore
+    sideEffects: None
+    admissionReviewVersions: [&quot;v1&quot;, &quot;v1beta1&quot;]
+    clientConfig:
+      caBundle: $(kubectl get csr image-bouncer-webhook.default -o jsonpath='{.status.certificate}')
+      service:
+        name: image-bouncer-webhook
+        namespace: default
+EOF
+</code></pre>
+<p>This could be easily automated (helm chart coming soon&hellip;), changes can take a bit to reflect, so wait a few seconds and give it a try.</p>
+<h4 id="testing">Testing</h4>
+<p>Both paths should work the same way and you will see a similar error message, example:</p>
+<pre><code>Error creating: pods &quot;nginx-latest-sdsmb&quot; is forbidden: image policy webhook backend denied one or more images: Images using latest tag are not allowed
+</code></pre>
+<p>or</p>
+<pre><code>Warning  FailedCreate  23s (x15 over 43s)  replication-controller  Error creating: admission webhook &quot;image-bouncer-webhook.default.svc&quot; denied the request: Images using latest tag are not allowed
+</code></pre>
+<p>Create a nginx-versioned RC to validate that versioned releases still work:</p>
+<pre><code class="language-yml">$ cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx-versioned
+spec:
+  replicas: 1
+  selector:
+    app: nginx-versioned
+  template:
+    metadata:
+      name: nginx-versioned
+      labels:
+        app: nginx-versioned
+    spec:
+      containers:
+      - name: nginx-versioned
+        image: nginx:1.13.8
+        ports:
+        - containerPort: 80
+EOF
+</code></pre>
+<p>Ensure/check the replication controller is actually running:</p>
+<pre><code>$ kubectl get rc
+NAME              DESIRED   CURRENT   READY     AGE
+nginx-versioned   1         1         0         2h
+</code></pre>
+<p>Now create one for nginx-latest to validate that our controller/webhook can actually reject pods with images using the latest tag:</p>
+<pre><code class="language-yml">$ cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx-latest
+spec:
+  replicas: 1
+  selector:
+    app: nginx-latest
+  template:
+    metadata:
+      name: nginx-latest
+      labels:
+        app: nginx-latest
+    spec:
+      containers:
+      - name: nginx-latest
+        image: nginx
+        ports:
+        - containerPort: 80
+EOF
+</code></pre>
+<p>If we check the pod it should not be created and the RC should show something similar to the following output, you can also check with <code>kubectl get events --sort-by='{.lastTimestamp}'</code>:</p>
+<pre><code>$ kubectl describe rc nginx-latest
+Name:         nginx-latest
+Namespace:    default
+Selector:     app=nginx-latest
+Labels:       app=nginx-latest
+Annotations:  &lt;none&gt;
+Replicas:     0 current / 1 desired
+Pods Status:  0 Running / 0 Waiting / 0 Succeeded / 0 Failed
+Pod Template:
+  Labels:  app=nginx-latest
+  Containers:
+   nginx-latest:
+    Image:        nginx
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  &lt;none&gt;
+    Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+Conditions:
+  Type             Status  Reason
+  ----             ------  ------
+  ReplicaFailure   True    FailedCreate
+Events:
+  Type     Reason        Age                 From                    Message
+  ----     ------        ----                ----                    -------
+  Warning  FailedCreate  23s (x15 over 43s)  replication-controller  Error creating: admission webhook &quot;image-bouncer-webhook.default.svc&quot; denied the request: Images using latest tag are not allowed
+</code></pre>
+<h4 id="debugging">Debugging</h4>
+<p>It&rsquo;s always useful to see the apiserver logs if you are using the admission controller path since it will log there why did it fail, and also the logs from the image-bouncer, for example:
+apiserver</p>
+<pre><code>W0107 17:39:00.619560       1 dispatcher.go:142] rejected by webhook &quot;image-bouncer-webhook.default.svc&quot;: &amp;errors.StatusError{ErrStatus:v1.Status{TypeMeta:v1.TypeMeta{Kind:&quot;&quot;, APIVersion:&quot;&quot;}, ListMeta:v1.ListMeta{ SelfLink:&quot;&quot;, ResourceVersion:&quot;&quot;, Continue:&quot;&quot;, RemainingItemCount:(*int64)(nil)}, Status:&quot;Failure&quot;, Message:&quot;admission webhook \&quot;image-bouncer-webhook.default.svc\&quot; denied the request: Images using latest tag are not allowed&quot;, Reason:&quot;&quot;, Details:(*v1.StatusDetails)(nil), Code:400}}
+</code></pre>
+<p>kube-image-bouncer:</p>
+<pre><code>echo: http: TLS handshake error from 127.0.0.1:49414: remote error: tls: bad certificate
+method=POST, uri=/image_policy?timeout=30s, status=200
+method=POST, uri=/image_policy?timeout=30s, status=200
+method=POST, uri=/image_policy?timeout=30s, status=200
+</code></pre>
+<p>The error is from a manual test, the others are successful requests from the apiserver.</p>
+<h4 id="the-code-itself">The code itself</h4>
+<p>Lets take a really brief look at the critical parts of creating an admission controller or webhook:</p>
+<p>This is a section of the <code>main.go</code> as we can see we are handling two <code>POST</code> paths with different methods, and some other validations, what we need to know is that the we will receive a POST method call with a JSON payload and that we need to convert to an admission controller review request.</p>
+<pre><code>    app.Action = func(c *cli.Context) error {
+        e := echo.New()
+        e.POST(&quot;/image_policy&quot;, handlers.PostImagePolicy())
+        e.POST(&quot;/&quot;, handlers.PostValidatingAdmission())
+
+        e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+            Format: &quot;method=${method}, uri=${uri}, status=${status}\n&quot;,
+        }))
+
+        if debug {
+            e.Logger.SetLevel(log.DEBUG)
+        }
+
+        if whitelist != &quot;&quot; {
+            handlers.RegistryWhitelist = strings.Split(whitelist, &quot;,&quot;)
+            fmt.Printf(
+                &quot;Accepting only images from these registries: %+v\n&quot;,
+                handlers.RegistryWhitelist)
+            fmt.Println(&quot;WARN: this feature is implemented only by the ValidatingAdmissionWebhook code&quot;)
+        } else {
+            fmt.Println(&quot;WARN: accepting images from ALL registries&quot;)
+        }
+
+        var err error
+        if cert != &quot;&quot; &amp;&amp; key != &quot;&quot; {
+            err = e.StartTLS(fmt.Sprintf(&quot;:%d&quot;, port), cert, key)
+        } else {
+            err = e.Start(fmt.Sprintf(&quot;:%d&quot;, port))
+        }
+
+        if err != nil {
+            return cli.NewExitError(err, 1)
+        }
+
+        return nil
+    }
+
+    app.Run(os.Args)
+</code></pre>
+<p>This is a section from <code>handlers/validating_admission.go</code>, basically it parses and validates if the image should be allowed or not and then it sends an <a href="https://pkg.go.dev/k8s.io/api/admission/v1beta1">AdmissionReponse</a> back with the flag <code>Allowed</code> set to true or false. If you want to learm more about the different types used here you can explore the <a href="https://pkg.go.dev/k8s.io/api/admission/v1beta1">v1beta1.Admission Documentation</a></p>
+<pre><code>func PostValidatingAdmission() echo.HandlerFunc {
+    return func(c echo.Context) error {
+        var admissionReview v1beta1.AdmissionReview
+
+        err := c.Bind(&amp;admissionReview)
+        if err != nil {
+            c.Logger().Errorf(&quot;Something went wrong while unmarshalling admission review: %+v&quot;, err)
+            return c.JSON(http.StatusBadRequest, err)
+        }
+        c.Logger().Debugf(&quot;admission review: %+v&quot;, admissionReview)
+
+        pod := v1.Pod{}
+        if err := json.Unmarshal(admissionReview.Request.Object.Raw, &amp;pod); err != nil {
+            c.Logger().Errorf(&quot;Something went wrong while unmarshalling pod object: %+v&quot;, err)
+            return c.JSON(http.StatusBadRequest, err)
+        }
+        c.Logger().Debugf(&quot;pod: %+v&quot;, pod)
+
+        admissionReview.Response = &amp;v1beta1.AdmissionResponse{
+            Allowed: true,
+            UID:     admissionReview.Request.UID,
+        }
+        images := []string{}
+
+        for _, container := range pod.Spec.Containers {
+            images = append(images, container.Image)
+            usingLatest, err := rules.IsUsingLatestTag(container.Image)
+            if err != nil {
+                c.Logger().Errorf(&quot;Error while parsing image name: %+v&quot;, err)
+                return c.JSON(http.StatusInternalServerError, &quot;error while parsing image name&quot;)
+            }
+            if usingLatest {
+                admissionReview.Response.Allowed = false
+                admissionReview.Response.Result = &amp;metav1.Status{
+                    Message: &quot;Images using latest tag are not allowed&quot;,
+                }
+                break
+            }
+
+            if len(RegistryWhitelist) &gt; 0 {
+                validRegistry, err := rules.IsFromWhiteListedRegistry(
+                    container.Image,
+                    RegistryWhitelist)
+                if err != nil {
+                    c.Logger().Errorf(&quot;Error while looking for image registry: %+v&quot;, err)
+                    return c.JSON(
+                        http.StatusInternalServerError,
+                        &quot;error while looking for image registry&quot;)
+                }
+                if !validRegistry {
+                    admissionReview.Response.Allowed = false
+                    admissionReview.Response.Result = &amp;metav1.Status{
+                        Message: &quot;Images from a non whitelisted registry&quot;,
+                    }
+                    break
+                }
+            }
+        }
+
+        if admissionReview.Response.Allowed {
+            c.Logger().Debugf(&quot;All images accepted: %v&quot;, images)
+        } else {
+            c.Logger().Infof(&quot;Rejected images: %v&quot;, images)
+        }
+
+        c.Logger().Debugf(&quot;admission response: %+v&quot;, admissionReview.Response)
+
+        return c.JSON(http.StatusOK, admissionReview)
+    }
+}
+</code></pre>
+<p>Everything is in this <a href="https://github.com/kainlite/kube-image-bouncer">repo</a>.</p>
+<h4 id="closing-words">Closing words</h4>
+<p>This example and the original post were done <a href="https://github.com/flavio/kube-image-bouncer">here</a>, so thank you <a href="https://flavio.castelli.me/">Flavio Castelli</a> for creating such a great example, my changes are mostly about explaining how it works and the required changes for it to work in the latest kubernetes release (at the moment v1.20.0), as I was learning to use it and to create my own.</p>
+<p>The readme file in the project might not match this article but both should work, I didn&rsquo;t update the entire readme yet.</p>
+<h3 id="errata">Errata</h3>
+<p>If you spot any error or have any suggestion, please send me a message so it gets fixed.</p>
+<p>Also, you can check the source code and changes in the <a href="https://github.com/kainlite/kainlite.github.io">generated code</a> and the <a href="https://github.com/kainlite/blog">sources here</a></p>
+
+    </div>
+    <div class="article-footer">
+<blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    <li class="post-copyright-link hidden-xs">
+      <strong>Permalink: </strong>
+      <a href="https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/" title="Kubernetes image policy webhook explained" target="_blank" rel="external">https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>License：</strong><a href="https://github.com/kainlite/blog/blob/master/LICENSE.md" target="_blank" rel="external">MIT License</a>
+    </li>
+  </ul>
+</blockquote>
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/kainlite" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="https://legacy.techsquad.rocks/img/logo-glider.png" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/kainlite" target="_blank"><span class="text-dark">kainlite</span><small class="ml-1x">DevOps Practitioner</small></a></h3>
+        <div>Articles about Kubernetes, CI/CD, Git, Linux, Containers, Golang, and probably some more random stuff, you can subscribe via RSS or JSON Feed.</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+    </div>
+  </article>
+<section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+
+</div><nav class="bar bar-footer clearfix">
+    <div class="bar-inner">
+        <ul class="pager pull-left">
+            <li class="prev">
+                <a href="https://legacy.techsquad.rocks/blog/kubernetes_authentication_and_authorization/" title="Kubernetes authentication and authorization"><i
+                        class="icon icon-angle-left"
+                        aria-hidden="true"></i><span>&nbsp;&nbsp;Older</span></a>
+            </li>
+            <li class="next">
+                <a href="https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/"
+                    title="Custom Kubernetes Operator With TypeScript (JavaScript)."><span>Newer&nbsp;&nbsp;</span><i
+                        class="icon icon-angle-right" aria-hidden="true"></i></a>
+            </li>
+            
+            <li class="toggle-toc">
+                <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false"
+                    title="Catalogue" role="button">
+                    <span>[&nbsp;</span><span>Catalogue</span>
+                    <i class="text-collapsed icon icon-anchor"></i>
+                    <i class="text-in icon icon-close"></i>
+                    <span>]</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bar-right">
+            <div class="share-component" data-sites="facebook,twitter,google,linkedin"
+                data-mobile-sites=""></div>
+        </div>
+    </div>
+</nav>
+
+</main><footer class="footer" itemscope itemtype="http://schema.org/WPFooter"><script>
+(function buymeacoffee() {
+  var buymeacoffee = document.createElement('script');
+  buymeacoffee.setAttribute('src','https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js');
+  buymeacoffee.async = true;
+  buymeacoffee.setAttribute('data-id','NDx5OFh');
+  buymeacoffee.setAttribute('data-name','BMC-Widget');
+  buymeacoffee.setAttribute('data-description','Support me on Buy me a coffee!');
+  buymeacoffee.setAttribute('data-message','Thank you for visiting. You can now buy me a coffee!');
+  buymeacoffee.setAttribute('data-color','#79D6B5');
+  buymeacoffee.setAttribute('data-position','right');
+  buymeacoffee.setAttribute('data-x_margin','10');
+  buymeacoffee.setAttribute('data-y_margin','10');
+
+  
+  
+})()
+</script>
+
+<ul class="social-links">
+    <li><a href="mailto:kainlite@gmail.com" target="_blank" title="email" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-email"></i></a></li>
+    <li><a href="https://github.com/kainlite" target="_blank" title="github" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-github"></i></a></li>
+    <li><a href="https://www.linkedin.com/in/gabrielgarrido/" target="_blank" title="linkedin" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-linkedin"></i></a></li>
+    <li><a href="https://legacy.techsquad.rocks/index.xml" target="_blank" title="rss" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-rss"></i></a></li>
+    <li><a href="https://legacy.techsquad.rocks/index.json" target="_blank" title="share" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-share"></i></a></li>
+    <li><a href="https://stackoverflow.com/users/313941/kainlite" target="_blank" title="stackoverflow" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-stackoverflow"></i></a></li>
+    <li><a href="https://twitter.com/kainlite" target="_blank" title="twitter" data-toggle=tooltip data-placement=top >
+            <i class="icon icon-twitter"></i></a></li>
+</ul>
+
+  <div class="copyright">
+    <div class="publishby">
+      By using this site you agree to the usage of third party cookies from Disqus and Google analytics 
+      © All rights reserved. Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> and <a href="https://github.com/xiaoheiAh/hugo-theme-pure" target="_blank">Pure</a> with ♥
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script>
+    window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/highlight.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/python.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/javascript.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/bash.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/go.min.js" defer></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/highlight.js/9.15.10/languages/yaml.min.js" defer></script><script>
+    hljs.configure({
+        tabReplace: '    ', 
+        classPrefix: ''     
+        
+    })
+    hljs.initHighlightingOnLoad();
+</script>
+<script src="https://legacy.techsquad.rocks/js/application.min.a94ab19cb63a95c8d7fbd7b85cab3ddeea8c369bdf75b9cab6708787ead123af.js"></script>
+<script src="https://legacy.techsquad.rocks/js/plugin.min.19c5bcb2fb0789ab4f2b7834e5ceb5e92635645605bab902c1024b25f1502364.js"></script>
+
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            ROOT_URL: 'https:\/\/legacy.techsquad.rocks\/',
+            CONTENT_URL: 'https:\/\/legacy.techsquad.rocks\/\/searchindex.json ',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script type="text/javascript" src="https://legacy.techsquad.rocks/js/insight.min.4a2d52de4bfff73e0c688404fe3d17c9a3ae12d9888e1e1ac9c690e4890de2ded50fe55f2b819c2ba55435a76f396f3ea6805765f0b0af5635cdf74ea459eab0.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        
+        tocSelector: '.js-toc',
+        
+        contentSelector: '.js-toc-content',
+        
+        headingSelector: 'h1, h2, h3',
+        
+        hasInnerContainers: true,
+    });
+</script>
+
+<script>
+if (window.location.hostname !== "localhost") {
+    var disqus_config = function () {
+        this.page.url = 'https:\/\/legacy.techsquad.rocks\/blog\/kubernetes_image_policy_webhook_explained\/';
+        this.page.identifier = 'https:\/\/legacy.techsquad.rocks\/blog\/kubernetes_image_policy_webhook_explained\/';
+    };
+    (function () {
+        var d = document, s = d.createElement('script');
+        s.src = '//' + 'kainlite' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+}
+</script>
+<script id="dsq-count-scr" src="//kainlite.disqus.com/count.js" async></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-502GDPBW28"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-502GDPBW28');
+  </script>
+
+  </body>
+</html>

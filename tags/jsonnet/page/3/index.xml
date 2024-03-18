@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jsonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
+    <link>https://legacy.techsquad.rocks/tags/jsonnet/</link>
+    <description>Recent content in jsonnet on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 29 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://legacy.techsquad.rocks/tags/jsonnet/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go echo bot</title>
+      <link>https://legacy.techsquad.rocks/blog/go_echobot/</link>
+      <pubDate>Sat, 29 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/go_echobot/</guid>
+      <description>Echo bot This post was going to be about advanced ksonnet usage, but it went more about the echo bot itself, so I decided to rename it.
+To be honest, there is no other way to get the benefits of having ksonnet if you&amp;rsquo;re not going to take advantage of the deployments as code facilities that it brings thanks to Jsonnet.
+This time we will see how to use proper templates, it seems that the templates generated with ks are outdated at the time of this writing ksonnet version is: 0.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with ksonnet</title>
+      <link>https://legacy.techsquad.rocks/blog/getting_started_with_ksonnet/</link>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/getting_started_with_ksonnet/</guid>
+      <description>Introduction This tutorial will show you how to create a simple application and also how to deploy it to kubernetes using ksonnet, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, if you have been following the previous posts you already have minikube installed and working, before we dive into an example let&amp;rsquo;s review some terminology from ksonnet (extracted from the official documentation):</description>
+    </item>
+    
+    <item>
+      <title>Deploying my apps with Helm</title>
+      <link>https://legacy.techsquad.rocks/blog/deploying_my_apps_with_helm/</link>
+      <pubDate>Mon, 24 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/deploying_my_apps_with_helm/</guid>
+      <description>Deploying my apps with Helm If you are already familiar with Helm, and the different types of kubernetes workloads / resource types you might be wondering how to install apps directly to kubernetes, yes, you don&amp;rsquo;t have to re-invent the wheel for your mysql installation, or your postgres, or nginx, jenkins, You name it. Helm solves that problem with Charts, this list has the official charts maintained by the community, where the folder incubator may refer to charts that are still not compliant with the technical requirements but probably usable and the folder stable is for graduated charts.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://legacy.techsquad.rocks/about/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/about/</guid>
+      <description>I&amp;rsquo;m **Gabriel**, a Software Engineer and DevOps practitioner. This blog will address some topics that are somewhat interesting to me. Ranging from software development to managing your kubertenes clusters
+You can contact me at @kainlite or by email at kainlite@gmail.com.
+The original theme for the blog can be found at: https://github.com/xiaoheiAh/hugo-theme-pure</description>
+    </item>
+    
+    <item>
+      <title>Getting started with Helm</title>
+      <link>https://legacy.techsquad.rocks/blog/getting_started_with_helm/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/getting_started_with_helm/</guid>
+      <description>Introduction This tutorial will show you how to create a simple chart and also how to deploy it to kubernetes using Helm, in the examples I will be using minikube or you can check out this repo that has a good overview of minikube, once installed and started (minikube start) that command will download and configure the local environment, you can follow with the following example:
+Create the chart: helm create hello-world Always use valid DNS names if you are going to have services, otherwise you will have issues later on.</description>
+    </item>
+    
+    <item>
+      <title>Preferences</title>
+      <link>https://legacy.techsquad.rocks/preferences/</link>
+      <pubDate>Sun, 23 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/preferences/</guid>
+      <description>You can manage your cookies settings from here
+The original theme for the blog can be found at: https://github.com/xiaoheiAh/hugo-theme-pure</description>
+    </item>
+    
+  </channel>
+</rss>

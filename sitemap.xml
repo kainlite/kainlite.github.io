@@ -3,651 +3,763 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://techsquad.rocks/blog/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/</loc>
+    <lastmod>2024-03-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/</loc>
+    <lastmod>2024-03-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/legacy/</loc>
+    <lastmod>2024-03-17T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/arm/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/categories/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/cicd/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/kubernetes/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/categories/kubernetes/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/linux/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/tekton/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/testing_tekton_to_build_and_push_images_for_my_k3s_arm_oracle_cluster/</loc>
+    <lastmod>2022-10-25T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/categories/arm/</loc>
+    <lastmod>2022-09-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/rust_on_arm32v7_via_qemu/</loc>
+    <lastmod>2022-09-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/rust/</loc>
+    <lastmod>2022-09-03T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/rust_on_arm32v7/</loc>
+    <lastmod>2022-09-02T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/javascript/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/operators/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/typescript/</loc>
+    <lastmod>2021-07-22T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/docker/</loc>
+    <lastmod>2021-01-07T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/</loc>
+    <lastmod>2021-01-07T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/tags/security/</loc>
+    <lastmod>2021-01-07T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/kubernetes_authentication_and_authorization/</loc>
+    <lastmod>2020-11-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/blog/kubernetes_local_playground_alternatives/</loc>
     <lastmod>2020-11-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/vagrant/</loc>
     <lastmod>2020-11-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kubernetes/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/categories/kubernetes/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/linux/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/vagrant/</loc>
-    <lastmod>2020-11-27T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/tags/go/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/go/</loc>
     <lastmod>2020-11-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/golang/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/golang/</loc>
     <lastmod>2020-11-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</loc>
     <lastmod>2020-11-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/terraform_linter/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/terraform_linter/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/development/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/development/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/github/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/github/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/serverless/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/serverless/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/terraform/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/terraform/</loc>
     <lastmod>2020-05-21T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/continuous-delivery/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/continuous-delivery/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/continuous-integration/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/continuous-integration/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/docker/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/gitlab/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/gitlab/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/gitlab_ci_basics/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/gitlab_ci_basics/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/kubebuilder/</loc>
     <lastmod>2020-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kubebuilder/</loc>
-    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/cat_and_friends_netcat_socat/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/cat_and_friends_netcat_socat/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/linux/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/linux/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/networking/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/networking/</loc>
     <lastmod>2020-01-20T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kind/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/kind/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kustomize/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/kustomize/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/security/</loc>
-    <lastmod>2020-01-17T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</loc>
     <lastmod>2020-01-04T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</loc>
     <lastmod>2019-12-31T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/brief_introduction_to_terratest/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/brief_introduction_to_terratest/</loc>
     <lastmod>2019-09-08T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/aws/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/aws/</loc>
     <lastmod>2019-09-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/cognito/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/cognito/</loc>
     <lastmod>2019-09-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/lambda/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/lambda/</loc>
     <lastmod>2019-09-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/serverless/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/serverless/</loc>
     <lastmod>2019-09-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</loc>
     <lastmod>2019-09-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/gcp/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/gcp/</loc>
     <lastmod>2019-06-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_terraform_modules/</loc>
     <lastmod>2019-06-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/terraform/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/terraform/</loc>
     <lastmod>2019-06-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/go_grpc_cheap_ping/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/go_grpc_cheap_ping/</loc>
     <lastmod>2019-06-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/grpc/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/grpc/</loc>
     <lastmod>2019-06-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/continuous-integration/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/continuous-integration/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/travis-ci/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/travis-ci/</loc>
     <lastmod>2019-05-05T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</loc>
     <lastmod>2019-05-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/actually_using_vault_on_kubernetes/</loc>
     <lastmod>2019-04-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/</loc>
     <lastmod>2019-04-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/vault/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/vault/</loc>
     <lastmod>2019-04-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</loc>
     <lastmod>2019-04-28T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</loc>
     <lastmod>2019-04-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/openssh/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/openssh/</loc>
     <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/ssh_socks_proxy/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/ssh_socks_proxy/</loc>
     <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/tips-and-tricks/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/tips-and-tricks/</loc>
     <lastmod>2019-03-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/ssh_remote_port_forward/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/ssh_remote_port_forward/</loc>
     <lastmod>2019-03-09T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/ssh_local_port_forward/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/ssh_local_port_forward/</loc>
     <lastmod>2019-03-08T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/create_an_aws_lambda_function_in_go/</loc>
     <lastmod>2019-02-16T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/what_does_the_serverless_framework_does_for_me/</loc>
     <lastmod>2019-02-15T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/sending_emails_with_lambda_and_ses/</loc>
     <lastmod>2019-02-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/elm/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/elm/</loc>
     <lastmod>2019-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/serving_static_sites_with_s3_and_cloudfront/</loc>
     <lastmod>2019-02-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/git/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/git/</loc>
     <lastmod>2019-01-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/serving_static_sites_with_github/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/serving_static_sites_with_github/</loc>
     <lastmod>2019-01-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/give_super_powers_to_your_terminal_with_tmux/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/tmux/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/tmux/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/urxvt/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/urxvt/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/vim/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/vim/</loc>
     <lastmod>2019-01-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/creating_a_serverless_twitter_bot/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/creating_a_serverless_twitter_bot/</loc>
     <lastmod>2019-01-22T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/from_zero_to_hero_with_kops_and_aws/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/kops/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/kops/</loc>
     <lastmod>2019-01-19T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/my_local_environment/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/my_local_environment/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/exploring_some_istio_features/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/exploring_some_istio_features/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/istio/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/istio/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/routing/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/routing/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/service-mesh/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/service-mesh/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/service-mesh/</loc>
     <lastmod>2019-01-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/why_do_i_need_a_service_mesh/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/why_do_i_need_a_service_mesh/</loc>
     <lastmod>2019-01-06T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/deployment-tools/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/categories/deployment-tools/</loc>
+    <loc>https://legacy.techsquad.rocks/categories/deployment-tools/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_skaffold/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_skaffold/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/skaffold/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/skaffold/</loc>
     <lastmod>2019-01-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_gitkube/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_gitkube/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/gitkube/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/gitkube/</loc>
     <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/go_echobot/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/go_echobot/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/jsonnet/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/jsonnet/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/ksonnet/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/ksonnet/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/slack/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/slack/</loc>
     <lastmod>2018-12-29T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_ksonnet/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_ksonnet/</loc>
     <lastmod>2018-12-27T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/deploying_my_apps_with_helm/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/deploying_my_apps_with_helm/</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/tags/helm/</loc>
+    <loc>https://legacy.techsquad.rocks/tags/helm/</loc>
     <lastmod>2018-12-24T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/about/</loc>
+    <loc>https://legacy.techsquad.rocks/about/</loc>
     <lastmod>2018-12-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://techsquad.rocks/blog/getting_started_with_helm/</loc>
+    <loc>https://legacy.techsquad.rocks/blog/getting_started_with_helm/</loc>
+    <lastmod>2018-12-23T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://legacy.techsquad.rocks/preferences/</loc>
     <lastmod>2018-12-23T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

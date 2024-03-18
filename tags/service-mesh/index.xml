@@ -2,20 +2,90 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>service-mesh on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</title>
-    <link>https://techsquad.rocks/tags/service-mesh/</link>
+    <link>https://legacy.techsquad.rocks/tags/service-mesh/</link>
     <description>Recent content in service-mesh on Kubernetes, CI/CD, Git, Linux, Containers, Golang... and more</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 10 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://techsquad.rocks/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://legacy.techsquad.rocks/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Legacy</title>
+      <link>https://legacy.techsquad.rocks/blog/legacy/</link>
+      <pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/legacy/</guid>
+      <description>Important This blog is no longer maintained, if you want to keep reading or find new content, head out to the new site: https://techsquad.rocks/blog</description>
+    </item>
+    
+    <item>
+      <title>Testing tekton to build and push images for my K3S ARM Oracle cluster</title>
+      <link>https://legacy.techsquad.rocks/blog/testing_tekton_to_build_and_push_images_for_my_k3s_arm_oracle_cluster/</link>
+      <pubDate>Tue, 25 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/testing_tekton_to_build_and_push_images_for_my_k3s_arm_oracle_cluster/</guid>
+      <description>Introduction In this article we will explore how to deploy and configure tekton to build and push images to your registry to be consumed from your cluster, we will also see how these are deployed in another article. In this one I want to show you how to get the images ready to use, and also a handy solution for a CI system without having to rely on external factors, in my case I was having issues with docker building cross-architecture images and after setting up tekton everything was faster and simpler, cross-architecture is slow by default but can also not work a 100% as you would expect, by using this approach we can just forget about the architecture and just build where we run things, it is definitely faster and even some of your nodes will already have the images available meaning less bandwidth consumption as well in the long run.</description>
+    </item>
+    
+    <item>
+      <title>Running Rust on ARM32v7 via QEMU.</title>
+      <link>https://legacy.techsquad.rocks/blog/rust_on_arm32v7_via_qemu/</link>
+      <pubDate>Sat, 03 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/rust_on_arm32v7_via_qemu/</guid>
+      <description>Introduction In this article we will explore how to use QEMU to run emulating the ARM32v7 architecture to build and run Rust code like if it was a native ARM32v7 architecture.
+There are some drawbacks and performance considerations when using this approach, it can be simpler but way slower for big projects.
+The source for this article is here RCV and the docker image is here.
+This article can be considered a part 2 of Running rust on ARM32v7K3S Oracle cluster so we will not be creating the rust project and all that here, but focusing on building and running the project.</description>
+    </item>
+    
+    <item>
+      <title>Running Rust on ARM32v7 K3S Oracle cluster.</title>
+      <link>https://legacy.techsquad.rocks/blog/rust_on_arm32v7/</link>
+      <pubDate>Fri, 02 Sep 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/rust_on_arm32v7/</guid>
+      <description>Introduction In this article we will explore how to create a sample Rust project and Dockerfile to run it on ARM32v7 architectures.
+To configure the cluster I used this project k3s-oci-cluster, since Oracle is providing a very generous free tier for ARM workloads you might as well give it a try, or maybe use your raspberry pi cluster.
+The source for this article is here RCV and the docker image is here.</description>
+    </item>
+    
+    <item>
+      <title>Custom Kubernetes Operator With TypeScript (JavaScript).</title>
+      <link>https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/</link>
+      <pubDate>Thu, 22 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/custom_kubernetes_operator_with_typescript/</guid>
+      <description>Introduction In this article we will explore how to create a sample operator using typescript and to deploy it to our cluster, the operator will be pretty dummy in the sense that it will only deploy some resources based in a CRD, but you can customize it to do whatever you might need or want, the idea is to get an idea of all that it takes to do an operator outside of the magic land of Go and kubebuilder.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes image policy webhook explained</title>
+      <link>https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/</link>
+      <pubDate>Thu, 07 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/kubernetes_image_policy_webhook_explained/</guid>
+      <description>Introduction In this article we will explore how webhook works in kubernetes and more specifically about the ImagePolicyWebhook, the kubernetes documentation about it is kind of vague, since there is no real example or implementation that you can get out of it, so here we will break it down to the different alternatives, in a real world scenario I would prefer to rely in OPA Gatekeeper, I&amp;rsquo;m planning to make this trip worth by adding a database and make the webhook allow or disallow images based in the vulnerability scan, for example allow only medium or lower vulnerabilities in your containers, but that will be a post for another day, if you are interested you can help in this repo, see more.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes authentication and authorization</title>
+      <link>https://legacy.techsquad.rocks/blog/kubernetes_authentication_and_authorization/</link>
+      <pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://legacy.techsquad.rocks/blog/kubernetes_authentication_and_authorization/</guid>
+      <description>Introduction In this article we will explore how authentication and authorization works in kubernetes. But first what&amp;rsquo;s the difference?
+Authentication:
+When you validate your identity against a service or system you are authenticated meaning that the system recognizes you as a valid user. In kubernetes when you are creating the clusters you basically create a CA (Certificate Authority) that then you use to generate certificates for all components and users.</description>
+    </item>
+    
+    <item>
       <title>Kubernetes local playground alternatives</title>
-      <link>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</link>
+      <link>https://legacy.techsquad.rocks/blog/kubernetes_local_playground_alternatives/</link>
       <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/kubernetes_local_playground_alternatives/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/kubernetes_local_playground_alternatives/</guid>
       <description>Introduction In this article we will explore different alternatives for spinning up a cluster locally for testing, practicing or just developing an application.
 The source code and/or documentation of the projects that we will be testing are listed here:
  minikube kind Kubernetes the hard way using vagrant Kubernetes with kubeadm using vagrant  There are more alternatives like Microk8s but I will leave that as an exercise for the reader.</description>
@@ -23,38 +93,38 @@ The source code and/or documentation of the projects that we will be testing are
     
     <item>
       <title>Testing the Operator SDK and making a prefetch mechanism for Kubernetes</title>
-      <link>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</link>
+      <link>https://legacy.techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</link>
       <pubDate>Sun, 01 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/testing_the_operator_sdk_and_making_a_prefetch_mechanism_for_kubernetes/</guid>
       <description>Introduction In this article we will explore how to create an operator that can prefetch our images (from our deployments to all nodes) using the Operator SDK, you might be wondering why would you want to do this? the main idea is to get the images in advance so you don&amp;rsquo;t have to pull them when the pod actually needs to start running in a given node, this can speed up things a bit and it&amp;rsquo;s also an interesting exercise.</description>
     </item>
     
     <item>
       <title>Automatic terraform linting with reviewdog and tflint</title>
-      <link>https://techsquad.rocks/blog/terraform_linter/</link>
+      <link>https://legacy.techsquad.rocks/blog/terraform_linter/</link>
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/terraform_linter/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/terraform_linter/</guid>
       <description>Introduction In this article we will test how to lint and get automatic checks in our github pull requests for our terraform code using reviewdog and the tflint github action, this is particularly useful to prevent unwanted changes or buggy commits to be merged into your principal branch whatever that is. In order for this to work you just need to configure a Github action in your repo and that&amp;rsquo;s it, you don&amp;rsquo;t need to generate any token or do any extra step.</description>
     </item>
     
     <item>
       <title>Gitlab-CI Basics</title>
-      <link>https://techsquad.rocks/blog/gitlab_ci_basics/</link>
+      <link>https://legacy.techsquad.rocks/blog/gitlab_ci_basics/</link>
       <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/gitlab_ci_basics/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/gitlab_ci_basics/</guid>
       <description>Introduction In this article we will continue where we left off the forward project last time, in this article we will use gitlab-ci to test, build and push the image of our operator to dockerhub.
 Gitlab offers a pretty complete solution, but we will only sync our repo from github and set a basic pipeline to test, build and push our docker image to the registry, note that I do not have any kind of affiliation with gitlab, but I like their platform.</description>
     </item>
     
     <item>
       <title>Cat and friends (Netcat and Socat)</title>
-      <link>https://techsquad.rocks/blog/cat_and_friends_netcat_socat/</link>
+      <link>https://legacy.techsquad.rocks/blog/cat_and_friends_netcat_socat/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/cat_and_friends_netcat_socat/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/cat_and_friends_netcat_socat/</guid>
       <description>Introduction In this article we will see how to use cat, netcat and socat at least some basic examples and why do we have so many cats&amp;hellip;
 Also sorry for the awful recordings, but couldn&amp;rsquo;t figure out why it looks so bad with tmux.
 cat Cat as you might have guessed or know already is to con-cat-enate things, when used in conjunction with the shell redirections it can do a lot of powerful things but it&amp;rsquo;s often used when it&amp;rsquo;s not needed due to that, let&amp;rsquo;s see some examples.</description>
@@ -62,148 +132,78 @@ cat Cat as you might have guessed or know already is to con-cat-enate things, wh
     
     <item>
       <title>Cloud native applications with kubebuilder and kind aka kubernetes operators</title>
-      <link>https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</link>
+      <link>https://legacy.techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</link>
       <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/cloud_native_applications_with_kubebuilder_and_kind_aka_kubernetes_operators/</guid>
       <description>Introduction In this article we will see how to use kubebuilder and Kind to create a local test cluster and an operator, then deploy that operator in the cluster and test it, the repository with the files can be found here, also if you want to learn more about the idea and the project go: forward.
 Basically what the code does is create an alpine/socat pod and you can specify the host, port and protocol and it will make a tunnel for you, so then you can use port-forward or a service or ingress or whatever to expose things that are in another private subnet, while this might not sound like a good idea it has some use cases, so check your security constraints before doing any of that in a normal scenario it should be safe, it can be useful for testing or for reaching a DB while doing some debugging or test, but well, that is for another discussion, the tools used here is what makes this so interesting, this is a cloud native application, since it native to kubernetes and that&amp;rsquo;s what we will explore here.</description>
     </item>
     
     <item>
       <title>How to report spam to spamcop from gmail</title>
-      <link>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</link>
+      <link>https://legacy.techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</link>
       <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/how_to_report_spam_to_spamcop_from_gmail/</guid>
       <description>Introduction Easy method to report spam to SpamCop.net using GMail, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, this alternative method doesn&amp;rsquo;t need a script and it&amp;rsquo;s really easy to do as well, same result as with the script from the previous post.</description>
     </item>
     
     <item>
       <title>How to report your gmail spam folder to spamcop</title>
-      <link>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</link>
+      <link>https://legacy.techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</link>
       <pubDate>Tue, 31 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/how_to_report_your_gmail_spam_folder_to_spamcop/</guid>
       <description>Introduction This post is a bit different from the others in the sense that it&amp;rsquo;s a small &amp;ldquo;tool&amp;rdquo; I did to ease spam reporting to SpamCop.net, this helps to reduce the true Spam from unknown sources, since for some reason I started to get like 40 emails per day (all went to spam), but it is still somewhat annoying, so I started reporting it to spamcop, but the process was kind of slow and I got tired of that quickly, so I created this &amp;ldquo;script&amp;rdquo; to make things easier.</description>
     </item>
     
     <item>
       <title>Brief introduction to terratest</title>
-      <link>https://techsquad.rocks/blog/brief_introduction_to_terratest/</link>
+      <link>https://legacy.techsquad.rocks/blog/brief_introduction_to_terratest/</link>
       <pubDate>Sun, 08 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/brief_introduction_to_terratest/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/brief_introduction_to_terratest/</guid>
       <description>Introduction In this article we will see the basics to have tests for your terraform code using a re-usable pattern, we will use the code from the last article Serverless authentication with Cognito, so refer to that one before starting this one if you want to know how did we get here. Also as a side note this is a very basic example on how to get started with terratest.</description>
     </item>
     
     <item>
       <title>Serverless authentication with Cognito and Go</title>
-      <link>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</link>
+      <link>https://legacy.techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</link>
       <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/serverless_authentication_with_cognito_and_golang/</guid>
       <description>Introduction In this article we will see how to use Terraform and Go to create a serverless API using API Gateway, Lambda, and Go, and we will also handle authentication with AWS Cognito, the repo with the files can be found here.
 Terraform In this example I used terraform 0.12, and I kind of liked the new changes, it feels more like coding and a more natural way to describe things, however I think there are more bugs than usual in this version, but I really like the new output for the plan, apply, etc, getting back to the article since there is a lot of code I will gradually update the post with more notes and content or maybe another post explaining another section, but the initial version will only show the cognito part and the code to make it work and how to test it.</description>
     </item>
     
     <item>
       <title>Getting started with terraform modules</title>
-      <link>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</link>
+      <link>https://legacy.techsquad.rocks/blog/getting_started_with_terraform_modules/</link>
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/getting_started_with_terraform_modules/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/getting_started_with_terraform_modules/</guid>
       <description>Introduction In this article we will see a subtle introduction to terraform modules, how to pass data into the module, get something from the module and create a resource (GKE cluster), it&amp;rsquo;s intended to be as simple as possible just to be aware of what a module is composed of, or how can you do your own modules, sometimes it makes sense to have modules to abstract implementations that you use over several projects, or things that are often repeated along the project.</description>
     </item>
     
     <item>
       <title>Go gRPC Cheap Ping</title>
-      <link>https://techsquad.rocks/blog/go_grpc_cheap_ping/</link>
+      <link>https://legacy.techsquad.rocks/blog/go_grpc_cheap_ping/</link>
       <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/go_grpc_cheap_ping/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/go_grpc_cheap_ping/</guid>
       <description>Introduction In this article we will explore gRPC with a cheap ping application, basically we will do a ping and measure the time it takes for the message to go to the server and back before reporting it to the terminal. You can find the source code here.
 Protobuf As you might already know gRPC serializes data using protocol buffers, We are just going to create a Unary RPC as follows.</description>
     </item>
     
     <item>
       <title>Go continuous delivery with Terraform and Kubernetes</title>
-      <link>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</link>
+      <link>https://legacy.techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</guid>
+      <guid>https://legacy.techsquad.rocks/blog/go_continuous_delivery_with_terraform_and_kubernetes/</guid>
       <description>Introduction In this article we will continue where we left off the last time Go continuous integration with Travis CI and Docker, the files used here can be found HERE, and we will be creating our terraform cluster with a load balancer and generating our kubeconfig file based on the certs provided by terraform on travis and then finally creating a basic deployment and validate that everything works.
 DigitalOcean We need to create a token so terraform can create resources using DO API.</description>
-    </item>
-    
-    <item>
-      <title>Go continuous integration with Travis CI and Docker</title>
-      <link>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</link>
-      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/go_continuous_integration_with_travis_ci_and_docker/</guid>
-      <description>Introduction In this article we will see how to create a simple continuous integration process using Github, Travis-CI and Docker HUB, the files used here can be found HERE, in the next article we will continue with what we have here to provide continuous deployment possibly using Jenkins or maybe Travis, let me know which one you would prefer to see.
-First thing first App We will review the docker file, the app code and the travis-ci file, so let&amp;rsquo;s start with the app main.</description>
-    </item>
-    
-    <item>
-      <title>Actually using Vault on Kubernetes</title>
-      <link>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</link>
-      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/actually_using_vault_on_kubernetes/</guid>
-      <description>Introduction In the previous article we configured Vault with Consul on our cluster, now it&amp;rsquo;s time to go ahead and use it to provision secrets to our pods/applications. If you don&amp;rsquo;t remember about it or don&amp;rsquo;t have your Vault already configured you can go to Getting started with HashiCorp Vault on Kubernetes.
-In this article we will actually create an example using mutual TLS and provision some secrets to our app, You can find the files used here in this repo.</description>
-    </item>
-    
-    <item>
-      <title>Getting started with HashiCorp Vault on Kubernetes</title>
-      <link>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</link>
-      <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/getting_started_with_hashicorp_vault_on_kubernetes/</guid>
-      <description>Introduction Vault secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. What this means is that you can safely store all your App secrets in Vault without having to worry anymore how to store, provide, and use those secrets, we will see how to install it on a running kubernetes cluster and save and read a secret by our application, in this page we will be using Vault version 1.</description>
-    </item>
-    
-    <item>
-      <title>Creating a lambda function with terraform</title>
-      <link>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/creating_a_lambda_function_with_terraform/</guid>
-      <description>Introduction Here we will see how to use terraform to manage lambda functions, it will be a simple hello world in node.js, available as a gist here, note that I did not create this example but it&amp;rsquo;s really close to the official documentation but shorter, you can see another example with python here.
-Before you start make sure you already have your account configured for awscli and terraform installed.
-Configuration files First of all we need to get our terraform file or files (in a normal case scenario, but since this is a hello world it is easier to have everything in the same file), I have added some comments of what each part does as you can see.</description>
-    </item>
-    
-    <item>
-      <title>SSH Socks Proxy</title>
-      <link>https://techsquad.rocks/blog/ssh_socks_proxy/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/ssh_socks_proxy/</guid>
-      <description>Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Socks proxy and what it means, we also will explore SSH Remote Port Forward and SSH Local Port Forward and how to use that functionality.
-Explanation SOCKS is an Internet protocol that exchanges network packets between a client and server through a proxy server (Extracted from Wikipedia). So basically it allows our remote server to become a VPNey likey thingy using SSH, so let&amp;rsquo;s see the different options of how and when to use it.</description>
-    </item>
-    
-    <item>
-      <title>SSH Remote Port Forward</title>
-      <link>https://techsquad.rocks/blog/ssh_remote_port_forward/</link>
-      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/ssh_remote_port_forward/</guid>
-      <description>Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Remote port forward and what it means, we also will explore SSH Local Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Remote port forward basically let&amp;rsquo;s you forward one port from your machine to a remote machine, for example you want to connect to a local service from a remote server but just temporarily, let&amp;rsquo;s say you want to connect to a mysql instance on the default port (3306).</description>
-    </item>
-    
-    <item>
-      <title>SSH Local Port Forward</title>
-      <link>https://techsquad.rocks/blog/ssh_local_port_forward/</link>
-      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://techsquad.rocks/blog/ssh_local_port_forward/</guid>
-      <description>Introduction SSH is a great tool not only to connect and interact with remote servers, in this article we will explore SSH Local port forward and what it means, we also will explore SSH Remote Port Forward and SSH Socks Proxy and how to use that functionality.
-Explanation Local port forward basically let&amp;rsquo;s you forward one port from a remote machine to your local machine, for example you want to connect to a remote service from machine but just temporarily or there is a firewall that won&amp;rsquo;t let you do it, let&amp;rsquo;s say you want to connect to a mysql instance on the default port (3306).</description>
     </item>
     
   </channel>
